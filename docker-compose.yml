@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:7.2.3
+    container_name: PhocaFormeRedis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
+  mariadb:
+    image: mariadb:10.11.6
+    container_name: PhocaFormetMariaDB
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data:/lib/var/mysql
+    environment:
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${USER_NAME}
+      MARIADB_PASSWORD: ${USER_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+volumes:
+  redis-data:
+  mariadb-data:
+
