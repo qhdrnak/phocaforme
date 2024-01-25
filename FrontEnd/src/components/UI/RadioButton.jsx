@@ -14,8 +14,9 @@ function RadioButton({ onChange }) {
 
   return (
     <FormControl component="fieldset">
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div>
         <RadioGroup
+          row
           aria-label="gender"
           name="controlled-radio-buttons-group"
           value={value}

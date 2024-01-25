@@ -9,6 +9,7 @@ const navigationReducer = (state = { activeTab: 'Home' }, action) => {
   }
 };
 
+
 const rootReducer = combineReducers({
   navigation: navigationReducer,
 });
