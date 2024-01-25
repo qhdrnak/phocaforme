@@ -14,6 +14,7 @@ import ChatRoom from './pages/chatRoom';
 import PostWrite from './pages/postWrite.js';
 import PostMain from './pages/post.js';
 import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
+import store from './store2/index.js';
 
 
 const App = () => {

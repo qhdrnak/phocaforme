@@ -2,11 +2,12 @@
 import React, { useState } from "react";
 import { TextField, Button, TextareaAutosize } from "@mui/material";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { addPost } from '../../store2/post.js';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   max-width: 500px;
   max-height: 1000px;
   margin: auto;
@@ -19,17 +20,22 @@ const Label = styled.label`
 `;
 
 const BarterWrite = () => {
+  // const dispatch = useDispatch();
+
+  // 상태로 값 관리
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState(null); // 이미지는 파일을 업로드하는 거니까?
+  const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
 
+  // 제목 변경 핸들러
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
 
+  // 이미지 변경 핸들러
   const handleImageChange = (event) => {
-    const file = event.target.files[0]; // 근데 여기서 [ ] 안에 숫자는 최대 몇장 업로드할건지에 따라 바뀔 듯?
+    const file = event.target.files[0];
     setImage(file);
 
     const reader = new FileReader();
@@ -43,13 +49,27 @@ const BarterWrite = () => {
     }
   };
 
+  // 내용 변경 핸들러
   const handleContentChange = (event) => {
     setContent(event.target.value);
   };
 
+  // 게시물 생성 버튼 클릭 핸들러
   const handleButtonClick = () => {
     console.log("게시물 생성");
-    // 여기다가 navigate? 추가해서 버튼 누르면 전체 게시글 페이지로 이동하게 끔 하면 될 듯
+
+    // 새로운 게시물 객체 생성
+    const newPost = {
+      title,
+      image,
+      content,
+      // Add other properties as needed
+    };
+
+    // Redux를 통해 게시물 추가
+    // dispatch(addPost(newPost));
+    // TODO: navigate 추가해서 버튼을 누르면 전체 게시글 페이지로 이동하게 처리
+    console.log(newPost)
   };
 
   return (
@@ -83,7 +103,6 @@ const BarterWrite = () => {
       <TextareaAutosize
         value={content}
         onChange={handleContentChange}
-        // rowsMin={4}
         placeholder="상세 게시글을 입력하세요."
       />
 
