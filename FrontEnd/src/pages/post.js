@@ -11,3 +11,6 @@ const post = () => {
 };
 
 export default post;
+
+// 여기경로 
+{/* <Route path="/post" element={<PostMain />} /> */}

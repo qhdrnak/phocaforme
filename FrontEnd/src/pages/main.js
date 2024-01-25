@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import ChartTab from '../components/Chart/ChartTab';
-import Search from '../components/Search/Search';
+import Search from '../components/Search/Search.jsx';
 
 const main = () => {
     return (
