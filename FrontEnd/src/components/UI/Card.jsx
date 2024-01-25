@@ -1,4 +1,68 @@
-// 게시글 보여주는 ? 
-// 이거 따로 만들필요 없나
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import img from '../../assets/images/NCT_도영.PNG';
 
-// -> 만들어서 재사용하면 좋을 것 같음
+const ExpandMore = styled((props) => {
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
+
+export default function RecipeReviewCard() {
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+// 여기다가 onClick 만들어서 해당 게시글 상세페이지로 
+// 이동되게 만들기 
+	const exampleImg = img
+
+  return (
+    <Card sx={{ maxWidth: 220 }}>
+			 {/* 카드 이미지  */}
+      <CardMedia
+        component="img"
+        height="200"
+        image={exampleImg}
+        alt="Paella dish"
+      />
+			 {/* 카드 제목 */}
+			<CardHeader
+        action={
+          <IconButton aria-label="settings">
+          </IconButton>
+        }
+        title="[제목]"
+				
+      />
+
+			 			{/* 본문 */}
+      <CardContent>
+        <Typography variant="body2" color="text.secondary">
+          구해요 : A
+					있어요 : B 
+        </Typography>
+      </CardContent>
+    </Card>
+  );
+}

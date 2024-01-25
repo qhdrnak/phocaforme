@@ -2,7 +2,6 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './store/reducers'; 
-
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './pages/main';
 import Alarm from './pages/alarm';
@@ -14,6 +13,7 @@ import NavBar from './components/NavBar/NavBar';
 import ChatRoom from './pages/chatRoom';
 import PostWrite from './pages/postWrite.js';
 import PostMain from './pages/post.js';
+import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 
 
 const App = () => {
@@ -36,9 +36,9 @@ const App = () => {
             <Route path="/post" element={<PostMain />} />
   
           </Routes>
-          
-          
 
+          
+          <FloatingActionButtons />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
