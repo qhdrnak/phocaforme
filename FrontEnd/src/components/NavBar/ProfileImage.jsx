@@ -47,47 +47,48 @@ const ProfileImage = () => {
             src={profile}
           ></img>
         </IconButton>
-
-        <Menu
-          className="profile-container"
-          sx={{ mt: "4rem" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-          theme={theme}
-        >
-          <GPS />
-          <Divider variant="middle" component="li" />
-          <MenuItem
-            onClick={async () => {
-              await handleClickUserMenu("/chat");
+        <Paper sx={{ backgroundColor: theme.palette.primary.main }}>
+          <Menu
+            className="profile-container"
+            sx={{ mt: "4rem" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
-          >
-            <ChatOutlinedIcon className="dropdown-icon" />
-            <Typography textAlign="center">나의 채팅함</Typography>
-          </MenuItem>
-          <MenuItem
-            onClick={async () => {
-              await handleClickUserMenu("/profile");
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+            theme={theme}
           >
-            <PersonOutlinedIcon className="dropdown-icon" />
-            <Typography textAlign="center">마이페이지</Typography>
-          </MenuItem>
-          <Button variant="contained" color="primary" disableElevation>
-            로그아웃
-          </Button>
-        </Menu>
+            <GPS />
+            <Divider variant="middle" component="li" />
+            <MenuItem
+              onClick={async () => {
+                await handleClickUserMenu("/chat");
+              }}
+            >
+              <ChatOutlinedIcon className="dropdown-icon" />
+              <Typography textAlign="center">나의 채팅함</Typography>
+            </MenuItem>
+            <MenuItem
+              onClick={async () => {
+                await handleClickUserMenu("/profile");
+              }}
+            >
+              <PersonOutlinedIcon className="dropdown-icon" />
+              <Typography textAlign="center">마이페이지</Typography>
+            </MenuItem>
+            <Button variant="contained" color="primary" disableElevation>
+              로그아웃
+            </Button>
+          </Menu>
+        </Paper>
       </Box>
     </div>
   );
