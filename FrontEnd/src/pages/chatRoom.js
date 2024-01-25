@@ -1,13 +1,13 @@
+import { Container } from '@mui/material';
 
 import ChatRoom from "../components/ChatRoom/ChatRoom";
 
 const chatRoom = () => {
     
     return (
-        <div>
-            
+        <Container>
             <ChatRoom/>
-        </div>
+        </Container>
     );
 };
 

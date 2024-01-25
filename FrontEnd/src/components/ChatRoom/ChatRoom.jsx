@@ -1,30 +1,49 @@
-import { Container, Divider } from "@mui/material";
-import React from "react";
+// ChatRoom.jsx 메시지전송x
+import { Container } from "@mui/material";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 
-import Typography from "@mui/material/Typography";
 import PushPinRoundedIcon from "@mui/icons-material/PushPinRounded";
+import ChatMenu from "./ChatTop";
+import ChatSend from "./ChatSend";
 
 const ChatRoom = () => {
   const { roomId } = useParams();
+  const chatRoomInfo = {
+    owner: "제노예요",
+    title: "ISTJ A버전 구해요",
+  };
+
+  const [messages, setMessages] = useState([
+    {
+      time: "16:58",
+      message: "안녕하세요! 거래 희망합니다",
+      type: "chat-visiter",
+    },
+    {
+      time: "16:59",
+      message: "네 결제요청 보낼게요~",
+      type: "chat-owner",
+    },
+  ]);
+
   const theme = useTheme();
+
+  const updateMessages = (newMessage) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, "0");
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
 
   return (
     <Container>
-      <h2>채팅 내용</h2>
       <div id="chat-container">
-        <div id="chat-top">
-          <Typography variant="h5" component="div">
-            ownerName
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            content-title
-          </Typography>
-          <Divider
-            sx={{ height: 2, backgroundColor: theme.palette.primary.main }}
-          />
-        </div>
+        <ChatMenu />
         <div id="chat-notice">
           <div id="notice-content">
             <PushPinRoundedIcon id="notice-icon" />
@@ -37,8 +56,27 @@ const ChatRoom = () => {
             </p>
           </div>
         </div>
-        <div id="chat-message-container"></div>
-        <div id="send-message-container"></div>
+        <div id="chat-content-container">
+          <div id="chat-message-area">
+            {messages.map((messageData, index) => (
+              <div key={index} className={messageData.type}>
+                {messageData.type == "chat-owner" ? (
+                  <p>{messageData.time}</p>
+                ) : null}
+                <p className="chat-message">{messageData.message}</p>
+                {messageData.type == "chat-visiter" ? (
+                  <p>{messageData.time}</p>
+                ) : null}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div id="send-message-container">
+          <ChatSend
+            updateMessages={updateMessages}
+            getCurrentTime={getCurrentTime}
+          />
+        </div>
       </div>
       <div id="chat-list-container"></div>
     </Container>
