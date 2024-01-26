@@ -41,10 +41,10 @@ const Bias = () => {
   };
 
   return (
-    <div id="bias-container">
+    <div className="profile-container">
       <h2>최애 추가</h2>
-      <div id="bias-dropdown-container">
-        <div id="bias-group-container">
+      <div className="profile-dropdown-container">
+        <div className="profile-group-container">
           <div>그룹명</div>
           <div>
             <GroupDropdown
