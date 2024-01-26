@@ -77,8 +77,8 @@ const WishCard = () => {
   };
 
   return (
-    <div className="profile-container">
-      <h2>갈망포카 추가</h2>
+    <div className="profile-item-container">
+      <h2 className="profile-title">갈망포카 추가</h2>
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
           <div>그룹명</div>

@@ -32,8 +32,8 @@ const GroupDropdown = ({ onChange }) => {
         size="small"
         id="gorup-dropdown"
         options={groupItems}
-        sx={{ width: "14rem" }}
-        noOptionsText="일치하는 그룹이 없습니다"
+        sx={{ width: "12rem" }}
+        noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (
           <Box
             component="li"

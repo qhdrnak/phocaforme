@@ -46,8 +46,8 @@ const MemberDropdown = ({ selectedGroup, onChange }) => {
         disablePortal
         id="gorup-dropdown"
         options={filteredOptions}
-        sx={{ width: "10rem" }}
-        noOptionsText="일치하는 멤버가 없습니다"
+        sx={{ width: "12rem" }}
+        noOptionsText="해당 멤버가 없습니다"
         renderOption={(props, option) => (
           <Box
             component="li"
