@@ -38,7 +38,7 @@ const ProfileImage = () => {
   };
 
   return (
-    <div class="profile-image-container">
+    <div className="profile-image-container">
       <Box id="menu-container">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <img

@@ -7,7 +7,87 @@
 
 * {
     max-width: 600px;
+    font-family: 'Pretendard';
 }
+
+@font-face {
+	font-family:'PyeongChangPeace';
+    font-style:normal;
+    font-weight: 300;
+    src:url('./assets/fonts/PyeongChangPeace-Light.ttf') format('truetype')
+}
+
+@font-face {
+	font-family:'PyeongChangPeace';
+    font-style:bold;
+    font-weight: 600;
+    src:url('./assets/fonts/PyeongChangPeace-Bold.ttf') format('truetype')
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 900;
+	font-display: swap;
+	src: local('Pretendard Black'), url(./assets/fonts/Pretendard-Black.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 800;
+	font-display: swap;
+	src: local('Pretendard ExtraBold'), url(./assets/fonts/Pretendard-ExtraBold.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 700;
+	font-display: swap;
+	src: local('Pretendard Bold'), url(./assets/fonts/Pretendard-Bold.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 600;
+	font-display: swap;
+	src: local('Pretendard SemiBold'), url(./assets/fonts/Pretendard-SemiBold.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 500;
+	font-display: swap;
+	src: local('Pretendard Medium'), url(./assets/fonts/Pretendard-Medium.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 400;
+	font-display: swap;
+	src: local('Pretendard Regular'), url(./assets/fonts/Pretendard-Regular.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 300;
+	font-display: swap;
+	src: local('Pretendard Light'), url(./assets/fonts/Pretendard-Light.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 200;
+	font-display: swap;
+	src: local('Pretendard ExtraLight'), url(./assets/fonts/Pretendard-ExtraLight.subset.woff) format('woff');
+}
+
+@font-face {
+	font-family: 'Pretendard';
+	font-weight: 100;
+	font-display: swap;
+	src: local('Pretendard Thin'), url(./assets/fonts/Pretendard-Thin.subset.woff) format('woff');
+}
+
+
 
 #nav-bar {
     justify-content: space-between;
@@ -92,7 +172,7 @@
 
 #alarm-check-all {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 #alarm-time {
@@ -213,7 +293,7 @@
 
 .chat-owner{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -243,6 +323,62 @@
     height: 50vh;
 }
 
+#profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nickname-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nickname-input {
+    margin: 1rem;
+}
+
+#wishcard-input-container {
+    margin: 1rem;
+}
+
+.profile-title {
+    font-family:'PyeongChangPeace';
+}
+
+.profile-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 0 3rem 1rem 3rem;
+    margin-bottom: 1rem;
+    width: 70vw;
+    max-width: 400px;
+}
+
+.profile-dropdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 70vw;
+    max-width: 400px;
+    
+}
+
+#group-avatar {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 0.5rem;
+}
+
+#bias-avatar {
+    width: 7rem;
+    height: 7rem;
+    margin: 1rem;
+}
 
 #user-input {
     padding: 1rem;

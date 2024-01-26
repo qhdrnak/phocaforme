@@ -13,7 +13,11 @@ const theme = createTheme({
     },
     info: {
         main: '#FFFFFF'
+    },
+    success: {
+      main: 'rgba(135, 141, 150, 1)'
     }
+
   },
 
   components: {
@@ -21,9 +25,6 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           backgroundColor: '#FD9DD1', 
-        },
-        list: {
-          // backgroundColor: '#FD9DD1',
         },
       },
     },
@@ -35,6 +36,7 @@ const theme = createTheme({
 
       }
     },
+    
   
   }
 });
