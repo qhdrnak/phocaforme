@@ -13,7 +13,7 @@ import PostWrite from './pages/postWrite.js';
 import PostMain from './pages/post.js';
 import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 import store from './store2/index.js';
-
+import DetailPost from './components/PostList/DetailPost.jsx';
 
 const App = () => {
   // const store = createStore(rootReducer);
@@ -33,6 +33,7 @@ const App = () => {
             <Route path="/chatroom/:roomId" element={<ChatRoom />} />
             <Route path="/write" element={<PostWrite />}/>
             <Route path="/post" element={<PostMain />} />
+            <Route path="/post/:postId" element={<DetailPost />} />
            
 
           </Routes>

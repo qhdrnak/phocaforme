@@ -7,12 +7,15 @@ import Box from "@mui/material/Box";
 import { Container } from "@mui/material";
 import Card from '../../components/UI/Card';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
   return (
     <>
+
       <div
         role="tabpanel"
         hidden={value !== index}
@@ -49,16 +52,25 @@ export default function BasicTabs() {
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
   const posts = useSelector((state) => state.post ? state.post.posts : []);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleCardClick = (postId) => {
+    navigate(`/post/${postId}`)
+  }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const handleScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    const { scrollTop, scrollHeight, clientHeight } = window.document.documentElement;
 
     if (scrollTop + clientHeight >= scrollHeight - 20) {
+      const nextPageCards = posts.slice(visibleCards, visibleCards + PAGE_SIZE);
+      
       setVisibleCards((prev) => prev + PAGE_SIZE);
+      
+      dispatch({ type:'ADD_CARDS', payload: nextPageCards });
     }
   };
 
@@ -66,6 +78,9 @@ export default function BasicTabs() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
+
+  // Infinity scroll을 적용할 때 추가된 부분
+  const visiblePosts = posts.slice(0, visibleCards);
 
   return (
     <Container sx={{ width: "100%" }}>
@@ -89,21 +104,16 @@ export default function BasicTabs() {
           {/* <Card style={{ width: "calc(50% - 8px)", marginRight: "16px", marginBottom: "16px" }} /> */} 
 					{/* 이 자리에 생성한 게시글 뜨게 만들기 */}
 					{/* 무한스크롤 여따가 해야함 */}
-          {posts.map((post, index) => (
+          {visiblePosts.map((post, index) => (
             <Card 
               key={index} 
-              style={{ width: "calc(50% - 8px)", marginRight: "16px", marginBottom: "16px" }}
+              style={{ width: "calc(50% - 8px)", marginRight: "16px", marginBottom: "16px", cursor: 'pointer' }}
               title={post.title}
-              content={post.content}  
+              content={post.content}
+              onClick={() => handleCardClick(post.id)}  
             >
-              {/* 게시물 내용을 여기에 렌더링 */}
-              
-          
-              
             </Card>
           ))}
-
-          
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>

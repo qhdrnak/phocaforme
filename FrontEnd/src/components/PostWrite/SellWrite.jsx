@@ -1,5 +1,7 @@
 // 판매 - 교환 내용 다름
 // 게시글(판매) 생성 페이지
+// 그냥 BarterWrite에서 RadioButton 선택에 따른 값을 주고 
+// 교환이면 교환탭 판매면 판매탭에 게시글 생성되게 하면 될 듯
 import React, { useState } from "react";
 import { TextField, Button, TextareaAutosize } from "@mui/material";
 import styled from "styled-components";

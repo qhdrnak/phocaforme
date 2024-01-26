@@ -5,6 +5,11 @@ import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { addPost } from '../../store2/post.js';
 import { useNavigate } from 'react-router-dom';
+// import styled from 'styled-components';
+import RadioButton from "../../components/UI/RadioButton.jsx";
+import SearchBar from '../../components/Search/SearchBar.jsx';
+import SearchContainer from '../../components/Search/SearchBar.jsx';
+import onExchangeChange from '../../components/Search/SearchBar.jsx';
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +18,7 @@ const Container = styled.div`
   max-height: 1000px;
   margin: auto;
   padding: 20px;
-  border: 1px solid black;
+  
 `;
 
 const Label = styled.label`
@@ -28,6 +33,11 @@ const BarterWrite = () => {
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isExchange, setIsExchange] = useState(true);
+
+  function onExchangeChange(value) {
+    setIsExchange(value === "option1");
+  }
 
   // 제목 변경 핸들러
   const handleTitleChange = (event) => {
@@ -72,21 +82,84 @@ const BarterWrite = () => {
     // TODO: navigate 추가해서 버튼을 누르면 전체 게시글 페이지로 이동하게 처리
     navigate('/post');
   };
+  
+  const handleCancelButton = () => {
+    console.log('게시물 생성 취소')
+    navigate('/post');
+  }
 
   return (
     <Container>
-      <div>
-        <Label>제목: </Label>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <Label>제목</Label>
         <input
-          width="100%"
-          height="1px"
+          
           value={title}
           onChange={handleTitleChange}
           variant="outlined"
           margin="normal"
+          style={{
+            backgroundColor: "#F2F4F8",
+            width: 450,
+            height: 40,
+            border: 'none',
+            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
+          }}
+          placeholder="앨범명, 버전명을 입력하세요"
+          
         />
       </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+        <RadioButton onChange={onExchangeChange} />
+        <div style={{ marginBottom: '10px' }}>
+          <Label>그룹명</Label>
+          <SearchContainer />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+          <div style={{ flex: 1, marginRight: '10px' }}>
+            <Label>보유한 멤버</Label>
+            <SearchContainer />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Label>찾는 멤버</Label>
+            <SearchContainer />
+          </div>
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <Label>포토카드 종류</Label>
+          <SearchContainer />
+        </div>
+         
+      </div>
+       {/* 여기에 이미지 */}
+      <Label>내용 </Label>
+      <TextareaAutosize
+        value={content}
+        onChange={handleContentChange}
+        placeholder="상세 게시글을 입력하세요."
+        style={{
+          width: 380,
+          height: 100,
+          overflow: 'visible',
 
+        }}
+      /> 
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+        <Button variant="contained" color="primary" onClick={handleButtonClick} style={{marginRight: '10px'}}>
+          등록
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleCancelButton}>
+          취소
+        </Button>
+      </div>
+    </Container>
+  );
+};
+
+export default BarterWrite;
+
+//이미지추가
+{/* 
       <Label>이미지업로드 </Label>
       <input type="file" accept="image/*" onChange={handleImageChange} />
 
@@ -99,19 +172,3 @@ const BarterWrite = () => {
       )}
 
       {/* 가진거, 교환 원하는 거 여기다가 추가해야함*/}
-
-      <Label>상세 게시글: </Label>
-      <TextareaAutosize
-        value={content}
-        onChange={handleContentChange}
-        placeholder="상세 게시글을 입력하세요."
-      />
-
-      <Button variant="contained" color="primary" onClick={handleButtonClick}>
-        작성완료
-      </Button>
-    </Container>
-  );
-};
-
-export default BarterWrite;
