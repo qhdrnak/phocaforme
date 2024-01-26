@@ -4,6 +4,7 @@ import { TextField, Button, TextareaAutosize } from "@mui/material";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { addPost } from '../../store2/post.js';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -20,8 +21,8 @@ const Label = styled.label`
 `;
 
 const BarterWrite = () => {
-  // const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // 상태로 값 관리
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
@@ -67,9 +68,9 @@ const BarterWrite = () => {
     };
 
     // Redux를 통해 게시물 추가
-    // dispatch(addPost(newPost));
+    dispatch(addPost(newPost));
     // TODO: navigate 추가해서 버튼을 누르면 전체 게시글 페이지로 이동하게 처리
-    console.log(newPost)
+    navigate('/post');
   };
 
   return (

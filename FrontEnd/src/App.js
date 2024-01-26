@@ -1,7 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import rootReducer from './store/reducers'; 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './pages/main';
 import Alarm from './pages/alarm';
@@ -18,7 +16,7 @@ import store from './store2/index.js';
 
 
 const App = () => {
-  const store = createStore(rootReducer);
+  // const store = createStore(rootReducer);
 
   return (
     
@@ -35,7 +33,8 @@ const App = () => {
             <Route path="/chatroom/:roomId" element={<ChatRoom />} />
             <Route path="/write" element={<PostWrite />}/>
             <Route path="/post" element={<PostMain />} />
-  
+           
+
           </Routes>
 
           

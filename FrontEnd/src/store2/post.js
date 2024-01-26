@@ -11,6 +11,7 @@ const postSlice = createSlice({
 		addPost: (state, action) => {
       state.posts = [...state.posts, action.payload];
     },
+		
 	}
 });
 
