@@ -2,16 +2,23 @@
 import React, { useState } from "react";
 import { TextField, Button, TextareaAutosize } from "@mui/material";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { addPost } from '../../store2/post.js';
+import { useNavigate } from 'react-router-dom';
+// import styled from 'styled-components';
+import RadioButton from "../../components/UI/RadioButton.jsx";
+import SearchBar from '../../components/Search/SearchBar.jsx';
+import SearchContainer from '../../components/Search/SearchBar.jsx';
+import onExchangeChange from '../../components/Search/SearchBar.jsx';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   max-width: 500px;
   max-height: 1000px;
   margin: auto;
   padding: 20px;
-  border: 1px solid black;
+  
 `;
 
 const Label = styled.label`
@@ -19,17 +26,27 @@ const Label = styled.label`
 `;
 
 const BarterWrite = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // 상태로 값 관리
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState(null); // 이미지는 파일을 업로드하는 거니까?
+  const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isExchange, setIsExchange] = useState(true);
 
+  function onExchangeChange(value) {
+    setIsExchange(value === "option1");
+  }
+
+  // 제목 변경 핸들러
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
 
+  // 이미지 변경 핸들러
   const handleImageChange = (event) => {
-    const file = event.target.files[0]; // 근데 여기서 [ ] 안에 숫자는 최대 몇장 업로드할건지에 따라 바뀔 듯?
+    const file = event.target.files[0];
     setImage(file);
 
     const reader = new FileReader();
@@ -43,29 +60,106 @@ const BarterWrite = () => {
     }
   };
 
+  // 내용 변경 핸들러
   const handleContentChange = (event) => {
     setContent(event.target.value);
   };
 
+  // 게시물 생성 버튼 클릭 핸들러
   const handleButtonClick = () => {
     console.log("게시물 생성");
-    // 여기다가 navigate? 추가해서 버튼 누르면 전체 게시글 페이지로 이동하게 끔 하면 될 듯
+
+    // 새로운 게시물 객체 생성
+    const newPost = {
+      title,
+      image,
+      content,
+      // Add other properties as needed
+    };
+
+    // Redux를 통해 게시물 추가
+    dispatch(addPost(newPost));
+    // TODO: navigate 추가해서 버튼을 누르면 전체 게시글 페이지로 이동하게 처리
+    navigate('/post');
   };
+  
+  const handleCancelButton = () => {
+    console.log('게시물 생성 취소')
+    navigate('/post');
+  }
 
   return (
     <Container>
-      <div>
-        <Label>제목: </Label>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        <Label>제목</Label>
         <input
-          width="100%"
-          height="1px"
+          
           value={title}
           onChange={handleTitleChange}
           variant="outlined"
           margin="normal"
+          style={{
+            backgroundColor: "#F2F4F8",
+            width: 450,
+            height: 40,
+            border: 'none',
+            boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.1)'
+          }}
+          placeholder="앨범명, 버전명을 입력하세요"
+          
         />
       </div>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
+        <RadioButton onChange={onExchangeChange} />
+        <div style={{ marginBottom: '10px' }}>
+          <Label>그룹명</Label>
+          <SearchContainer />
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+          <div style={{ flex: 1, marginRight: '10px' }}>
+            <Label>보유한 멤버</Label>
+            <SearchContainer />
+          </div>
+          <div style={{ flex: 1 }}>
+            <Label>찾는 멤버</Label>
+            <SearchContainer />
+          </div>
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <Label>포토카드 종류</Label>
+          <SearchContainer />
+        </div>
+         
+      </div>
+       {/* 여기에 이미지 */}
+      <Label>내용 </Label>
+      <TextareaAutosize
+        value={content}
+        onChange={handleContentChange}
+        placeholder="상세 게시글을 입력하세요."
+        style={{
+          width: 380,
+          height: 100,
+          overflow: 'visible',
 
+        }}
+      /> 
+      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+        <Button variant="contained" color="primary" onClick={handleButtonClick} style={{marginRight: '10px'}}>
+          등록
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleCancelButton}>
+          취소
+        </Button>
+      </div>
+    </Container>
+  );
+};
+
+export default BarterWrite;
+
+//이미지추가
+{/* 
       <Label>이미지업로드 </Label>
       <input type="file" accept="image/*" onChange={handleImageChange} />
 
@@ -78,20 +172,3 @@ const BarterWrite = () => {
       )}
 
       {/* 가진거, 교환 원하는 거 여기다가 추가해야함*/}
-
-      <Label>상세 게시글: </Label>
-      <TextareaAutosize
-        value={content}
-        onChange={handleContentChange}
-        // rowsMin={4}
-        placeholder="상세 게시글을 입력하세요."
-      />
-
-      <Button variant="contained" color="primary" onClick={handleButtonClick}>
-        작성완료
-      </Button>
-    </Container>
-  );
-};
-
-export default BarterWrite;

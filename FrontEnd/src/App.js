@@ -1,7 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import rootReducer from './store/reducers'; 
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Main from './pages/main';
 import Alarm from './pages/alarm';
@@ -16,10 +14,11 @@ import ChatRoom from './pages/chatRoom';
 import PostWrite from './pages/postWrite.js';
 import PostMain from './pages/post.js';
 import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
-
+import store from './store2/index.js';
+import DetailPost from './components/PostList/DetailPost.jsx';
 
 const App = () => {
-  const store = createStore(rootReducer);
+  // const store = createStore(rootReducer);
 
   return (
     
@@ -36,7 +35,9 @@ const App = () => {
             <Route path="/chatroom/:roomId" element={<ChatRoom />} />
             <Route path="/write" element={<PostWrite />}/>
             <Route path="/post" element={<PostMain />} />
-  
+            <Route path="/post/:postId" element={<DetailPost />} />
+           
+
           </Routes>
 
           
