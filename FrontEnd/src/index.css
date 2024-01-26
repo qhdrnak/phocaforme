@@ -9,6 +9,7 @@
     max-width: 600px;
 }
 
+
 #nav-bar {
     justify-content: space-between;
     display: flex;
@@ -92,7 +93,7 @@
 
 #alarm-check-all {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 #alarm-time {
@@ -213,7 +214,7 @@
 
 .chat-owner{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
 }
 
@@ -243,6 +244,53 @@
     height: 50vh;
 }
 
+#profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#nickname-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#nickname-input {
+    margin: 1rem;
+}
+
+#bias-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 0 3rem 1rem 3rem;
+    width: 70vw;
+    max-width: 400px;
+}
+
+#bias-dropdown-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 70vw;
+    max-width: 400px;
+    
+}
+
+#group-avatar {
+    width: 2rem;
+    height: 2rem;
+    margin: 0 0.5rem;
+}
+
+#bias-avatar {
+    width: 7rem;
+    height: 7rem;
+    margin: 1rem;
+}
 
 #user-input {
     padding: 1rem;

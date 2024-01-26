@@ -1,2 +1,10 @@
-// 최근 본 게시물
-// 이거 다 판매 - 교환 탭으로 구분해야 할 듯 ... 
+const LatestPost = () => {
+  return (
+    <div>
+      <h1>최근 본 게시글</h1>
+      <div>교환 판매 탭 구분하기</div>
+    </div>
+  );
+};
+
+export default LatestPost;

@@ -30,13 +30,6 @@ const NavBar = ({ children }) => {
 
       <div
         onClick={() => {
-          navigate("/write");
-        }}
-      >
-        글쓰기~
-      </div>
-      <div
-        onClick={() => {
           navigate("/post");
         }}
       >
