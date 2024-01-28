@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { addPost } from '../../store2/post.js';
 import { useNavigate } from 'react-router-dom';
 // import styled from 'styled-components';
-import RadioButton from "../../components/UI/RadioButton.jsx";
+import RadioButton2 from "../../components/UI/RadioButton2.jsx";
 import SearchBar from '../../components/Search/SearchBar.jsx';
 import SearchContainer from '../../components/Search/SearchBar.jsx';
 import onExchangeChange from '../../components/Search/SearchBar.jsx';
@@ -34,6 +34,24 @@ const BarterWrite = () => {
   const [content, setContent] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [isExchange, setIsExchange] = useState(true);
+  const [selectedMembers, setSelectedMembers] = useState({
+    ownMember: '',
+    targetMember: '',
+  })
+
+  const handleOwnMemberSelection = (selectedMember) => {
+    setSelectedMembers((prev) => ({
+      ...prev,
+      ownMember: selectedMember,
+    }));
+  };
+
+  const handleTargetMemberSelection = (selectedMember) => {
+    setSelectedMembers((prev) => ({
+      ...prev,
+      targetMember: selectedMember,
+    }));
+  };
 
   function onExchangeChange(value) {
     setIsExchange(value === "option1");
@@ -74,6 +92,8 @@ const BarterWrite = () => {
       title,
       image,
       content,
+      selectedMembers,
+      type: isExchange ? "교환" : "판매",
       // Add other properties as needed
     };
 
@@ -81,6 +101,7 @@ const BarterWrite = () => {
     dispatch(addPost(newPost));
     // TODO: navigate 추가해서 버튼을 누르면 전체 게시글 페이지로 이동하게 처리
     navigate('/post');
+    console.log(newPost.selectedMembers);
   };
   
   const handleCancelButton = () => {
@@ -93,7 +114,6 @@ const BarterWrite = () => {
       <div style={{display: 'flex', flexDirection: 'column'}}>
         <Label>제목</Label>
         <input
-          
           value={title}
           onChange={handleTitleChange}
           variant="outlined"
@@ -110,28 +130,47 @@ const BarterWrite = () => {
         />
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch' }}>
-        <RadioButton onChange={onExchangeChange} />
+        <RadioButton2 onChange={onExchangeChange} />
         <div style={{ marginBottom: '10px' }}>
-          <Label>그룹명</Label>
+          <Label></Label>
           <SearchContainer />
         </div>
-        <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+        {/* <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
           <div style={{ flex: 1, marginRight: '10px' }}>
             <Label>보유한 멤버</Label>
-            <SearchContainer />
+            <SearchContainer 
+              value={selectedMembers.ownMember}
+              onSelect={handleOwnMemberSelection} 
+            />
           </div>
           <div style={{ flex: 1 }}>
             <Label>찾는 멤버</Label>
-            <SearchContainer />
+            <SearchContainer 
+              value={selectedMembers.targetMember}
+              onSelect={handleTargetMemberSelection}
+            />
           </div>
         </div>
         <div style={{ marginBottom: '10px' }}>
           <Label>포토카드 종류</Label>
           <SearchContainer />
-        </div>
-         
+        </div> */}
       </div>
-       {/* 여기에 이미지 */}
+
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+          <Label>사진</Label>
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Image Preview"
+              style={{ maxWidth: "30%", maxHeight: "200px", marginTop: "10px" }}
+            />
+          )}
+
+      </div>
+      
       <Label>내용 </Label>
       <TextareaAutosize
         value={content}

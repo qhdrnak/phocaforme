@@ -27,7 +27,7 @@ export default function FloatingActionButtons() {
     <Box sx={{
           position: 'fixed',
           bottom: 10,
-          right: 0,
+          right: 500,
           '& > :not(style)': { m: 1 } 
         }}
       >
@@ -44,30 +44,24 @@ export default function FloatingActionButtons() {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'top',
-          horizontal: 0,
+          horizontal: -100,
+          vertical: 100,
         }}
       >
-        <Typography sx={{ p: 3 }}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
+        <Typography 
+          sx={{
+            p: 1,
+            width: 70
+          }}
           >
-            <div
-
-            >
-              교환
-            </div>
             <button
               onClick={() => {
                 navigate("/write");
               }}
+              width='100px'
             >
-              판매
+              글쓰기
             </button>
-          </div> 
         </Typography>
       </Popover>
       </Fab>

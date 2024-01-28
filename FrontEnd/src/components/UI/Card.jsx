@@ -35,6 +35,9 @@ export default function RecipeReviewCard(props) {
   };
 // 여기다가 onClick 만들어서 해당 게시글 상세페이지로 
 // 이동되게 만들기 
+
+  const { title, members, content, selectedValue } = props; 
+
 	const exampleImg = img
 
   return (
@@ -43,7 +46,7 @@ export default function RecipeReviewCard(props) {
       <CardMedia
         component="img"
         height="200"
-        image={exampleImg}
+        image={img}
         alt="Paella dish"
       />
 			 {/* 카드 제목 */}
@@ -52,15 +55,13 @@ export default function RecipeReviewCard(props) {
           <IconButton aria-label="settings">
           </IconButton>
         }
-        title={props.title}
-				
+        title={title}
       />
 
 			 			{/* 본문 */}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          구해요 : A
-					있어요 : B 
+        {`있어요: ${members ? members.ownMember : '없음'} 구해요: ${members ? members.targetMember : '없음'}`} 
         </Typography>
       </CardContent>
     </Card>
