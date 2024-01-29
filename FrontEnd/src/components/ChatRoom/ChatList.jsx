@@ -26,7 +26,7 @@ export default function ChatList() {
 
   return (
     <Container>
-      <h2>채팅목록</h2>
+      <h2 className="chat-title">채팅목록</h2>
       <List sx={{ width: "100%", maxWidth: 500 }}>
         {visiterList.map((visitor, index) => (
           <ListItem

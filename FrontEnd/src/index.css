@@ -10,6 +10,22 @@
     font-family: 'Pretendard';
 }
 
+.main-title {
+    font-family:'PyeongChangPeace';
+}
+
+.chat-title {
+    font-family:'PyeongChangPeace';
+}
+
+.profile-title {
+    font-family:'PyeongChangPeace';
+}
+
+.alarm-title {
+    font-family:'PyeongChangPeace';
+}
+
 @font-face {
 	font-family:'PyeongChangPeace';
     font-style:normal;
@@ -343,9 +359,7 @@
     margin: 1rem;
 }
 
-.profile-title {
-    font-family:'PyeongChangPeace';
-}
+
 
 .profile-item-container {
     display: flex;
