@@ -5,6 +5,7 @@ import Main from './pages/main';
 import Alarm from './pages/alarm';
 import Chat from './pages/chat';
 import Profile from './pages/profile';
+import Login from './pages/login';
 
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './styles/theme'; 
@@ -36,7 +37,7 @@ const App = () => {
             <Route path="/write" element={<PostWrite />}/>
             <Route path="/post" element={<PostMain />} />
             <Route path="/post/:postId" element={<DetailPost />} />
-           
+            <Route path="/login" element={<Login /> } />
 
           </Routes>
 
