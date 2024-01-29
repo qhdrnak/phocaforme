@@ -2,30 +2,69 @@ import { useState } from "react";
 import { Button } from "../UI/Button.jsx";
 // import styled from 'styled-components';
 import { styled } from "@mui/system";
-import RadioButton from "../UI/RadioButton.jsx";
+import { Container } from "@mui/material";
+import { addSearchData } from "../../store2/search.js";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import RadioButton2 from "../UI/RadioButton.jsx";
 import SearchBar from "./SearchBar.jsx";
+import BarterWrite from "../../components/PostWrite/BarterWrite.jsx";
+import SellWrite from "../../components/PostWrite/SellWrite.jsx";
+import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";
 
 const Search = function () {
   const [userInput, setUserInput] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [isExchange, setIsExchange] = useState(true);
+  const [targetMembers, setTargetMembers] = useState([]);
+  const [ownMembers, setOwnMembers] = useState([]);
+  const [cardType, setCardType] = useState(null);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleTypeChange = (cardType) => {
+    if (cardType == null) {
+      cardType = {
+        value: "",
+        label: "",
+      };
+    }
+    setCardType(cardType);
+  };
+
+  const handleUserInputChange = (event) => {
+    setUserInput(event.target.value)
+  }
 
   function onClick() {
     setIsClicked((prevIsClicked) => !prevIsClicked);
   }
 
+  const handleOwnMemberSelection = (members) => {
+    setOwnMembers(members);
+  };
+
+  const handleTargetMemberSelection = (members) => {
+    setTargetMembers(members);
+  };
+
   function onExchangeChange(value) {
     setIsExchange(value === "option1");
   }
 
-  const SearchContainer = styled("div")`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%; /* 100% 높이로 설정하거나 원하는 높이로 조절하세요 */
-  `;
+  function handleSearchClick () {
+    const searchData = {
+      ownMembers: ownMembers[0].value,
+      targetMembers: targetMembers[0].value,
+      cardType: cardType.value
+    }
+
+    console.log(searchData)
+    dispatch(addSearchData(searchData));
+    navigate("/post");
+  }
+
 
   return (
     // <section id="user-input">
@@ -34,37 +73,53 @@ const Search = function () {
       <h3 onClick={onClick}>어떤 포카를 찾으시나요?</h3>
       {/* <Button>상세검색</Button> */}
       {!isClicked ? (
-        <input />
+        <div id="title-container">
+        <input
+          id="title-input"
+          value={userInput}
+          onChange={handleUserInputChange}
+          variant="outlined"
+          placeholder="앨범명, 버전명을 입력하세요"
+        />
+      </div>
       ) : (
-        <div>
-          <SearchContainer>
-            <div>
-              <RadioButton onChange={onExchangeChange} />
-            </div>
-            <input />
-            <div className="group">
-              <label>그룹명</label>
-              <SearchBar />
-            </div>
-            <div>
-              <td>
-                <label>보유한 멤버</label>
-                <SearchBar />
-              </td>
-              {isExchange && (
-                <td>
-                  <label>찾는 멤버</label>
-                  <SearchBar />
-                </td>
-              )}
-            </div>
-            <div>
-              <label>포토카드 종류</label>
-              <SearchBar />
-              <Button>검색</Button>
-            </div>
-          </SearchContainer>
-        </div>
+        
+          <Container>
+              <div id="write-radio-container">
+                <RadioButton2 onChange={onExchangeChange} />
+              </div>
+              <div id="title-container">
+                <input
+                  id="title-input"
+                  value={userInput}
+                  onChange={handleUserInputChange}
+                  variant="outlined"
+                  placeholder="앨범명, 버전명을 입력하세요"
+                />
+              </div>
+              <div id="group-member-input">
+                {isExchange ? (
+                  <BarterWrite
+                    onChange={(ownMembers, targetMembers) => {
+                      handleOwnMemberSelection(ownMembers);
+                      handleTargetMemberSelection(targetMembers);
+                    }}
+                  />
+                ) : (
+                  <SellWrite />
+                )}
+              </div>
+              <div id="card-input">
+                <h3>포토카드 종류</h3>
+                <TypeDropdown
+                  onChange={(type) => {
+                    handleTypeChange(type);
+                  }}
+                />
+              </div>
+              <Button onClick={handleSearchClick}>검색</Button>
+          </Container>
+        
       )}
     </div>
     // </section>

@@ -49,6 +49,8 @@ export default function BasicTabs({ isPreview }) {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
+  const searchs = useSelector((state) => (state.search ? state.search.searchs : []));
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -90,6 +92,11 @@ export default function BasicTabs({ isPreview }) {
 
   return (
     <div sx={{ width: "100%" }}>
+      <p>값 전달 확인용 : {searchs.length > 0 && (
+        <>
+          {searchs[0].ownMembers} {searchs[0].targetMembers} {searchs[0].cardType}
+        </>
+      )}</p>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
