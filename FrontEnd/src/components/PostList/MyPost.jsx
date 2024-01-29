@@ -48,7 +48,7 @@ const MyPost = () => {
 
   return (
     <div>
-      <h2>나의 게시글 (옆으로 슬라이드)</h2>
+      <h2 className="profile-title">나의 게시글 (옆으로 슬라이드)</h2>
       <div>
         <Box sx={{ width: "70vw", borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange}>

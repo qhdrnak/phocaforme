@@ -48,7 +48,7 @@ const LatestPost = () => {
 
   return (
     <div>
-      <h2>최근 본 게시글 (5개만)</h2>
+      <h2 className="profile-title">최근 본 게시글</h2>
       <div>
         <Box sx={{ width: "70vw", borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange}>
