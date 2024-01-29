@@ -1,5 +1,4 @@
- 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useAutocomplete } from "@mui/base/useAutocomplete";
 import { Button } from "@mui/base/Button";
@@ -122,7 +121,7 @@ Autocomplete.propTypes = {
   readOnly: PropTypes.bool,
 };
 
-export default function Container() {
+export default function SearchBar() {
   return <Autocomplete options={top100Films} />;
 }
 
@@ -326,9 +325,8 @@ const StyledNoOptions = styled("li")`
 `;
 
 const top100Films = [
-  { label: '테스트1' },
-  { label: '테스트2' },
-  { label: '테스트3' },
-  { label: '테스트4' },
-  
+  { label: "테스트1" },
+  { label: "테스트2" },
+  { label: "테스트3" },
+  { label: "테스트4" },
 ];
