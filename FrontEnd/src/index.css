@@ -1,9 +1,13 @@
+/* 기본 세팅 */
+
 :root {
     --primary-color: #FB37A3;
     --secondary-color: #FD9DD1;
     --info-color: #FFFFFF;
     --warning-color: rgba(142, 96, 203, 1)
   }
+
+/* 폰트 적용 */
 
 * {
     max-width: 600px;
@@ -12,6 +16,11 @@
 
 .main-title {
     font-family:'PyeongChangPeace';
+}
+
+.write-title {
+    font-family:'PyeongChangPeace';
+
 }
 
 .chat-title {
@@ -25,6 +34,8 @@
 .alarm-title {
     font-family:'PyeongChangPeace';
 }
+
+/* 폰트 세팅 */
 
 @font-face {
 	font-family:'PyeongChangPeace';
@@ -104,6 +115,7 @@
 }
 
 
+/* 내비바 */
 
 #nav-bar {
     justify-content: space-between;
@@ -175,6 +187,8 @@
     padding: 0.5rem;
 }
 
+/* 알림페이지 */
+
 .alarm-read-item {
     border-top: #FB37A3 2px solid;
     margin: 0.2rem;
@@ -194,6 +208,8 @@
 #alarm-time {
     font-size: 10px;
 }
+
+/* 랭킹 컴포넌트 */
 
 #rank-1-idol {
     display: flex;
@@ -231,6 +247,8 @@
     font-size: 12px;
     color: gray;
 }
+
+/* 채팅페이지 */
 
 .chatlist-item {
     border: 1px solid grey;
@@ -339,6 +357,7 @@
     height: 50vh;
 }
 
+/* 마이페이지 */
 #profile-page {
     display: flex;
     flex-direction: column;
@@ -358,8 +377,6 @@
 #wishcard-input-container {
     margin: 1rem;
 }
-
-
 
 .profile-item-container {
     display: flex;
@@ -394,6 +411,7 @@
     margin: 1rem;
 }
 
+  /* ? */
 #user-input {
     padding: 1rem;
     max-width: 44rem;
@@ -402,3 +420,124 @@
     border-radius: 10px;
     background: white;
   }
+
+  /* 게시글 작성 페이지 */
+#write-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#write-radio-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+#title-input {
+    background-color: #F2F4F8;
+    border: none;
+    border-radius: 10px;
+    width: 25rem;
+    height: 40px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+    padding: 0 1rem;
+}
+
+#image-preview {
+    max-width: 30%;
+    max-height: 200px;
+    margin-top: 10px;
+}
+
+#image-input {
+    display: flex;
+    flex-direction: column;
+}
+
+#content-input {
+    width: 25rem;
+    height: 10rem;
+    min-height: 100px;
+    padding: 0 1rem;
+    border-radius: 10px;
+}
+
+
+#button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+#member-input {
+    display: flex;
+}
+
+#own-member-dropdown {
+    margin: 0 1rem 0 0;
+}
+
+#sell-dropdown {
+    display: flex;
+    justify-content: space-around;
+}
+
+#image-add-button {
+    border: var(--primary-color) 2px solid;
+    border-radius: 10px;
+    background-color: var(--secondary-color);
+    position: relative;
+    width: 30%;
+    height: 0;
+    padding-bottom: 47.4%;
+    margin: 0.1rem;
+}
+
+#image-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.image-preview {
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    
+}
+
+.image-container {
+    width: 30%;
+    height: 0;
+    border-radius: 10px;
+    border: var(--primary-color) 2px solid;
+    margin: 0.1rem;
+    position: relative;
+    padding-bottom: 47.4%;
+}
+
+#image-add-icon {
+    color: var(--primary-color);
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.info-msg {
+    color: var(--secondary-color);
+}
+
+/* 메인페이지 */
+#search-container {
+    text-align: center;
+}
+
+/* 게시글페이지 */
+.card-content {
+    width: 10rem;
+}

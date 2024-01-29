@@ -32,6 +32,7 @@ const GroupDropdown = ({ onChange }) => {
         size="small"
         id="group-dropdown"
         options={groupItems}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{ width: "12rem" }}
         noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (

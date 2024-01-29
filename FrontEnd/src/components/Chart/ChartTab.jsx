@@ -55,7 +55,7 @@ export default function ChartTab() {
 
   return (
     <Container sx={{ width: "100%" }}>
-      <h2 className="main-title">오늘의 포포차트🥇</h2>
+      <h2 className="main-title">오늘의 포포차트 🥇</h2>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab

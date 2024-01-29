@@ -1,16 +1,17 @@
 import { Container } from '@mui/material';
 import ChartTab from '../components/Chart/ChartTab';
 import Search from '../components/Search/Search.jsx';
-import Preview from '../components/Preview/Preview.jsx';
+import PreviewPost from '../components/PostList/PreviewPost.jsx';
 
 
 const main = () => {
     return (
         <Container>
-            <h1>메인페이지</h1>
-            <Search />
+            <div id='search-container'>
+                <Search />
+            </div>
             <ChartTab/>
-            <Preview />
+            <PreviewPost />
         </Container>
     );
 };
