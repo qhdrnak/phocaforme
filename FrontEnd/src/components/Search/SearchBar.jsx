@@ -1,5 +1,5 @@
  
-import * as React from "react";
+import React, { useState } from 'react';
 import PropTypes from "prop-types";
 import { useAutocomplete } from "@mui/base/useAutocomplete";
 import { Button } from "@mui/base/Button";
@@ -10,6 +10,13 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const Autocomplete = React.forwardRef(function Autocomplete(props, ref) {
+  const [selectedValue, setSelectedValue] = useState(null);
+
+  // const handleOptionClick = (value) => {
+  //   setSelectedValue(value.label);
+  //   props.onSelect && props.onSelect(value.label); // 새로운 onSelect props를 호출하여 선택한 값을 부모 컴포넌트로 전달합니다.
+  // };
+
   const {
     disableClearable = false,
     disabled = false,
@@ -319,17 +326,9 @@ const StyledNoOptions = styled("li")`
 `;
 
 const top100Films = [
-  { label: "The Shawshank Redemption", year: 1994 },
-  { label: "The Godfather", year: 1972 },
-  { label: "The Godfather: Part II", year: 1974 },
-  { label: "The Dark Knight", year: 2008 },
-  { label: "12 Angry Men", year: 1957 },
-  { label: "Schindler's List", year: 1993 },
-  { label: "Pulp Fiction", year: 1994 },
-  {
-    label: "The Lord of the Rings: The Return of the King",
-    year: 2003,
-  },
-  { label: "The Good, the Bad and the Ugly", year: 1966 },
-  { label: "Fight Club", year: 1999 },
+  { label: '테스트1' },
+  { label: '테스트2' },
+  { label: '테스트3' },
+  { label: '테스트4' },
+  
 ];

@@ -47,15 +47,21 @@ function a11yProps(index) {
 
 const PAGE_SIZE = 4;// 페이지당 표시할 카드 수
 
-export default function BasicTabs() {
+export default function BasicTabs({ isPreview }) {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
   const posts = useSelector((state) => state.post ? state.post.posts : []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const goToDetail = (postId) => {
+    navigate(`/post/${postId}`);
+    console.log('이동')
+  };
+
   const handleCardClick = (postId) => {
     navigate(`/post/${postId}`)
+    
   }
 
   const handleChange = (event, newValue) => {
@@ -80,7 +86,7 @@ export default function BasicTabs() {
   }, [handleScroll]);
 
   // Infinity scroll을 적용할 때 추가된 부분
-  const visiblePosts = posts.slice(0, visibleCards);
+  const visiblePosts = isPreview ? posts.slice(0, PAGE_SIZE) : posts.slice(0, visibleCards);
 
   return (
     <Container sx={{ width: "100%" }}>
@@ -101,23 +107,33 @@ export default function BasicTabs() {
       </Box>
       <CustomTabPanel value={value} index={0}>
 			  <div style={{ display: "flex", flexWrap: "wrap", flexDirection: 'row' }}>
-          {/* <Card style={{ width: "calc(50% - 8px)", marginRight: "16px", marginBottom: "16px" }} /> */} 
-					{/* 이 자리에 생성한 게시글 뜨게 만들기 */}
-					{/* 무한스크롤 여따가 해야함 */}
-          {visiblePosts.map((post, index) => (
+          {visiblePosts.filter(post => post.type === '교환').map((post, index) => (
             <Card 
               key={index} 
               style={{ width: "calc(50% - 8px)", marginRight: "16px", marginBottom: "16px", cursor: 'pointer' }}
               title={post.title}
               content={post.content}
-              onClick={() => handleCardClick(post.id)}  
+              members={post.members}
+              onClick={() => goToDetail(index)}  
             >
             </Card>
           ))}
         </div>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-				
+      <div style={{ display: "flex", flexWrap: "wrap", flexDirection: 'row' }}>
+          {visiblePosts.filter(post => post.type === '판매').map((post, index) => (
+            <Card 
+              key={post.id} 
+              style={{ width: "calc(50% - 8px)", marginRight: "16px", marginBottom: "16px", cursor: 'pointer' }}
+              title={post.title}
+              content={post.content}
+              members={post.members}
+              onClick={() => goToDetail(post.id)}  
+            >
+            </Card>
+          ))}
+        </div>
       </CustomTabPanel>
     </Container>
   );
