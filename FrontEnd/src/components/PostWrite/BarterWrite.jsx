@@ -1,96 +1,123 @@
 // 게시글(판매) 생성 페이지
 import React, { useState } from "react";
-import { TextField, Button, TextareaAutosize } from "@mui/material";
-import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import SearchContainer from "../../components/Search/SearchBar.jsx";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
+import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
 
-  max-width: 500px;
-  max-height: 1000px;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid black;
-`;
+import Chip from "@mui/material/Chip";
 
-const Label = styled.label`
-  margin-bottom: 10px;
-`;
+const BarterWrite = ({ onChange }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-const BarterWrite = () => {
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState(null); // 이미지는 파일을 업로드하는 거니까?
-  const [content, setContent] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState({
+    value: "",
+    label: "",
+    avatarSrc: "",
+  });
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  const handleGroupChange = (group) => {
+    setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0]; // 근데 여기서 [ ] 안에 숫자는 최대 몇장 업로드할건지에 따라 바뀔 듯?
-    setImage(file);
+  const [ownMembers, setOwnMembers] = useState([]);
+  const [targetMembers, setTargetMembers] = useState([]);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    } else {
-      setImagePreview(null);
+  const handleOwnMemberChange = (member) => {
+    if (member) {
+      setOwnMembers((prevOwnMembers) => [...prevOwnMembers, member]);
+      onChange([...ownMembers, member], targetMembers);
     }
   };
 
-  const handleContentChange = (event) => {
-    setContent(event.target.value);
+  const handleTargetMemberChange = (member) => {
+    if (member) {
+      setTargetMembers((prevTargetMembers) => [...prevTargetMembers, member]);
+      onChange(ownMembers, [...targetMembers, member]);
+    }
   };
 
-  const handleButtonClick = () => {
-    console.log("게시물 생성");
-    // 여기다가 navigate? 추가해서 버튼 누르면 전체 게시글 페이지로 이동하게 끔 하면 될 듯
+  // 멤버 삭제 관련
+  const handleOwnMemberDelete = (deletedMember) => {
+    setOwnMembers(ownMembers.filter((member) => member !== deletedMember));
+  };
+
+  const handleTargetMemberDelete = (deletedMember) => {
+    setTargetMembers(
+      targetMembers.filter((member) => member !== deletedMember)
+    );
   };
 
   return (
-    <Container>
-      <div>
-        <Label>제목: </Label>
-        <input
-          width="100%"
-          height="1px"
-          value={title}
-          onChange={handleTitleChange}
-          variant="outlined"
-          margin="normal"
+    <div>
+      <div id="group-input">
+        <h3>그룹명</h3>
+        <GroupDropdown
+          onChange={(group) => {
+            handleGroupChange(group);
+          }}
         />
       </div>
-
-      <Label>이미지업로드 </Label>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
-
-      {imagePreview && (
-        <img
-          src={imagePreview}
-          alt="Image Preview"
-          style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }}
-        />
-      )}
-
-      {/* 가진거, 교환 원하는 거 여기다가 추가해야함*/}
-
-      <Label>상세 게시글: </Label>
-      <TextareaAutosize
-        value={content}
-        onChange={handleContentChange}
-        // rowsMin={4}
-        placeholder="상세 게시글을 입력하세요."
-      />
-
-      <Button variant="contained" color="primary" onClick={handleButtonClick}>
-        작성완료
-      </Button>
-    </Container>
+      <div id="member-input">
+        <div id="own-member-dropdown">
+          <h3>보유한 멤버</h3>
+          <MemberDropdown
+            selectedGroup={selectedGroup.value}
+            onChange={(member) => {
+              handleOwnMemberChange(member);
+            }}
+          />
+          <div>
+            {ownMembers &&
+              ownMembers.map((tag, index) => (
+                <Chip
+                  key={index}
+                  label={tag?.label}
+                  variant="outlined"
+                  onClick={() => handleOwnMemberDelete(tag)}
+                  onDelete={() => handleOwnMemberDelete(tag)}
+                  style={{
+                    margin: "4px",
+                    border: 0,
+                    // backgroundColor: tag.color,
+                    // color: "white",
+                  }}
+                />
+              ))}
+          </div>
+        </div>
+        <div>
+          <h3>찾는 멤버</h3>
+          <MemberDropdown
+            selectedGroup={selectedGroup.value}
+            onChange={(member) => {
+              handleTargetMemberChange(member);
+            }}
+          />
+          <div>
+            {targetMembers &&
+              targetMembers.map((tag, index) => (
+                <Chip
+                  key={index}
+                  label={tag?.label}
+                  variant="outlined"
+                  onClick={() => handleTargetMemberDelete(tag)}
+                  onDelete={() => handleTargetMemberDelete(tag)}
+                  style={{
+                    margin: "4px",
+                    border: 0,
+                    // backgroundColor: tag.color,
+                    // color: "white",
+                  }}
+                />
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

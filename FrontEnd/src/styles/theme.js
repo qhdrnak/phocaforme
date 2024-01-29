@@ -8,19 +8,23 @@ const theme = createTheme({
     secondary: {
       main: '#FD9DD1',
     },
+    warning: {
+      main: 'rgba(142, 96, 203, 1)',
+    },
     info: {
         main: '#FFFFFF'
+    },
+    success: {
+      main: 'rgba(135, 141, 150, 1)'
     }
+
   },
 
   components: {
     MuiMenu: {
       styleOverrides: {
         paper: {
-          backgroundColor: '#FD9DD1', // Menu의 배경색
-        },
-        list: {
-          backgroundColor: '#FD9DD1', // Menu 아이템의 배경색
+          backgroundColor: '#FD9DD1', 
         },
       },
     },
@@ -32,6 +36,7 @@ const theme = createTheme({
 
       }
     },
+    
   
   }
 });

@@ -35,7 +35,7 @@ export default function InteractiveList() {
   return (
     <Container>
       <div>
-        <h2>알림리스트</h2>
+        <h2 className="alarm-title">알림리스트</h2>
         <FormControlLabel
           id="alarm-check-all"
           control={
