@@ -14,24 +14,7 @@
     font-family: 'Pretendard';
 }
 
-.main-title {
-    font-family:'PyeongChangPeace';
-}
-
-.write-title {
-    font-family:'PyeongChangPeace';
-
-}
-
-.chat-title {
-    font-family:'PyeongChangPeace';
-}
-
-.profile-title {
-    font-family:'PyeongChangPeace';
-}
-
-.alarm-title {
+.main-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
 }
 
@@ -541,4 +524,17 @@
 /* 게시글페이지 */
 .card-content {
     width: 10rem;
+}
+
+#post-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 5rem;
+    padding: 1rem 1rem;
+}
+
+.card-style {
+    width: 12rem;
+    margin: 0.5rem;
 }

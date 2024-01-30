@@ -1,11 +1,13 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Fab from '@mui/material/Fab';
-import AddIcon from '@mui/icons-material/Add';
-import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
-import { useNavigate } from "react-router-dom";
+import * as React from "react";
 
+import Box from "@mui/material/Box";
+import Fab from "@mui/material/Fab";
+import Popover from "@mui/material/Popover";
+
+import AddIcon from "@mui/icons-material/Add";
+import CreateIcon from "@mui/icons-material/Create";
+
+import { useNavigate } from "react-router-dom";
 
 export default function FloatingActionButtons() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -21,49 +23,41 @@ export default function FloatingActionButtons() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? "simple-popover" : undefined;
 
   return (
-    <Box sx={{
-          position: 'fixed',
-          bottom: 10,
-          right: 500,
-          '& > :not(style)': { m: 1 } 
-        }}
-      >
-      <Fab 
-        color="primary" 
-        aria-label="add"
-      >
-        <AddIcon 
-          onClick={handleClick}
-        />
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: "5%",
+        right: "5%",
+        "& > :not(style)": { m: 1 },
+      }}
+    >
+      <Fab color="primary" aria-label="add">
+        <AddIcon onClick={handleClick} />
         <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          horizontal: -100,
-          vertical: 100,
-        }}
-      >
-        <Typography 
-          sx={{
-            p: 1,
-            width: 70
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          disableScrollLock
+          anchorOrigin={{
+            horizontal: -90,
+            vertical: -90,
           }}
+        >
+          <div
+            id="post-icon"
+            onClick={() => {
+              navigate("/write");
+              handleClose();
+            }}
           >
-            <button
-              onClick={() => {
-                navigate("/write");
-              }}
-              width='100px'
-            >
-              글쓰기
-            </button>
-        </Typography>
-      </Popover>
+            <div>글쓰기</div>
+            <CreateIcon />
+          </div>
+        </Popover>
       </Fab>
     </Box>
   );

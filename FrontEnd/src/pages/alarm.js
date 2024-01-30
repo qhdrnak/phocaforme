@@ -1,11 +1,13 @@
 //알림페이지
 import AlarmList from '../components/Alarm/AlarmList';
+import { Container } from "@mui/material";
+
 
 const alarm = () => {
     return (
-        <div id='alarm-page'>
+        <Container id='alarm-page'>
             <AlarmList/>
-        </div>
+        </Container>
     );
 };
 
