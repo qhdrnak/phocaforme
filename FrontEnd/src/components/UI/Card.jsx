@@ -1,19 +1,17 @@
 import * as React from "react";
+
 import { styled } from "@mui/material/styles";
+import TruncatedTitle from "../../styles/TruncatedTitle";
+
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
-import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+import { useNavigate } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -26,43 +24,58 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PostCard(props) {
-  const [expanded, setExpanded] = React.useState(false);
+const CustomCard = (props) => {
+  const navigate = useNavigate();
 
+  const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  // 여기다가 onClick 만들어서 해당 게시글 상세페이지로
-  // 이동되게 만들기
 
-  const { title, images, ownMembers, targetMembers, content, selectedValue } =
-    props;
+  const goToDetail = (id) => {
+    navigate(`/post/${id}`);
+  };
+
+  const { id, title, images, ownMembers, targetMembers, content, type } = props;
 
   return (
-    <Card>
-      {/* 카드 이미지  */}
-      <CardMedia component="img" height="200" image={images[0]} />
-      {/* 카드 제목 */}
+    <Card className="card-style" onClick={() => goToDetail(id)}>
+      <CardMedia component="img" height="250" image={images[0]} />
       <CardHeader
-        action={<IconButton aria-label="settings"></IconButton>}
-        title={title}
+        sx={{
+          padding: "1rem 1rem 0",
+          width: "100%",
+        }}
+        // action={<IconButton aria-label="settings"></IconButton>}
+        title={<TruncatedTitle truncateWidth="60%">{title}</TruncatedTitle>}
       />
-
-      {/* 본문 */}
       <CardContent className="card-content">
-        <div>
-          <Typography variant="body2" color="text.secondary">
-            {`있어요: ${ownMembers.map((member) => member.value).join(", ")}`}
-          </Typography>
-        </div>
-        <div>
-          <Typography variant="body2" color="text.secondary">
-            {`구해요: ${targetMembers
-              .map((member) => member.value)
-              .join(", ")}`}
-          </Typography>
-        </div>
+        {type == "교환" ? (
+          <div>
+            <div>
+              <Typography variant="body2" color="text.secondary">
+                {`있어요: ${ownMembers
+                  .map((member) => member.value)
+                  .join(", ")}`}
+              </Typography>
+            </div>
+            <div>
+              <Typography variant="body2" color="text.secondary">
+                {`구해요: ${targetMembers
+                  .map((member) => member.value)
+                  .join(", ")}`}
+              </Typography>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <Typography variant="body2" color="text.secondary">
+              {`멤버: ${ownMembers.map((member) => member.value).join(", ")}`}
+            </Typography>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
-}
+};
+export default CustomCard;

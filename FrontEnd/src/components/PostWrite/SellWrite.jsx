@@ -1,15 +1,16 @@
-// 게시글(판매) 생성 페이지
+// 게시글(판매) 생성
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
 
-const BarterWrite = () => {
+import Chip from "@mui/material/Chip";
+
+const SellWrite = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // 상태로 값 관리
-  const [isExchange, setIsExchange] = useState(true);
 
   const [selectedGroup, setSelectedGroup] = useState({
     value: "",
@@ -17,46 +18,63 @@ const BarterWrite = () => {
     avatarSrc: "",
   });
 
-  const [selectedMember, setSelectedMember] = useState(null);
-
   const handleGroupChange = (group) => {
-    if (group == null) {
-      group = {
-        value: "",
-        label: "",
-        avatarSrc: "",
-      };
-    }
-    setSelectedGroup(group);
+    setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
   };
 
-  const handleMemberChange = (member) => {
-    setSelectedMember(member);
+  const [ownMembers, setOwnMembers] = useState([]);
+
+  const handleOwnMemberChange = (member) => {
+    if (member) {
+      setOwnMembers((prevOwnMembers) => [...prevOwnMembers, member]);
+      onChange([...ownMembers, member]);
+    }
+  };
+
+  // 멤버 삭제 관련
+  const handleOwnMemberDelete = (deletedMember) => {
+    setOwnMembers(ownMembers.filter((member) => member !== deletedMember));
   };
 
   return (
     <div>
-      <div id="sell-dropdown">
-        <div>
-          <h3>그룹명</h3>
-          <GroupDropdown
-            onChange={(group) => {
-              handleGroupChange(group);
-            }}
-          />
-        </div>
-        <div>
+      <div id="group-input">
+        <h3>그룹명</h3>
+        <GroupDropdown
+          onChange={(group) => {
+            handleGroupChange(group);
+          }}
+        />
+      </div>
+      <div id="member-input">
+        <div id="own-member-dropdown">
           <h3>멤버</h3>
           <MemberDropdown
             selectedGroup={selectedGroup.value}
             onChange={(member) => {
-              handleMemberChange(member);
+              handleOwnMemberChange(member);
             }}
           />
+          <div>
+            {ownMembers &&
+              ownMembers.map((tag, index) => (
+                <Chip
+                  key={index}
+                  label={tag?.label}
+                  variant="outlined"
+                  onClick={() => handleOwnMemberDelete(tag)}
+                  onDelete={() => handleOwnMemberDelete(tag)}
+                  style={{
+                    margin: "4px",
+                    border: 0,
+                  }}
+                />
+              ))}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default BarterWrite;
+export default SellWrite;
