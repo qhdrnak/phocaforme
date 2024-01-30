@@ -31,7 +31,7 @@ const theme = createTheme({
     MuiListItemText: {
       styleOverrides: {
         secondary: {
-          fontSize: '10px',
+          fontSize: '14px',
           fontFamily: 'Pretendard'
         }
 

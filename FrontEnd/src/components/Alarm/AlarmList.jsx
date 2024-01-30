@@ -80,23 +80,32 @@ export default function InteractiveList() {
             <ListItem
               key={index}
               className={item.isRead ? "alarm-read-item" : "alarm-item"}
-              onClick={() => handleItemClick(item)}
               secondaryAction={
                 <>
-                  <span id="alarm-time">{item.sendTime}</span>
                   <IconButton edge="end" onClick={() => readAlarm(index)}>
                     {item.isRead ? null : <CloseIcon />}
                   </IconButton>
                 </>
               }
             >
-              <ListItemAvatar>
-                {item.isRead ? <TaskAltIcon /> : <RadioButtonUncheckedIcon />}
-              </ListItemAvatar>
-              <ListItemText
-                primary={item.notificationType}
-                secondary={item.content}
-              />
+              <div
+                className="alarm-item-container"
+                onClick={(e) => {
+                  handleItemClick(item);
+                }}
+              >
+                <ListItemAvatar>
+                  {item.isRead ? <TaskAltIcon /> : <RadioButtonUncheckedIcon />}
+                </ListItemAvatar>
+                <div className="alarm-text-container">
+                  <ListItemText
+                    className="alarm-content"
+                    primary={item.notificationType}
+                    secondary={item.content}
+                  />
+                  <span id="alarm-time">{item.sendTime}</span>
+                </div>
+              </div>
             </ListItem>
           ))}
         </List>
