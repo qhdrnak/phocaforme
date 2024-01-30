@@ -47,7 +47,7 @@ const CustomCard = (props) => {
           width: "100%",
         }}
         // action={<IconButton aria-label="settings"></IconButton>}
-        title={<TruncatedTitle truncateWidth="60%">{title}</TruncatedTitle>}
+        title={<TruncatedTitle truncateWidth="70%">{title}</TruncatedTitle>}
       />
       <CardContent className="card-content">
         {type == "교환" ? (

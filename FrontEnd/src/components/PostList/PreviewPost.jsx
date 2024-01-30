@@ -24,6 +24,7 @@ const PreviewPost = () => {
       >
         <Button
           variant="contained"
+          size="large"
           color="primary"
           style={{ marginRight: "10px" }}
           onClick={handleButtonClick}
