@@ -8,7 +8,10 @@ import { Container } from "@mui/material";
 import Card from "../../components/UI/Card";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+/////
+import { fetchTitle, fetchUserTitle } from '../../http.js';
 
+////
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -48,6 +51,10 @@ const PAGE_SIZE = 5; // 페이지당 표시할 카드 수
 export default function BasicTabs({ isPreview }) {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
+  ////
+  const [title, setTitle] = useState('');
+  const [userTitle, setUserTitle] = useState('');
+  ///
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const searchs = useSelector((state) =>
     state.search ? state.search.searchs : []
@@ -78,6 +85,21 @@ export default function BasicTabs({ isPreview }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const titleData = await fetchTitle();
+        setTitle(titleData);
+        const userTitleData = await fetchUserTitle();
+        setUserTitle(userTitleData);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   // Infinity scroll을 적용할 때 추가된 부분
   const visiblePosts = isPreview
     ? posts.slice(0, PAGE_SIZE)
@@ -85,15 +107,11 @@ export default function BasicTabs({ isPreview }) {
 
   return (
     <div sx={{ width: "100%" }}>
-      <div>
-        값 전달 확인용 :{" "}
-        {searchs.length > 0 && (
-          <>
-            {searchs[0].ownMembers} {searchs[0].targetMembers}{" "}
-            {searchs[0].cardTydive}
-          </>
-        )}
-      </div>
+      <p>값 전달 확인용 : {searchs.length > 0 && (
+        <>
+          {searchs[searchs.length - 1].ownMembers} {searchs[searchs.length - 1].targetMembers} {searchs[searchs.length - 1].cardType}
+        </>
+      )}</p>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
