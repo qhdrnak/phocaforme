@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Button } from "../UI/Button.jsx";
 // import styled from 'styled-components';
-import { styled } from "@mui/system";
-import { Container } from "@mui/material";
 import { addSearchData } from "../../store2/search.js";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import RadioButton2 from "../UI/RadioButton.jsx";
-import SearchBar from "./SearchBar.jsx";
-import BarterWrite from "../../components/PostWrite/BarterWrite.jsx";
-import SellWrite from "../../components/PostWrite/SellWrite.jsx";
-import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";
+import BarterWrite2 from "../../components/PostWrite/BarterWrite2.jsx";
+import SellWrite2 from "../../components/PostWrite/SellWrite2.jsx";
+import TypeDropdown2 from "../UI/Dropdown/TypeDropdown2.jsx";
+import SearchIcon from '@mui/icons-material/Search';
+import { FaSearch } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowUp } from "react-icons/io";
+
 
 const Search = function () {
   const [userInput, setUserInput] = useState("");
@@ -18,6 +20,8 @@ const Search = function () {
   const [isExchange, setIsExchange] = useState(true);
   const [targetMembers, setTargetMembers] = useState([]);
   const [ownMembers, setOwnMembers] = useState([]);
+  const [targetMembersInput, setTargetMembersInput] = useState(null);
+  const [ownMembersInput, setOwnMembersInput] = useState(null);
   const [cardType, setCardType] = useState(null);
 
   const navigate = useNavigate();
@@ -54,72 +58,100 @@ const Search = function () {
   }
 
   function handleSearchClick () {
-    const searchData = {
-      ownMembers: ownMembers[0].value,
-      targetMembers: targetMembers[0].value,
-      cardType: cardType.value
+    let userInputCondition = {};
+
+    // 사용자가 입력한 값이 있으면 검색 조건에 추가
+    if (userInput) {
+      userInputCondition = { userInput: userInput };
     }
+
+    const searchData = {
+      ownMembers: ownMembers.length > 0 ? ownMembers[0].value : ownMembersInput,
+      targetMembers: targetMembers.length > 0 ? targetMembers[0].value : targetMembersInput,
+      cardType: cardType ? cardType.value : null,
+      ...userInputCondition 
+    };
 
     console.log(searchData)
     dispatch(addSearchData(searchData));
     navigate("/post");
   }
 
-
+  const handleUserInputClick = (event) => {
+    event.stopPropagation(); // 클릭 이벤트 버블링 중단
+  }
+  
   return (
     // <section id="user-input">
-
-    <div>
-      <h3 onClick={onClick}>어떤 포카를 찾으시나요?</h3>
-      {/* <Button>상세검색</Button> */}
+    <div id="search-container"> 
+      <h3>어떤 포카를 찾으시나요?</h3>
+      
       {!isClicked ? (
-        <div id="title-container">
-        <input
-          id="title-input"
-          value={userInput}
-          onChange={handleUserInputChange}
-          variant="outlined"
-          placeholder="앨범명, 버전명을 입력하세요"
-        />
-      </div>
+        <div style={{ position: 'relative' }}>
+          <input
+            id="title-input"
+            value={userInput}
+            
+            onChange={handleUserInputChange}
+            variant="outlined"
+            placeholder='앨범, 버전명 등을 입력해주세요'
+            style={{ paddingLeft: '2rem' }} // 아이콘의 공간 확보를 위해 입력 상자의 왼쪽 패딩을 추가
+          />
+          <FaSearch style={{ position: 'absolute', top: '50%', left: '0.5rem', transform: 'translateY(-50%)', color:'gray' }} />
+          <IoIosArrowDown onClick={onClick} style={{ position: 'absolute', top: '50%', right: '0.5rem', transform: 'translateY(-50%)' }} />
+        </div>
       ) : (
-        
-          <Container>
-              <div id="write-radio-container">
-                <RadioButton2 onChange={onExchangeChange} />
-              </div>
-              <div id="title-container">
-                <input
-                  id="title-input"
-                  value={userInput}
-                  onChange={handleUserInputChange}
-                  variant="outlined"
-                  placeholder="앨범명, 버전명을 입력하세요"
-                />
-              </div>
-              <div id="group-member-input">
-                {isExchange ? (
-                  <BarterWrite
-                    onChange={(ownMembers, targetMembers) => {
-                      handleOwnMemberSelection(ownMembers);
-                      handleTargetMemberSelection(targetMembers);
-                    }}
-                  />
-                ) : (
-                  <SellWrite />
-                )}
-              </div>
-              <div id="card-input">
-                <h3>포토카드 종류</h3>
-                <TypeDropdown
-                  onChange={(type) => {
-                    handleTypeChange(type);
-                  }}
-                />
-              </div>
-              <Button onClick={handleSearchClick}>검색</Button>
-          </Container>
-        
+      <div>
+
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+          <RadioButton2 onChange={onExchangeChange} />
+        </div>
+
+        <div style={{ position: 'relative' }}>
+          <input
+            id="title-input"
+            value={userInput}
+            onChange={handleUserInputChange}
+            variant="outlined"
+            placeholder='앨범, 버전명 등을 입력해주세요'
+            style={{ paddingLeft: '2rem' }} // 아이콘의 공간 확보를 위해 입력 상자의 왼쪽 패딩을 추가
+          />
+          <FaSearch style={{ position: 'absolute', top: '50%', left: '0.5rem', transform: 'translateY(-50%)', color:'gray' }} />
+          <IoIosArrowUp onClick={onClick} style={{ position: 'absolute', top: '50%', right: '0.5rem', transform: 'translateY(-50%)' }} />
+        </div>
+
+        <div>
+          {isExchange ? (
+            <BarterWrite2
+              onChange={(ownMembers, targetMembers) => {
+                handleOwnMemberSelection(ownMembers);
+                handleTargetMemberSelection(targetMembers);
+              }}
+            />
+          ) : (
+            <SellWrite2 />
+          )}
+        </div>
+        <div>
+          <h3>포토카드 종류</h3>
+          <TypeDropdown2
+            onChange={(type) => {
+              handleTypeChange(type);
+            }}
+          />
+        </div>
+        <Button 
+          onClick={handleSearchClick}
+          sx={{
+             mt: 2,
+             ml: 18,
+             width: "120px",
+             height: "50px"
+            }}
+        >
+            검색
+        </Button>
+      </div>
       )}
     </div>
     // </section>

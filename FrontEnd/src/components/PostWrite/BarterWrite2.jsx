@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SearchContainer from "../../components/Search/SearchBar.jsx";
 
-import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
-import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
+import GroupDropdown2 from "../UI/Dropdown/GroupDropdown2.jsx";
+import MemberDropdown2 from "../UI/Dropdown/MemberDropdown2.jsx";
 
 import Chip from "@mui/material/Chip";
 
-const BarterWrite = ({ onChange }) => {
+const BarterWrite2 = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -66,17 +66,17 @@ const BarterWrite = ({ onChange }) => {
     <div>
       <div id="group-input" className="search-box-group">
         <h3>그룹명</h3>
-        <GroupDropdown
+        <GroupDropdown2
           onChange={(group) => {
             handleGroupChange(group);
           }}
-          stlye={{ width: "24rem !important" }}
+          stlye={{ width: "24rem" }}
         />
       </div>
       <div id="member-input">
         <div id="own-member-dropdown">
           <h3>보유한 멤버</h3>
-          <MemberDropdown
+          <MemberDropdown2
             selectedGroup={selectedGroup.value}
             onChange={(member) => {
               handleOwnMemberChange(member);
@@ -103,7 +103,7 @@ const BarterWrite = ({ onChange }) => {
         </div>
         <div>
           <h3>찾는 멤버</h3>
-          <MemberDropdown
+          <MemberDropdown2
             selectedGroup={selectedGroup.value}
             onChange={(member) => {
               handleTargetMemberChange(member);
@@ -133,4 +133,4 @@ const BarterWrite = ({ onChange }) => {
   );
 };
 
-export default BarterWrite;
+export default BarterWrite2;
