@@ -1,7 +1,15 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Avatar, Button } from "@mui/material";
+
+import {
+  Container,
+  ImageList,
+  ImageListItem,
+  Chip,
+  Avatar,
+  Button,
+} from "@mui/material";
 
 const DetailPost = () => {
   const { id } = useParams();
@@ -14,34 +22,81 @@ const DetailPost = () => {
   // }
 
   return (
-    <div>
+    <Container>
       <div>
-        <h2 id="post-title">{post.title}</h2>
-      </div>
-      <div>
-        <div
-          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
-        >
-          {post.images.map((image, index) => (
-            <img
-              key={index}
-              src={image}
-              alt={`Image ${index}`}
-              style={{ width: "200px", height: "300px", margin: "5px" }}
-            />
-          ))}
+        <div id="post-title-container">
+          <h2>{post.title}</h2>
+        </div>
+        <hr />
+        <div id="writer-type-container">
+          <div>작성자 ⯌ {post.writerNickname}</div>
+          <Chip
+            id="card-type-container"
+            label={post.cardType}
+            size="small"
+            sx={{ ml: 1 }}
+          ></Chip>
+        </div>
+        <div id="image-list-container">
+          <ImageList sx={{ display: "flex", width: "100%" }} rowHeight={200}>
+            {post.images.map((image, index) => (
+              <ImageListItem key={index}>
+                <img
+                  src={image}
+                  loading="lazy"
+                  style={{
+                    width: "20vw",
+                    height: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </ImageListItem>
+            ))}
+          </ImageList>
+        </div>
+
+        <div id="post-info-container">
+          <div>
+            {post.type == "교환" ? (
+              <div>
+                <div>
+                  <div id="post-member-container">
+                    {`있어요: ${post.ownMembers
+                      .map((member) => member.value)
+                      .join(", ")}`}
+                    {" ⯌ "}
+                    {`구해요: ${post.targetMembers
+                      .map((member) => member.value)
+                      .join(", ")}`}
+                  </div>
+                </div>
+                <div>
+                  <div></div>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <div>
+                  {`멤버: ${post.ownMembers
+                    .map((member) => member.value)
+                    .join(", ")}`}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+        <hr style={{ margin: "1rem 0" }} />
+        <div id="post-content-container" style={{ whiteSpace: "pre-line" }}>
+          <div>{post.content}</div>
         </div>
       </div>
 
-      <div>
-        {`구해요: ${post.targetMember} <-> 있어요: ${post.ownMember}`}
-        <br />
-        카드종류
+      <div id="chat-button-container">
+        <Button id="chat-button" variant="contained" size="large">
+          1:1 채팅하기
+        </Button>
       </div>
-      <hr />
-      <div>{post.content}</div>
-      <Button variant="contained">1:1 채팅하기</Button>
-    </div>
+    </Container>
   );
 };
 

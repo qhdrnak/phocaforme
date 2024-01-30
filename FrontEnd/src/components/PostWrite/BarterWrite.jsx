@@ -108,8 +108,6 @@ const BarterWrite = ({ onChange }) => {
                   style={{
                     margin: "4px",
                     border: 0,
-                    // backgroundColor: tag.color,
-                    // color: "white",
                   }}
                 />
               ))}
