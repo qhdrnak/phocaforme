@@ -1,8 +1,7 @@
-// 게시글(판매) 생성 페이지
+// 게시글(교환) 생성
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SearchContainer from "../../components/Search/SearchBar.jsx";
 
 import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
@@ -121,8 +120,6 @@ const BarterWrite = ({ onChange }) => {
                   style={{
                     margin: "4px",
                     border: 0,
-                    // backgroundColor: tag.color,
-                    // color: "white",
                   }}
                 />
               ))}

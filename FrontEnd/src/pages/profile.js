@@ -4,6 +4,7 @@ import WishCard from "../components/Setting/WishCard";
 import LatestPost from "../components/PostList/LatestPost";
 import MyPost from "../components/PostList/MyPost";
 import { Container } from '@mui/material';
+import QnaButton from "../components/UI/QnaButton";
 
 // 마이페이지
 const profile = () => {
@@ -14,6 +15,7 @@ const profile = () => {
             <WishCard/>
             <LatestPost/>
             <MyPost/>
+            <QnaButton/>
         </Container>
     );
 };

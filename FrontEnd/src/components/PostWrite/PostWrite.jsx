@@ -4,26 +4,20 @@ import React, { useState, useRef } from "react";
 import { Container } from "@mui/material";
 import { TextField, Button, TextareaAutosize } from "@mui/material";
 import RadioButton2 from "../../components/UI/RadioButton2.jsx";
-import styled from "styled-components";
 import AddIcon from "@mui/icons-material/Add";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { addPost } from "../../store2/post.js";
 import { useNavigate } from "react-router-dom";
-// import styled from 'styled-components';
 
 import BarterWrite from "./BarterWrite.jsx";
 import SellWrite from "./SellWrite.jsx";
-import SearchBar from "../../components/Search/SearchBar.jsx";
-import SearchContainer from "../../components/Search/SearchBar.jsx";
-import onExchangeChange from "../../components/Search/SearchBar.jsx";
 import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";
 
 const PostWrite = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // 상태로 값 관리
   const [title, setTitle] = useState("");
   const [images, setImages] = useState([]);
   const [content, setContent] = useState("");
@@ -31,6 +25,8 @@ const PostWrite = () => {
   const [isExchange, setIsExchange] = useState(true);
   const [ownMembers, setOwnMembers] = useState([]);
   const [targetMembers, setTargetMembers] = useState([]);
+
+  const posts = useSelector((state) => (state.post ? state.post.posts : []));
 
   // 교환인지 판매인지
   function onExchangeChange(value) {
@@ -114,16 +110,24 @@ const PostWrite = () => {
   // 게시물 생성 버튼 클릭 핸들러
   const handlePostClick = () => {
     // 새로운 게시물 객체 생성
-    const newPost = {
-      title,
-      images,
-      content,
-      ownMembers,
-      targetMembers,
-      type: isExchange ? "교환" : "판매",
-    };
-
-    console.log(newPost);
+    const newPost = isExchange
+      ? {
+          id: posts.length + 1,
+          title,
+          images,
+          content,
+          ownMembers,
+          targetMembers,
+          type: "교환",
+        }
+      : {
+          id: posts.length + 1,
+          title,
+          images,
+          content,
+          ownMembers,
+          type: "판매",
+        };
 
     // Redux를 통해 게시물 추가
     dispatch(addPost(newPost));
@@ -163,7 +167,11 @@ const PostWrite = () => {
               }}
             />
           ) : (
-            <SellWrite />
+            <SellWrite
+              onChange={(ownMembers) => {
+                handleOwnMemberSelection(ownMembers);
+              }}
+            />
           )}
         </div>
         <div id="card-input">

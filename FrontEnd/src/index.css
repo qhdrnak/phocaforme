@@ -15,25 +15,14 @@
     font-family: 'Pretendard';
 }
 
-.main-title {
+.main-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
 }
 
-.write-title {
-    font-family:'PyeongChangPeace';
-
-}
-
-.chat-title {
-    font-family:'PyeongChangPeace';
-}
-
-.profile-title {
-    font-family:'PyeongChangPeace';
-}
-
-.alarm-title {
-    font-family:'PyeongChangPeace';
+.main-big {
+    font-size: 18px;
+    font-weight: 600;
+    
 }
 
 /* 폰트 세팅 */
@@ -210,26 +199,48 @@
     font-size: 10px;
 }
 
+.alarm-text-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.alarm-item-container {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+.alarm-content {
+    width: 100%;
+}
+
 /* 랭킹 컴포넌트 */
 
 #rank-1-idol {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
     width: 15rem;
 }
+
 
 #rank-23-idol {
     display: flex;
     flex-direction: column;
+    
 }
 
 #rank-2-idol {
     display: flex;
+    align-items: center;
+
 }
 
 #rank-3-idol {
     display: flex;
+    align-items: center;
+
 }
 
 #chart-container {
@@ -412,6 +423,15 @@
     margin: 1rem;
 }
 
+#help-container {
+    display: flex;
+    align-items: center;
+}
+
+#help-icon {
+    margin: 0.5rem;
+}
+
   /* ? */
 #user-input {
     padding: 1rem;
@@ -549,5 +569,62 @@
     width: 10rem;
 }
 
+#post-icon {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 5rem;
+    padding: 1rem 1rem;
+}
 
+.card-style {
+    width: 12rem;
+    margin: 0.5rem;
+}
 
+/* 게시글 상세 */
+#chat-button-container {
+    text-align: center;
+    position: sticky;
+    bottom: 1rem;
+}
+
+#writer-type-container {
+    display: flex;
+    color: gray;
+
+}
+
+#card-type-container {
+    background-color: var(--primary-color);
+    color: white;
+
+}
+
+#image-list-container {
+    width: 100%;
+}
+
+/* 로그인 페이지 */
+#login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+#icon-container {
+    width: 10rem;
+    height: 10rem;
+    object-fit: contain;
+}
+
+#kakao-button {
+    object-fit: contain;
+}
+
+#text-container {
+    white-space: pre-line;
+    text-align: center;
+    margin: 0 0 2rem;
+}

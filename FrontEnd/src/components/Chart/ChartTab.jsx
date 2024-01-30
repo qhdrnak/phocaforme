@@ -11,6 +11,13 @@ import { Container } from "@mui/material";
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
+  const now = new Date();
+  now.setDate(now.getDate() - 1);
+
+  const formattedDate = `${now.getFullYear()}-${(now.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
+
   return (
     <>
       <div
@@ -19,7 +26,7 @@ function CustomTabPanel(props) {
         id={`tabpanel-${index}`}
         {...other}
       >
-        <p id="chart-time">yyyy.MM.DD 기준</p>
+        <p id="chart-time">{formattedDate.toLocaleString()} 기준</p>
         {value === index && (
           <Box sx={{ p: 1 }}>
             <Typography>{children}</Typography>

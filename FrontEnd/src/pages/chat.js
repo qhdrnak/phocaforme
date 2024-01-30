@@ -1,10 +1,12 @@
 import ChatList from "../components/ChatRoom/ChatList";
+import { Container } from "@mui/material";
+
 
 const chat = () => {
     return (
-        <div>
+        <Container>
             <ChatList/>
-        </div>
+        </Container>
     );
 };
 

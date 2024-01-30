@@ -5,7 +5,8 @@ import Search from '../components/Search/Search.jsx';
 const post = () => {
     return (
         <Container>
-            <h1>게시글페이지</h1>
+      <h1 className="post-page-title">게시글페이지</h1>
+            
             <MainPost />        
         </Container>
     );

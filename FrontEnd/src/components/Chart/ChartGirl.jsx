@@ -6,13 +6,13 @@ const ChartGirl = (props) => {
     <div>
       <div id="chart-container">
         <div id="rank-1-idol">
-          <p>1. </p>
+          <div className="main-big">1. </div>
           <Avatar
             id="rank-1-image"
             src={Img}
             sx={{ width: "4rem", height: "4rem" }}
           />
-          <p>{props.data[0]}</p>
+          <div className="main-big">{props.data[0]}</div>
         </div>
         <div id="rank-23-idol">
           <div id="rank-2-idol">
