@@ -1,11 +1,11 @@
-//로그인페이지
 import LoginPage from '../components/Login/LoginPage.jsx';
+import { Container } from '@mui/material';
 
 const Login = () => {
 	return (
-		<div>
+		<Container>
 			<LoginPage />
-		</div>
+		</Container>
 	)
 }
 

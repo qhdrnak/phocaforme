@@ -17,6 +17,7 @@ import PostMain from './pages/post.js';
 import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 import store from './store2/index.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
+import Guide from './pages/guide.js';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -49,6 +50,7 @@ const App = () => {
             <Route path="/post" element={<PostMain />} />
             <Route path="/post/:id" element={<DetailPost />} />
             <Route path="/login" element={<Login /> } />
+            <Route path="/help" element={<Guide /> } />
 
           </Routes>
 
