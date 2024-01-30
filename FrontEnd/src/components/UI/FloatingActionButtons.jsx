@@ -34,7 +34,7 @@ export default function FloatingActionButtons() {
         "& > :not(style)": { m: 1 },
       }}
     >
-      <Fab color="primary" aria-label="add">
+      <Fab color="warning" aria-label="add">
         <AddIcon onClick={handleClick} />
         <Popover
           id={id}

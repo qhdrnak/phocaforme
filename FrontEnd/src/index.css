@@ -538,3 +538,26 @@
     width: 12rem;
     margin: 0.5rem;
 }
+
+/* 게시글 상세 */
+#chat-button-container {
+    text-align: center;
+    position: sticky;
+    bottom: 1rem;
+}
+
+#writer-type-container {
+    display: flex;
+    color: gray;
+
+}
+
+#card-type-container {
+    background-color: var(--primary-color);
+    color: white;
+
+}
+
+#image-list-container {
+    width: 100%;
+}
