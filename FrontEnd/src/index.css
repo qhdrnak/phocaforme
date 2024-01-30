@@ -18,6 +18,12 @@
     font-family:'PyeongChangPeace';
 }
 
+.main-big {
+    font-size: 18px;
+    font-weight: 600;
+    
+}
+
 /* 폰트 세팅 */
 
 @font-face {
@@ -197,21 +203,26 @@
 #rank-1-idol {
     display: flex;
     align-items: center;
-    padding: 0.5rem;
     width: 15rem;
 }
+
 
 #rank-23-idol {
     display: flex;
     flex-direction: column;
+    
 }
 
 #rank-2-idol {
     display: flex;
+    align-items: center;
+
 }
 
 #rank-3-idol {
     display: flex;
+    align-items: center;
+
 }
 
 #chart-container {

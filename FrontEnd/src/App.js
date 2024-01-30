@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation  } from 'react-router-dom';
 import Main from './pages/main';
 import Alarm from './pages/alarm';
 import Chat from './pages/chat';
@@ -18,6 +18,16 @@ import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 import store from './store2/index.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
 
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+};
+
 const App = () => {
   // const store = createStore(rootReducer);
 
@@ -26,6 +36,7 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+        <ScrollToTop />
           <NavBar />
           <Routes>
             <Route path="/" element={<Main />} />

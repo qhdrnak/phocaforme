@@ -31,12 +31,50 @@ const theme = createTheme({
     MuiListItemText: {
       styleOverrides: {
         secondary: {
-          fontSize: '10px'
+          fontSize: '10px',
+          fontFamily: 'Pretendard'
         }
 
       }
     },
-    
+    MuiFormControlLabel: {
+      styleOverrides: {
+        label: {
+          fontFamily: 'Pretendard'
+        }
+      }
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Pretendard'
+        }
+      }
+    }, 
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Pretendard',
+          padding: '0rem 1rem',
+        }
+      }
+    },
+    MuiCardHeader: {
+      styleOverrides: {
+        title: {
+          fontSize: '18px'
+        }
+      }
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'PyeongChangPeace',
+          fontWeight: "bold",
+        }
+        
+      }
+    }
   
   }
 });

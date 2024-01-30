@@ -85,7 +85,6 @@ export default function BasicTabs({ isPreview }) {
 
   return (
     <div sx={{ width: "100%" }}>
-      <h1 className="post-page-title">게시글페이지</h1>
       <div>
         값 전달 확인용 :{" "}
         {searchs.length > 0 && (
