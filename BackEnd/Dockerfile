@@ -27,3 +27,4 @@ ENTRYPOINT [                                                \
    "-Dsun.net.inetaddr.ttl=0",                             \
    "PhocaForme-0.0.1-SNAPSHOT.jar"                             \
 ]
+
