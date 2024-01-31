@@ -5,8 +5,8 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-const MemberDropdown2 = ({ selectedGroup, onChange }) => {
-  const [value, setValue] = useState(null);
+const MemberDropdown2 = ({ selectedGroup, defaultMember, onChange }) => {
+  const [value, setValue] = useState(defaultMember);
   const [filteredOptions, setFilteredOptions] = useState([]);
 
   const handleChange = (event, newValue) => {
@@ -46,13 +46,17 @@ const MemberDropdown2 = ({ selectedGroup, onChange }) => {
         disablePortal
         id="gorup-dropdown"
         options={filteredOptions}
-        sx={{ 
-					width: "12rem",
-					"& .MuiInputBase-root": { height: "55px", borderRadius: "13px", borderWidth: "10px",},
-					"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-						borderWidth: "4px", // 테두리 굵기 조절
-					},
-				}}
+        sx={{
+          width: "12rem",
+          "& .MuiInputBase-root": {
+            height: "55px",
+            borderRadius: "13px",
+            borderWidth: "10px",
+          },
+          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            borderWidth: "4px", // 테두리 굵기 조절
+          },
+        }}
         noOptionsText="해당 멤버가 없습니다"
         renderOption={(props, option) => (
           <Box
@@ -64,7 +68,12 @@ const MemberDropdown2 = ({ selectedGroup, onChange }) => {
           </Box>
         )}
         renderInput={(params) => (
-          <TextField {...params} variant="outlined" fullWidth placeholder="선택하세요" />
+          <TextField
+            {...params}
+            variant="outlined"
+            fullWidth
+            placeholder="선택하세요"
+          />
         )}
       />
     </div>

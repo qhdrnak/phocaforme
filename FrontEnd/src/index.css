@@ -495,11 +495,10 @@
     flex-direction: column;
 }
 
-#content-input {
-    width: 25rem;
-    height: 10rem;
-    min-height: 100px;
-    padding: 0 1rem;
+.content-input {
+    width: 85%;
+    height: 20vh;
+    padding: 1rem;
     border-radius: 10px;
 }
 
@@ -614,13 +613,18 @@
 }
 
 .card-style {
-    width: 10rem;
+    width: 13rem;
     height: fit-content;
-    margin: 0.5rem;
+    margin: 0.2rem;
     position: relative;
 }
 
 /* 게시글 상세 */
+#pullup-button {
+    background-color: var(--warning-color);
+    margin: 0 0 0 0.2rem;
+}
+
 #chat-button-container {
     text-align: center;
     position: sticky;
