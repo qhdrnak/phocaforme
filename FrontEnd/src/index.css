@@ -15,8 +15,9 @@
     font-family: 'Pretendard';
 }
 
-.main-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
+.main-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
+    font-weight: bold;
 }
 
 .main-big {
@@ -369,6 +370,14 @@
     height: 50vh;
 }
 
+/* 닉네임 수정 모달 */
+#nickname-modal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 /* 마이페이지 */
 #profile-page {
     display: flex;
@@ -388,6 +397,7 @@
 
 #wishcard-input-container {
     margin: 1rem;
+    width: 20rem;
 }
 
 .profile-item-container {
@@ -426,11 +436,18 @@
 #help-container {
     display: flex;
     align-items: center;
+    margin: 3rem 0 1rem 0;
 }
 
 #help-icon {
     margin: 0.5rem;
 }
+
+/* 마이페이지 게시글 관련 */
+#card-list-container {
+    width: 100%;
+}
+
 
   /* ? */
 #user-input {
@@ -578,7 +595,8 @@
 }
 
 .card-style {
-    width: 12rem;
+    width: 10rem;
+    height: fit-content;
     margin: 0.5rem;
 }
 

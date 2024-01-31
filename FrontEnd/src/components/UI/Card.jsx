@@ -40,7 +40,7 @@ const CustomCard = (props) => {
 
   return (
     <Card className="card-style" onClick={() => goToDetail(id)}>
-      <CardMedia component="img" height="250" image={images[0]} />
+      <CardMedia component="img" height="200" image={images[0]} />
       <CardHeader
         sx={{
           padding: "1rem 1rem 0",

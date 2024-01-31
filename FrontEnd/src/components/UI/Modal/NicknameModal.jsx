@@ -12,7 +12,7 @@ const NicknameModal = ({ open, handleClose }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: "60%",
     bgcolor: "background.paper",
     borderRadius: "10px",
     p: 4,
@@ -43,8 +43,8 @@ const NicknameModal = ({ open, handleClose }) => {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style}>
-        <div id="nickname-setting-title">새로운 닉네임</div>
+      <Box id="nickname-modal-container" sx={style}>
+        <h3 id="nickname-setting-title">새로운 닉네임</h3>
         <div id="nickname-setting-container">
           <div>
             <TextField
@@ -57,16 +57,26 @@ const NicknameModal = ({ open, handleClose }) => {
               size="small"
               placeholder=""
             />
-            <Button onClick={handleSubmit} variant="contained">
+            <Button sx={{ ml: 0.5 }} onClick={handleSubmit} variant="contained">
               중복확인
             </Button>
           </div>
         </div>
         <div id="nickname-setting-button">
-          <Button onClick={handleClose} color="secondary" variant="contained">
-            확인
+          <Button
+            disabled
+            onClick={handleClose}
+            color="secondary"
+            variant="contained"
+          >
+            적용
           </Button>
-          <Button onClick={handleClose} color="success" variant="contained">
+          <Button
+            sx={{ ml: 0.5 }}
+            onClick={handleClose}
+            color="warning"
+            variant="contained"
+          >
             취소
           </Button>
         </div>
