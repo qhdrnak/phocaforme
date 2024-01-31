@@ -17,33 +17,14 @@ const NavBar = ({ children }) => {
         src={logo}
       ></img>
 
-
-      {/* 임시 */}
       <div
         onClick={() => {
-          navigate('/write')
+          navigate("/login");
         }}
-        >
-        글쓰기
-      </div>
-
-      <div
-        onClick={() => {
-          navigate('/login')
-        }}  
       >
         로그인
       </div>
 
-        {/* 임시 */}
-
-      <div
-        onClick={() => {
-          navigate("/post");
-        }}
-      >
-        게시판으로 가기
-      </div>
       <div id="nav-menus">
         <div
           id="bell"

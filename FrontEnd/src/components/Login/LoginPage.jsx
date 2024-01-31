@@ -2,7 +2,7 @@
 import React from "react";
 import logo from "../../assets/images/logo.PNG";
 import icon from "../..//assets/images/icon.PNG";
-import kakao from "../../assets/images/kakao.png";
+import kakao from "../../assets/images/kakao_login.png";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {

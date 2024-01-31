@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import {
@@ -12,15 +12,24 @@ import {
 } from "@mui/material";
 
 const DetailPost = () => {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const post = posts.find((p) => p.id == id);
-  // const getImageUrls = () => {
-  //   // 포스트 객체에서 이미지 URL 배열을 가져오는 로직을 구현
-  //   // 예를 들어, post.images가 이미지 URL 배열을 가진다고 가정하면:
-  //   return post.images;
-  // }
 
+  // 내 게시글인지 판별
+  const currentUser = useSelector((state) => state.user.user);
+  const isCurrentUserWriter = currentUser && currentUser.id === post.writerId;
+
+  const handleChatClick = () => {};
+
+  const handleModifyClick = (id) => {
+    console.log(id);
+    navigate(`/modify/${id}`);
+  };
+
+  const handlePullupClick = () => {};
   return (
     <Container>
       <div>
@@ -92,9 +101,35 @@ const DetailPost = () => {
       </div>
 
       <div id="chat-button-container">
-        <Button id="chat-button" variant="contained" size="large">
-          1:1 채팅하기
-        </Button>
+        {isCurrentUserWriter ? (
+          <div>
+            <Button
+              id="modify-button"
+              variant="contained"
+              size="large"
+              onClick={() => handleModifyClick(post.id)}
+            >
+              수정하기
+            </Button>
+            <Button
+              id="pullup-button"
+              variant="contained"
+              size="large"
+              onClick={handlePullupClick}
+            >
+              끌어올리기
+            </Button>
+          </div>
+        ) : (
+          <Button
+            id="chat-button"
+            variant="contained"
+            size="large"
+            onClick={handleChatClick}
+          >
+            1:1 채팅하기
+          </Button>
+        )}
       </div>
     </Container>
   );

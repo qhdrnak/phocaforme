@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-const TypeDropdown = ({ onChange }) => {
+const TypeDropdown = ({ defaultCardType, onChange }) => {
   const TypeItems = [
     { value: "앨범포카", label: "앨범포카" },
     { value: "미공포", label: "미공포" },
@@ -14,7 +14,7 @@ const TypeDropdown = ({ onChange }) => {
     { value: "기타", label: "기타" },
   ];
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(defaultCardType);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

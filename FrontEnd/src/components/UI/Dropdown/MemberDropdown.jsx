@@ -5,8 +5,8 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-const MemberDropdown = ({ selectedGroup, onChange }) => {
-  const [value, setValue] = useState(null);
+const MemberDropdown = ({ selectedGroup, defaultMember, onChange }) => {
+  const [value, setValue] = useState(defaultMember);
   const [filteredOptions, setFilteredOptions] = useState([]);
 
   const handleChange = (event, newValue) => {
@@ -44,7 +44,7 @@ const MemberDropdown = ({ selectedGroup, onChange }) => {
         onChange={handleChange}
         size="small"
         disablePortal
-        id="gorup-dropdown"
+        id="group-dropdown"
         options={filteredOptions}
         sx={{ width: "12rem" }}
         noOptionsText="해당 멤버가 없습니다"

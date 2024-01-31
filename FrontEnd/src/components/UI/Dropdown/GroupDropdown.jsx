@@ -9,7 +9,7 @@ import { Avatar } from "@mui/material";
 import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 
-const GroupDropdown = ({ onChange }) => {
+const GroupDropdown = ({ defaultGroup, onChange }) => {
   const groupItems = [
     { value: "NCT", label: "NCT", avatarSrc: logo1 },
     { value: "샤이니", label: "샤이니", avatarSrc: logo2 },
@@ -17,12 +17,13 @@ const GroupDropdown = ({ onChange }) => {
     { value: "스트레이키즈", label: "스트레이키즈", avatarSrc: logo1 },
   ];
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(defaultGroup);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     onChange(newValue);
   };
+  console.log(defaultGroup);
 
   return (
     <div>

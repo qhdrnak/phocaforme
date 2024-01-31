@@ -9,7 +9,7 @@ import { Avatar } from "@mui/material";
 import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 
-const GroupDropdown2 = ({ onChange }) => {
+const GroupDropdown2 = ({ defaultGroup, onChange }) => {
   const groupItems = [
     { value: "NCT", label: "NCT", avatarSrc: logo1 },
     { value: "샤이니", label: "샤이니", avatarSrc: logo2 },
@@ -17,7 +17,7 @@ const GroupDropdown2 = ({ onChange }) => {
     { value: "스트레이키즈", label: "스트레이키즈", avatarSrc: logo1 },
   ];
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(defaultGroup);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -33,13 +33,13 @@ const GroupDropdown2 = ({ onChange }) => {
         id="group-dropdown"
         options={groupItems}
         isOptionEqualToValue={(option, value) => option.value === value.value}
-        sx={{ 
-					width: "25rem",
-					"& .MuiInputBase-root": { height: "55px", borderRadius: "13px" },
+        sx={{
+          width: "25rem",
+          "& .MuiInputBase-root": { height: "55px", borderRadius: "13px" },
           "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
             borderWidth: "4px", // 테두리 굵기 조절
           },
-				}}
+        }}
         noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (
           <Box
