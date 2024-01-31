@@ -1,10 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Container, ImageList, ImageListItem } from "@mui/material";
+
+import {
+  Tabs,
+  Tab,
+  Typography,
+  Box,
+  Container,
+  ImageList,
+  ImageListItem,
+} from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import Card from "../../components/UI/Card";
@@ -57,6 +62,7 @@ const MyPost = () => {
   };
 
   // 게시글 정보 (임의)
+  // 최신순 정렬
   const myPostList = [
     {
       id: 1,
@@ -70,6 +76,7 @@ const MyPost = () => {
       content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
       cardType: "미공포",
       type: "교환",
+      isBartered: true,
     },
     {
       id: 2,
@@ -86,6 +93,7 @@ const MyPost = () => {
       content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
       cardType: "미공포",
       type: "교환",
+      isBartered: false,
     },
     {
       id: 3,
@@ -102,6 +110,7 @@ const MyPost = () => {
       content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
       cardType: "미공포",
       type: "교환",
+      isBartered: false,
     },
     {
       id: 4,
@@ -118,6 +127,7 @@ const MyPost = () => {
       content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
       cardType: "미공포",
       type: "교환",
+      isBartered: false,
     },
     {
       id: 5,
@@ -134,6 +144,7 @@ const MyPost = () => {
       content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
       cardType: "미공포",
       type: "교환",
+      isBartered: false,
     },
     {
       id: 6,
@@ -149,6 +160,7 @@ const MyPost = () => {
       content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
       cardType: "미공포",
       type: "판매",
+      isSold: true,
     },
   ];
 
@@ -199,6 +211,7 @@ const MyPost = () => {
                       targetMembers={post.targetMembers}
                       content={post.content}
                       type={post.type}
+                      isBartered={post.isBartered}
                     ></Card>
                   </div>
                 ))}
@@ -232,6 +245,7 @@ const MyPost = () => {
                       ownMembers={post.ownMembers}
                       content={post.content}
                       type={post.type}
+                      isSold={post.isSold}
                     ></Card>
                   </div>
                 ))}

@@ -13,8 +13,8 @@ const profile = () => {
             <Nickname/>
             <Bias/>
             <WishCard/>
-            <LatestPost/>
-            <MyPost/>
+            <LatestPost />
+            <MyPost isPreview={true}/>
             <QnaButton/>
         </Container>
     );
