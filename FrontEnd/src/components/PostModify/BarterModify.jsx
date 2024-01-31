@@ -16,11 +16,7 @@ const BarterModify = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState({
-    value: "",
-    label: "",
-    avatarSrc: "",
-  });
+  const [selectedGroup, setSelectedGroup] = useState({ defaultGroup });
 
   const handleGroupChange = (group) => {
     setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });

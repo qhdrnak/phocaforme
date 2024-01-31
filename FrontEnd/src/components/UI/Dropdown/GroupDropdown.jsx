@@ -23,7 +23,6 @@ const GroupDropdown = ({ defaultGroup, onChange }) => {
     setValue(newValue);
     onChange(newValue);
   };
-  console.log(defaultGroup);
 
   return (
     <div>

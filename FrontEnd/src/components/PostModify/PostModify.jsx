@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
-// import { addPost } from "../store2/post.js";
+import { modifyPost } from "../../store2/post.js";
 
 import RadioButton2 from "../../components/UI/RadioButton2.jsx";
 import BarterModify from "./BarterModify.jsx";
@@ -108,25 +108,34 @@ const PostModify = () => {
     const modifiedPost =
       post.type === "교환"
         ? {
-            id: id,
+            id: post.id,
+            writerId: post.writerId,
+            writerNickname: post.writerNickname,
             title,
             images,
-            content,
+            group: post.group,
             ownMembers,
             targetMembers,
+            content,
+            cardType,
             type: "교환",
+            isBartered: post.isBartered,
           }
         : {
-            id: id,
+            id: post.id,
+            writerId: post.writerId,
+            writerNickname: post.writerNickname,
             title,
             images,
-            content,
+            group: post.group,
             ownMembers,
+            content,
             type: "판매",
+            isSold: post.isSold,
           };
 
     // Redux를 통해 게시물 수정
-    // dispatch(addPost(newPost));
+    dispatch(modifyPost(modifiedPost));
     navigate("/post");
   };
 

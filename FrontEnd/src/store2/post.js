@@ -117,9 +117,14 @@ const postSlice = createSlice({
     addCards: (state, action) => {
       state.posts = [...state.posts, ...action.payload];
     },
-    // 다른 리듀서 추가...
+    modifyPost: (state, action) => {
+      const modifiedPost = action.payload;
+      state.posts = state.posts.map((post) =>
+        post.id === modifiedPost.id ? modifiedPost : post
+      );
+    },
   },
 });
 
-export const { addPost, addCards } = postSlice.actions;
+export const { addPost, addCards, modifyPost  } = postSlice.actions;
 export default postSlice.reducer;
