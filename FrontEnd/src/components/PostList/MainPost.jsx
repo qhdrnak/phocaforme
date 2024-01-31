@@ -9,7 +9,7 @@ import Card from "../../components/UI/Card";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 /////
-import { fetchTitle, fetchUserTitle } from '../../http.js';
+import { fetchTitle, fetchUserTitle } from "../../http.js";
 
 ////
 function CustomTabPanel(props) {
@@ -52,8 +52,8 @@ export default function BasicTabs({ isPreview }) {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
   ////
-  const [title, setTitle] = useState('');
-  const [userTitle, setUserTitle] = useState('');
+  const [title, setTitle] = useState("");
+  const [userTitle, setUserTitle] = useState("");
   ///
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const searchs = useSelector((state) =>
@@ -107,11 +107,16 @@ export default function BasicTabs({ isPreview }) {
 
   return (
     <div sx={{ width: "100%" }}>
-      <p>값 전달 확인용 : {searchs.length > 0 && (
-        <>
-          {searchs[searchs.length - 1].ownMembers} {searchs[searchs.length - 1].targetMembers} {searchs[searchs.length - 1].cardType}
-        </>
-      )}</p>
+      <p>
+        값 전달 확인용 :{" "}
+        {searchs.length > 0 && (
+          <>
+            {searchs[searchs.length - 1].ownMembers}{" "}
+            {searchs[searchs.length - 1].targetMembers}{" "}
+            {searchs[searchs.length - 1].cardType}
+          </>
+        )}
+      </p>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -148,6 +153,7 @@ export default function BasicTabs({ isPreview }) {
                 targetMembers={post.targetMembers}
                 content={post.content}
                 type={post.type}
+                isBartered={post.isBartered}
               ></Card>
             ))}
         </div>
@@ -173,6 +179,7 @@ export default function BasicTabs({ isPreview }) {
                 content={post.content}
                 ownMembers={post.ownMembers}
                 type={post.type}
+                isSold={post.isSold}
               ></Card>
             ))}
         </div>

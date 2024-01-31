@@ -66,7 +66,7 @@ const WishCard = () => {
         ]);
         setInputValue("");
       } else {
-        setHelperText("태그 개수는 3개 제한입니다");
+        setHelperText("태그 개수는 최대 3개입니다.");
       }
     }
   };
@@ -110,7 +110,7 @@ const WishCard = () => {
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleInputKeyDown}
-            sx={{ width: "25rem" }}
+            sx={{ width: "100%" }}
             helperText={helperText}
           />
 
@@ -122,6 +122,7 @@ const WishCard = () => {
                 variant="outlined"
                 onClick={() => handleChipDelete(tag)}
                 onDelete={() => handleChipDelete(tag)}
+                size="small"
                 style={{
                   margin: "4px",
                   border: 0,

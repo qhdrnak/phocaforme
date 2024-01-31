@@ -1,4 +1,6 @@
 import { createTheme } from '@mui/material/styles';
+import { styled } from '@mui/system';
+import TextField from '@mui/material/TextField';
 
 const theme = createTheme({
   palette: {
@@ -69,12 +71,22 @@ const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          fontFamily: 'PyeongChangPeace',
-          fontWeight: "bold",
+          // fontFamily: 'PyeongChangPeace',
+          // fontWeight: "bold",
         }
         
       }
-    }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          '& input': {
+            fontFamily: 'Pretendard',
+            fontSize: '15px',
+          },
+        },
+      }
+    },
   
   }
 });

@@ -33,14 +33,39 @@ const CustomCard = (props) => {
   };
 
   const goToDetail = (id) => {
+    // 최근 본 게시글 배열에 추가
+
     navigate(`/post/${id}`);
   };
 
-  const { id, title, images, ownMembers, targetMembers, content, type } = props;
+  const {
+    id,
+    title,
+    images,
+    ownMembers,
+    targetMembers,
+    content,
+    type,
+    isBartered,
+    isSold,
+  } = props;
 
   return (
-    <Card className="card-style" onClick={() => goToDetail(id)}>
-      <CardMedia component="img" height="250" image={images[0]} />
+    <Card
+      className={`card-style${isBartered || isSold ? " done-post" : ""}`}
+      onClick={() => goToDetail(id)}
+    >
+      {isBartered && (
+        <div className="overlay">
+          <p>교환완료</p>
+        </div>
+      )}
+      {isSold && (
+        <div className="overlay">
+          <p>판매완료</p>
+        </div>
+      )}
+      <CardMedia component="img" height="200" image={images[0]} />
       <CardHeader
         sx={{
           padding: "1rem 1rem 0",
