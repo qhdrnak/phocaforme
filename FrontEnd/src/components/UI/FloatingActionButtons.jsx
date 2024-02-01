@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useSelector } from 'react-redux';
 
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
@@ -11,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function FloatingActionButtons() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const user = useSelector((state) => state.user.user)
 
   const navigate = useNavigate();
 
@@ -24,6 +26,10 @@ export default function FloatingActionButtons() {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <Box

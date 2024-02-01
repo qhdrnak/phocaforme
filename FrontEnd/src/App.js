@@ -19,7 +19,6 @@ import store from './store2/index.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
 import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
-
 // import { useSelector } from 'react-redux'; // 
 
 const ScrollToTop = () => {
@@ -34,7 +33,7 @@ const ScrollToTop = () => {
 
 const App = () => {
   // const store = createStore(rootReducer);
-  // const user = useSelector(state => state.user.user); // 
+  
 
   return (
     
@@ -58,7 +57,7 @@ const App = () => {
             <Route path="/modify/:id" element={<Modify /> } />
 
           </Routes>
-            {/* { user !== null ? <FloatingActionButtons /> : null} */}
+            
             <FloatingActionButtons />
           
          
