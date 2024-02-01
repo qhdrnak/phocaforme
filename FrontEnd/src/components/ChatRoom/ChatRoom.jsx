@@ -1,8 +1,13 @@
 // ChatRoom.jsx 메시지전송x
-import { Container } from "@mui/material";
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { sendChat } from "../../store2/chat.js";
+
 import { useParams } from "react-router-dom";
+
 import { useTheme } from "@mui/material/styles";
+
+import { Button, Container } from "@mui/material";
 
 import PushPinRoundedIcon from "@mui/icons-material/PushPinRounded";
 import ChatMenu from "./ChatTop";
@@ -10,34 +15,25 @@ import ChatSend from "./ChatSend";
 
 const ChatRoom = () => {
   const { roomId } = useParams();
-  const chatRoomInfo = {
-    owner: "제노예요",
-    title: "ISTJ A버전 구해요",
-  };
+  const dispatch = useDispatch();
 
-  const [messages, setMessages] = useState([
-    {
-      time: "16:58",
-      message: "안녕하세요! 거래 희망합니다",
-      type: "chat-visiter",
-    },
-    {
-      time: "16:59",
-      message: "네 결제요청 보낼게요~",
-      type: "chat-owner",
-    },
-  ]);
+  const loginUser = useSelector((state) =>
+    state.user ? state.user.user.name : ""
+  );
+
+  const chats = useSelector((state) => (state.chat ? state.chat.chat : []));
+
+  const chatList = chats.filter((chat) => chat.chatRoomId == roomId);
 
   const theme = useTheme();
 
   const updateMessages = (newMessage) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    console.log(newMessage);
+    dispatch(sendChat(newMessage));
   };
-  const getCurrentTime = () => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    return `${hours}:${minutes}`;
+
+  const handlePay = () => {
+    // 결제 기능
   };
 
   return (
@@ -51,21 +47,37 @@ const ChatRoom = () => {
               <b>필독</b>
             </p>
             <p>
-              거래가 처음이신가요? <a href="#">인증가이드</a>를 반드시 읽으시고
-              믿을 수 있는 거래 하세요!
+              거래가 처음이신가요? <a href="/help">인증가이드</a>를 반드시
+              읽으시고 믿을 수 있는 거래 하세요!
             </p>
           </div>
         </div>
         <div id="chat-content-container">
           <div id="chat-message-area">
-            {messages.map((messageData, index) => (
-              <div key={index} className={messageData.type}>
-                {messageData.type == "chat-owner" ? (
-                  <p>{messageData.time}</p>
+            {chatList.map((messageData, index) => (
+              <div
+                key={index}
+                className={
+                  messageData.sender == loginUser
+                    ? "chat-owner"
+                    : "chat-visiter"
+                }
+              >
+                {messageData.sender == loginUser ? (
+                  <p>{messageData.sendTime}</p>
                 ) : null}
-                <p className="chat-message">{messageData.message}</p>
-                {messageData.type == "chat-visiter" ? (
-                  <p>{messageData.time}</p>
+                <div className="chat-message">
+                  <div>{messageData.message}</div>
+                  <div>
+                    {messageData.isPay ? (
+                      <Button id="pay-button" onClick={handlePay}>
+                        결제하러가기
+                      </Button>
+                    ) : null}
+                  </div>
+                </div>
+                {messageData.sender != loginUser ? (
+                  <p>{messageData.sendTime}</p>
                 ) : null}
               </div>
             ))}
@@ -73,8 +85,9 @@ const ChatRoom = () => {
         </div>
         <div id="send-message-container">
           <ChatSend
+            roomId={roomId}
+            loginUser={loginUser}
             updateMessages={updateMessages}
-            getCurrentTime={getCurrentTime}
           />
         </div>
       </div>
