@@ -4,6 +4,7 @@ const initialUserState = {
   user: {
     id: '1234',
     name: '제노예요',
+    location: '강남구 역삼동 1',
   },
 };
 

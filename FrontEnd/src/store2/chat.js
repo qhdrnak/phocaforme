@@ -20,6 +20,14 @@ const initialChatState = {
     imgCode: '',
     sendTime : getCurrentTime(),
   }, 
+  {
+    chatId: 1,
+    chatRoomId : 2,
+    sender: '제노예요',
+    message: '저요 제가 아니면 안돼요',
+    imgCode: '',
+    sendTime : '15:31',
+  }, 
    ],
   //  const visiterList = ["아궁빵뎡", "제노예요", "김필릭스용복"];
   // const lastMessageList = [

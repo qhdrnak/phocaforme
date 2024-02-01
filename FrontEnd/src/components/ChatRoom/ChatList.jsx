@@ -12,8 +12,8 @@ import { useNavigate } from "react-router-dom";
 export default function ChatList() {
   const navigate = useNavigate();
 
-  const moveChatRoom = (roomId) => {
-    navigate(`/chatroom/${roomId}`);
+  const moveChatRoom = (roomId, articleId) => {
+    navigate(`/chatroom/${roomId}`, { state: articleId });
   };
 
   const loginUser = useSelector((state) =>
@@ -34,7 +34,9 @@ export default function ChatList() {
           <ListItem
             className="chatlist-item"
             key={index}
-            onClick={() => moveChatRoom(chatroom.chatRoomId)}
+            onClick={() =>
+              moveChatRoom(chatroom.chatRoomId, chatroom.articleId)
+            }
           >
             <ListItemText
               primary={

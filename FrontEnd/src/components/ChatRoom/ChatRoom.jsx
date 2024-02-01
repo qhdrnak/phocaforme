@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sendChat } from "../../store2/chat.js";
 
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -17,6 +17,8 @@ const ChatRoom = () => {
   const theme = useTheme();
 
   const { roomId } = useParams();
+  const location = useLocation();
+
   const dispatch = useDispatch();
 
   const loginUser = useSelector((state) =>
@@ -53,7 +55,7 @@ const ChatRoom = () => {
   return (
     <Container>
       <div id="chat-container">
-        <ChatMenu updateMessages={updateMessages} />
+        <ChatMenu updateMessages={updateMessages} postId={location.state} />
         <div id="chat-notice">
           <div id="notice-content">
             <PushPinRoundedIcon id="notice-icon" />

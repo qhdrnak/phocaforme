@@ -22,7 +22,12 @@ const DetailPost = () => {
   const currentUser = useSelector((state) => state.user.user);
   const isCurrentUserWriter = currentUser && currentUser.id === post.writerId;
 
-  const handleChatClick = () => {};
+  const chatRoomId = post.type == "교환" ? 1 : 2;
+  const handleChatClick = () => {
+    // 채팅방 만드는 메서드 먼저
+    // 해당 채팅방 id 리턴 받아서 그 채팅방으로 이동
+    navigate(`/chatroom/${chatRoomId}`, { state: id });
+  };
 
   const handleModifyClick = (id) => {
     console.log(id);

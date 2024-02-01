@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 import Box from "@mui/material/Box";
 import Fab from "@mui/material/Fab";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function FloatingActionButtons() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const user = useSelector((state) => state.user.user)
+  const user = useSelector((state) => state.user.user);
 
   const navigate = useNavigate();
 
@@ -38,6 +38,7 @@ export default function FloatingActionButtons() {
         bottom: "5%",
         right: "5%",
         "& > :not(style)": { m: 1 },
+        zIndex: 2000,
       }}
     >
       <Fab color="warning" aria-label="add">

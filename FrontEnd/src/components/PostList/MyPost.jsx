@@ -147,7 +147,7 @@ const MyPost = () => {
       isBartered: false,
     },
     {
-      id: 6,
+      id: 11,
       writerId: "1234",
       writerNickname: "제노예요",
       title: "[판매1] 질주 미공포 교환해요",
