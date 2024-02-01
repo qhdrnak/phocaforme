@@ -26,7 +26,7 @@ const MyCarousel = () => {
 
   const imageStyle = {
     width: "100%",
-    height: "40vh",
+    height: "50vh",
     display: "block",
     objectFit: "contain",
   };

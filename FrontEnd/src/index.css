@@ -15,7 +15,7 @@
     font-family: 'Pretendard';
 }
 
-.main-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
+.main-title, #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
     font-weight: bold;
 }
@@ -264,6 +264,7 @@
 /* 채팅페이지 */
 
 .chatlist-item {
+
     border: 1px solid grey;
     margin: 0.2rem;
     border-radius: 10px;
@@ -333,15 +334,15 @@
     padding: 1.7rem 1.7rem;
 }
 
-.chat-visiter{
+.chat-visiter {
     display: flex;
     align-items: center;
 }
 
-.chat-owner{
+.chat-owner {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: end;
 }
 
 .chat-visiter .chat-message {
@@ -349,16 +350,20 @@
     padding: 0.5rem 1rem;
     border-radius: 10px;
     color: #FFFFFF;
+    white-space: pre-line;
 }
 
 .chat-owner .chat-message {
     background-color: var(--secondary-color);
     padding: 0.5rem 1rem;
     border-radius: 10px;
+    white-space: pre-line;
+
 }
 
 .chat-message {
     margin: 0.5rem;
+    text-align: center;
 }
 
 #chat-message-area {
@@ -368,9 +373,58 @@
 
 #chat-content-container {
     height: 50vh;
+    overflow-x: hidden;
+
 }
 
+#pay-button {
+    background-color: var(--primary-color);
+    color: #F2F4F8;
+    margin: 0.5rem 0;
+}
+
+/* 결제 전송 모달 */
+#pay-modal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pay-input-container {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    justify-content: center;
+    margin: 0 0 0.5rem 0;
+}
+
+.pay-input {
+    width: 70%;
+}
+
+.pay-label {
+    width: 50%;
+}
+
+.unit-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+
+}
+
+#pay-divider {
+    margin: 1rem 0;
+    background-color: var(--primary-color);
+}
+
+#pay-buttons {
+    margin: 0.5rem 0;
+}
+
+
 /* 닉네임 수정 모달 */
+
 #nickname-modal-container {
     display: flex;
     flex-direction: column;

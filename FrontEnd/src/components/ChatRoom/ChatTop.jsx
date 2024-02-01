@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 
 import { useNavigate } from "react-router-dom";
 
+import PayModal from "../UI/Modal/PayRequestModal";
+
 import * as React from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -17,6 +19,9 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Logout from "@mui/icons-material/Logout";
 
 const ChatMenu = () => {
+  const navigate = useNavigate();
+  const theme = useTheme();
+
   const chatRoomInfo = {
     owner: "제노예요",
     title: "ISTJ A버전 구해요",
@@ -26,30 +31,43 @@ const ChatMenu = () => {
     ownerMessage: ["네 결제요청 보낼게요~"],
   };
 
-  const theme = useTheme();
-
+  // 메뉴 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const navigate = useNavigate();
 
-  const quitChatroom = () => {
+  // 모달 관련
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const handlePay = () => {
+    // 결제 기능
+    handleModalOpen();
+    setAnchorEl(null);
+  };
+
+  const handleQuitChatroom = () => {
     setAnchorEl(null);
     navigate("/chat");
   };
 
-  const done = () => {
+  const handleDone = () => {
+    // 게시글 상태 수정하기 (교환/판매 완료로)
     setAnchorEl(null);
     navigate("/chat");
   };
 
   return (
     <div>
+      <PayModal open={modalOpen} handleClose={handleModalClose} />
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div">
@@ -101,19 +119,19 @@ const ChatMenu = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={handlePay}>
               <ListItemIcon>
                 <PaymentIcon />
               </ListItemIcon>
               결제요청
             </MenuItem>
-            <MenuItem onClick={done}>
+            <MenuItem onClick={handleDone}>
               <ListItemIcon>
                 <CheckCircleOutlineIcon />
               </ListItemIcon>
               판매완료
             </MenuItem>
-            <MenuItem onClick={quitChatroom}>
+            <MenuItem onClick={handleQuitChatroom}>
               <ListItemIcon>
                 <Logout />
               </ListItemIcon>
@@ -122,9 +140,7 @@ const ChatMenu = () => {
           </Menu>
         </div>
       </div>
-      <Divider
-        sx={{ height: 2, backgroundColor: theme.palette.primary.main }}
-      />
+      <Divider />
     </div>
   );
 };

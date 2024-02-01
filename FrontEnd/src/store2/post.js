@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import logo1 from "../assets/images/logo_nct.png";
 
-
 const initialPostState = {
   // 임의의 값 넣어놓음
   posts: [ {

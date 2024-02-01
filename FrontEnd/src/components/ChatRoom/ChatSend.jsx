@@ -10,7 +10,9 @@ import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import AddIcon from "@mui/icons-material/Add";
 import ImageIcon from "@mui/icons-material/Image";
 
-const ChatSend = ({ updateMessages, getCurrentTime }) => {
+import getCurrentTime from "../../utils/currentTime";
+
+const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   const theme = useTheme();
 
   // 메시지 전송
@@ -21,12 +23,16 @@ const ChatSend = ({ updateMessages, getCurrentTime }) => {
   };
 
   const handleSendClick = () => {
-    console.log("전송 : ", value);
-    const currentTime = getCurrentTime();
+    if (value.trim() === "") return;
+
     const newMessage = {
-      time: currentTime,
+      chatId: 1,
+      chatRoomId: roomId,
+      sender: loginUser,
       message: value,
-      type: "chat-owner",
+      imgCode: "",
+      sendTime: getCurrentTime(),
+      isPay: false,
     };
 
     updateMessages(newMessage);
@@ -35,18 +41,8 @@ const ChatSend = ({ updateMessages, getCurrentTime }) => {
 
   // 엔터 키를 눌렀을 때도 send
   const handleSendEnter = (e) => {
-    if (e.key === "Enter" && value.trim() !== "") {
-      console.log("전송 w/ enter: ", value);
-
-      const currentTime = getCurrentTime();
-      const newMessage = {
-        time: currentTime,
-        message: value,
-        type: "chat-owner",
-      };
-
-      updateMessages(newMessage);
-      setValue("");
+    if (e.key === "Enter") {
+      handleSendClick();
     }
   };
 
