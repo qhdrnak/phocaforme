@@ -1,9 +1,11 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
 
 import { styled } from "@mui/material/styles";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+
+import { getLocation } from "../../store2/loginUser.js";
 
 import ReplayCircleFilledOutlinedIcon from "@mui/icons-material/ReplayCircleFilledOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -62,11 +64,37 @@ const IOSSwitch = styled((props) => (
 }));
 
 export default function GPS() {
+  const dispatch = useDispatch();
+
   const currentUser = useSelector((state) => state.user.user);
 
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const handleSwitchChange = () => {
     setIsSwitchOn((prev) => !prev);
+  };
+
+  useEffect(() => {
+    if (isSwitchOn) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        dispatch(
+          getLocation(
+            `${position.coords.latitude}, ${position.coords.longitude}`
+          )
+        );
+      });
+    }
+  }, [isSwitchOn, dispatch]);
+
+  const handleRefresh = () => {
+    if (isSwitchOn) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        dispatch(
+          getLocation(
+            `${position.coords.latitude}, ${position.coords.longitude}`
+          )
+        );
+      });
+    }
   };
 
   return (
@@ -84,7 +112,7 @@ export default function GPS() {
           }
         />
         <div id="refresh-container">
-          <ReplayCircleFilledOutlinedIcon />
+          <ReplayCircleFilledOutlinedIcon onClick={handleRefresh} />
         </div>
       </div>
       {isSwitchOn && (

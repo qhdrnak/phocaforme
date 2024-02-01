@@ -36,7 +36,21 @@ const DetailPost = () => {
 
   const handlePullupClick = () => {};
   return (
-    <Container>
+    <Container
+      className={`card-style${
+        post.isBartered || post.isSold ? " done-post" : ""
+      }`}
+    >
+      {post.isBartered && (
+        <div className="overlay">
+          <p>교환완료</p>
+        </div>
+      )}
+      {post.isSold && (
+        <div className="overlay">
+          <p>판매완료</p>
+        </div>
+      )}
       <div>
         <div id="post-title-container">
           <h2>{post.title}</h2>

@@ -4,7 +4,7 @@ const initialUserState = {
   user: {
     id: '1234',
     name: '제노예요',
-    location: '강남구 역삼동 1',
+    location: '',
   },
 };
 
@@ -18,8 +18,11 @@ const loginUserSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
     },
+    getLocation: (state, action) => {
+      state.user.location = action.payload;
+    },
   },
 });
 
-export const { loginUser, logoutUser } = loginUserSlice.actions;
+export const { loginUser, logoutUser, getLocation } = loginUserSlice.actions;
 export default loginUserSlice.reducer;
