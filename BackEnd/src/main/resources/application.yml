@@ -1,0 +1,9 @@
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - classpath:/application-ssafy-dev.yml
+      - classpath:/application-oauth.yml
+  profiles:
+    active: ssafy, oauth
+
