@@ -8,10 +8,8 @@ import { Container } from "@mui/material";
 import Card from "../../components/UI/Card";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-/////
-import { fetchTitle, fetchUserTitle } from "../../http.js";
+import axios from 'axios';
 
-////
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -46,19 +44,40 @@ function a11yProps(index) {
   };
 }
 
+///axios
+
+
+
+
+
+
+
+
 const PAGE_SIZE = 5; // 페이지당 표시할 카드 수
 
 export default function BasicTabs({ isPreview }) {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
   ////
-  const [title, setTitle] = useState("");
-  const [userTitle, setUserTitle] = useState("");
+  const [datas, setDatas] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${process.env.PUBLIC_URL}/data.json`)
+    .then((res) => {
+      setDatas(res.data)
+      // console.log(res.data)
+    })
+    .catch((err) => {
+      // console.log('Error fetching data', err);
+    });
+    }, []);
+  
+    // console.log(data)
   ///
-  const posts = useSelector((state) => (state.post ? state.post.posts : []));
-  const searchs = useSelector((state) =>
-    state.search ? state.search.searchs : []
-  );
+  // const posts = useSelector((state) => (state.post ? state.post.posts : []));
+  // const searchs = useSelector((state) =>
+  //   state.search ? state.search.searchs : []
+  // );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -67,47 +86,33 @@ export default function BasicTabs({ isPreview }) {
     setValue(newValue);
   };
 
-  const handleScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } =
-      window.document.documentElement;
+  // const handleScroll = () => {
+  //   const { scrollTop, scrollHeight, clientHeight } =
+  //     window.document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 20) {
-      const nextPageCards = posts.slice(visibleCards, visibleCards + PAGE_SIZE);
+  //   if (scrollTop + clientHeight >= scrollHeight - 20) {
+  //     const nextPageCards = datas.slice(visibleCards, visibleCards + PAGE_SIZE);
 
-      setVisibleCards((prev) => prev + PAGE_SIZE);
+  //     setVisibleCards((prev) => prev + PAGE_SIZE);
 
-      dispatch({ type: "ADD_CARDS", payload: nextPageCards });
-    }
-  };
+  //     dispatch({ type: "ADD_CARDS", payload: nextPageCards });
+  //   }
+  // };
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  // useEffect(() => {
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [handleScroll]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const titleData = await fetchTitle();
-        setTitle(titleData);
-        const userTitleData = await fetchUserTitle();
-        setUserTitle(userTitleData);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   // Infinity scroll을 적용할 때 추가된 부분
-  const visiblePosts = isPreview
-    ? posts.slice(0, PAGE_SIZE)
-    : posts.slice(0, visibleCards);
+  // const visiblePosts = isPreview
+  //   ? datas.slice(0, PAGE_SIZE)
+  //   : datas.slice(0, visibleCards);
 
   return (
     <div sx={{ width: "100%" }}>
-      <p>
+      {/* <p>
         값 전달 확인용 :{" "}
         {searchs.length > 0 && (
           <>
@@ -116,7 +121,7 @@ export default function BasicTabs({ isPreview }) {
             {searchs[searchs.length - 1].cardType}
           </>
         )}
-      </p>
+      </p> */}
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -135,7 +140,7 @@ export default function BasicTabs({ isPreview }) {
         <div
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
-          {visiblePosts
+          {datas
             .filter((post) => post.type === "교환")
             .map((post, index) => (
               <Card
@@ -162,7 +167,7 @@ export default function BasicTabs({ isPreview }) {
         <div
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
-          {visiblePosts
+          {datas
             .filter((post) => post.type === "판매")
             .map((post, index) => (
               <Card
