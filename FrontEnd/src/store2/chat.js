@@ -19,8 +19,6 @@ const initialChatState = {
     message: '네 결제 요청 보낼게요~',
     imgCode: '',
     sendTime : getCurrentTime(),
-    isPay: false,
-
   }, 
    ],
   //  const visiterList = ["아궁빵뎡", "제노예요", "김필릭스용복"];

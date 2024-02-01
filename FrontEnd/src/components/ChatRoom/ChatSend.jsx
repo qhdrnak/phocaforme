@@ -1,10 +1,15 @@
+import * as React from "react";
+
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 
-import * as React from "react";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 import Popover from "@mui/material/Popover";
 import { useTheme } from "@mui/material/styles";
+
+import { sendChat } from "../../store2/chat.js";
 
 import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
 import AddIcon from "@mui/icons-material/Add";
@@ -14,6 +19,7 @@ import getCurrentTime from "../../utils/currentTime";
 
 const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   const theme = useTheme();
+  const dispatch = useDispatch();
 
   // 메시지 전송
   const [value, setValue] = useState("");

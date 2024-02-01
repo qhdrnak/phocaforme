@@ -1,5 +1,5 @@
 // ChatRoom.jsx 메시지전송x
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { sendChat } from "../../store2/chat.js";
 
@@ -14,6 +14,8 @@ import ChatMenu from "./ChatTop";
 import ChatSend from "./ChatSend";
 
 const ChatRoom = () => {
+  const theme = useTheme();
+
   const { roomId } = useParams();
   const dispatch = useDispatch();
 
@@ -22,24 +24,36 @@ const ChatRoom = () => {
   );
 
   const chats = useSelector((state) => (state.chat ? state.chat.chat : []));
-
   const chatList = chats.filter((chat) => chat.chatRoomId == roomId);
 
-  const theme = useTheme();
+  // 항상 맨 아래로 스크롤
+  const sendMessageBoxRef = useRef(null);
+
+  useEffect(() => {
+    if (sendMessageBoxRef.current) {
+      sendMessageBoxRef.current.scrollTop =
+        sendMessageBoxRef.current.scrollHeight;
+    }
+  }, [chatList]);
 
   const updateMessages = (newMessage) => {
-    console.log(newMessage);
     dispatch(sendChat(newMessage));
   };
 
+  const price = useSelector((state) =>
+    state.pay ? state.pay.status.price : 0
+  );
+
   const handlePay = () => {
     // 결제 기능
+    console.log(price);
+    console.log("카카오페이 연결");
   };
 
   return (
     <Container>
       <div id="chat-container">
-        <ChatMenu />
+        <ChatMenu updateMessages={updateMessages} />
         <div id="chat-notice">
           <div id="notice-content">
             <PushPinRoundedIcon id="notice-icon" />
@@ -52,7 +66,7 @@ const ChatRoom = () => {
             </p>
           </div>
         </div>
-        <div id="chat-content-container">
+        <div id="chat-content-container" ref={sendMessageBoxRef}>
           <div id="chat-message-area">
             {chatList.map((messageData, index) => (
               <div

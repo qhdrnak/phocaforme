@@ -18,7 +18,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Logout from "@mui/icons-material/Logout";
 
-const ChatMenu = () => {
+const ChatMenu = ({ updateMessages }) => {
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -67,7 +67,11 @@ const ChatMenu = () => {
 
   return (
     <div>
-      <PayModal open={modalOpen} handleClose={handleModalClose} />
+      <PayModal
+        open={modalOpen}
+        handleClose={handleModalClose}
+        updateMessages={updateMessages}
+      />
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div">

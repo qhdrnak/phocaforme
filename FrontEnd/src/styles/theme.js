@@ -83,7 +83,6 @@ const theme = createTheme({
           '& input': {
             fontFamily: 'Pretendard',
             fontSize: '15px',
-            textAlign: 'end',
           },
           
         },
