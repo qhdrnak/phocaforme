@@ -15,7 +15,7 @@ import GPS from "./GPS";
 import { useNavigate } from "react-router-dom";
 import { Paper } from "@mui/material";
 
-import { logoutUser } from '../../store2/loginUser.js';
+import { logoutUser } from "../../store2/loginUser.js";
 import { useDispatch, useSelector } from "react-redux";
 
 const ProfileImage = () => {
@@ -38,12 +38,12 @@ const ProfileImage = () => {
   };
 
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user.user);
+  const user = useSelector((state) => state.user.user);
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    console.log(user) // 이거 콘솔에는 초기 state 그대로 뜨는데 비동기적으로 처리돼서 그렇다 함
-    navigate('/main');
+    console.log(user); // 이거 콘솔에는 초기 state 그대로 뜨는데 비동기적으로 처리돼서 그렇다 함
+    navigate("/main");
   };
 
   return (
@@ -93,12 +93,12 @@ const ProfileImage = () => {
               <PersonOutlinedIcon className="dropdown-icon" />
               <Typography textAlign="center">마이페이지</Typography>
             </MenuItem>
-            <Button 
-              variant="contained" 
-              color="primary" 
+            <Button
+              variant="contained"
+              color="primary"
               disableElevation
               onClick={handleLogout}
-              >
+            >
               로그아웃
             </Button>
           </Menu>

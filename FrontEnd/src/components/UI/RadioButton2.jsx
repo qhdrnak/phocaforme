@@ -14,7 +14,7 @@ function RadioButton({ defaultType, onChange }) {
   };
 
   return (
-    <FormControl component="fieldset" disabled={defaultType !== null}>
+    <FormControl component="fieldset" disabled={defaultType != null}>
       <div>
         <RadioGroup
           row

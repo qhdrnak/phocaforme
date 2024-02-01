@@ -31,7 +31,7 @@ const PostWrite = () => {
 
   // 교환인지 판매인지
   function onExchangeChange(value) {
-    setIsExchange(value === "option1");
+    setIsExchange(value === "교환");
   }
 
   const handleOwnMemberSelection = (members) => {

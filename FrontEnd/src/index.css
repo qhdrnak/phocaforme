@@ -15,7 +15,7 @@
     font-family: 'Pretendard';
 }
 
-.main-title, #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
+.main-title,  #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
     font-weight: bold;
 }
@@ -169,7 +169,8 @@
 #gps-bottom {
     display: flex;
     justify-content: space-evenly;
-    margin: 1rem 0;
+    align-items: center;
+    margin: 1rem;
 }
 
 #refresh-container {
@@ -262,6 +263,9 @@
 }
 
 /* 채팅페이지 */
+#chatroom-title {
+    font-weight: 700;
+}
 
 .chatlist-item {
 
@@ -301,6 +305,8 @@
     align-items: center;
     margin-top: 1rem;
 }
+
+
 
 #hamburger-icon {
     padding: 0 1rem;
@@ -583,9 +589,9 @@
     border-radius: 10px;
     background-color: var(--secondary-color);
     position: relative;
-    width: 30%;
+    width: 20%;
     height: 0;
-    padding-bottom: 47.4%;
+    padding-bottom: 31.6%;
     margin: 0.1rem;
 }
 
@@ -603,13 +609,13 @@
 }
 
 .image-container {
-    width: 30%;
+    width: 20%;
     height: 0;
     border-radius: 10px;
     border: var(--primary-color) 2px solid;
     margin: 0.1rem;
     position: relative;
-    padding-bottom: 47.4%;
+    padding-bottom: 31.6%;
 }
 
 #image-add-icon {

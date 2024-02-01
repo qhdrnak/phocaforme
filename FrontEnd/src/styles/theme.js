@@ -27,6 +27,7 @@ const theme = createTheme({
       styleOverrides: {
         paper: {
           backgroundColor: '#FD9DD1', 
+          width: '10rem'
         },
       },
     },
@@ -83,7 +84,6 @@ const theme = createTheme({
           '& input': {
             fontFamily: 'Pretendard',
             fontSize: '15px',
-            textAlign: 'end',
           },
           
         },

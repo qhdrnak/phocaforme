@@ -4,24 +4,22 @@ import logo from "../../assets/images/logo.PNG";
 import icon from "../..//assets/images/icon.PNG";
 import kakao from "../../assets/images/kakao_login.png";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import { KAKAO_AUTH_URL } from "./OAuth";
 
 const LoginPage = () => {
   const navigate = useNavigate();
 
-
-	const loginHandler = () => {
+  const loginHandler = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
   // useEffect(() => {
   //   axios.post(`${process.env.REACT_APP_URL}kakaoLogin${code}`).then((r) => { // 여기 post()안에를 바꿔야함?
   //     console.log(r.data); // 토큰과 함께 오는 정보들을 출력해보자
-  //     navigate('/main'); // 
+  //     navigate('/main'); //
   //   });
   // }, []);
-
 
   return (
     <div>

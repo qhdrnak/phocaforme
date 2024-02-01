@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
 import { sendChat } from "../../../store2/chat.js";
+import { pay } from "../../../store2/pay.js";
 import getCurrentTime from "../../../utils/currentTime.js";
 
 import TextField from "@mui/material/TextField";
@@ -14,12 +15,12 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { Divider } from "@mui/material";
 
-const PayModal = ({ open, handleClose }) => {
+const PayModal = ({ open, handleClose, updateMessages }) => {
   const { roomId } = useParams();
   const loginUser = useSelector((state) =>
     state.user ? state.user.user.name : ""
   );
-  console.log(roomId);
+
   const dispatch = useDispatch();
 
   const style = {
@@ -46,24 +47,24 @@ const PayModal = ({ open, handleClose }) => {
 
   const handleAmountChange = (e) => {
     setAmount(e.target.value);
-    setTotal(amount * price + parseInt(fee));
   };
 
   const handleIncrease = () => {
     setAmount((prevAmount) =>
       prevAmount + 1 > max_amount ? prevAmount : prevAmount + 1
     );
-    setTotal(amount * price + parseInt(fee));
   };
 
   const handleDecrease = () => {
     setAmount((prevAmount) => (prevAmount > 1 ? prevAmount - 1 : 1));
-    setTotal(amount * price + parseInt(fee));
   };
+
+  useEffect(() => {
+    setTotal(amount * price + parseInt(fee));
+  }, [amount, fee]);
 
   const handleFeeChange = (e) => {
     setFee(e.target.value);
-    setTotal(amount * price + parseInt(fee));
   };
 
   const handleSend = () => {
@@ -76,8 +77,16 @@ const PayModal = ({ open, handleClose }) => {
       sendTime: getCurrentTime(),
       isPay: true,
     };
-    dispatch(sendChat(newMessage));
+    updateMessages(newMessage);
+    dispatch(pay(total));
     handleClose();
+  };
+
+  // 엔터 키를 눌렀을 때도 send
+  const handleSendEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
   };
 
   return (
@@ -96,8 +105,7 @@ const PayModal = ({ open, handleClose }) => {
                 className="pay-input"
                 onChange={handleAmountChange}
                 size="small"
-                placeholder=""
-                sx={{ width: "30%" }}
+                sx={{ width: "20%" }}
               />
               <IconButton onClick={handleIncrease} size="small">
                 <AddIcon />
@@ -109,11 +117,11 @@ const PayModal = ({ open, handleClose }) => {
             <div className="pay-label">배송비</div>
             <div className="unit-container">
               <TextField
+                onKeyDown={handleSendEnter}
                 className="pay-input"
                 value={fee}
                 onChange={handleFeeChange}
                 size="small"
-                placeholder=""
                 sx={{ mr: 1 }}
               />
               <div>원</div>
