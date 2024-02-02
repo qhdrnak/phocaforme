@@ -1,9 +1,8 @@
-config:
-  import:
-    - optional:file:.env[.properties]
-    - classpath:/application-ssafy-dev.yml
-    - classpath:/application-oauth.yml
-    - classpath:/application-global.yml
-    - classpath:/application-local.yml
+spring:
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - classpath:/application-global.yml
+      - classpath:/application-local.yml
   profiles:
-    active: global, local, ssafy, oauth, aws
+    active: global, local
