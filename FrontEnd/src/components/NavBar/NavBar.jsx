@@ -34,6 +34,14 @@ const NavBar = ({ children }) => {
         <div id="nav-menus">
           <ProfileImage />
           {/* <button onClick={handleLogout}>로그아웃</button> */}
+          <div
+            id="bell"
+            onClick={() => {
+              navigate("/alarm");
+            }}
+          >
+            <Bell />
+          </div>
         </div>
       ) : (
         // 여기가 로그아웃상태에서 보이는 거
@@ -41,15 +49,6 @@ const NavBar = ({ children }) => {
           <NonLoginImage />
         </div>
       )}
-
-      <div
-        id="bell"
-        onClick={() => {
-          navigate("/alarm");
-        }}
-      >
-        <Bell />
-      </div>
     </div>
   );
 };

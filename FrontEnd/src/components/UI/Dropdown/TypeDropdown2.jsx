@@ -29,11 +29,8 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
         options={TypeItems}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
-          width: "25rem",
+          width: "80vw",
           "& .MuiInputBase-root": { height: "55px", borderRadius: "13px" },
-          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            borderWidth: "4px", // 테두리 굵기 조절
-          },
         }}
         noOptionsText="해당 분류가 없습니다"
         renderOption={(props, option) => (

@@ -31,11 +31,8 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
         options={groupItems}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
-          width: "25rem",
+          width: "80vw",
           "& .MuiInputBase-root": { height: "55px", borderRadius: "13px" },
-          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            borderWidth: "4px", // 테두리 굵기 조절
-          },
         }}
         noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (
