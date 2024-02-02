@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 5000
 
 spring:
   config:
@@ -12,9 +12,9 @@ spring:
       database: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://kofoos.c16mgeqgsinu.ap-northeast-2.rds.amazonaws.com:3306/kofoos?serverTimezone=UTC&characterEncoding=UTF-8
-    username: admin
-    password: zhvntmA309
+    url: jdbc:mariadb://localhost:3306/PhocaForMe?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: youRmybias1004
   # datasource:
   #   url: ${DB_URL}
   #   username: ${USER_NAME}
