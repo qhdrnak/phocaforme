@@ -1,11 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 
-import { Avatar } from "@mui/material";
 import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 

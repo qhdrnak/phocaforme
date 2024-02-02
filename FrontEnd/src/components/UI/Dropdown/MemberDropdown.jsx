@@ -1,9 +1,7 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
 
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import { Box, TextField, Autocomplete } from "@mui/material";
 
 const MemberDropdown = ({ selectedGroup, defaultMember, onChange }) => {
   const [value, setValue] = useState(defaultMember);

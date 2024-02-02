@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
-import { Button } from "@mui/material";
-import TextField from "@mui/material/TextField";
-import Chip from "@mui/material/Chip";
+import { Button, TextField, Chip } from "@mui/material";
 
 import GroupDropdown from "../UI/Dropdown/GroupDropdown";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown";

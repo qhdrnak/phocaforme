@@ -2,10 +2,11 @@ import React, { useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
-import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-
 import { modifyPost } from "../../store2/post.js";
+
+import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
+
+import AddIcon from "@mui/icons-material/Add";
 
 import RadioButton2 from "../../components/UI/RadioButton2.jsx";
 import BarterModify from "./BarterModify.jsx";

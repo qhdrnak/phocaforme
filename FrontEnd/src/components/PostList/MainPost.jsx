@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-import { Container } from "@mui/material";
-import Card from "../../components/UI/Card";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-/////
+import PropTypes from "prop-types";
+
 import { fetchTitle, fetchUserTitle } from "../../http.js";
 
-////
-function CustomTabPanel(props) {
+import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
+
+import Card from "../../components/UI/Card";
+
+const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -31,7 +28,7 @@ function CustomTabPanel(props) {
       </div>
     </>
   );
-}
+};
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -39,16 +36,16 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
-}
+};
 
 const PAGE_SIZE = 5; // 페이지당 표시할 카드 수
 
-export default function BasicTabs({ isPreview }) {
+const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
   ////
@@ -186,4 +183,6 @@ export default function BasicTabs({ isPreview }) {
       </CustomTabPanel>
     </div>
   );
-}
+};
+
+export default BasicTabs;

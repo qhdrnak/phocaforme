@@ -1,8 +1,6 @@
-// 게시글(판매) 생성 페이지
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import SearchContainer from "../../components/Search/SearchBar.jsx";
 
 import GroupDropdown2 from "../UI/Dropdown/GroupDropdown2.jsx";
 import MemberDropdown2 from "../UI/Dropdown/MemberDropdown2.jsx";
@@ -26,8 +24,8 @@ const BarterWrite2 = ({ onChange }) => {
   const [ownMembers, setOwnMembers] = useState([]);
   const [targetMembers, setTargetMembers] = useState([]);
 
-  const [ownMembersInput, setOwnMembersInput] = useState('');
-  const [targetMembersInput, setTargetMembersInput] = useState('');
+  const [ownMembersInput, setOwnMembersInput] = useState("");
+  const [targetMembersInput, setTargetMembersInput] = useState("");
 
   /// 수정해야함
   const handleOwnMemberChange = (member) => {
@@ -48,7 +46,6 @@ const BarterWrite2 = ({ onChange }) => {
     } else {
       setTargetMembersInput(targetMembersInput);
     }
-    
   };
 
   // 멤버 삭제 관련

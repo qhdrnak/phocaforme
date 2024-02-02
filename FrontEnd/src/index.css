@@ -1,6 +1,5 @@
 /* 기본 세팅 */
 
-
 :root {
     --primary-color: #FB37A3;
     --secondary-color: #FD9DD1;
@@ -20,6 +19,7 @@
     font-weight: bold;
 }
 
+
 .main-big {
     font-size: 18px;
     font-weight: 600;
@@ -27,6 +27,13 @@
 }
 
 /* 폰트 세팅 */
+
+@font-face {
+	font-family:'Cafe24SSurround';
+    font-style:normal;
+    font-weight: 300;
+    src:url('./assets/fonts/Cafe24Ssurround-v2.0.woff') format('woff')
+}
 
 @font-face {
 	font-family:'PyeongChangPeace';

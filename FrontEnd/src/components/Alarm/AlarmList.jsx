@@ -11,11 +11,9 @@ import {
   Checkbox,
 } from "@mui/material";
 
-import CloseIcon from "@mui/icons-material/Close";
-import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import { TaskAlt, Close, RadioButtonUnchecked } from "@mui/icons-material";
 
-export default function InteractiveList() {
+const InteractiveList = () => {
   const navigate = useNavigate();
 
   const handleItemClick = (item) => {
@@ -83,7 +81,7 @@ export default function InteractiveList() {
               secondaryAction={
                 <>
                   <IconButton edge="end" onClick={() => readAlarm(index)}>
-                    {item.isRead ? null : <CloseIcon />}
+                    {item.isRead ? null : <Close />}
                   </IconButton>
                 </>
               }
@@ -95,7 +93,7 @@ export default function InteractiveList() {
                 }}
               >
                 <ListItemAvatar>
-                  {item.isRead ? <TaskAltIcon /> : <RadioButtonUncheckedIcon />}
+                  {item.isRead ? <TaskAlt /> : <RadioButtonUnchecked />}
                 </ListItemAvatar>
                 <div className="alarm-text-container">
                   <ListItemText
@@ -112,4 +110,6 @@ export default function InteractiveList() {
       </div>
     </div>
   );
-}
+};
+
+export default InteractiveList;

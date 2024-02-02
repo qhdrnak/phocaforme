@@ -1,16 +1,13 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import Box from "@mui/material/Box";
-import Fab from "@mui/material/Fab";
-import Popover from "@mui/material/Popover";
+import { Box, Fab, Popover } from "@mui/material";
 
 import AddIcon from "@mui/icons-material/Add";
 import CreateIcon from "@mui/icons-material/Create";
 
-import { useNavigate } from "react-router-dom";
-
-export default function FloatingActionButtons() {
+const FloatingActionButtons = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const user = useSelector((state) => state.user.user);
 
@@ -68,4 +65,5 @@ export default function FloatingActionButtons() {
       </Fab>
     </Box>
   );
-}
+};
+export default FloatingActionButtons;

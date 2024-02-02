@@ -1,9 +1,9 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Container, Button, TextareaAutosize } from "@mui/material";
 
 import MainPost from "../../components/PostList/MainPost.jsx";
-import { Container } from "@mui/material";
-import { TextField, Button, TextareaAutosize } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 const PreviewPost = () => {
   const navigate = useNavigate();

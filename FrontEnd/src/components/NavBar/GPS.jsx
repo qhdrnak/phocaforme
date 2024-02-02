@@ -1,14 +1,16 @@
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import React, { useState, useEffect, useRef } from "react";
 
 import { styled } from "@mui/material/styles";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
+
+import { FormControlLabel, Switch } from "@mui/material";
 
 import { getLocation } from "../../store2/loginUser.js";
 
-import ReplayCircleFilledOutlinedIcon from "@mui/icons-material/ReplayCircleFilledOutlined";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import {
+  ReplayCircleFilledOutlined,
+  LocationOnOutlined,
+} from "@mui/icons-material";
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -112,12 +114,12 @@ export default function GPS() {
           }
         />
         <div id="refresh-container">
-          <ReplayCircleFilledOutlinedIcon onClick={handleRefresh} />
+          <ReplayCircleFilledOutlined onClick={handleRefresh} />
         </div>
       </div>
       {isSwitchOn && (
         <div id="gps-bottom">
-          <LocationOnOutlinedIcon />
+          <LocationOnOutlined />
           <div>{currentUser.location}</div>
         </div>
       )}
