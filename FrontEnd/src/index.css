@@ -642,6 +642,8 @@
 
 /* 판매, 교환완료 게시글 스타일 */
 .done-post .overlay {
+    z-index: 200;
+    border-radius: 10px;
     position: absolute;
     top: 0;
     left: 0;
