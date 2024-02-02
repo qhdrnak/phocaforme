@@ -8,6 +8,8 @@ import { FaSearch } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 
+import { useTheme } from "@mui/material/styles";
+
 import { Button } from "../UI/Button.jsx";
 import RadioButton2 from "../UI/RadioButton.jsx";
 import BarterWrite2 from "../../components/PostWrite/BarterWrite2.jsx";
@@ -27,6 +29,7 @@ const Search = function () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const theme = useTheme();
   const handleTypeChange = (cardType) => {
     if (cardType == null) {
       cardType = {
@@ -83,45 +86,11 @@ const Search = function () {
   };
 
   return (
-    // <section id="user-input">
     <div id="search-container">
       <h3>어떤 포카를 찾으시나요?</h3>
 
-      {!isClicked ? (
-        <div style={{ position: "relative" }}>
-          <input
-            id="title-input"
-            value={userInput}
-            onChange={handleUserInputChange}
-            variant="outlined"
-            placeholder="앨범, 버전명 등을 입력해주세요"
-            style={{ paddingLeft: "2rem" }} // 아이콘의 공간 확보를 위해 입력 상자의 왼쪽 패딩을 추가
-          />
-          <FaSearch
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "0.5rem",
-              transform: "translateY(-50%)",
-              color: "gray",
-            }}
-          />
-          <IoIosArrowDown
-            onClick={onClick}
-            style={{
-              position: "absolute",
-              top: "50%",
-              right: "0.5rem",
-              transform: "translateY(-50%)",
-            }}
-          />
-        </div>
-      ) : (
-        <div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <RadioButton2 onChange={onExchangeChange} />
-          </div>
-
+      <div id="search-option-container">
+        {!isClicked ? (
           <div style={{ position: "relative" }}>
             <input
               id="title-input"
@@ -129,63 +98,103 @@ const Search = function () {
               onChange={handleUserInputChange}
               variant="outlined"
               placeholder="앨범, 버전명 등을 입력해주세요"
-              style={{ paddingLeft: "2rem" }} // 아이콘의 공간 확보를 위해 입력 상자의 왼쪽 패딩을 추가
+              style={{ paddingLeft: "10vw" }}
             />
             <FaSearch
               style={{
                 position: "absolute",
                 top: "50%",
-                left: "0.5rem",
+                left: "3vw",
                 transform: "translateY(-50%)",
                 color: "gray",
               }}
             />
-            <IoIosArrowUp
+            <IoIosArrowDown
               onClick={onClick}
               style={{
                 position: "absolute",
                 top: "50%",
-                right: "0.5rem",
+                right: "3vw",
                 transform: "translateY(-50%)",
               }}
             />
           </div>
-
-          <div>
-            {isExchange ? (
-              <BarterWrite2
-                onChange={(ownMembers, targetMembers) => {
-                  handleOwnMemberSelection(ownMembers);
-                  handleTargetMemberSelection(targetMembers);
+        ) : (
+          <div id="search-container">
+            <div style={{ position: "relative" }}>
+              <input
+                id="title-input"
+                value={userInput}
+                onChange={handleUserInputChange}
+                variant="outlined"
+                placeholder="앨범, 버전명 등을 입력해주세요"
+                style={{ paddingLeft: "10vw" }}
+              />
+              <FaSearch
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "3vw",
+                  transform: "translateY(-50%)",
+                  color: "gray",
                 }}
               />
-            ) : (
-              <SellWrite2 />
-            )}
+              <IoIosArrowDown
+                onClick={onClick}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  right: "3vw",
+                  transform: "translateY(-50%)",
+                }}
+              />
+            </div>
+
+            <div>
+              {isExchange ? (
+                <BarterWrite2
+                  onChange={(ownMembers, targetMembers) => {
+                    handleOwnMemberSelection(ownMembers);
+                    handleTargetMemberSelection(targetMembers);
+                  }}
+                />
+              ) : (
+                <SellWrite2 />
+              )}
+            </div>
+            <div>
+              <h3>포토카드 종류</h3>
+              <TypeDropdown2
+                onChange={(type) => {
+                  handleTypeChange(type);
+                }}
+              />
+            </div>
+            <div id="search-buttons">
+              <Button
+                id="search-button"
+                onClick={handleSearchClick}
+                sx={{
+                  width: "20vw",
+                }}
+              >
+                검색
+              </Button>
+              <Button
+                id="search-close-button"
+                onClick={onClick}
+                sx={{
+                  width: "20vw",
+                  backgroundColor: theme.palette.warning.main,
+                }}
+              >
+                닫기
+              </Button>
+            </div>
           </div>
-          <div>
-            <h3>포토카드 종류</h3>
-            <TypeDropdown2
-              onChange={(type) => {
-                handleTypeChange(type);
-              }}
-            />
-          </div>
-          <Button
-            onClick={handleSearchClick}
-            sx={{
-              mt: 2,
-              ml: 18,
-              width: "120px",
-              height: "50px",
-            }}
-          >
-            검색
-          </Button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
-    // </section>
   );
 };
 

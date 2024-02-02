@@ -21,7 +21,7 @@ const NavBar = ({ children }) => {
   };
 
   return (
-    <header id="nav-bar">
+    <div id="nav-bar">
       <img
         id="logo"
         onClick={() => {
@@ -32,6 +32,8 @@ const NavBar = ({ children }) => {
 
       {user ? (
         <div id="nav-menus">
+          <ProfileImage />
+          {/* <button onClick={handleLogout}>로그아웃</button> */}
           <div
             id="bell"
             onClick={() => {
@@ -40,8 +42,6 @@ const NavBar = ({ children }) => {
           >
             <Bell />
           </div>
-          <ProfileImage />
-          {/* <button onClick={handleLogout}>로그아웃</button> */}
         </div>
       ) : (
         // 여기가 로그아웃상태에서 보이는 거
@@ -49,7 +49,7 @@ const NavBar = ({ children }) => {
           <NonLoginImage />
         </div>
       )}
-    </header>
+    </div>
   );
 };
 export default NavBar;

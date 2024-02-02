@@ -12,7 +12,7 @@ const PreviewPost = () => {
   };
 
   return (
-    <Container>
+    <Container id="preview-container">
       <h2 className="main-title">둘러보기 🔍</h2>
       <MainPost isPreview={true} />
       <div
@@ -26,7 +26,7 @@ const PreviewPost = () => {
           variant="contained"
           size="large"
           color="primary"
-          style={{ marginRight: "10px" }}
+          // style={{ marginRight: "10px" }}
           onClick={handleButtonClick}
         >
           + 더보기

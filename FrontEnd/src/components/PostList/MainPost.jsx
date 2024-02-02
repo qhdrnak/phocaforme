@@ -13,7 +13,7 @@ const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
-    <>
+    <div>
       <div
         role="tabpanel"
         hidden={value !== index}
@@ -26,7 +26,7 @@ const CustomTabPanel = (props) => {
           </Box>
         )}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -48,10 +48,10 @@ const PAGE_SIZE = 5; // 페이지당 표시할 카드 수
 const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
-  ////
+
   const [title, setTitle] = useState("");
   const [userTitle, setUserTitle] = useState("");
-  ///
+
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const searchs = useSelector((state) =>
     state.search ? state.search.searchs : []
@@ -82,20 +82,20 @@ const BasicTabs = ({ isPreview }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const titleData = await fetchTitle();
-        setTitle(titleData);
-        const userTitleData = await fetchUserTitle();
-        setUserTitle(userTitleData);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const titleData = await fetchTitle();
+  //       setTitle(titleData);
+  //       const userTitleData = await fetchUserTitle();
+  //       setUserTitle(userTitleData);
+  //     } catch (error) {
+  //       console.error("Failed to fetch data:", error);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // Infinity scroll을 적용할 때 추가된 부분
   const visiblePosts = isPreview

@@ -16,6 +16,7 @@ import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
 
+import {Grid} from '@mui/material';
 import theme from './styles/theme'; 
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -33,10 +34,8 @@ const ScrollToTop = () => {
 
 const App = () => {
   // const store = createStore(rootReducer);
-  
 
   return (
-    
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>

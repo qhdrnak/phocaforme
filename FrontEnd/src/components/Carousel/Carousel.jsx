@@ -22,18 +22,22 @@ const MyCarousel = () => {
   ];
 
   const imageStyle = {
-    width: "100%",
-    height: "50vh",
-    display: "block",
+    width: "80vw",
+    height: "30vh",
     objectFit: "contain",
   };
 
+  const carouselStyle = {
+    "& .Carousel-button": {
+      display: "none",
+    },
+  };
+
   return (
-    <div style={{ marginTop: "2rem" }}>
+    <div style={{ marginTop: "2rem", textAlign: "center" }}>
       <Carousel
         cycleNavigation={true}
         navButtonsAlwaysVisible={false}
-        showArrows={true}
         centerMode={true}
         centerSlidePercentage={30}
         showThumbs={false}
@@ -41,13 +45,12 @@ const MyCarousel = () => {
         autoPlay={true}
         interval={3000}
         infiniteLoop={true}
+        hideArrows={true}
       >
         {example.map((content) => (
-          <>
-            <Link to={content.link}>
-              <img src={content.url} style={imageStyle} />
-            </Link>
-          </>
+          <Link to={content.link}>
+            <img src={content.url} style={imageStyle} />
+          </Link>
         ))}
       </Carousel>
     </div>

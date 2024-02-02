@@ -42,17 +42,15 @@ const MemberDropdown2 = ({ selectedGroup, defaultMember, onChange }) => {
         onChange={handleChange}
         size="small"
         disablePortal
-        id="gorup-dropdown"
+        id="group-dropdown"
         options={filteredOptions}
         sx={{
-          width: "12rem",
+          width: "38vw",
+
           "& .MuiInputBase-root": {
             height: "55px",
             borderRadius: "13px",
             borderWidth: "10px",
-          },
-          "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
-            borderWidth: "4px", // 테두리 굵기 조절
           },
         }}
         noOptionsText="해당 멤버가 없습니다"

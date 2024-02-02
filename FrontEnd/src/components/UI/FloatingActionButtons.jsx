@@ -32,8 +32,8 @@ const FloatingActionButtons = () => {
     <Box
       sx={{
         position: "fixed",
-        bottom: "5%",
-        right: "5%",
+        bottom: "10vh",
+        right: "10vw",
         "& > :not(style)": { m: 1 },
         zIndex: 2000,
       }}

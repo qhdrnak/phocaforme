@@ -2,7 +2,7 @@
 import { styled } from "@mui/system";
 
 const TruncatedTitle = styled("div")(({ theme, truncateWidth }) => ({
-  width: truncateWidth || "60%",
+  width: truncateWidth || "80%",
   whiteSpace: "nowrap",
   textAlign: "center",
   textOverflow: "ellipsis",
