@@ -16,6 +16,7 @@ import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
 
+import {Grid} from '@mui/material';
 import theme from './styles/theme'; 
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -36,31 +37,34 @@ const App = () => {
   
 
   return (
-    
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-        <ScrollToTop />
-          <NavBar />
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/main" element={<Main />} />
-            <Route path="/alarm" element={<Alarm />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/chatroom/:roomId" element={<ChatRoom />} />
-            <Route path="/write" element={<PostWrite />}/>
-            <Route path="/post" element={<PostMain />} />
-            <Route path="/post/:id" element={<DetailPost />} />
-            <Route path="/login" element={<Login /> } />
-            <Route path="/help" element={<Guide /> } />
-            <Route path="/modify/:id" element={<Modify /> } />
-
-          </Routes>
-            
-            <FloatingActionButtons />
-          
-         
+          <ScrollToTop />
+          <Grid container direction="column">
+            <Grid item>
+              <NavBar />
+            </Grid>
+            <Grid item>
+              <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/main" element={<Main />} />
+                <Route path="/alarm" element={<Alarm />} />
+                <Route path="/chat" element={<Chat />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/chatroom/:roomId" element={<ChatRoom />} />
+                <Route path="/write" element={<PostWrite />} />
+                <Route path="/post" element={<PostMain />} />
+                <Route path="/post/:id" element={<DetailPost />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/help" element={<Guide />} />
+                <Route path="/modify/:id" element={<Modify />} />
+              </Routes>
+            </Grid>
+            <Grid item>
+              <FloatingActionButtons />
+            </Grid>
+          </Grid>
         </BrowserRouter>
       </ThemeProvider>
     </Provider>

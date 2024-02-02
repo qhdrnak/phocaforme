@@ -21,7 +21,7 @@ const NavBar = ({ children }) => {
   };
 
   return (
-    <header id="nav-bar">
+    <div id="nav-bar">
       <img
         id="logo"
         onClick={() => {
@@ -32,14 +32,6 @@ const NavBar = ({ children }) => {
 
       {user ? (
         <div id="nav-menus">
-          <div
-            id="bell"
-            onClick={() => {
-              navigate("/alarm");
-            }}
-          >
-            <Bell />
-          </div>
           <ProfileImage />
           {/* <button onClick={handleLogout}>로그아웃</button> */}
         </div>
@@ -49,7 +41,16 @@ const NavBar = ({ children }) => {
           <NonLoginImage />
         </div>
       )}
-    </header>
+
+      <div
+        id="bell"
+        onClick={() => {
+          navigate("/alarm");
+        }}
+      >
+        <Bell />
+      </div>
+    </div>
   );
 };
 export default NavBar;
