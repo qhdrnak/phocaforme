@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useState, useEffect } from 'react';
 
 import {
   Tabs,
@@ -50,8 +51,16 @@ const a11yProps = (index) => {
 
 const LatestPost = () => {
   const navigate = useNavigate();
+  const [recentPosts, setRecentPosts] = useState([]);
 
   const [value, setValue] = React.useState(0);
+
+  useEffect(() => {
+    // 로컬 스토리지에서 최근 본 게시물을 가져옵니다.
+    const storedRecentPosts = JSON.parse(localStorage.getItem("recentCard")) || [];
+    setRecentPosts(storedRecentPosts);
+  }, []);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -60,110 +69,6 @@ const LatestPost = () => {
   const handleClick = (id) => {
     navigate(`/post/${id}`);
   };
-
-  // 게시글 정보 (임의)
-  // 브라우저에 최근 본 게시글 담는다
-  // 5개 넘어가면 맨 앞 객체 빼고 담는다
-  const LatestPostList = [
-    {
-      id: 1,
-      writerId: "1234",
-      writerNickname: "제노예요",
-      title: "[교환1] 질주 미공포 교환해요",
-      images: ["/assets/images/photocard/도영.jpg"],
-      group: "NCT",
-      ownMembers: [{ value: "도영", label: "도영" }],
-      targetMembers: [{ value: "제노", label: "제노" }],
-      content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
-      cardType: "미공포",
-      type: "교환",
-      isBartered: true,
-    },
-    {
-      id: 2,
-      writerId: "1234",
-      writerNickname: "제노예요",
-      title: "[교환2] 질주 미공포 교환해요",
-      images: [
-        "/assets/images/photocard/도영.jpg",
-        "/assets/images/photocard/도영.jpg",
-      ],
-      group: "NCT",
-      ownMembers: [{ value: "도영", label: "도영" }],
-      targetMembers: [{ value: "제노", label: "제노" }],
-      content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
-      cardType: "미공포",
-      type: "교환",
-      isBartered: false,
-    },
-    {
-      id: 3,
-      writerId: "1234",
-      writerNickname: "제노예요",
-      title: "[교환3] 질주 미공포 교환해요",
-      images: [
-        "/assets/images/photocard/도영.jpg",
-        "/assets/images/photocard/도영.jpg",
-      ],
-      group: "NCT",
-      ownMembers: [{ value: "도영", label: "도영" }],
-      targetMembers: [{ value: "제노", label: "제노" }],
-      content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
-      cardType: "미공포",
-      type: "교환",
-      isBartered: false,
-    },
-    {
-      id: 4,
-      writerId: "1234",
-      writerNickname: "제노예요",
-      title: "[교환4] 질주 미공포 교환해요",
-      images: [
-        "/assets/images/photocard/도영.jpg",
-        "/assets/images/photocard/도영.jpg",
-      ],
-      group: "NCT",
-      ownMembers: [{ value: "도영", label: "도영" }],
-      targetMembers: [{ value: "제노", label: "제노" }],
-      content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
-      cardType: "미공포",
-      type: "교환",
-      isBartered: false,
-    },
-    {
-      id: 5,
-      writerId: "1234",
-      writerNickname: "제노예요",
-      title: "[교환5] 질주 미공포 교환해요",
-      images: [
-        "/assets/images/photocard/도영.jpg",
-        "/assets/images/photocard/도영.jpg",
-      ],
-      group: "NCT",
-      ownMembers: [{ value: "도영", label: "도영" }],
-      targetMembers: [{ value: "제노", label: "제노" }],
-      content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
-      cardType: "미공포",
-      type: "교환",
-      isBartered: false,
-    },
-    {
-      id: 6,
-      writerId: "1234",
-      writerNickname: "제노예요",
-      title: "[판매1] 질주 미공포 교환해요",
-      images: [
-        "/assets/images/photocard/도영.jpg",
-        "/assets/images/photocard/도영.jpg",
-      ],
-      group: "NCT",
-      ownMembers: [{ value: "도영", label: "도영" }],
-      content: `받자마자 탑로더에 보관해서 상태 좋습니다.\n그리고 도영이가 정말 귀여워요\n귀여운 도영이\n데려가세요`,
-      cardType: "미공포",
-      type: "판매",
-      isSold: true,
-    },
-  ];
 
   return (
     <Container>
@@ -189,10 +94,9 @@ const LatestPost = () => {
             sx={{ display: "flex", width: "100%" }}
             rowHeight={200}
           >
-            {LatestPostList &&
-              LatestPostList.filter((post) => post.type === "교환")
-                .slice(-5)
-                .reverse()
+            {recentPosts && 
+              recentPosts
+              .filter((post) => post.type === "교환")
                 .map((post, index) => (
                   <div
                     className="cards-container"
@@ -216,7 +120,7 @@ const LatestPost = () => {
                       isBartered={post.isBartered}
                     ></Card>
                   </div>
-                ))}
+                )).reverse()}
           </ImageList>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
@@ -225,33 +129,32 @@ const LatestPost = () => {
             sx={{ display: "flex", width: "100%" }}
             rowHeight={200}
           >
-            {LatestPostList &&
-              LatestPostList.filter((post) => post.type === "판매")
-                .slice(-5)
-                .reverse()
-                .map((post, index) => (
-                  <div
-                    className="cards-container"
-                    key={index}
-                    onClick={() => handleClick(post.id)}
-                  >
-                    <Card
-                      key={post.id}
-                      style={{
-                        objectFit: "contain",
-                        margin: "0 16px 16px 0",
-                        cursor: "pointer",
-                      }}
-                      id={post.id}
-                      title={post.title}
-                      images={post.images}
-                      ownMembers={post.ownMembers}
-                      content={post.content}
-                      type={post.type}
-                      isSold={post.isSold}
-                    ></Card>
-                  </div>
-                ))}
+            {recentPosts && 
+              recentPosts
+              .filter((post) => post.type === "판매")
+              .map((post, index) => (
+              <div
+                className="cards-container"
+                key={index}
+                onClick={() => handleClick(post.id)}
+              >
+                <Card
+                  key={post.id}
+                  style={{
+                    objectFit: "contain",
+                    margin: "0 16px 16px 0",
+                    cursor: "pointer",
+                  }}
+                  id={post.id}
+                  title={post.title}
+                  images={post.images}
+                  ownMembers={post.ownMembers}
+                  content={post.content}
+                  type={post.type}
+                  isSold={post.isSold}
+                ></Card>
+              </div>
+            )).reverse()}
           </ImageList>
         </CustomTabPanel>
       </div>
