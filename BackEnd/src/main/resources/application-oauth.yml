@@ -26,3 +26,5 @@ spring:
             user-name-attribute: id
 logout:
   redirect-url: 'http://localhost:8080/logout'
+login:
+  redirect-url: 'http://localhost:3000/main'
