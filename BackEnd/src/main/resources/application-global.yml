@@ -4,6 +4,8 @@ server:
 ---
 spring:
   config:
+    activate:
+      on-profile: global
     import:
       - optional:file:.env[.properties]
   datasource:
