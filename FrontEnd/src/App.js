@@ -14,12 +14,17 @@ import PostMain from './pages/post.js';
 import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
+<<<<<<< Updated upstream
 import DetailPost from './components/PostList/DetailPost.jsx';
 
 import theme from './styles/theme'; 
 import { ThemeProvider } from '@mui/material/styles';
 
 import store from './store2/index.js';
+=======
+
+// import { useSelector } from 'react-redux'; // 
+>>>>>>> Stashed changes
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -55,6 +60,7 @@ const App = () => {
             <Route path="/login" element={<Login /> } />
             <Route path="/help" element={<Guide /> } />
             <Route path="/modify/:id" element={<Modify /> } />
+           
 
           </Routes>
             

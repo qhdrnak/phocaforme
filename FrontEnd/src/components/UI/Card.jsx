@@ -31,10 +31,36 @@ const CustomCard = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+// 로컬스토리지에 최근본 게시물 추가
+  const goToDetail = (id) => { 
+    const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
+    const cardInfo = {
+      id,
+      title,
+      images,
+      ownMembers,
+      targetMembers,
+      content,
+      type,
+      isBartered,
+      isSold
+    };
 
-  const goToDetail = (id) => {
-    // 최근 본 게시글 배열에 추가
+    const isExisting = existingRecentCard.some(card => card.id === id);
 
+    if (isExisting) { // 이미 본 카드가 있으면 제거하고 새로운 카드 추가
+      const updatedRecentCard = existingRecentCard.filter(card => card.id !== id); 
+      updatedRecentCard.push(cardInfo); // 새로운 카드 추가
+      localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
+    } else { // 없으면 그냥 추가
+      const updatedRecentCard = [...existingRecentCard, cardInfo]; 
+      if (updatedRecentCard.length > 5) {
+        updatedRecentCard.shift();
+      }
+      localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
+    }
+
+    
     navigate(`/post/${id}`);
   };
 
