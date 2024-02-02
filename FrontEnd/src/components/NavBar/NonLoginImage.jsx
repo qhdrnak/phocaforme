@@ -76,28 +76,27 @@ const NonLoginIcon = () => {
             theme={theme}
           >
             <Divider variant="middle" component="li" />
-            <Typography
-              sx={{
-                textAlign: "center",
-                color: theme.palette.primary.main,
-                p: 2,
-                fontSize: "1.2rem", // 글자 크기 조절
-                fontWeight: "bold", // 굵은 글자
-              }}
-            >
-              로그인이 필요한
-              <br />
-              서비스입니다.
-            </Typography>
-            <img
-              id="kakao-button"
-              src={kakao}
-              onClick={GotoLogin}
-              style={{
-                display: "block", // 이미지를 블록 요소로 설정하여 위아래 여백 추가
-                margin: theme.spacing(2), // 상단 여백 추가
-              }}
-            />
+						<Typography
+							sx={{ 
+								textAlign: 'center', 
+								color: theme.palette.primary.main,
+								p: 2,
+								fontSize: '1.2rem', // 글자 크기 조절
+    						fontWeight: 'bold', // 굵은 글자
+							}}
+							>
+							로그인이 필요한<br/>서비스입니다.
+						</Typography>
+            <img 	
+							id="kakao-button" 
+							src={kakao}
+							onClick={GotoLogin} 
+							style={{ 
+								display: 'block', // 이미지를 블록 요소로 설정하여 위아래 여백 추가
+                width: '8rem',
+								margin: theme.spacing(2), // 상단 여백 추가
+							}}
+							/>
           </Menu>
         </Paper>
       </Box>

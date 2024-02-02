@@ -39,31 +39,28 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <ScrollToTop />
-          <Grid container direction="column">
-            <Grid item>
-              <NavBar />
-            </Grid>
-            <Grid item>
-              <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/main" element={<Main />} />
-                <Route path="/alarm" element={<Alarm />} />
-                <Route path="/chat" element={<Chat />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/chatroom/:roomId" element={<ChatRoom />} />
-                <Route path="/write" element={<PostWrite />} />
-                <Route path="/post" element={<PostMain />} />
-                <Route path="/post/:id" element={<DetailPost />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/help" element={<Guide />} />
-                <Route path="/modify/:id" element={<Modify />} />
-              </Routes>
-            </Grid>
-            <Grid item>
-              <FloatingActionButtons />
-            </Grid>
-          </Grid>
+        <ScrollToTop />
+          <NavBar />
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/main" element={<Main />} />
+            <Route path="/alarm" element={<Alarm />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/chatroom/:roomId" element={<ChatRoom />} />
+            <Route path="/write" element={<PostWrite />}/>
+            <Route path="/post" element={<PostMain />} />
+            <Route path="/post/:id" element={<DetailPost />} />
+            <Route path="/login" element={<Login /> } />
+            <Route path="/help" element={<Guide /> } />
+            <Route path="/modify/:id" element={<Modify /> } />
+           
+
+          </Routes>
+            
+            <FloatingActionButtons />
+          
+         
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
