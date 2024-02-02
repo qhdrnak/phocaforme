@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import Chip from "@mui/material/Chip";
+
 import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
-
-import Chip from "@mui/material/Chip";
 
 const SellModify = ({ defaultGroup, defaultOwnMember, onChange }) => {
   const dispatch = useDispatch();

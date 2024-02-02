@@ -3,12 +3,12 @@ import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import RadioButton2 from "../../components/UI/RadioButton2.jsx";
-
 import { addPost } from "../../store2/post.js";
 
+import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+
+import RadioButton2 from "../../components/UI/RadioButton2.jsx";
 import BarterWrite from "./BarterWrite.jsx";
 import SellWrite from "./SellWrite.jsx";
 import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";

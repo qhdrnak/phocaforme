@@ -1,9 +1,6 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
 
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+import { Box, TextField, Button, Modal } from "@mui/material";
 
 const NicknameModal = ({ open, handleClose }) => {
   const style = {

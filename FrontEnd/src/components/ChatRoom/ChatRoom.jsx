@@ -1,15 +1,14 @@
 // ChatRoom.jsx 메시지전송x
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { sendChat } from "../../store2/chat.js";
-
 import { useParams, useLocation } from "react-router-dom";
+import { sendChat } from "../../store2/chat.js";
 
 import { useTheme } from "@mui/material/styles";
 
 import { Button, Container } from "@mui/material";
+import { PushPinRounded } from "@mui/icons-material";
 
-import PushPinRoundedIcon from "@mui/icons-material/PushPinRounded";
 import ChatMenu from "./ChatTop";
 import ChatSend from "./ChatSend";
 
@@ -58,7 +57,7 @@ const ChatRoom = () => {
         <ChatMenu updateMessages={updateMessages} postId={location.state} />
         <div id="chat-notice">
           <div id="notice-content">
-            <PushPinRoundedIcon id="notice-icon" />
+            <PushPinRounded id="notice-icon" />
             <p id="notice-title">
               <b>필독</b>
             </p>

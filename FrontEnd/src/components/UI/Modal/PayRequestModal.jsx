@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Box from "@mui/material/Box";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 
-import { sendChat } from "../../../store2/chat.js";
 import { pay } from "../../../store2/pay.js";
-import getCurrentTime from "../../../utils/currentTime.js";
 
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
+import {
+  Divider,
+  Box,
+  TextField,
+  Button,
+  IconButton,
+  Modal,
+} from "@mui/material";
+
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import { Divider } from "@mui/material";
+
+import getCurrentTime from "../../../utils/currentTime.js";
 
 const PayModal = ({ open, handleClose, updateMessages }) => {
   const { roomId } = useParams();

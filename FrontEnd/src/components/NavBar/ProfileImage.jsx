@@ -1,22 +1,26 @@
-import profile from "../../assets/images/NCT_도영.PNG";
-
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
+
+import { useTheme } from "@mui/material/styles";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  MenuItem,
+  Menu,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+  Divider,
+  Paper,
+} from "@mui/material";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import Divider from "@mui/material/Divider";
-import { useTheme } from "@mui/material/styles";
-import GPS from "./GPS";
-import { useNavigate } from "react-router-dom";
-import { Paper } from "@mui/material";
 
 import { logoutUser } from "../../store2/loginUser.js";
-import { useDispatch, useSelector } from "react-redux";
+
+import GPS from "./GPS";
+import profile from "../../assets/images/NCT_도영.PNG";
 
 const ProfileImage = () => {
   const theme = useTheme();

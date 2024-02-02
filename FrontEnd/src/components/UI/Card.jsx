@@ -1,17 +1,17 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { styled } from "@mui/material/styles";
 import TruncatedTitle from "../../styles/TruncatedTitle";
 
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-
-import { useNavigate } from "react-router-dom";
+import {
+  Card,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;

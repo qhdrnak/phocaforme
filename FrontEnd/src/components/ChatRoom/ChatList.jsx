@@ -1,15 +1,10 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Typography from "@mui/material/Typography";
-import Badge from "@mui/material/Badge";
-
 import { useNavigate } from "react-router-dom";
 
-export default function ChatList() {
+import { List, ListItem, ListItemText, Typography, Badge } from "@mui/material";
+
+const ChatList = () => {
   const navigate = useNavigate();
 
   const moveChatRoom = (roomId, articleId) => {
@@ -68,4 +63,5 @@ export default function ChatList() {
       </List>
     </div>
   );
-}
+};
+export default ChatList;

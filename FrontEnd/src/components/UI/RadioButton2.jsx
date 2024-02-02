@@ -1,11 +1,14 @@
 // 글 작성 라디오 버튼
 import React, { useState } from "react";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
 
-function RadioButton({ defaultType, onChange }) {
+import {
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+} from "@mui/material";
+
+const RadioButton = ({ defaultType, onChange }) => {
   const [value, setValue] = useState(defaultType); // 선택된 값 상태
 
   const handleChange = (event) => {
@@ -28,6 +31,6 @@ function RadioButton({ defaultType, onChange }) {
       </div>
     </FormControl>
   );
-}
+};
 
 export default RadioButton;

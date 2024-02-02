@@ -1,23 +1,24 @@
-import { Divider } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import * as React from "react";
 import { useSelector } from "react-redux";
-
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import MenuIcon from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-
 import { useNavigate, useParams } from "react-router-dom";
 
-import PayModal from "../UI/Modal/PayRequestModal";
-
-import * as React from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import PaymentIcon from "@mui/icons-material/Payment";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Logout from "@mui/icons-material/Logout";
+
+import { useTheme } from "@mui/material/styles";
+
+import {
+  Divider,
+  Typography,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+} from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+
+import PayModal from "../UI/Modal/PayRequestModal";
 
 const ChatMenu = ({ updateMessages, postId }) => {
   const theme = useTheme();

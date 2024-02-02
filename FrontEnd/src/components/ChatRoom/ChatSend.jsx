@@ -1,21 +1,12 @@
-import * as React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
-
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-
-import Popover from "@mui/material/Popover";
 import { useTheme } from "@mui/material/styles";
-
 import { sendChat } from "../../store2/chat.js";
-
-import ArrowCircleUpIcon from "@mui/icons-material/ArrowCircleUp";
-import AddIcon from "@mui/icons-material/Add";
-import ImageIcon from "@mui/icons-material/Image";
-
 import getCurrentTime from "../../utils/currentTime";
+
+import { TextField, InputAdornment, Popover } from "@mui/material";
+import { ArrowCircleUp, Add, Image } from "@mui/icons-material";
 
 const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   const theme = useTheme();
@@ -88,7 +79,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         <div id="add-popover-container">
           <div id="image-icon-container">
             <div id="image-icon-background">
-              <ImageIcon id="image-icon" />
+              <Image id="image-icon" />
             </div>
             <p>사진</p>
           </div>
@@ -104,12 +95,12 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         InputProps={{
           startAdornment: (
             <InputAdornment>
-              <AddIcon onClick={handleClick} />
+              <Add onClick={handleClick} />
             </InputAdornment>
           ),
           endAdornment: (
             <InputAdornment>
-              <ArrowCircleUpIcon onClick={handleSendClick} fontSize="large" />
+              <ArrowCircleUp onClick={handleSendClick} fontSize="large" />
             </InputAdornment>
           ),
         }}

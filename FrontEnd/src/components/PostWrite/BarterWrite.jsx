@@ -1,4 +1,3 @@
-// 게시글(교환) 생성
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -25,8 +24,8 @@ const BarterWrite = ({ onChange }) => {
   const [ownMembers, setOwnMembers] = useState([]);
   const [targetMembers, setTargetMembers] = useState([]);
 
-  const [ownMembersInput, setOwnMembersInput] = useState('');
-  const [targetMembersInput, setTargetMembersInput] = useState('');
+  const [ownMembersInput, setOwnMembersInput] = useState("");
+  const [targetMembersInput, setTargetMembersInput] = useState("");
 
   /// 수정해야함
   const handleOwnMemberChange = (member) => {
@@ -47,7 +46,6 @@ const BarterWrite = ({ onChange }) => {
     } else {
       setTargetMembersInput(targetMembersInput);
     }
-    
   };
 
   // 멤버 삭제 관련

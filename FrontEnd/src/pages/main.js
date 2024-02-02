@@ -1,4 +1,5 @@
 import { Container } from '@mui/material';
+
 import ChartTab from '../components/Chart/ChartTab';
 import Search from '../components/Search/Search.jsx';
 import PreviewPost from '../components/PostList/PreviewPost.jsx';

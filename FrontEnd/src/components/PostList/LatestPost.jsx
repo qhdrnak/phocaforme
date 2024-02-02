@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import {
@@ -11,10 +12,9 @@ import {
   ImageListItem,
 } from "@mui/material";
 
-import { useNavigate } from "react-router-dom";
 import Card from "../../components/UI/Card";
 
-function CustomTabPanel(props) {
+const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -33,7 +33,7 @@ function CustomTabPanel(props) {
       </div>
     </>
   );
-}
+};
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -41,12 +41,12 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
-}
+};
 
 const LatestPost = () => {
   const navigate = useNavigate();

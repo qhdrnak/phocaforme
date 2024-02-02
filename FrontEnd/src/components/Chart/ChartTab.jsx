@@ -1,14 +1,12 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+
+import { Container, Tabs, Tab, Typography, Box } from "@mui/material";
+
 import ChartBoy from "./ChartBoy";
 import ChartGirl from "./ChartGirl";
-import { Container } from "@mui/material";
 
-function CustomTabPanel(props) {
+const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   const now = new Date();
@@ -35,7 +33,7 @@ function CustomTabPanel(props) {
       </div>
     </>
   );
-}
+};
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -43,14 +41,14 @@ CustomTabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `simple-tab-${index}`,
     "aria-controls": `simple-tabpanel-${index}`,
   };
-}
+};
 
-export default function ChartTab() {
+const ChartTab = () => {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -85,4 +83,5 @@ export default function ChartTab() {
       </CustomTabPanel>
     </Container>
   );
-}
+};
+export default ChartTab;
