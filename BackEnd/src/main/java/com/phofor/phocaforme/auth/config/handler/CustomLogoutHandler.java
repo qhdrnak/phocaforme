@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.auth.config.handler;
 
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.auth.util.CookieUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,12 +34,11 @@ public class CustomLogoutHandler implements LogoutHandler {
 
     // 레디스 서비스
     private final RedisService redisService;
-    private Cookie tokenCookie;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 쿠키에 저장된 access token 가져오기
-        String accessToken = resolveToken(request);
+        String accessToken = CookieUtil.resolveToken(request).getValue();
         log.debug("[CustomLogoutHandler] - Access Token : {}", accessToken);
 
         // 로그아웃이 2번에 걸쳐서 진행됨
@@ -48,8 +48,14 @@ public class CustomLogoutHandler implements LogoutHandler {
             redisService.deleteMapData(accessToken);
 
             // 쿠키에 저장된 access token 지우기
-            tokenCookie.setMaxAge(0);
-            response.addCookie(tokenCookie);
+            Cookie[] cookies = request.getCookies();
+            if(cookies != null) {
+                for(int i = cookies.length-1; i>=0; i--){
+                    Cookie curr = cookies[i];
+                    curr.setMaxAge(0);
+                    response.addCookie(curr);
+                }
+            }
 
             // 카카오 로그아웃 URL
             String kakaoLogoutUrl = "https://kauth.kakao.com/oauth/logout?client_id=" + clientId
@@ -71,18 +77,4 @@ public class CustomLogoutHandler implements LogoutHandler {
         }
     }
 
-    // 쿠키에서 Access token 가져오기
-    private String resolveToken(HttpServletRequest request) {
-        String token = null;
-        Cookie[] cookies = request.getCookies();
-        if(cookies != null) {
-            for(Cookie cookie : cookies) {
-                if("token".equals(cookie.getName())){
-                    token = cookie.getValue();
-                    tokenCookie = cookie;
-                }
-            }
-        }
-        return token;
-    }
 }
