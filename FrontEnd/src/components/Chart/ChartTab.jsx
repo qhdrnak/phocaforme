@@ -17,7 +17,7 @@ const CustomTabPanel = (props) => {
     .padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
 
   return (
-    <>
+    <div>
       <div
         role="tabpanel"
         hidden={value !== index}
@@ -31,7 +31,7 @@ const CustomTabPanel = (props) => {
           </Box>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

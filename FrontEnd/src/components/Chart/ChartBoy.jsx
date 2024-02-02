@@ -1,20 +1,17 @@
-import Avatar from "@mui/material/Avatar";
+import { Avatar, Grid } from "@mui/material";
+
 import Img from "../../assets/images/NCT_제노.PNG";
 
 const ChartBoy = (props) => {
   return (
     <div>
-      <div id="chart-container">
-        <div id="rank-1-idol">
+      <Grid container spacing={2} direction="row" id="chart-container">
+        <Grid item xs={6} id="rank-1-idol">
           <div className="main-big">1. </div>
-          <Avatar
-            id="rank-1-image"
-            src={Img}
-            sx={{ width: "4rem", height: "4rem" }}
-          />
+          <Avatar id="rank-1-image" src={Img} />
           <div className="main-big">{props.data[0]}</div>
-        </div>
-        <div id="rank-23-idol">
+        </Grid>
+        <Grid item id="rank-23-idol" xs={6}>
           <div id="rank-2-idol">
             <p>2. </p>
             <Avatar className="rank-23-image" src={Img} />
@@ -25,8 +22,8 @@ const ChartBoy = (props) => {
             <Avatar className="rank-23-image" src={Img} />
             <p>{props.data[2]}</p>
           </div>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </div>
   );
 };

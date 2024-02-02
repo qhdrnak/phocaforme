@@ -34,7 +34,7 @@ const MyCarousel = () => {
   };
 
   return (
-    <div style={{ marginTop: "2rem" }}>
+    <div style={{ marginTop: "2rem", textAlign: "center" }}>
       <Carousel
         cycleNavigation={true}
         navButtonsAlwaysVisible={false}

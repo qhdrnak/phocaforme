@@ -21,7 +21,14 @@ const theme = createTheme({
   },
 
   components: {
-    
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          padding: '0 0 3vh 0',
+          width: '100vw'
+        }
+      }
+    },
     MuiMenu: {
       styleOverrides: {
         paper: {

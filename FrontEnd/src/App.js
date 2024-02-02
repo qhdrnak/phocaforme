@@ -34,7 +34,6 @@ const ScrollToTop = () => {
 
 const App = () => {
   // const store = createStore(rootReducer);
-  
 
   return (
     <Provider store={store}>

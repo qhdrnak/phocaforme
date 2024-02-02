@@ -22,7 +22,6 @@
 
 
 .main-big {
-    font-size: 18px;
     font-weight: 600;
     
 }
@@ -247,7 +246,7 @@
 #rank-1-idol {
     display: flex;
     align-items: center;
-    width: 15rem;
+    /* width: 15rem; */
 }
 
 
@@ -657,6 +656,8 @@
 }
 
 /* 메인페이지 */
+
+
 #search-container {
     display: flex;
     flex-direction: column;
@@ -699,8 +700,7 @@
 }
 
 .card-style {
-    width: 13rem;
-    height: fit-content;
+    width: 35vw;
     margin: 0.2rem;
     position: relative;
 }
