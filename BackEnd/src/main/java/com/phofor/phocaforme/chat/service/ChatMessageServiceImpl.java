@@ -3,6 +3,9 @@ package com.phofor.phocaforme.chat.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserEntity;
+import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.chat.dto.request.ChatMessageRequestDto;
 import com.phofor.phocaforme.chat.dto.response.ChatMessageResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatMessage;
@@ -28,6 +31,9 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     private final ChatMessageRepository chatMessageRepository;
 
+    // RedisService 받아오짱
+    private final RedisService redisService;
+
     private final AmazonS3Client amazonS3Client;
     private String S3Bucket = "photocardforme";  // Bucket 이름
 
@@ -36,6 +42,12 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     public ChatMessageResponseDto save(ChatMessageRequestDto chatMessageRequestDto, Integer chatMessageRoomId, Map<String, Object> header) {
         ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(chatMessageRequestDto);
         // header? =
+
+//        CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
+//        UserEntity userEntity = customOAuth2User.getUserEntity();
+//        String userId = userEntity.getUserId();
+//        String userName = userEntity.getUserName();
+//        log.info(userName);
 
         if (chatMessageRequestDto.getImgCode()!=null) {
             try {
@@ -93,10 +105,12 @@ public class ChatMessageServiceImpl implements ChatMessageService{
         // https://distribute.tistory.com/136 이 빌딩을 완료해줘야
         // 아니면 서비스에서 함수를 불러오고, 코드는 서비스에 짜던가
         //return new ChatMessageResponseDto();    // 그래서 위에서 싹 다 해주면 여기서 리턴 한번만 해주면 된다
-
+        //chatMessageResponseDto.setUserEmail(userName);
+        //log.info(userName);
 
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoomId(chatMessageRequestDto.getChatRoomId())
+//                .senderId(chatMessageRequestDto.getUserEmail())
                 .senderId(chatMessageRequestDto.getUserEmail())
                 .message(chatMessageRequestDto.getMessage())
                 .imgCode(chatMessageResponseDto.getImgCode())   // 변경된거 쓸거기 때문에
