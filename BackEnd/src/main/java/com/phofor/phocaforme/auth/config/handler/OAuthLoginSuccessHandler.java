@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -38,6 +39,10 @@ import java.util.Map;
 @Slf4j
 @Component
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Value("${login.redirect-url}")
+    String mainPage;
+
     // DB에서 CustomOAuth2User를 가져오기 위한 service
     private final UserService userService;
     // Redis에서 CustomOAuth2User를 저장하기 위한 service
@@ -110,7 +115,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                         "Max-Age=" +
                         time
         );
-        
+
         // 유저 아이디
         response.addHeader("Set-Cookie",
                 "userId=" + userEntity.getUserId() + "; " +
@@ -120,7 +125,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                         "Max-Age=" +
                         time
         );
-        
+
         // 유저 닉네임
         response.addHeader("Set-Cookie",
                 "nickname=" + userName + "; " +
@@ -130,6 +135,8 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                         "Max-Age=" +
                         time
         );
+
+        response.sendRedirect(mainPage);
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
