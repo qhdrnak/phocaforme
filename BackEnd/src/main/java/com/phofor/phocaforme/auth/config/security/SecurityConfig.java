@@ -71,7 +71,8 @@ public class SecurityConfig {
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("auth/login/**", "/main", "/error").permitAll()
+                        .requestMatchers("auth/login/**", "/main", "/error",
+                                "firebase/**", "/css/**","/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // oauth2.0 로그인 설정
