@@ -1,6 +1,6 @@
 FROM nginx:latest
 
-COPY ./dist /usr/share/nginx/html
+COPY ./build /usr/share/nginx/html
 COPY ./src/assets/images /usr/share/nginx/html/src/assets/images
 
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
