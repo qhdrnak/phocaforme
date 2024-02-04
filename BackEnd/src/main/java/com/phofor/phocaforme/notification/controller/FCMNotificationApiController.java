@@ -1,22 +1,28 @@
-//package com.phofor.phocaforme.notification.controller;
-//
-//import com.phofor.phocaforme.notification.dto.FCMNotificationRequestDto;
-//import com.phofor.phocaforme.notification.service.FCMNotificationService;
-//import lombok.RequiredArgsConstructor;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//@RequiredArgsConstructor
-//@RestController
-//@RequestMapping("/api/v1/notification")
-//public class FCMNotificationApiController {
-//
-//    private final FCMNotificationService fcmNotificationService;
-//
-//    @PostMapping()
-//    public String sendNotificationByToken(@RequestBody FCMNotificationRequestDto requestDto) {
-//        return fcmNotificationService.sendNotificationByToken(requestDto);
-//    }
-//}
+package com.phofor.phocaforme.notification.controller;
+
+import com.phofor.phocaforme.notification.dto.RequestDTO;
+import com.phofor.phocaforme.notification.service.FirebaseCloudMessageService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+
+@RestController
+@RequiredArgsConstructor
+public class FCMNotificationApiController {
+
+    private final FirebaseCloudMessageService firebaseCloudMessageService;
+
+    @PostMapping("/api/fcm")
+    public ResponseEntity pushMessage(@RequestBody RequestDTO requestDTO) throws IOException {
+        System.out.println(requestDTO.getTargetToken() + " "
+                + requestDTO.getTitle() + " " + requestDTO.getBody());
+
+        firebaseCloudMessageService.sendMessageTo(
+                requestDTO.getTargetToken(),
+                requestDTO.getTitle(),
+                requestDTO.getBody());
+        return ResponseEntity.ok().build();
+    }
+}

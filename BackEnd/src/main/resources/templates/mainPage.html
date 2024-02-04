@@ -3,38 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-    <script type="module" src="/firebase-messaging-sw.js"></script>
-    <script>
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                console.log('Notification permission granted.');
-                getToken(messaging, { vapidKey: 'AIzaSyD-iDPmb0MyrFHqdEKVdaFs9V9vT4Rc-2w' })
-                    .then((currentToken) => {
-                        if (currentToken) {
-                            console.log(currentToken);
-                            document.getElementById('token').textContent = currentToken;
-                        } else {
-                            console.log('No registration token available. Request permission to generate one.');
-                        }
-                    }).catch((err) => {
-                    console.log('An error occurred while retrieving token. ', err);
-                });
-            } else {
-                Notification.requestPermission(permission => {
-                    if(permission === 'granted') {
-                        send_notification();
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getMessaging, getToken, onMessage } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyD-iDPmb0MyrFHqdEKVdaFs9V9vT4Rc-2w",
+            authDomain: "phocaforme.firebaseapp.com",
+            projectId: "phocaforme",
+            storageBucket: "phocaforme.appspot.com",
+            messagingSenderId: "250202437051",
+            appId: "1:250202437051:web:14ab6bb0445aad9b08009e",
+            measurementId: "G-9EZG3PJXLT"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
+                console.log('Service Worker 등록 성공:', registration);
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        console.log('Notification permission granted.');
+
+                        // 서비스 워커가 준비되었고, 알림 권한이 부여되었을 때 토큰 요청
+                        navigator.serviceWorker.ready.then((registration) => {
+                            getToken(messaging, {
+                                serviceWorkerRegistration: registration,
+                                vapidKey: 'BKkT4N3NfSIiQGBjfT6t6xMFQykGZHHS0h_UVzMetYaRBe8HxcM5jb8ON_GVjA2gnZAOMY7HmMT3GTJpgl0ZzdQ'
+                            }).then((currentToken) => {
+                                if (currentToken) {
+                                    console.log("device_token: " + currentToken);
+                                    // Send the token to your server and update the UI if necessary
+                                    // ...
+                                } else {
+                                    // Show permission request UI
+                                    console.log('No registration token available. Request permission to generate one.');
+                                    // ...
+                                }
+                            }).catch((err) => {
+                                console.log('An error occurred while retrieving token. ', err);
+                                // ...
+                            });
+                        });
+                    } else {
+                        console.log('Permission denied');
                     }
-                })
-                console.log('Permission denied');
-            }
-        }).catch((err) => {
-            console.log('Unable to get permission to notify.', err);
-        });
+                });
+            }).catch(error => {
+                console.error('Service Worker 등록 실패:', error);
+            });
+            onMessage((payload) => {
+                console.log('Message received. ', payload);
+                // ...
+            });
+        }
     </script>
 </head>
 <body>
 <br>
 <h1>메인 페이지</h1>
-<div id="token"></div>
+<h1 id="token"></h1>
 </body>
 </html>

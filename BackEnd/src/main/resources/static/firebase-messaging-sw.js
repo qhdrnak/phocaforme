@@ -1,12 +1,13 @@
 // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
 // import { getMessaging, getToken } from "firebase/messaging";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getMessaging, getToken } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js';
+// import { initializeApp } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+// import { getMessaging, getToken } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js';
 
-// importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
-// // eslint-disable-next-line no-undef
-// importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js");
+// importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
+// importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js");
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,17 +25,40 @@ measurementId: "G-9EZG3PJXLT"
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
-        .then(function(response) {
-            // Service worker registration done
-            console.log('Registration Successful', response);
-        })
-        .catch(function(error) {
-            // Service worker registration failed
-            console.log('Registration Failed', error);
-        });
-}
+messaging.onBackgroundMessage((payload) => {
+    console.log(
+        '[firebase-messaging-sw.js] Received background message ',
+        payload
+    );
+    // Customize notification here
+    const notificationTitle = 'Background Message Title';
+    const notificationOptions = {
+        body: 'Background Message body.',
+        icon: '/firebase-logo.png'
+    };
+
+    self.registration.showNotification(notificationTitle, notificationOptions);
+});
+
+self.addEventListener("push", (event) => {
+
+    const notif = event.data.json().notification;
+
+    event.waitUntil(self.registration.showNotification(notif.title , {
+        body: notif.body,
+        icon: notif.image,
+        data: {
+            url: notif.click_action
+        }
+    }));
+
+});
+
+self.addEventListener("notificationclick", (event) => {
+
+    event.waitUntil(clients.openWindow(event.notification.data.url));
+
+});
