@@ -30,7 +30,7 @@ public class SocketHandler extends TextWebSocketHandler {   // TextWebSocketHand
     List<HashMap<String, Object>> sessions = new ArrayList<>(); // roomNumber 별로 세션 저장
     static int roomIndex = -1;
     private String S3Bucket = "photocardforme"; // Bucket 이름 aws img
-    @Autowired  // aws img test
+    //@Autowired  // aws img test
     AmazonS3Client amazonS3Client;
 
     // 파일 저장 경로
