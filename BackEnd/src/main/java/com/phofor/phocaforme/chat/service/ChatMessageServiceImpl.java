@@ -50,7 +50,9 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 //        log.info(userName);
 
         String userId = (String) header.get("userId");
+        String userNickname = (String) header.get("nickname");
         log.info("여기는 서비스단의 유저아이디 : " + userId);
+        log.info("여기는 서비스단의 유저닉네임 : " + userNickname);
 
         if (chatMessageRequestDto.getImgCode()!=null) {
             try {

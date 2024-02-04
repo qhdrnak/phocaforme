@@ -1,10 +1,13 @@
 package com.phofor.phocaforme.chat.controller;
 
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.chat.dto.response.ChatRoomResponseDto;
 import com.phofor.phocaforme.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +28,9 @@ public class ChatRoomController {
     // 나의 모든 채팅방 리스트 반환해주기
 
     // 나의 모든 채팅방 리스트 반환
-    @GetMapping("/chatRoom/{userId}")
-    public ResponseEntity<List<ChatRoomResponseDto>> getChatRoomAll(@PathVariable String userId){
-        return ResponseEntity.ok().body(chatRoomService.getAllByOwnerIdOrVisiterId(userId));
+    @GetMapping("/chatRoom")
+    public ResponseEntity<List<ChatRoomResponseDto>> getChatRoomAll(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
+        return ResponseEntity.ok().body(chatRoomService.getAllByOwnerIdOrVisiterId(customOAuth2User));
     }
 
 //    @PostMapping

@@ -1,5 +1,7 @@
 package com.phofor.phocaforme.chat.service;
 
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.chat.dto.response.ChatRoomResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
@@ -19,12 +21,20 @@ import java.util.List;
 public class ChatRoomServiceImpl implements ChatRoomService{
 
     private final ChatRoomRepository chatRoomRepository;
+    private final RedisService redisService;
+    //CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
+//        UserEntity userEntity = customOAuth2User.getUserEntity();
+//        String userId = userEntity.getUserId();
+//        String userName = userEntity.getUserName();
+//        log.info(userName);
 
     // 채팅방 내역 조회
     @Override
-    public List<ChatRoomResponseDto> getAllByOwnerIdOrVisiterId(String userId) {
+    public List<ChatRoomResponseDto> getAllByOwnerIdOrVisiterId(CustomOAuth2User customOAuth2User) {
+        String myId = customOAuth2User.getUserEntity().getUserId();
+        log.info(myId);
         List<ChatRoomResponseDto> allChatRoomDto = new ArrayList<>();
-        for (ChatRoom c : chatRoomRepository.findAllByOwnerIdOrVisiterId(userId, userId)) {
+        for (ChatRoom c : chatRoomRepository.findAllByOwnerIdOrVisiterId(myId, myId)) {
             allChatRoomDto.add(ChatRoomResponseDto.of(c));
         }
         return allChatRoomDto;

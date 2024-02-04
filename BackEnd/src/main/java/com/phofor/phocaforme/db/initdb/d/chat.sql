@@ -10,7 +10,7 @@ create table barter_chat_room
     barter_latest_chat         INTEGER,
     barter_owner_latest_chat   INTEGER,
     barter_visitor_latest_chat INTEGER,
-    barter_room_created_at     TIMESTAMP,
+    barter_room_created_at     TIMESTAMP not null default CURRENT_TIMESTAMP,
     barter_chat_room_delete    boolean default false
 );
 
