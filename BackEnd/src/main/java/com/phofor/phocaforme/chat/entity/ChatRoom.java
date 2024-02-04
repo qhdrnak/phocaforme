@@ -2,6 +2,8 @@ package com.phofor.phocaforme.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -25,18 +27,20 @@ public class ChatRoom {
     private Integer boardId;    // 해당 교환 게시물 아이디
     @Column(name = "barter_owner_id")
     private String ownerId; // 게시글 작성자 아이디
-    @Column(name = "barter_visiter_id")
+    @Column(name = "barter_visitor_id")
     private String visiterId;   // 교환 희망자 아이디
     @Column(name = "barter_board_title")
     private String boardTitle;  // 게시글 제목
-    @JoinColumn(name = "barter_chat_latest_id", referencedColumnName = "barter_chat_id")
+    @JoinColumn(name = "barter_latest_chat", referencedColumnName = "barter_chat_id")
     @ManyToOne // 나중에 barter_latest_chat 으로 바꿔주기
     private ChatMessage chatLatest;   // 마지막 채팅 아이디
-    @Column(name = "barter_owner_latest_id")
+    @Column(name = "barter_owner_latest_chat")
     private Integer ownerLatestId;   // 게시글 작성자가 마지막으로 본 채팅id
-    @Column(name = "barter_visiter_latest_id")
-    private Integer visiterLatestId; // 교환 희망자가 마지막으로 본 채팅 id
-    @CreatedDate
+    @Column(name = "barter_visitor_latest_chat")
+    private Integer visitorLatestId; // 교환 희망자가 마지막으로 본 채팅 id
+    @CreationTimestamp(source = SourceType.DB)
     @Column(name = "barter_room_created_at")
     private LocalDateTime createdAt;    // 채팅방 생성일자
+    @Column(name = "barter_chat_room_delete")
+    private boolean deleteRoom;
 }

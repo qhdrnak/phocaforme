@@ -38,8 +38,9 @@ public class ChatRoomController {
 //        Integer chatRoomId = chatRoomService.registChatRoom(boardId);
 //        return new ResponseEntity<Integer>(chatRoomId,HttpStatus.OK);
 //    }
-    @PostMapping("/chatRoom/{boardId}/{userId}")
-    public ResponseEntity<ChatRoomResponseDto> getChatRoom(@PathVariable Integer boardId, @PathVariable String userId) {
-        return ResponseEntity.ok().body(chatRoomService.getChatRoomByBoardIdAndVisiterId(boardId, userId));
+
+    @PostMapping("/chatRoom/{boardId}")
+    public ResponseEntity<ChatRoomResponseDto> getChatRoom(@PathVariable Integer boardId, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+        return ResponseEntity.ok().body(chatRoomService.getChatRoomByBoardIdAndVisiterId(boardId, customOAuth2User));
     }
 }

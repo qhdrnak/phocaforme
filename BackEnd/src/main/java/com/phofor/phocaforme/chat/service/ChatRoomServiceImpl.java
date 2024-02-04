@@ -31,10 +31,10 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     // 채팅방 내역 조회
     @Override
     public List<ChatRoomResponseDto> getAllByOwnerIdOrVisiterId(CustomOAuth2User customOAuth2User) {
-        String myId = customOAuth2User.getUserEntity().getUserId();
-        log.info(myId);
+        String userId = customOAuth2User.getUserEntity().getUserId();
+        log.info(userId);
         List<ChatRoomResponseDto> allChatRoomDto = new ArrayList<>();
-        for (ChatRoom c : chatRoomRepository.findAllByOwnerIdOrVisiterId(myId, myId)) {
+        for (ChatRoom c : chatRoomRepository.findAllByOwnerIdOrVisiterId(userId, userId)) {
             allChatRoomDto.add(ChatRoomResponseDto.of(c));
         }
         return allChatRoomDto;
@@ -43,7 +43,8 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     // 채팅방 만들기
     @Override
     @Transactional
-    public ChatRoomResponseDto getChatRoomByBoardIdAndVisiterId(Integer boardId, String userId){
+    public ChatRoomResponseDto getChatRoomByBoardIdAndVisiterId(Integer boardId, CustomOAuth2User customOAuth2User){
+        String userId = customOAuth2User.getUserEntity().getUserId();
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByBoardIdAndVisiterId(boardId, userId);
         // 나중에 게시글이 생기면 사용할 수 있어요~~
 //        private final BartarRepository bartarRepository;
@@ -57,7 +58,7 @@ public class ChatRoomServiceImpl implements ChatRoomService{
             ChatRoom saveChatRoom = ChatRoom.builder()
                     .boardId(boardId)
                     .boardTitle("저 마크 가지고 싶어요")
-                    .ownerId("애옹이")
+                    .ownerId("4df5a517-fd37-4175-a0f6-0ea843899d34")
                     .visiterId(userId)
                     .build();
 
