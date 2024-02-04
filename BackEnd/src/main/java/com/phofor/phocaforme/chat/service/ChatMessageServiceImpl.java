@@ -49,6 +49,9 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 //        String userName = userEntity.getUserName();
 //        log.info(userName);
 
+        String userId = (String) header.get("userId");
+        log.info("여기는 서비스단의 유저아이디 : " + userId);
+
         if (chatMessageRequestDto.getImgCode()!=null) {
             try {
                 String[] strings = chatMessageRequestDto.getImgCode().split(",");   // ","를 기준으로 바이트 코드 나눠주기
@@ -108,10 +111,11 @@ public class ChatMessageServiceImpl implements ChatMessageService{
         //chatMessageResponseDto.setUserEmail(userName);
         //log.info(userName);
 
+
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoomId(chatMessageRequestDto.getChatRoomId())
 //                .senderId(chatMessageRequestDto.getUserEmail())
-                .senderId(chatMessageRequestDto.getUserEmail())
+                .senderId(userId)
                 .message(chatMessageRequestDto.getMessage())
                 .imgCode(chatMessageResponseDto.getImgCode())   // 변경된거 쓸거기 때문에
                 .build();

@@ -24,7 +24,7 @@ import java.util.UUID;
 // https://velog.io/@dirn0568/Socket-%EC%8B%A4%EC%8B%9C%EA%B0%84-%EC%B1%84%ED%8C%85-%EC%9D%B4%EB%AF%B8%EC%A7%80%EC%A0%84%EC%86%A1
 
 
-@Component
+//@Component
 public class SocketHandler extends TextWebSocketHandler {   // TextWebSocketHandler 상속
 
     List<HashMap<String, Object>> sessions = new ArrayList<>(); // roomNumber 별로 세션 저장

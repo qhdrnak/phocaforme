@@ -2,6 +2,8 @@ package com.phofor.phocaforme.chat.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
@@ -28,7 +30,7 @@ public class ChatMessage {
 //    @Column(name = "barter_chat_article_id")
 //    private Integer articleId;  // 게시글의 아이디
 
-    @CreatedDate
+    @CreationTimestamp(source = SourceType.DB)
     @Column(name = "barter_chat_created_at")
     private LocalDateTime createdAt;    // 생성시간
 

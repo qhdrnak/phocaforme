@@ -21,6 +21,7 @@ services:
       MARIADB_USER: ${USER_NAME}
       MARIADB_PASSWORD: ${USER_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      TZ: Asia/Seoul
 volumes:
   redis-data:
   mariadb-data:

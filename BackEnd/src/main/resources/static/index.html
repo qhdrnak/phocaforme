@@ -119,6 +119,7 @@
       alert("error" + error);
    });
 
+
    function sendMessage() {
       let sendText = $('#sendText').val();
       ws.send("/pub/chats/" + roomId, {}, JSON.stringify({
