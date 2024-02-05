@@ -1,9 +1,7 @@
 package com.phofor.phocaforme.auth.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.phofor.phocaforme.board.entity.Barter;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +12,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Spring Data Jpa 사용하여 UserEntity 생성
@@ -59,4 +59,7 @@ public class UserEntity implements Serializable {
 
     @Column(name="oauth_type", columnDefinition="VARCHAR(50)")
     private String oauthType;
+
+    @OneToMany(mappedBy = "user")
+    private List<Barter> barters = new ArrayList<>();
 }

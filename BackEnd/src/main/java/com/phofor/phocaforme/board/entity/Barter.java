@@ -2,6 +2,7 @@ package com.phofor.phocaforme.board.entity;
 
 // import com.ssafy.phofo.auth.entity.UserEntity;
 
+import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -48,9 +49,9 @@ public class Barter extends BaseEntity {
     @Column(name = "barter_images")
     private List<BarterImage> images = new ArrayList<>();
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private UserEntity user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     private boolean bartered;
     private boolean barterStatus;
