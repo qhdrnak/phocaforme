@@ -2,9 +2,9 @@ package com.phofor.phocaforme.board.dto;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
+// 교환게시판 글 작성폼
 @Data
 public class BarterRegisterDto {
     // 앨범이름 
