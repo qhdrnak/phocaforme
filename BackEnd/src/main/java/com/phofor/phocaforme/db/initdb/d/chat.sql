@@ -1,3 +1,16 @@
+create table user
+(
+    user_id     CHAR(50) primary key not null,
+    user_name   CHAR(20) not null,
+    kakao_id    VARCHAR(50) unique,
+    email       VARCHAR(100) unique,
+    nickname    VARCHAR(50) unique,
+    bias_id     BIGINT,
+    created_at  TIMESTAMP not null default current_timestamp,
+    updated_at  TIMESTAMP not null default current_timestamp,
+    oauth_type  VARCHAR(50)
+);
+
 create table barter_chat_room
 (
     barter_chat_room_id        INTEGER primary key not null auto_increment,
