@@ -42,13 +42,14 @@ public class BarterController {
     }
 
     // 작성자 안 넣어서 작성자 넣어야해요
+    // HttpServletRequest request,
     @PostMapping
-    public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, HttpServletRequest request, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
-         String accessToken = CookieUtil.resolveToken(request).getValue();
-         CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
+    public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
+//         String accessToken = CookieUtil.resolveToken(request).getValue();
+//         CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
         UserEntity userEntity = oauth2User.getUserEntity();
                 // customOAuth2User.getUserEntity();
-        System.out.println(userEntity.getUserId());
+        System.out.println("아이디 = " + userEntity.getUserId());
 
         Long barterId = barterService.registerBarter(registerDto);
 
