@@ -19,7 +19,7 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const messaging = getMessaging(app);
+        const messaging = getMessaging();
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
@@ -55,7 +55,7 @@
             }).catch(error => {
                 console.error('Service Worker 등록 실패:', error);
             });
-            onMessage((payload) => {
+            onMessage(messaging, (payload) => {
                 console.log('Message received. ', payload);
                 // ...
             });
