@@ -286,6 +286,10 @@
 }
 
 /* 채팅페이지 */
+#fileInput {
+    display: none;
+  } 
+  
 #chatroom-title {
     font-weight: 700;
 }

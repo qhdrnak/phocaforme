@@ -1,7 +1,7 @@
-// ChatRoom.jsx 메시지전송x
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
+
 import { sendChat } from "../../store2/chat.js";
 
 import { useTheme } from "@mui/material/styles";
@@ -20,9 +20,7 @@ const ChatRoom = () => {
 
   const dispatch = useDispatch();
 
-  const loginUser = useSelector((state) =>
-    state.user ? state.user.user.name : ""
-  );
+  const loginUser = useSelector((state) => (state.user ? state.user.user : ""));
 
   const chats = useSelector((state) => (state.chat ? state.chat.chat : []));
   const chatList = chats.filter((chat) => chat.chatRoomId == roomId);
@@ -73,16 +71,20 @@ const ChatRoom = () => {
               <div
                 key={index}
                 className={
-                  messageData.sender == loginUser
+                  messageData.sender == loginUser.name
                     ? "chat-owner"
                     : "chat-visiter"
                 }
               >
-                {messageData.sender == loginUser ? (
+                {messageData.sender == loginUser.name ? (
                   <p>{messageData.sendTime}</p>
                 ) : null}
                 <div className="chat-message">
-                  <div>{messageData.message}</div>
+                  {messageData.imgCode == null ? (
+                    <div>{messageData.message}</div>
+                  ) : (
+                    <img src={messageData.imgCode}></img>
+                  )}
                   <div>
                     {messageData.isPay ? (
                       <Button id="pay-button" onClick={handlePay}>
@@ -91,7 +93,7 @@ const ChatRoom = () => {
                     ) : null}
                   </div>
                 </div>
-                {messageData.sender != loginUser ? (
+                {messageData.sender != loginUser.name ? (
                   <p>{messageData.sendTime}</p>
                 ) : null}
               </div>

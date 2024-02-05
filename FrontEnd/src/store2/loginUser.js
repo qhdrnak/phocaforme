@@ -4,6 +4,7 @@ const initialUserState = {
   user: {
     id: '1234',
     name: '제노예요',
+    userEmail: '제노예요',
     location: '',
   },
 };
@@ -14,6 +15,7 @@ const loginUserSlice = createSlice({
   reducers: {
     loginUser: (state, action) => {
       state.user = action.payload;
+
     },
     logoutUser: (state) => {
       state.user = null;
