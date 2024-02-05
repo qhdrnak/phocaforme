@@ -1,7 +1,7 @@
 package com.phofor.phocaforme.board.repository;
 
-import com.ssafy.phofo.board.entity.Barter;
-import com.ssafy.phofo.board.entity.BarterFindIdol;
+import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.entity.BarterFindIdol;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

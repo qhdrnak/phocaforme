@@ -5,10 +5,10 @@ package com.phofor.phocaforme.board.controller;
 //import com.ssafy.phofo.auth.service.redis.RedisService;
 //import com.ssafy.phofo.auth.util.CookieUtil;
 
-import com.ssafy.phofo.board.dto.BarterDetailDto;
-import com.ssafy.phofo.board.dto.BarterRegisterDto;
-import com.ssafy.phofo.board.dto.BarterUpdateDto;
-import com.ssafy.phofo.board.service.BarterService;
+import com.phofor.phocaforme.board.dto.BarterDetailDto;
+import com.phofor.phocaforme.board.dto.BarterRegisterDto;
+import com.phofor.phocaforme.board.dto.BarterUpdateDto;
+import com.phofor.phocaforme.board.service.BarterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package com.phofor.phocaforme.board.entity;
 
 // import com.ssafy.phofo.auth.entity.UserEntity;
 
-import com.ssafy.phofo.common.entity.BaseEntity;
+import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

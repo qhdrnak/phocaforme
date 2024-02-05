@@ -1,7 +1,7 @@
 package com.phofor.phocaforme.board.dto;
 
-import com.ssafy.phofo.board.entity.Barter;
-import com.ssafy.phofo.board.entity.BarterOwnIdol;
+import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.entity.BarterOwnIdol;
 import lombok.Builder;
 import lombok.Getter;
 
