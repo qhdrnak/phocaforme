@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class ChatRoomResponseDto {  // 여기는 이미 디비에 반영이 된 시점
-    private Integer chatRoomId; //
-    private Integer boardId;    // 해당 교환 게시글id
+    private Long chatRoomId; //
+    private Long boardId;    // 해당 교환 게시글id
     private String ownerId; // 게시글 작성자
     private String visiterId;   // 교환 희망자
     private String boardTitle;  // 게시글 제목

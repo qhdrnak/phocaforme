@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ChatMessageRepository extends JpaRepository<ChatMessage, Integer> {
+public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
     @Query("""
         SELECT new com.phofor.phocaforme.chat.dto.response.ChatMessageResponseDto
@@ -19,5 +19,5 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Intege
         WHERE c.chatRoomId = :chatRoomId
         order by c.id
     """)
-    List<ChatMessageResponseDto> findAllByChatRoomId(@Param("chatRoomId") Integer chatRoomId);
+    List<ChatMessageResponseDto> findAllByChatRoomId(@Param("chatRoomId") Long chatRoomId);
 }

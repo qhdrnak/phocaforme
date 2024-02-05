@@ -27,14 +27,14 @@ public class ChatMessageController {
     private Cookie tokenCookie;
 
     @GetMapping("/chats/{chatRoomId}")
-    public ResponseEntity<List<ChatMessageResponseDto>> getChatMessageAll(@PathVariable Integer chatRoomId){
+    public ResponseEntity<List<ChatMessageResponseDto>> getChatMessageAll(@PathVariable Long chatRoomId){
         return ResponseEntity.ok().body(chatMessageService.getAllByChatRoomId(chatRoomId));
     }
 
     @MessageMapping("/chats/{chatRoomId}")  // 일단 이건 지금 이 상태가 맞음(별걸로 다 바꾸면 안되더라)
 //    @SendTo("/topic/public/{chatRoomId}")
     @SendTo("/sub/chat/room{chatRoomId}")
-    public ChatMessageResponseDto sendMessage(@DestinationVariable Integer chatRoomId,
+    public ChatMessageResponseDto sendMessage(@DestinationVariable Long chatRoomId,
                                               @Header("simpSessionAttributes") Map<String, Object> simpSessionAttributes,
                                               @Payload ChatMessageRequestDto chatMessageRequestDto) {
         //log.info(chatMessageRequestDto.getMessage());
@@ -46,7 +46,7 @@ public class ChatMessageController {
 
     // 마지막 메시지 하나 들고오기
 //    @GetMapping("/chat/{chatId}")
-//    public ResponseEntity<ChatMessageResponseDto> (@PathVariable Integer chatId){
+//    public ResponseEntity<ChatMessageResponseDto> (@PathVariable Long chatId){
 //        return ResponseEntity.ok().body(chatMessageService.get)
 //    }
 }

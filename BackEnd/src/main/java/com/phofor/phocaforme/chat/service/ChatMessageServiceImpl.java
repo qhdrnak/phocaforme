@@ -9,7 +9,9 @@ import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.chat.dto.request.ChatMessageRequestDto;
 import com.phofor.phocaforme.chat.dto.response.ChatMessageResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatMessage;
+import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.chat.repository.ChatMessageRepository;
+import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,11 +27,12 @@ import java.util.UUID;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
 public class ChatMessageServiceImpl implements ChatMessageService{
 
     private final ChatMessageRepository chatMessageRepository;
+    private final ChatRoomRepository chatRoomRepository;
 
     // RedisService 받아오짱
     private final RedisService redisService;
@@ -37,9 +40,11 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     private final AmazonS3Client amazonS3Client;
     private String S3Bucket = "photocardforme";  // Bucket 이름
 
+
+
     @Override
     @Transactional
-    public ChatMessageResponseDto save(ChatMessageRequestDto chatMessageRequestDto, Integer chatMessageRoomId, Map<String, Object> header) {
+    public ChatMessageResponseDto save(ChatMessageRequestDto chatMessageRequestDto, Long chatMessageRoomId, Map<String, Object> header) {
         ChatMessageResponseDto chatMessageResponseDto = new ChatMessageResponseDto(chatMessageRequestDto);
         // header? =
 
@@ -123,6 +128,8 @@ public class ChatMessageServiceImpl implements ChatMessageService{
                 .build();
         ChatMessage savedChatMessage = chatMessageRepository.save(chatMessage);
 
+        ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequestDto.getChatRoomId()).orElseThrow();
+        chatRoom.setChatLatest(chatMessage);
 
 
         return chatMessageResponseDto;
@@ -131,7 +138,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     // 채팅 내역 조회
     @Override
-    public List<ChatMessageResponseDto> getAllByChatRoomId(Integer chatRoomId) {
+    public List<ChatMessageResponseDto> getAllByChatRoomId(Long chatRoomId) {
         return chatMessageRepository.findAllByChatRoomId(chatRoomId);
     }
 

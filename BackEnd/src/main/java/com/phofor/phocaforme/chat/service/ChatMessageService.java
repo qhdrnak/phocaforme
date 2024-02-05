@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface ChatMessageService {
-    ChatMessageResponseDto save(ChatMessageRequestDto chatMessageRequestDto, Integer chatMessageRoomId, Map<String, Object> headers);
+    ChatMessageResponseDto save(ChatMessageRequestDto chatMessageRequestDto, Long chatMessageRoomId, Map<String, Object> headers);
 
     // 채팅 내역 조회
-    List<ChatMessageResponseDto> getAllByChatRoomId(Integer chatRoomId);
+    List<ChatMessageResponseDto> getAllByChatRoomId(Long chatRoomId);
 
     // 채팅방의 마지막 메시지 내역 반환
-    //ChatMessageResponseDto getLastChatId(Integer chatId);
+    //ChatMessageResponseDto getLastChatId(Long chatId);
 }

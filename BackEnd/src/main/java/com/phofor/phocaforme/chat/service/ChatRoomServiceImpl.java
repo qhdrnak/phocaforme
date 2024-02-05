@@ -2,8 +2,11 @@ package com.phofor.phocaforme.chat.service;
 
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.repository.BarterRepository;
 import com.phofor.phocaforme.chat.dto.response.ChatRoomResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
+import com.phofor.phocaforme.chat.exception.BarterBoardNotFoundException;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -22,6 +26,9 @@ public class ChatRoomServiceImpl implements ChatRoomService{
 
     private final ChatRoomRepository chatRoomRepository;
     private final RedisService redisService;
+
+    private final BarterRepository barterRepository;
+
     //CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
 //        UserEntity userEntity = customOAuth2User.getUserEntity();
 //        String userId = userEntity.getUserId();
@@ -43,12 +50,13 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     // 채팅방 만들기
     @Override
     @Transactional
-    public ChatRoomResponseDto getChatRoomByBoardIdAndVisiterId(Integer boardId, CustomOAuth2User customOAuth2User){
+    public ChatRoomResponseDto getChatRoomByBoardIdAndVisiterId(Long boardId, CustomOAuth2User customOAuth2User){
         String userId = customOAuth2User.getUserEntity().getUserId();
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByBoardIdAndVisiterId(boardId, userId);
         // 나중에 게시글이 생기면 사용할 수 있어요~~
 //        private final BartarRepository bartarRepository;
-//        Barter barter = bartarRepository.findById(boardId);
+        Barter barter = barterRepository.findById(boardId).orElseThrow(BarterBoardNotFoundException::new);
+        // Optional<~> : 이 뒤에 null이 발생할 경우 다른 동작을 어떻게 할지 결정할 수 있음
         System.out.println("chatRoom = " + chatRoom);
         
         if(chatRoom==null){ // 해당하는 채팅방이 없을 경우 새로 만들어주기
@@ -56,9 +64,10 @@ public class ChatRoomServiceImpl implements ChatRoomService{
             // ChatRoomResponseDto chatRoomResponseDto = new ChatRoomResponseDto(chatRoomRequestDto);
 
             ChatRoom saveChatRoom = ChatRoom.builder()
-                    .boardId(boardId)
-                    .boardTitle("저 마크 가지고 싶어요")
-                    .ownerId("4df5a517-fd37-4175-a0f6-0ea843899d34")
+                    .boardId(barter.getId())
+                    .boardTitle(barter.getTitle())
+//                    .ownerId("4df5a517-fd37-4175-a0f6-0ea843899d34")
+                    .ownerId(barter.getUserId())
                     .visiterId(userId)
                     .build();
 

@@ -22,13 +22,13 @@ public class ChatMessage {
     @Id
     @Column(name = "barter_chat_id")
     @GeneratedValue(strategy = IDENTITY)
-    private Integer id; // 채팅의 아이디
+    private Long id; // 채팅의 아이디
     @Column(name = "barter_chat_room_id")
-    private Integer chatRoomId; // 채티방의 아이디
+    private Long chatRoomId; // 채티방의 아이디
     @Column(name = "barter_chat_sender_id")
     private String senderId;    // 채팅 보낸 사람의 아이디
 //    @Column(name = "barter_chat_article_id")
-//    private Integer articleId;  // 게시글의 아이디
+//    private Long articleId;  // 게시글의 아이디
 
     @CreationTimestamp(source = SourceType.DB)
     @Column(name = "barter_chat_created_at")
@@ -40,7 +40,7 @@ public class ChatMessage {
     private String imgCode; // 바이트 코드로 이미지 받기
 
 //    @Builder
-//    public ChatMessage(Integer id, Integer chatRoomId, String senderId, Integer articleId,
+//    public ChatMessage(Long id, Long chatRoomId, String senderId, Long articleId,
 //                       String message, String imgCode, LocalDateTime createdAt) {
 //        this.id = id;
 //        this.chatRoomId = validateChatRoomId(chatRoomId);
@@ -57,12 +57,12 @@ public class ChatMessage {
 //        return senderId;
 //    }
 //
-//    private Integer validateChatRoomId(Integer chatRoomId) {
+//    private Long validateChatRoomId(Long chatRoomId) {
 //        notNull(chatRoomId, "유효하지 않은 채팅방입니다");
 //        return chatRoomId;
 //    }
 //
-//    private Integer validateArticleId(Integer articleId) {
+//    private Long validateArticleId(Long articleId) {
 //        notNull(articleId, "유효하지 않은 게시글입니다.");
 //        return articleId;
 //    }

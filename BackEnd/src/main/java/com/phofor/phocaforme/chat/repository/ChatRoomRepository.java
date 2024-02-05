@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
+public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 
 //    @Query("""
 //            SELECT new com.example.chatimage.chat.dto.response.ChatRoomResponseDto
@@ -27,5 +27,5 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Integer> {
 //        WHERE chatRoom.boardId = :boardId and chatRoom.visiterId = :userId
 //    """)
     // 채팅방 있니?
-    ChatRoom findChatRoomByBoardIdAndVisiterId(@Param("boardId") Integer boardId, @Param("userId") String visiterId);
+    ChatRoom findChatRoomByBoardIdAndVisiterId(@Param("boardId") Long boardId, @Param("userId") String visiterId);
 }

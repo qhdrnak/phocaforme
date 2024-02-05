@@ -34,13 +34,13 @@ public class ChatRoomController {
     }
 
 //    @PostMapping
-//    public ResponseEntity<?> registChatRoom(@PathVariable Integer boardId){
-//        Integer chatRoomId = chatRoomService.registChatRoom(boardId);
-//        return new ResponseEntity<Integer>(chatRoomId,HttpStatus.OK);
+//    public ResponseEntity<?> registChatRoom(@PathVariable Long boardId){
+//        Long chatRoomId = chatRoomService.registChatRoom(boardId);
+//        return new ResponseEntity<Long>(chatRoomId,HttpStatus.OK);
 //    }
 
     @PostMapping("/chatRoom/{boardId}")
-    public ResponseEntity<ChatRoomResponseDto> getChatRoom(@PathVariable Integer boardId, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public ResponseEntity<ChatRoomResponseDto> getChatRoom(@PathVariable Long boardId, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         return ResponseEntity.ok().body(chatRoomService.getChatRoomByBoardIdAndVisiterId(boardId, customOAuth2User));
     }
 }

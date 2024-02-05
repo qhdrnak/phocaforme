@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ChatMessageRequestDto {
-    private Integer chatRoomId;
+    private Long chatRoomId;
     private String userEmail;
     private String message; // 메시지
     private String imgCode; // 바이트 코드로 이미지를 받기
