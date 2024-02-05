@@ -1,17 +1,19 @@
 package com.phofor.phocaforme.board.controller;
 
-//import com.ssafy.phofo.auth.domain.CustomOAuth2User;
-//import com.ssafy.phofo.auth.entity.UserEntity;
-//import com.ssafy.phofo.auth.service.redis.RedisService;
-//import com.ssafy.phofo.auth.util.CookieUtil;
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserEntity;
+import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.auth.util.CookieUtil;
 
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
 import com.phofor.phocaforme.board.service.BarterService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -21,7 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class BarterController {
     private final BarterService barterService;
-//    private final RedisService redisService;
+    private final RedisService redisService;
 
 
 
@@ -39,15 +41,14 @@ public class BarterController {
         return new ResponseEntity<BarterDetailDto>(barterService.findOne(barterId), HttpStatus.OK);
     }
 
-    // , HttpServletRequest request, @AuthenticationPrincipal CustomOAuth2User oauth2User
     // 작성자 안 넣어서 작성자 넣어야해요
     @PostMapping
-    public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto) throws IOException {
-        // String accessToken = CookieUtil.resolveToken(request).getValue();
-        // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
-//        UserEntity userEntity = oauth2User.getUserEntity();
-//                // customOAuth2User.getUserEntity();
-//        System.out.println(userEntity.getUserId());
+    public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, HttpServletRequest request, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
+         String accessToken = CookieUtil.resolveToken(request).getValue();
+         CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
+        UserEntity userEntity = oauth2User.getUserEntity();
+                // customOAuth2User.getUserEntity();
+        System.out.println(userEntity.getUserId());
 
         Long barterId = barterService.registerBarter(registerDto);
 
