@@ -115,7 +115,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                         "Max-Age=" +
                         time
         );
-        
+
         // 유저 아이디
         response.addHeader("Set-Cookie",
                 "userId=" + userEntity.getUserId() + "; " +
@@ -125,7 +125,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                         "Max-Age=" +
                         time
         );
-        
+
         // 유저 닉네임
         response.addHeader("Set-Cookie",
                 "nickname=" + userName + "; " +
