@@ -37,6 +37,18 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
+    // Web Socket(채팅)
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    // file upload
+    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.0'
 }
 
 tasks.named('test') {
