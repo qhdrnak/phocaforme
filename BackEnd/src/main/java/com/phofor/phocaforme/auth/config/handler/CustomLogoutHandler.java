@@ -38,7 +38,10 @@ public class CustomLogoutHandler implements LogoutHandler {
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         // 쿠키에 저장된 access token 가져오기
-        String accessToken = CookieUtil.resolveToken(request).getValue();
+        Cookie tokenCookie = CookieUtil.resolveToken(request);
+        String accessToken = null;
+        if(tokenCookie != null)
+            accessToken = tokenCookie.getValue();
         log.debug("[CustomLogoutHandler] - Access Token : {}", accessToken);
 
         // 로그아웃이 2번에 걸쳐서 진행됨
@@ -61,13 +64,8 @@ public class CustomLogoutHandler implements LogoutHandler {
             String kakaoLogoutUrl = "https://kauth.kakao.com/oauth/logout?client_id=" + clientId
                     + "&logout_redirect_uri=" + redirectUrl;
 
-            // 클라이언트에게 JSON 형태로 리다이렉트 URL 전송
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
             try {
-                response.getWriter().write("{\"redirectUrl\": \"" + kakaoLogoutUrl + "\"}");
-                response.getWriter().flush();
-                response.getWriter().close();
+                response.sendRedirect(kakaoLogoutUrl);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
