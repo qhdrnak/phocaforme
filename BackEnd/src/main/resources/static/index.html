@@ -97,9 +97,10 @@
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
 <script>
-   let userEmail = localStorage.getItem('userEmail');
-   let roomId = localStorage.getItem('chatRoomId');
-   //let roomId = 10040423;
+   // let userEmail = localStorage.getItem('userEmail');
+   // let roomId = localStorage.getItem('chatRoomId');
+   let roomId = 10040423;
+   let userEmail = "제노야!!!"
    console.log(roomId);
 
    let sock = new SockJS("/ws-stomp"); //new SockJS()를 사용하여 아까 핸들러에서 지정해준 endPoint를 사용하여 연결을 해준다.
