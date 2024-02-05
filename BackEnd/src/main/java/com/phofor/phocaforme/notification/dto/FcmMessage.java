@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.Map;
+
 @Builder
 @Getter
 @AllArgsConstructor
@@ -17,6 +19,7 @@ public class FcmMessage {
     public static class Message {
         private Notification notification;
         private String token;
+        private Map<String, String> data; // 'data' 필드 추가
     }
 
     @Builder

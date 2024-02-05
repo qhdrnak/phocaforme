@@ -55,10 +55,6 @@
             }).catch(error => {
                 console.error('Service Worker 등록 실패:', error);
             });
-            onMessage(messaging, (payload) => {
-                console.log('Message received. ', payload);
-                // ...
-            });
         }
     </script>
 </head>

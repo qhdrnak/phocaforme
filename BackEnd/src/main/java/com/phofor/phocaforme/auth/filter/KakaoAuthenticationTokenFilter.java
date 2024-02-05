@@ -68,7 +68,7 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
             Map<String, Object> userData = redisService.getMapData(token);
 
             //토큰은 있지만 accessToken이 만료된 상태라면 refresh 토큰으로 재발급
-            if(userData != null) {
+            if(!userData.isEmpty()) {
                 LocalDateTime start = (LocalDateTime) userData.get("createAt");
                 LocalDateTime end = LocalDateTime.now();
 

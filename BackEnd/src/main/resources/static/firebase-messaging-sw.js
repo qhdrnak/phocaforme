@@ -28,52 +28,35 @@ measurementId: "G-9EZG3PJXLT"
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-    console.log(
-        '[firebase-messaging-sw.js] Received background message ',
-        payload
-    );
-    // Customize notification here
-    const notificationTitle = 'Background Message Title';
-    const notificationOptions = {
-        body: 'Background Message body.',
-        icon: '/firebase-logo.png'
-    };
-
-    self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
 self.addEventListener("push", (event) => {
+    const data = event.data.json(); // 푸시 데이터 파싱
+    console.log("Push event data:", data);
 
-    const notif = event.data.json().notification;
-
-    event.waitUntil(self.registration.showNotification(notif.title , {
-        body: notif.body,
-        icon: notif.image,
-        data: {
-            url: notif.click_action
-        }
-    }));
-
-});
-
-self.addEventListener("notificationclick", (event) => {
-
-    event.waitUntil(clients.openWindow(event.notification.data.url));
-
-});
-
-messaging.onBackgroundMessage((payload) => {
-    console.log(
-        '[firebase-messaging-sw.js] Received background message ',
-        payload
-    );
-    // Customize notification here
-    const notificationTitle = 'Background Message Title';
+    const notificationTitle = data.notification.title;
     const notificationOptions = {
-        body: 'Background Message body.',
-        icon: '/firebase-logo.png'
+        body: data.notification.body,
+        icon: data.notification.icon || 'icons/icon-192x192.png',
+        // 아래의 변경을 주목하세요
+        data: {
+            link: data.data.link // 'data.data.link'로 변경
+        }
     };
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    event.waitUntil(
+        self.registration.showNotification(notificationTitle, notificationOptions)
+    );
+});
+
+self.addEventListener('notificationclick', event => {
+    console.log('[Service Worker] Notification click Received.');
+    console.log('Notification data:', event.notification.data);
+
+    event.notification.close(); // 알림 닫기
+
+    // 클라이언트에서 'link' 키로 저장된 URL을 사용
+    const urlToOpen = event.notification.data.link;
+
+    event.waitUntil(
+        clients.openWindow(urlToOpen)
+    );
 });

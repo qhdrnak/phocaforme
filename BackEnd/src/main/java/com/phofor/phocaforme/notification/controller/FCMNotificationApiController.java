@@ -22,7 +22,8 @@ public class FCMNotificationApiController {
         firebaseCloudMessageService.sendMessageTo(
                 requestDTO.getTargetToken(),
                 requestDTO.getTitle(),
-                requestDTO.getBody());
+                requestDTO.getBody(),
+                requestDTO.getLink());
         return ResponseEntity.ok().build();
     }
 }
