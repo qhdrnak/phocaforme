@@ -22,6 +22,8 @@ import { logoutUser } from "../../store2/loginUser.js";
 
 import GPS from "./GPS";
 import profile from "../../assets/images/NCT_도영.PNG";
+import Cookies from 'js-cookie';
+
 
 const ProfileImage = () => {
   const theme = useTheme();
@@ -46,9 +48,9 @@ const ProfileImage = () => {
   const user = useSelector((state) => state.user.user);
 
   const handleLogout = () => {
-    dispatch(logoutUser());
-    console.log(user); // 이거 콘솔에는 초기 state 그대로 뜨는데 비동기적으로 처리돼서 그렇다 함
-    navigate("/main");
+
+    // dispatch(logoutUser());
+    window.location.href = "http://localhost:8080/logout";
   };
 
   return (

@@ -20,6 +20,10 @@ const NavBar = ({ children }) => {
     navigate("/main");
   };
 
+  const test = () => {
+    console.log(user)
+  }
+
   return (
     <div id="nav-bar">
       <img
@@ -29,16 +33,17 @@ const NavBar = ({ children }) => {
         }}
         src={logo}
       />
-
-      {user ? (
+      
+      {user.userId ? (
         <div id="nav-menus">
           <ProfileImage />
           {/* <button onClick={handleLogout}>로그아웃</button> */}
           <div
             id="bell"
-            onClick={() => {
-              navigate("/alarm");
-            }}
+            // onClick={() => {
+            //   navigate("/alarm");
+            // }}
+            onClick={test}
           >
             <Bell />
           </div>

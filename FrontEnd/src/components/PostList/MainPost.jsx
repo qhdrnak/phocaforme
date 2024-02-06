@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { fetchTitle, fetchUserTitle } from "../../http.js";
-
+import { loginUser, logoutUser, getLocation } from '../../store2/loginUser.js';
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 
 import Card from "../../components/UI/Card";
@@ -29,6 +29,10 @@ const CustomTabPanel = (props) => {
     </div>
   );
 };
+
+
+  
+
 
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
@@ -60,6 +64,8 @@ const BasicTabs = ({ isPreview }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -81,21 +87,6 @@ const BasicTabs = ({ isPreview }) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const titleData = await fetchTitle();
-  //       setTitle(titleData);
-  //       const userTitleData = await fetchUserTitle();
-  //       setUserTitle(userTitleData);
-  //     } catch (error) {
-  //       console.error("Failed to fetch data:", error);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   // Infinity scroll을 적용할 때 추가된 부분
   const visiblePosts = isPreview
