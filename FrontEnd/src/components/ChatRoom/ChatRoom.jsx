@@ -32,9 +32,10 @@ const ChatRoom = () => {
     }
   });
 
-  useEffect(() => {
-    dispatch(initChat(roomId));
-  }, [dispatch, roomId]);
+  // 리스트 axios 로 불러오기 (보류)
+  // useEffect(() => {
+  //   dispatch(initChat(roomId));
+  // }, [dispatch, roomId]);
 
   const chatList = useSelector((state) => (state.chat ? state.chat.chat : []));
   // const chatList = chats.filter((chat) => chat.chatRoomId == roomId);
