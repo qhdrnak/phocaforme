@@ -1,5 +1,5 @@
 elasticsearch:
   username: "elastic"
   password: "youRmybias1004"
-  hostname: "localhost"
+  hostname: "phocafor.me"
   port: 9200
