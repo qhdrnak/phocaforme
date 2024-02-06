@@ -47,7 +47,7 @@ public class ChatInterceptor implements ChannelInterceptor {
 
         // Authorization은 프론트에서 해준 것과 같게 해주면 됨(이름을)
 //        String authToken = accessor.getFirstNativeHeader("Authorizaition");
-        String authToken = "hp1jk1hxehGm4NxmB4qkx4PBu1Ip4vb_11sKPXSXAAABjXlW_3dUdd9ffL_GXA";
+        String authToken = "Jr6PgoIdE7qJQ-cT975WZeS3C-g7HHL0q0cKKiVOAAABjX0KFolUdd9ffL_GXA";
 
         // authToken이 내가 프론트에서 받아온 유저의 토큰
         // 이 토큰을 사용해서 유저의 정보를 받아오기
