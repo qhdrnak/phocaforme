@@ -29,7 +29,7 @@ public class CustomLogoutHandler implements LogoutHandler {
     String clientId;
 
     // 리다이렉트 URL
-    @Value("${logout.redirect-url}")
+    @Value("${auth-redirect-url}")
     String redirectUrl;
 
     // 레디스 서비스
