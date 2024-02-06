@@ -3,8 +3,6 @@ package com.phofor.phocaforme.board.controller;
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
-import com.phofor.phocaforme.auth.util.CookieUtil;
-
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
@@ -12,14 +10,12 @@ import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
 import com.phofor.phocaforme.board.service.BarterSearchService;
 import com.phofor.phocaforme.board.service.BarterService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -50,32 +46,33 @@ public class BarterController {
 //        pageable.ge
 //    }
 
+    // 상세게시글 나타내기
     @GetMapping("/{barterId}")
     public ResponseEntity<?> detailBarter(@PathVariable Long barterId) throws IOException {
         return new ResponseEntity<BarterDetailDto>(barterService.findOne(barterId), HttpStatus.OK);
     }
-
-    // 작성자 안 넣어서 작성자 넣어야해요
-    // HttpServletRequest request,
+    
+    // 게시글 등록
     @PostMapping
     public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
-//         String accessToken = CookieUtil.resolveToken(request).getValue();
-//         CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
+        // (HttpServletRequest request,)
+        // String accessToken = CookieUtil.resolveToken(request).getValue();
+        // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
+        // UserEntity userEntity = customOAuth2User.getUserEntity();
+
         UserEntity userEntity = oauth2User.getUserEntity();
-                // customOAuth2User.getUserEntity();
-        System.out.println("아이디 = " + userEntity.getUserId());
-
-        Long barterId = barterService.registerBarter(registerDto);
-
+        Long barterId = barterService.registerBarter(registerDto , userEntity);
         return new ResponseEntity<Long>(barterId, HttpStatus.OK);
     }
 
+    // 게시글 수정
     @PutMapping("/{barterId}")
-    public ResponseEntity<?> updateBarter(@PathVariable Long barterId, BarterUpdateDto updateDto) throws IOException {
-        barterService.update(barterId, updateDto);
+    public ResponseEntity<?> updateBarter(@PathVariable Long barterId, BarterUpdateDto updateDto, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
+        barterService.update(oauth2User.getUserEntity(), barterId, updateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    // 게시글 삭제
     @DeleteMapping("/{barterId}")
     public ResponseEntity<?> deleteBarter(@PathVariable Long barterId) throws IOException {
         barterService.delete(barterId);

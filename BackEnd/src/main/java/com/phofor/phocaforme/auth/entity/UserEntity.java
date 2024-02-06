@@ -60,6 +60,6 @@ public class UserEntity implements Serializable {
     @Column(name="oauth_type", columnDefinition="VARCHAR(50)")
     private String oauthType;
 
-    @OneToMany(mappedBy = "user")
-    private List<Barter> barters = new ArrayList<>();
+//    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+//    private List<Barter> barters = new ArrayList<>();
 }
