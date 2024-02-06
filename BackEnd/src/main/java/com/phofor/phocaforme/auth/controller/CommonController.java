@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class CommonController {
 
     private final int time = (60*60*24*14) + (60*60*9);
     /**
-     * 로그인 페이지
+     * 로그인
      * @return
      */
     @GetMapping("/auth/login")
@@ -39,6 +41,24 @@ public class CommonController {
         return "login";
     }
 
+    /**
+     * 로그아웃
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @GetMapping("/auth/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        log.info(request.getContextPath());
+        response.sendRedirect(request.getContextPath() + "/logout");
+    }
+
+    /**
+     * 로그인 상태 유지 14일
+     * @param request
+     * @param response
+     * @return
+     */
     @GetMapping("/auth/login-status")
     public ResponseEntity<?> loginStatus(HttpServletRequest request, HttpServletResponse response) {
         HttpStatus status;
@@ -61,7 +81,6 @@ public class CommonController {
     public String mainPage() {
         return "mainPage";
     }
-
     /**
      * 에러  페이지
      * @param error
