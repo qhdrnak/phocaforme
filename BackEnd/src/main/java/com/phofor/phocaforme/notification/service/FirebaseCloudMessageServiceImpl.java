@@ -1,31 +1,40 @@
 package com.phofor.phocaforme.notification.service;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.phofor.phocaforme.notification.dto.FcmMessage;
+import com.phofor.phocaforme.notification.dto.NotificationMessageDto;
+import com.phofor.phocaforme.notification.repository.FirebaseCloudMessageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j
-public class FirebaseCloudMessageService {
+public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageService{
 
+    private final FirebaseCloudMessageRepository firebaseCloudMessageRepository;
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/" +
             "phocaforme/messages:send";
     private final ObjectMapper objectMapper;
 
+    // 알림 리스트
+    @Override
+    public List<NotificationMessageDto> getMessageList(String userId) {
+        return firebaseCloudMessageRepository.findAllMessagesByUserId(userId);
+    }
+
+    @Override
     public void sendMessageTo(String targetToken, String title, String body, String link) throws IOException {
         String message = makeMessage(targetToken, title, body, link);
 
