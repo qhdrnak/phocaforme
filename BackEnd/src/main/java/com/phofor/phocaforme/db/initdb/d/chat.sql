@@ -1,6 +1,7 @@
 create table user
 (
     user_id     CHAR(50) primary key not null,
+    #     foreign key (user_id) references user_device (user_id),
     user_name   CHAR(20) not null,
     kakao_id    VARCHAR(50) unique,
     email       VARCHAR(100) unique,
@@ -9,6 +10,14 @@ create table user
     created_at  TIMESTAMP not null default current_timestamp,
     updated_at  TIMESTAMP not null default current_timestamp,
     oauth_type  VARCHAR(50)
+);
+
+create table user_device
+(
+    user_id CHAR(50) primary key not null,
+    user_device_token CHAR(100) unique,
+    created_at  TIMESTAMP not null default current_timestamp,
+    updated_at  TIMESTAMP not null default current_timestamp
 );
 
 create table barter_chat_room
