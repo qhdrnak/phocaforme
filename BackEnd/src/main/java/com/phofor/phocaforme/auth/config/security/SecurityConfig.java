@@ -56,7 +56,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/auth/logout")
                         .deleteCookies("JSESSIONID", "token") // 쿠키 삭제
                         .invalidateHttpSession(true) // 세션 무효화
                         .addLogoutHandler(customLogoutHandler())
@@ -74,7 +74,7 @@ public class SecurityConfig {
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("auth/**", "/main", "/error",
+                        .requestMatchers("/auth/**", "/main", "/error",
                                 "firebase/**", "/css/**","/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
