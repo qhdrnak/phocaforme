@@ -1,11 +1,14 @@
+server:
+  port: 4885
+
 spring:
   config:
     import:
       - optional:file:.env[.properties]
-      - classpath:/application-ssafy-dev.yml
       - classpath:/application-oauth.yml
       - classpath:/application-aws.yml
       - classpath:/application-rabbit.yml
       - classpath:/application-elastic.yml
+      - classpath:/application-global.yml
   profiles:
     active: global, oauth, aws, rabbit, elastic
