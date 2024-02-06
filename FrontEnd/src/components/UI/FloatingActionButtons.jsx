@@ -24,7 +24,7 @@ const FloatingActionButtons = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  if (!user) {
+  if (!user.userId) {
     return null;
   }
 
