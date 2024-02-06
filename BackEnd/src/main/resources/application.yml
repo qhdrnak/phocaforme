@@ -4,5 +4,7 @@ spring:
       - optional:file:.env[.properties]
       - classpath:/application-ssafy-dev.yml
       - classpath:/application-oauth.yml
+      - classpath:/application-rabbit.yml
+      - classpath:/application-elastic.yml
   profiles:
-    active: ssafy, oauth, aws
+    active: ssafy, oauth, aws, rabbit, elastic

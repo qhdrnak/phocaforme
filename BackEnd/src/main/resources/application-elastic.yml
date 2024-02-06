@@ -1,0 +1,5 @@
+elasticsearch:
+  username: "elastic"
+  password: "bk76041163"
+  hostname: "localhost"
+  port: 9200
