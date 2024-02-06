@@ -74,7 +74,7 @@ public class Barter extends BaseEntity {
         this.title = title;
         this.content = content;
         this.cardType = cardType;
-        userEntity.getBarters().add(this);
+        //userEntity.getBarters().add(this);
     }
 
     public void update(UserEntity userEntity, String nickname, String title, String content, String cardType){
@@ -83,6 +83,6 @@ public class Barter extends BaseEntity {
         this.title = title;
         this.content = content;
         this.cardType = cardType;
-        userEntity.getBarters().add(this);
+        //userEntity.getBarters().add(this);
     }
 }

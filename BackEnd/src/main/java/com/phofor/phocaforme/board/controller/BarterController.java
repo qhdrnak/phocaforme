@@ -47,7 +47,6 @@ public class BarterController {
         // UserEntity userEntity = customOAuth2User.getUserEntity();
 
         UserEntity userEntity = oauth2User.getUserEntity();
-        
         Long barterId = barterService.registerBarter(registerDto , userEntity);
         return new ResponseEntity<Long>(barterId, HttpStatus.OK);
     }
