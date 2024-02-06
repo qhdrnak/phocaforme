@@ -45,16 +45,16 @@ public class FirebaseCloudMessageService {
     }
 
     private String makeMessage(String targetToken, String title, String body, String link) throws JsonProcessingException {
-        log.info(link);
+        // log.info(link); // 필요에 따라 로깅
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)
-                        .notification(FcmMessage.Notification.builder()
-                                .title(title)
-                                .body(body)
-                                .image(null) // 여기에 이미지 URL 추가 (옵션)
-                                .build())
-                        .data(Map.of("link", link)) // 'data' 필드에 'link' 추가
+                        .data(Map.of(
+                                "title", title,
+                                "body", body,
+                                "link", link
+                                // "image", "이미지_URL" // 이미지 URL을 추가할 경우
+                        ))
                         .build())
                 .validateOnly(false)
                 .build();

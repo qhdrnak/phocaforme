@@ -4,8 +4,6 @@
 // import { initializeApp } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 // import { getMessaging, getToken } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js';
 
-// importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-// importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js");
 
@@ -29,16 +27,16 @@ firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 self.addEventListener("push", (event) => {
-    const data = event.data.json(); // 푸시 데이터 파싱
+    const data = event.data.json();
     console.log("Push event data:", data);
 
-    const notificationTitle = data.notification.title;
+    // 'data' 필드 내의 알림 정보를 사용
+    const notificationTitle = data.data.title; // 'data.title'로 변경
     const notificationOptions = {
-        body: data.notification.body,
-        icon: data.notification.icon || 'icons/icon-192x192.png',
-        // 아래의 변경을 주목하세요
+        body: data.data.body, // 'data.body'로 변경
+        icon: data.data.icon || 'icons/icon-192x192.png', // 'data.icon' 사용
         data: {
-            link: data.data.link // 'data.data.link'로 변경
+            link: data.data.link // 링크 정보를 'data' 필드에서 직접 가져옴
         }
     };
 
@@ -53,7 +51,7 @@ self.addEventListener('notificationclick', event => {
 
     event.notification.close(); // 알림 닫기
 
-    // 클라이언트에서 'link' 키로 저장된 URL을 사용
+    // 'data.link'를 사용하여 클릭 시 열릴 URL 결정
     const urlToOpen = event.notification.data.link;
 
     event.waitUntil(
