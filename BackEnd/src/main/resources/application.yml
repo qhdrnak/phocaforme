@@ -8,4 +8,4 @@ spring:
       - classpath:/application-rabbit.yml
       - classpath:/application-elastic.yml
   profiles:
-    active: oauth, aws, rabbit, elastic, global
+    active: global, oauth, aws, rabbit, elastic
