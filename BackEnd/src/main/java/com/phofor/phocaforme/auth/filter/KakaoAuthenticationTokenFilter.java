@@ -103,7 +103,16 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
                             "token=" + newToken + "; " +
                                     "Path=/;" +
                                     "Domain=localhost; " +
-                                    "HttpOnly; " +
+//                                    "HttpOnly; " +
+                                    "Max-Age=" +
+                                    time
+                    );
+
+                    response.setHeader("Set-Cookie",
+                            "chatAuth=" + newToken + "; " +
+                                    "Path=/chatroom;" +
+                                    "Domain=localhost; " +
+//                                    "HttpOnly; " +
                                     "Max-Age=" +
                                     time
                     );

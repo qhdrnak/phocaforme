@@ -111,7 +111,16 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 "token=" + accessToken + "; " +
                         "Path=/;" +
                         "Domain=localhost; " +
-                        "HttpOnly; " +
+//                        "HttpOnly; " +
+                        "Max-Age=" +
+                        time
+        );
+
+        response.addHeader("Set-Cookie",
+                "chatAuth=" + accessToken + "; " +
+                        "Path=/chatroom;" +
+                        "Domain=localhost; " +
+//                        "HttpOnly; " +
                         "Max-Age=" +
                         time
         );
@@ -121,7 +130,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 "userId=" + userEntity.getUserId() + "; " +
                         "Path=/;" +
                         "Domain=localhost; " +
-                        "HttpOnly; " +
+//                        "HttpOnly; " +
                         "Max-Age=" +
                         time
         );
@@ -131,7 +140,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 "nickname=" + userName + "; " +
                         "Path=/;" +
                         "Domain=localhost; " +
-                        "HttpOnly; " +
+//                        "HttpOnly; " +
                         "Max-Age=" +
                         time
         );

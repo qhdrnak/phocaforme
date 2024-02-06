@@ -96,6 +96,7 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+
 <script>
    // let userEmail = localStorage.getItem('userEmail');
    // let roomId = localStorage.getItem('chatRoomId');
@@ -106,7 +107,7 @@
    let sock = new SockJS("/ws-stomp"); //new SockJS()를 사용하여 아까 핸들러에서 지정해준 endPoint를 사용하여 연결을 해준다.
    let ws = Stomp.over(sock);
 
-   ws.connect({}, function (frame) {
+   ws.connect({'Authorization': document.cookie.match('(^|;) ?' + "token" + '=([^;]*)(;|$)')[2]}, function (frame) {
       ws.subscribe("/sub/chat/room" + roomId, function (message) {
          let receive = JSON.parse(message.body);
          alert(receive.imgCode);
