@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import java.io.IOException;
-
 /**
  * LogOutHandler 구현
  * 기존의 Handler를 커스텀하여 로그아웃 시 쿠키에 있는 Access Token을 찾아와
@@ -23,14 +21,6 @@ import java.io.IOException;
 @Slf4j
 @RequiredArgsConstructor
 public class CustomLogoutHandler implements LogoutHandler {
-
-    // 클라이언트 아이디
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
-    String clientId;
-
-    // 리다이렉트 URL
-    @Value("${auth-redirect-url}")
-    String redirectUrl;
 
     // 레디스 서비스
     private final RedisService redisService;
@@ -58,16 +48,6 @@ public class CustomLogoutHandler implements LogoutHandler {
                     curr.setMaxAge(0);
                     response.addCookie(curr);
                 }
-            }
-
-            // 카카오 로그아웃 URL
-            String kakaoLogoutUrl = "https://kauth.kakao.com/oauth/logout?client_id=" + clientId
-                    + "&logout_redirect_uri=" + redirectUrl;
-
-            try {
-                response.sendRedirect(kakaoLogoutUrl);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
         else{
