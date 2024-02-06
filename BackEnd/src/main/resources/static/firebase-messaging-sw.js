@@ -4,8 +4,6 @@
 // import { initializeApp } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
 // import { getMessaging, getToken } from'https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging.js';
 
-// importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-// importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.8.0/firebase-messaging-compat.js");
 
@@ -28,52 +26,35 @@ measurementId: "G-9EZG3PJXLT"
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-    console.log(
-        '[firebase-messaging-sw.js] Received background message ',
-        payload
-    );
-    // Customize notification here
-    const notificationTitle = 'Background Message Title';
-    const notificationOptions = {
-        body: 'Background Message body.',
-        icon: '/firebase-logo.png'
-    };
-
-    self.registration.showNotification(notificationTitle, notificationOptions);
-});
-
 self.addEventListener("push", (event) => {
+    const data = event.data.json();
+    console.log("Push event data:", data);
 
-    const notif = event.data.json().notification;
-
-    event.waitUntil(self.registration.showNotification(notif.title , {
-        body: notif.body,
-        icon: notif.image,
-        data: {
-            url: notif.click_action
-        }
-    }));
-
-});
-
-self.addEventListener("notificationclick", (event) => {
-
-    event.waitUntil(clients.openWindow(event.notification.data.url));
-
-});
-
-messaging.onBackgroundMessage((payload) => {
-    console.log(
-        '[firebase-messaging-sw.js] Received background message ',
-        payload
-    );
-    // Customize notification here
-    const notificationTitle = 'Background Message Title';
+    // 'data' 필드 내의 알림 정보를 사용
+    const notificationTitle = data.data.title; // 'data.title'로 변경
     const notificationOptions = {
-        body: 'Background Message body.',
-        icon: '/firebase-logo.png'
+        body: data.data.body, // 'data.body'로 변경
+        icon: data.data.icon || 'icons/icon-192x192.png', // 'data.icon' 사용
+        data: {
+            link: data.data.link // 링크 정보를 'data' 필드에서 직접 가져옴
+        }
     };
 
-    self.registration.showNotification(notificationTitle, notificationOptions);
+    event.waitUntil(
+        self.registration.showNotification(notificationTitle, notificationOptions)
+    );
+});
+
+self.addEventListener('notificationclick', event => {
+    console.log('[Service Worker] Notification click Received.');
+    console.log('Notification data:', event.notification.data);
+
+    event.notification.close(); // 알림 닫기
+
+    // 'data.link'를 사용하여 클릭 시 열릴 URL 결정
+    const urlToOpen = event.notification.data.link;
+
+    event.waitUntil(
+        clients.openWindow(urlToOpen)
+    );
 });

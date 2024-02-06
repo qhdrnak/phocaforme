@@ -42,7 +42,6 @@ import java.util.Map;
 public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private final RedisService redisService;
-    private Cookie tokenCookie;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -50,7 +49,7 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
         log.debug("[KakaoAuthenticationTokenFilter] - 필터 시작");
 
         // 쿠키 유무 확인
-        tokenCookie = CookieUtil.resolveToken(request);
+        Cookie tokenCookie = CookieUtil.resolveToken(request);
 
         String token = null;
         // 쿠키에서 access token 가져오기
@@ -74,18 +73,18 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
 
                 // 시간 확인
                 Duration diff = Duration.between(start, end);
-                long diffMin = diff.toSeconds();
+                long diffMin = diff.toMinutes();
                 log.debug("[KakaoAuthenticationTokenFilter] - diff time : {}", diffMin);
 
-                //1440 - 하루(카카오 기준 발급시 1일 유지
-                if(diffMin >= 1440){
+                //1440 - 하루(카카오 기준 발급시 1일 유지) - 3시간
+                if(diffMin >= 180){
                     // accessToken 재발급
                     String newToken = getNewToken((String)userData.get("refreshToken"));
                     log.debug("[KakaoAuthenticationTokenFilter] - access token 재발급 : {}", newToken);
-                    
-                    String pastToken = token;
+
                     LocalDateTime now = LocalDateTime.now();
-                    
+                    String pastToken = token;
+
                     Map<String, Object> newRedisData = new HashMap<>();
                     // 인증 객체
                     newRedisData.put("authenticationToken", userData.get("authenticationToken"));
@@ -97,13 +96,15 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
 
                     // 토큰 갱신
                     redisService.saveMapData(newToken, newRedisData, diffMin);
-                    int time = (60*60*24) + (60*60*9);
+                    int time = (60*60*3) + (60*60*9);
                     // 쿠키 갱신
                     response.setHeader("Set-Cookie",
                             "token=" + newToken + "; " +
                                     "Path=/;" +
-                                    "Domain=localhost; " +
-                                    "HttpOnly; " +
+                                    "Domain=" +
+                                    request.getContextPath() +
+                                    ";" +
+//                                    "HttpOnly; " +
                                     "Max-Age=" +
                                     time
                     );

@@ -8,6 +8,7 @@ import com.phofor.phocaforme.auth.filter.KakaoAuthenticationTokenFilter;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.auth.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,10 @@ import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.Collections;
 
 import static jakarta.servlet.DispatcherType.ERROR;
 import static jakarta.servlet.DispatcherType.FORWARD;
@@ -43,6 +48,13 @@ public class SecurityConfig {
     private final UserService userService;
     private final RedisService redisService;
 
+    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    String clientId;
+
+    // 리다이렉트 URL
+    @Value("${auth-redirect-url}")
+    String redirectUrl;
+
     @Bean
     public CustomLogoutHandler customLogoutHandler() {
         return new CustomLogoutHandler(redisService);
@@ -52,15 +64,16 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/main")
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("https://kauth.kakao.com/oauth/logout?client_id=" + clientId
+                                + "&logout_redirect_uri=" + redirectUrl)
                         .deleteCookies("JSESSIONID", "token") // 쿠키 삭제
                         .invalidateHttpSession(true) // 세션 무효화
                         .addLogoutHandler(customLogoutHandler())
                 )
                 .exceptionHandling(error -> error
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint()))
-                .cors(CorsConfigurer::disable)
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(CsrfConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
                 .formLogin(FormLoginConfigurer::disable)
@@ -71,8 +84,8 @@ public class SecurityConfig {
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("auth/login/**", "/main", "/error",
-                                "firebase/**", "/css/**","/js/**").permitAll()
+                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/favicon.ico",
+                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js").permitAll()
                         .anyRequest().authenticated()
                 )
                 // oauth2.0 로그인 설정
@@ -87,4 +100,17 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
+            config.setAllowCredentials(true);
+            return config;
+        };
+    }
+
 }
