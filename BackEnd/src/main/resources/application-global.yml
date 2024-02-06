@@ -4,6 +4,12 @@ spring:
       on-profile: global
     import:
       - optional:file:.env[.properties]
+  jpa:
+    hibernate:
+      ddl-auto: create #create update none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://i10a703.p.ssafy.io:3306/PhocaForMe?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
