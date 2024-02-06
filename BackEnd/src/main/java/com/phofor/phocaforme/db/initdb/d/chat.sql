@@ -1,23 +1,23 @@
 create table user
 (
     user_id     CHAR(50) primary key not null,
-    #     foreign key (user_id) references user_device (user_id),
     user_name   CHAR(20) not null,
-    kakao_id    VARCHAR(50) unique,
-    email       VARCHAR(100) unique,
-    nickname    VARCHAR(50) unique,
-    bias_id     BIGINT,
-    created_at  TIMESTAMP not null default current_timestamp,
-    updated_at  TIMESTAMP not null default current_timestamp,
-    oauth_type  VARCHAR(50)
+    user_kakao_id    VARCHAR(50) unique,
+    user_email       VARCHAR(100) unique,
+    user_nickname    VARCHAR(50) unique,
+    user_bias_id     BIGINT,
+    user_created_at  TIMESTAMP not null default current_timestamp,
+    user_updated_at  TIMESTAMP not null default current_timestamp,
+    user_oauth_type  VARCHAR(50)
 );
 
 create table user_device
 (
-    user_id CHAR(50) primary key not null,
-    user_device_token CHAR(100) unique,
-    created_at  TIMESTAMP not null default current_timestamp,
-    updated_at  TIMESTAMP not null default current_timestamp
+    user_device_user_id CHAR(50) primary key not null,
+    foreign key (user_device_user_id) references user (user_id),
+    user_device_token VARCHAR(255) unique,
+    user_device_created_at  TIMESTAMP not null default current_timestamp,
+    user_device_updated_at  TIMESTAMP not null default current_timestamp
 );
 
 create table barter_chat_room
