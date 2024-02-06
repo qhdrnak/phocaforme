@@ -4,15 +4,18 @@
     --primary-color: #FB37A3;
     --secondary-color: #FD9DD1;
     --info-color: #FFFFFF;
-    --warning-color: rgba(142, 96, 203, 1)
+    --warning-color: rgba(142, 96, 203, 1);
+    overflow: hidden;
+    height: 100vw;
+    
   }
+
 
 
 /* 폰트 적용 */
 
 * {
     font-family: 'Pretendard';
-    /* max-width: 100vw; */
 }
 
 .main-title,  #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
@@ -286,6 +289,11 @@
 }
 
 /* 채팅페이지 */
+
+#fileInput {
+    display: none;
+}
+
 #chatroom-title {
     font-weight: 700;
 }
@@ -310,8 +318,10 @@
 }
 
 #notice-title {
+    display: flex;
+    align-items: start;
     min-width: fit-content;
-    padding-right: 1rem;
+    padding: 1rem 1rem 0 0 ;
 }
 
 #chat-notice {
@@ -319,7 +329,8 @@
 }
 
 #notice-icon {
-    padding-top: 1rem;
+    font-size: 18px;
+    color: var(--primary-color);
 }
 
 #chat-top {
@@ -335,9 +346,6 @@
     padding: 0 1rem;
 }
 
-#chat-message-container {
-    height: 50vh;
-}
 
 #add-popover-container{
     display: flex;
@@ -374,6 +382,19 @@
     align-items: end;
 }
 
+.chat-owner-name {
+    display: flex;
+    font-weight: bold;
+    justify-content: flex-end;
+    padding: 0 1rem;
+}
+
+.chat-visiter-name {
+    font-weight: bold;
+    padding: 0 1rem;
+
+}
+
 .chat-visiter .chat-message {
     background-color: var(--warning-color);
     padding: 0.5rem 1rem;
@@ -401,7 +422,7 @@
 }
 
 #chat-content-container {
-    height: 50vh;
+    height: 65vh;
     overflow-x: hidden;
 
 }
@@ -410,6 +431,10 @@
     background-color: var(--primary-color);
     color: #F2F4F8;
     margin: 0.5rem 0;
+}
+
+#send-message-container {
+    width: 100%;
 }
 
 /* 결제 전송 모달 */
@@ -712,8 +737,8 @@
 }
 
 #chat-button-container {
-    text-align: center;
-    position: sticky;
+    /* display: flex; */
+    position: fixed;
     bottom: 1rem;
 }
 

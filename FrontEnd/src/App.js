@@ -16,7 +16,7 @@ import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
 
-import {Grid} from '@mui/material';
+import {Grid, Container} from '@mui/material';
 import theme from './styles/theme'; 
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -41,6 +41,7 @@ const App = () => {
         <BrowserRouter>
         <ScrollToTop />
           <NavBar />
+          <FloatingActionButtons />
           <Routes>
             <Route path="/" element={<Main />} />
             <Route path="/main" element={<Main />} />
@@ -58,7 +59,6 @@ const App = () => {
 
           </Routes>
             
-            <FloatingActionButtons />
           
          
         </BrowserRouter>

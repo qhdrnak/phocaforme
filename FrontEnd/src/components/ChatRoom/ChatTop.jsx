@@ -32,7 +32,7 @@ const ChatMenu = ({ updateMessages, postId }) => {
 
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const chatRoomInfo = posts.find((post) => post.id == postId);
-  console.log(chatRoomInfo);
+  // console.log(chatRoomInfo);
 
   // 메뉴 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
