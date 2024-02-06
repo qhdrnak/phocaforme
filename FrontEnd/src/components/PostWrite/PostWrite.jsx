@@ -12,10 +12,12 @@ import RadioButton2 from "../../components/UI/RadioButton2.jsx";
 import BarterWrite from "./BarterWrite.jsx";
 import SellWrite from "./SellWrite.jsx";
 import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";
+import axios from 'axios'
 
 const PostWrite = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
 
   const [title, setTitle] = useState("");
   const [images, setImages] = useState([]);
@@ -28,6 +30,8 @@ const PostWrite = () => {
   const [cardType, setCardType] = useState(null);
 
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
+  const user = useSelector((state) => (state.user ? state.user.user : [])); 
+  const postingTime = new Date().toLocaleString();
 
   // 교환인지 판매인지
   function onExchangeChange(value) {
@@ -112,24 +116,38 @@ const PostWrite = () => {
       ? {
           id: posts.length + 1,
           title,
-          images,
+          images, // photos로 수정
           content,
           ownMembers,
           targetMembers,
           type: "교환",
         }
       : {
-          id: posts.length + 1,
-          title,
-          images,
-          content,
-          ownMembers,
+        id: posts.length + 1,
+        title,
+        images,
+        content,
+        ownMembers,
+        targetMembers,
           type: "판매",
         };
+    console.log(user.nickname);
+    navigate("/post");    
 
-    // Redux를 통해 게시물 추가
-    dispatch(addPost(newPost));
-    navigate("/post");
+        // axios.post('/api/posts', newPost, {
+        //   withCredentials: true, // withCredentials 옵션 설정
+        //   headers: {
+        //     'Authorization': `Bearer ${YOUR_ACCESS_TOKEN}`
+        //   }
+        // })
+        // .then(response => {
+        //   console.log(response.data);
+        //   navigate("/post");
+        // })
+        // .catch(error => {
+        //   console.error('Error creating post:', error);
+        // });
+
   };
 
   const handleCancelButton = () => {

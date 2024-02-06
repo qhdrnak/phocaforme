@@ -8,6 +8,7 @@ const initialPostState = {
     writerId: '1234',
     writerNickname: '제노예요',
     title: "[교환1] 질주 미공포 교환해요",
+    postingTime: "2024. 2. 2. 오후 5:25:06",
     images:['/assets/images/photocard/도영.jpg', '/assets/images/photocard/도영.jpg', '/assets/images/photocard/제노.PNG', '/assets/images/photocard/마크.jpg','/assets/images/photocard/태민.jpg',],
     group: {value: "NCT", label: "NCT", avatarSrc: logo1},
     ownMembers:[{value: '도영', label: '도영'}],
@@ -23,6 +24,7 @@ const initialPostState = {
       writerId: '5678',
       writerNickname: '아궁빵뎡',
       title: "Be There For Me 앨범포카 판매해요",
+      postingTime: "2024. 2. 2. 오후 5:25:06",
       images: ['/assets/images/photocard/도영.jpg'],
       group: {value: "NCT", label: "NCT", avatarSrc: logo1},
       ownMembers:[{value: '도영', label: '도영'}],
@@ -36,6 +38,7 @@ const initialPostState = {
         writerId: "5678",
         writerNickname: "아궁빵뎡",
         title: "[교환2] 질주 미공포 교환해요",
+        postingTime: "2024. 2. 2. 오후 5:25:06",
         images: [
           "/assets/images/photocard/도영.jpg",
           "/assets/images/photocard/도영.jpg",
@@ -54,6 +57,7 @@ const initialPostState = {
         writerId: "1234",
         writerNickname: "제노예요",
         title: "[교환3] 질주 미공포 교환해요",
+        postingTime: "2024. 2. 2. 오후 5:25:06",
         images: [
           "/assets/images/photocard/도영.jpg",
           "/assets/images/photocard/도영.jpg",
@@ -72,6 +76,7 @@ const initialPostState = {
         writerId: "1234",
         writerNickname: "제노예요",
         title: "[교환4] 질주 미공포 교환해요",
+        postingTime: "2024. 2. 2. 오후 5:25:06",
         images: [
           "/assets/images/photocard/도영.jpg",
           "/assets/images/photocard/도영.jpg",
@@ -90,6 +95,7 @@ const initialPostState = {
         writerId: "1234",
         writerNickname: "제노예요",
         title: "[교환5] 질주 미공포 교환해요",
+        postingTime: "2024. 2. 2. 오후 5:25:06",
         images: [
           "/assets/images/photocard/도영.jpg",
           "/assets/images/photocard/도영.jpg",

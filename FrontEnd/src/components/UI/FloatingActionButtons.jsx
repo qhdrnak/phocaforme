@@ -25,7 +25,7 @@ const FloatingActionButtons = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  if (!user || location.pathname.includes("chatroom")) {
+  if (!user.userId || location.pathname.includes("chatroom")) {
     return null;
   }
 
