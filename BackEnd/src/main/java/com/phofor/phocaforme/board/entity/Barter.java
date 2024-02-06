@@ -111,7 +111,7 @@ public class Barter extends BaseEntity {
     private void afterSave(){
         PostMessage postMessage = PostMessage.builder()
                 .articleId(this.id)
-                .writerId(this.userId)
+                .writerId(this.user.getUserId())
                 .writerNickname(this.user.getNickname())
                 .title(this.title)
                 .cardType(this.cardType)

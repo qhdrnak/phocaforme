@@ -67,7 +67,7 @@ public class ChatRoomServiceImpl implements ChatRoomService{
                     .boardId(barter.getId())
                     .boardTitle(barter.getTitle())
 //                    .ownerId("4df5a517-fd37-4175-a0f6-0ea843899d34")
-                    .ownerId(barter.getUserId())
+                    .ownerId(barter.getUser().getUserId())
                     .visiterId(userId)
                     .build();
 
