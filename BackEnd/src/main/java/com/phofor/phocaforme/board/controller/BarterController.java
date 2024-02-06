@@ -8,24 +8,38 @@ import com.phofor.phocaforme.auth.util.CookieUtil;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
+import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
+import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
+import com.phofor.phocaforme.board.service.BarterSearchService;
 import com.phofor.phocaforme.board.service.BarterService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/barter")
 @RequiredArgsConstructor
 public class BarterController {
+    private final BarterSearchService barterSearchService;
     private final BarterService barterService;
     private final RedisService redisService;
 
 
+    @GetMapping("/search")
+    public ResponseEntity<List<SearchResponse>> search(@Validated @ModelAttribute SearchRequest searchRequest)
+    {
+        System.out.println(searchRequest.getQuery());
+        List<SearchResponse> results = barterSearchService.search(searchRequest);
+
+        return ResponseEntity.ok(results);
+    }
 
 //    @GetMapping
 //    public ResponseEntity<?> findAll() throws IOException {

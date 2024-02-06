@@ -11,7 +11,7 @@ services:
 
   mariadb:
     image: mariadb:10.11.6
-    container_name: PhocaFormetMariaDB
+    container_name: PhocaFormeMariaDB
     ports:
       - "3306:3306"
     volumes:
@@ -22,6 +22,13 @@ services:
       MARIADB_PASSWORD: ${USER_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       TZ: Asia/Seoul
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: PhocaFormeRabbitMQ
+    ports:
+      - "5672:5672"  # RabbitMQ server
+      - "15672:15672"  # Management interface
+    restart: unless-stopped
 volumes:
   redis-data:
   mariadb-data:
