@@ -1,0 +1,19 @@
+server:
+  port: 4885
+
+---
+spring:
+  config:
+    activate:
+      on-profile: global
+    import:
+      - optional:file:.env[.properties]
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${GLOBAL_DB_URL}
+    username: ${GLOBAL_USER_NAME}
+    password: ${GLOBAL_USER_PASSWORD}
+  security:
+    user:
+      name: phocaforme
+      password: 12345

@@ -18,6 +18,8 @@ COPY --from=builder /build/build/libs/PhocaForme-0.0.1-SNAPSHOT.jar .
 
 EXPOSE 8080
 
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=global", "PhocaForme-0.0.1-SNAPSHOT.jar"]
+
 # root 대신 nobody 권한으로 실행
 USER nobody
 ENTRYPOINT [                                                \

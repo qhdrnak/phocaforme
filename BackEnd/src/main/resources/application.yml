@@ -5,4 +5,4 @@ spring:
       - classpath:/application-ssafy-dev.yml
       - classpath:/application-oauth.yml
   profiles:
-    active: ssafy, oauth, aws
+    active: global, ssafy, oauth, aws
