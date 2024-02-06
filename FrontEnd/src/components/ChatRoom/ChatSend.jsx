@@ -36,7 +36,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         setWs(ws);
         ws.subscribe("/sub/chat/room" + roomId, (message) => {
           const receive = JSON.parse(message.body);
-          alert(receive.imgCode);
+          // alert(receive.imgCode);
 
           if (receive.imgCode != null) {
             receiveImg(receive);
@@ -50,15 +50,15 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
       }
     );
 
-    // #baseFile이 변할 때마다 감지
-    const handleFileChange = (e) => {
-      if (e.target) {
-        readImage(e.target);
-      }
-    };
+    // // #baseFile이 변할 때마다 감지
+    // const handleFileChange = (e) => {
+    //   if (e.target) {
+    //     readImage(e.target);
+    //   }
+    // };
 
-    // 초기 렌더링 시에도 호출되도록 설정
-    handleFileChange({ target: document.getElementById("fileInput") });
+    // // 초기 렌더링 시에도 호출되도록 설정
+    // handleFileChange({ target: document.getElementById("fileInput") });
 
     // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
     return () => {
@@ -169,8 +169,15 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     document.getElementById("fileInput").click();
   };
 
-  const handleFileSelection = () => {
+  const handleFileSelection = (e) => {
     const selectedFile = document.getElementById("fileInput").files[0];
+    console.log(selectedFile);
+    // readImage(e.target);
+
+    // 이미지 전송 간 딜레이 추가 (예: 500ms)
+    setTimeout(() => {
+      readImage(e.target);
+    }, 500);
   };
 
   const open = Boolean(anchorEl);

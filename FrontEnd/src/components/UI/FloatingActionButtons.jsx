@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { Box, Fab, Popover } from "@mui/material";
 
@@ -12,6 +12,7 @@ const FloatingActionButtons = () => {
   const user = useSelector((state) => state.user.user);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -24,7 +25,7 @@ const FloatingActionButtons = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  if (!user) {
+  if (!user || location.pathname.includes("chatroom")) {
     return null;
   }
 
