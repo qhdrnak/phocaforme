@@ -40,7 +40,7 @@ import java.util.Map;
 @Component
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Value("${login.redirect-url}")
+    @Value("${auth-redirect-url}")
     String mainPage;
 
     // DB에서 CustomOAuth2User를 가져오기 위한 service
@@ -103,15 +103,17 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         log.debug("[OAuthLoginSuccessHandler] - LOGIN SUCCESS : {} FROM {}",oauth2User.getUserEntity().getEmail(), oauthType);
 
         // 쿠키에 Access token을 저장, 3시간 유지
-        int time = (60*60*24) + (60*60*9);
+        int time = (60*60*3) + (60*60*9);
 
         String userName = URLEncoder.encode(userEntity.getUserName(), StandardCharsets.UTF_8);
         // 토큰 설정
         response.addHeader("Set-Cookie",
                 "token=" + accessToken + "; " +
                         "Path=/;" +
-                        "Domain=localhost; " +
-                        "HttpOnly; " +
+                        "Domain=" +
+                        request.getContextPath() +
+                        ";" +
+//                        "HttpOnly; " +
                         "Max-Age=" +
                         time
         );
@@ -120,8 +122,10 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.addHeader("Set-Cookie",
                 "userId=" + userEntity.getUserId() + "; " +
                         "Path=/;" +
-                        "Domain=localhost; " +
-                        "HttpOnly; " +
+                        "Domain=" +
+                        request.getContextPath() +
+                        ";" +
+//                        "HttpOnly; " +
                         "Max-Age=" +
                         time
         );
@@ -130,8 +134,10 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.addHeader("Set-Cookie",
                 "nickname=" + userName + "; " +
                         "Path=/;" +
-                        "Domain=localhost; " +
-                        "HttpOnly; " +
+                        "Domain=" +
+                        request.getContextPath() +
+                        ";" +
+//                        "HttpOnly; " +
                         "Max-Age=" +
                         time
         );
