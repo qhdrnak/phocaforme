@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.notification.service;
 
 import com.phofor.phocaforme.notification.dto.NotificationDto;
+import com.phofor.phocaforme.notification.dto.message.NotificationMessageDto;
 import com.phofor.phocaforme.notification.dto.message.RequestDTO;
 import com.phofor.phocaforme.notification.entity.NotificationEntity;
 
@@ -12,5 +13,5 @@ public interface FirebaseCloudMessageService {
 
     public Boolean sendMessage(NotificationDto chatNotificationDto);
 
-    public List<NotificationEntity> getMessageList(String userId);
+    public List<NotificationMessageDto> getMessageList(String userId);
 }

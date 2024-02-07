@@ -41,7 +41,7 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
 
     // 알림 리스트
     @Override
-    public List<NotificationEntity> getMessageList(String userId) {
+    public List<NotificationMessageDto> getMessageList(String userId) {
         return firebaseCloudMessageRepository.findByUserEntity_UserId(userId);
     }
 

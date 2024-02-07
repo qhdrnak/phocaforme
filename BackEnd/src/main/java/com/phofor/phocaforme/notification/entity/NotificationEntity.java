@@ -26,7 +26,7 @@ public class NotificationEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long notificationId; // 알림 번호
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "notification_user_id", columnDefinition = "CHAR(50)", nullable = false)
     private UserEntity userEntity;  // 회원
 

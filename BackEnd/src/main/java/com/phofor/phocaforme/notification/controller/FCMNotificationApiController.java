@@ -1,8 +1,8 @@
 package com.phofor.phocaforme.notification.controller;
 
 import com.phofor.phocaforme.notification.dto.NotificationDto;
+import com.phofor.phocaforme.notification.dto.message.NotificationMessageDto;
 import com.phofor.phocaforme.notification.dto.message.RequestDTO;
-import com.phofor.phocaforme.notification.entity.NotificationEntity;
 import com.phofor.phocaforme.notification.service.FirebaseCloudMessageService;
 
 import lombok.RequiredArgsConstructor;
@@ -50,7 +50,7 @@ public class FCMNotificationApiController {
     // 알림 리스트
     @GetMapping("/notification/{userId}")
     public ResponseEntity<?> getMessages(@PathVariable String userId) {
-        List<NotificationEntity> notificationMessages = firebaseCloudMessageService.getMessageList(userId);
+        List<NotificationMessageDto> notificationMessages = firebaseCloudMessageService.getMessageList(userId);
 
         // 서버 오류
         if(notificationMessages == null)
