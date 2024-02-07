@@ -147,6 +147,16 @@ const PostWrite = () => {
         // .catch(error => {
         //   console.error('Error creating post:', error);
         // });
+        axios.post('http://localhost:8080', newPost, {
+          withCredentials: true, // withCredentials 옵션 설정
+        })
+        .then(response => {
+          console.log(response.data);
+          navigate("/post");
+        })
+        .catch(error => {
+          console.error('Error creating post:', error);
+        });    
 
   };
 
