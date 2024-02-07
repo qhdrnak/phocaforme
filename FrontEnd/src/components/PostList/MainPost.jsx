@@ -90,9 +90,14 @@ const BasicTabs = ({ isPreview }) => {
           {
             params: {
               target: 3,
+              // target: searchs.targetMembers (멤버 고유 인덱스 변수)
               own: 4,
+              // own: searchs.ownMembers (멤버 고유 인덱스 변수)
               cardType: "미공포",
+              // cardType: searchs.cardType
               query: "팬싸",
+              // query: searchs.query
+
             },
           }
         );
@@ -104,7 +109,7 @@ const BasicTabs = ({ isPreview }) => {
     };
 
     fetchData();
-  }, [dispatch]); // dispatch를 의존성 배열에 추가
+  }, [dispatch]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
