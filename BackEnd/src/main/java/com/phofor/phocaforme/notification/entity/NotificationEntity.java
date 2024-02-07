@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.notification.entity;
 
 
+import com.phofor.phocaforme.auth.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,17 +19,18 @@ import static lombok.AccessLevel.PROTECTED;
 @AllArgsConstructor
 @NoArgsConstructor(access = PROTECTED)
 @Table(name = "notification")
-public class Notification {
+public class NotificationEntity {
 
     @Id
     @Column(name = "notification_id")
     @GeneratedValue(strategy = IDENTITY)
     private Long notificationId; // 알림 번호
 
-    @Column(name = "notification_user_id", columnDefinition = "CHAR(50)", nullable = false)
-    private String userId;  // 회원
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "notification_user_id", columnDefinition = "CHAR(50)", nullable = false)
+    private UserEntity userEntity;  // 회원
 
-    @Column(name = "notification_content", nullable = false)
+    @Column(name = "notification_content", columnDefinition = "VARCHAR(100)", nullable = false)
     private String content; // 알림 내용
 
     @CreationTimestamp(source = SourceType.DB)
@@ -38,8 +40,9 @@ public class Notification {
     @Column(name = "notification_read_status", columnDefinition = "Boolean", nullable = false)
     private Boolean readStatus;
 
-    @Column(name="notification_type", columnDefinition="VARCHAR(50)", nullable = false)
-    private String notificationType;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name="notification_type",columnDefinition = "ENUM", nullable = false)
+    private NotificationType notificationType;
 
     @Column(name="notification_article_id", columnDefinition = "BIGINT")
     private Long articleId;
