@@ -1,11 +1,14 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 
 import { TextField, Button } from "@mui/material";
+
+import { modifyPost } from "../../store2/loginUser.js";
 
 import NicknameModal from "../UI/Modal/NicknameModal";
 
 const Nickname = () => {
-  const nickName = "아궁빵뎡";
+  const nickName = useSelector((state) => state.user.user.nickname);
 
   // 모달 관련
   const [open, setOpen] = React.useState(false);
@@ -14,7 +17,7 @@ const Nickname = () => {
 
   return (
     <div id="nickname-container">
-      <div>닉네임</div>
+      <div id="nickname-title">닉네임</div>
       <div id="nickname-input">
         <TextField size="small" disabled defaultValue={nickName} />
       </div>

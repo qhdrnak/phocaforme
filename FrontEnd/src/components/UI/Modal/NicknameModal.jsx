@@ -13,6 +13,7 @@ const NicknameModal = ({ open, handleClose }) => {
     borderRadius: "10px",
     p: 4,
   };
+
   // 닉네임 인풋 관련
   const [inputValue, setInputValue] = useState("");
   const minLength = 2;
@@ -44,10 +45,11 @@ const NicknameModal = ({ open, handleClose }) => {
         <div id="nickname-setting-container">
           <div>
             <TextField
+              id="new-nickname-input"
               value={inputValue}
               onChange={handleChange}
               helperText={
-                inputValue.length < minLength ? "글자 수가 부족합니다." : ""
+                inputValue.length < minLength ? "2글자 이상 작성해주세요" : ""
               }
               error={inputValue.length < minLength}
               size="small"

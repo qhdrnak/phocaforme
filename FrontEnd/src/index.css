@@ -485,8 +485,19 @@
     align-items: center;
 }
 
+#new-nickname-input {
+    width: 30vw;
+}
+
+#nickname-setting-container{
+    margin: 1rem 0;
+}
+
 
 /* 마이페이지 */
+#nickname-title {
+    width: 15vw;
+}
 #profile-page {
     display: flex;
     flex-direction: column;
