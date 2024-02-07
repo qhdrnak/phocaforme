@@ -13,14 +13,14 @@ const ChartBoy = (props) => {
         </Grid>
         <Grid item id="rank-23-idol" xs={6}>
           <div id="rank-2-idol">
-            <p>2. </p>
+            <div>2. </div>
             <Avatar className="rank-23-image" src={Img} />
-            <p>{props.data[1]}</p>
+            <div>{props.data[1]}</div>
           </div>
           <div id="rank-3-idol">
-            <p>3. </p>
+            <div>3. </div>
             <Avatar className="rank-23-image" src={Img} />
-            <p>{props.data[2]}</p>
+            <div>{props.data[2]}</div>
           </div>
         </Grid>
       </Grid>

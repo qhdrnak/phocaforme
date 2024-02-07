@@ -26,7 +26,7 @@ const theme = createTheme({
         root: {
           
           width: '85vw',
-          height: '85vh',
+          // height: '85vh',
         }
       }
     },
