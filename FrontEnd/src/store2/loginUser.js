@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+
 
 import { createSlice } from '@reduxjs/toolkit';
 import { accordionActionsClasses } from "@mui/material";
@@ -12,16 +12,17 @@ const getDecodedCookie = (name) => {
   if (parts.length === 2) return decodeURIComponent(parts.pop().split(';').shift());
 };
 
-
 // 쿠키에서 userId 및 nickname을 디코딩하여 초기 상태에 추가
 const initialUserState = {
   user: {
     userId: getDecodedCookie('userId') || null,
     nickname: getDecodedCookie('nickname') || null,
-    // nickname: generatedNickname,
     location: null, // 현재 위치 정보
   },
 };
+
+
+
 
 const loginUserSlice = createSlice({
   name: 'user',
@@ -33,7 +34,7 @@ const loginUserSlice = createSlice({
     logoutUser: (state) => {
       state.user = null;
     },
-    getLocation: (state, action) => {
+    setLocation: (state, action) => {
       state.user.location = action.payload;
     },
     setNickname: (state, action) => {
@@ -42,5 +43,5 @@ const loginUserSlice = createSlice({
   },
 });
 
-export const { loginUser, logoutUser, getLocation, setNickname } = loginUserSlice.actions;
+export const { loginUser, logoutUser, setLocation, setNickname } = loginUserSlice.actions;
 export default loginUserSlice.reducer;
