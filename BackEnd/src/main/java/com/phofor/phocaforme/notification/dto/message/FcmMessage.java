@@ -32,7 +32,7 @@
 //    }
 //}
 
-package com.phofor.phocaforme.notification.dto;
+package com.phofor.phocaforme.notification.dto.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

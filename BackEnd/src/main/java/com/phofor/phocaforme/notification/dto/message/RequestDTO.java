@@ -1,4 +1,4 @@
-package com.phofor.phocaforme.notification.dto;
+package com.phofor.phocaforme.notification.dto.message;
 
 import lombok.Getter;
 import lombok.Setter;
