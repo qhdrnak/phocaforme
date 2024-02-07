@@ -20,6 +20,18 @@ create table user_device
     user_device_updated_at  TIMESTAMP not null default current_timestamp
 );
 
+create table notification
+(
+    notification_id BIGINT primary key AUTO_INCREMENT not null ,
+    notification_user_id CHAR(50) not null,
+    foreign key (notification_user_id) references user (user_id),
+    notification_content VARCHAR(100) not null,
+    notification_created_at TIMESTAMP not null default current_timestamp,
+    notification_read_status BOOLEAN not null,
+    notification_type ENUM('Chatting', 'Article') not null,
+    notification_article_id BIGINT
+);
+
 create table barter_chat_room
 (
     barter_chat_room_id        BIGINT primary key not null auto_increment,
