@@ -1,4 +1,4 @@
-package com.phofor.phocaforme.common.entity;
+package com.phofor.phocaforme.idol.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

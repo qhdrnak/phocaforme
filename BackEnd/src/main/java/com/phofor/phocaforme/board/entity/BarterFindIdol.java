@@ -1,6 +1,6 @@
 package com.phofor.phocaforme.board.entity;
 
-import com.phofor.phocaforme.common.entity.IdolMember;
+import com.phofor.phocaforme.idol.entity.IdolMember;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
