@@ -110,8 +110,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.addHeader("Set-Cookie",
                 "token=" + accessToken + "; " +
                         "Path=/;" +
-                        "Domain=" +
-                        request.getContextPath() +
+                        "Domain=https://phocafor.me" +
                         ";" +
 //                        "HttpOnly; " +
                         "Max-Age=" +
