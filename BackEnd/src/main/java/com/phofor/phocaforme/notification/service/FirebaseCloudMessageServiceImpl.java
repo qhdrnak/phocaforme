@@ -58,6 +58,9 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
             NotificationEntity notificationEntity;
             // 채팅인 경우
             if(notificationDto.getNotificationType() == NotificationType.Chatting) {
+                notificationDto.setTitle("채팅 도착!");
+                notificationDto.setContent(userEntity.getNickname() + "님 새로운 채팅이 왔어요!!");
+
                 notificationEntity = NotificationEntity.builder()
                         .userEntity(userEntity)
                         .content(notificationDto.getContent()) // 알림 내용
@@ -67,6 +70,9 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
             }
             // 키워드 알림인 경우
             else {
+                notificationDto.setTitle("갈망포카 출현!");
+                notificationDto.setContent(userEntity.getNickname() + "님 새로운 갈망포카가 올라 왔어요!! 확인해보세요!!");
+
                 notificationEntity = NotificationEntity.builder()
                         .userEntity(userEntity)
                         .content(notificationDto.getContent()) // 알림 내용
