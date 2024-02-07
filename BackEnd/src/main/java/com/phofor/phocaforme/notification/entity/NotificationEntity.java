@@ -47,4 +47,7 @@ public class NotificationEntity {
     @Column(name="notification_article_id", columnDefinition = "BIGINT")
     private Long articleId;
 
+    @Column(name="notification_delete_status", columnDefinition = "Boolean", nullable = false)
+    private Boolean deleteStatus;
+
 }

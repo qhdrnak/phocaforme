@@ -28,6 +28,7 @@ create table notification
     notification_content VARCHAR(100) not null,
     notification_created_at TIMESTAMP not null default current_timestamp,
     notification_read_status BOOLEAN not null,
+    notification_delete_status BOOLEAN not null,
     notification_type ENUM('Chatting', 'Article') not null,
     notification_article_id BIGINT
 );

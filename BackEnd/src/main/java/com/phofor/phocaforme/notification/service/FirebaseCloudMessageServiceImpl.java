@@ -45,42 +45,59 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
         return firebaseCloudMessageRepository.findByUserEntity_UserId(userId);
     }
 
+
+    @Override
+    public Boolean readMessage(Long notificationId) {
+        Optional<NotificationEntity> notificationEntityOptional = firebaseCloudMessageRepository.findByNotificationId(notificationId);
+        if (notificationEntityOptional.isPresent()) {
+            NotificationEntity notificationEntity = notificationEntityOptional.get();
+            notificationEntity.setReadStatus(true);
+
+            // 데이터베이스에 변경 내용 저장
+            firebaseCloudMessageRepository.save(notificationEntity);
+            return true;
+        }
+        return false;
+    }
+
+    // 알림 제거
+    @Override
+    public Boolean deleteMessage(Long notificationId) {
+        // 알림 유무 확인
+        Optional<NotificationEntity> notificationEntityOptional = firebaseCloudMessageRepository.findByNotificationId(notificationId);
+        if (notificationEntityOptional.isPresent()) {
+            NotificationEntity notificationEntity = notificationEntityOptional.get();
+            notificationEntity.setDeleteStatus(true);
+
+            // 데이터베이스에 변경 내용 저장
+            firebaseCloudMessageRepository.save(notificationEntity);
+            return true;
+        }
+        return false;
+    }
+
     // 메세지 등록 후 알림 등록
     @Override
-    public Boolean sendMessage(NotificationDto notificationDto) {
+    public Boolean sendChatMessage(NotificationDto notificationDto) {
 
-        // 유저 정보 가져오기
+        // 채팅방으로 회원 정보 가져오기
         Optional<UserEntity> userEntityOptional = userRepository.findByUserId(notificationDto.getReceiverId());
         if (userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
             log.info("user_id : {}", userEntity.getUserId());
 
-            NotificationEntity notificationEntity;
-            // 채팅인 경우
-            if(notificationDto.getNotificationType() == NotificationType.Chatting) {
-                notificationDto.setTitle("채팅 도착!");
-                notificationDto.setContent(userEntity.getNickname() + "님 새로운 채팅이 왔어요!!");
+            
+            notificationDto.setTitle("채팅 도착!");
+            notificationDto.setContent(userEntity.getNickname() + "님 새로운 채팅이 왔어요!!");
 
-                notificationEntity = NotificationEntity.builder()
-                        .userEntity(userEntity)
-                        .content(notificationDto.getContent()) // 알림 내용
-                        .readStatus(false) // 읽지 않은 상태로 초기화
-                        .notificationType(NotificationType.Chatting)
-                        .build();
-            }
-            // 키워드 알림인 경우
-            else {
-                notificationDto.setTitle("갈망포카 출현!");
-                notificationDto.setContent(userEntity.getNickname() + "님 새로운 갈망포카가 올라 왔어요!! 확인해보세요!!");
-
-                notificationEntity = NotificationEntity.builder()
-                        .userEntity(userEntity)
-                        .content(notificationDto.getContent()) // 알림 내용
-                        .readStatus(false) // 읽지 않은 상태로 초기화
-                        .notificationType(NotificationType.Article) // 알림 유형 설정, 실제 유형으로 교체 필요
-                        .articleId(notificationDto.getArticleId()) // 관련 글 ID, 필요한 경우 설정
-                        .build();
-            }
+            NotificationEntity notificationEntity = NotificationEntity.builder()
+                    .userEntity(userEntity)
+                    .content(notificationDto.getContent()) // 알림 내용
+                    .readStatus(false) // 읽지 않은 상태로 초기화
+                    .notificationType(NotificationType.Chatting)
+                    .deleteStatus(false)
+                    .build();
+            
             // 데이터베이스에 저장
             firebaseCloudMessageRepository.save(notificationEntity);
         } else {
@@ -125,6 +142,73 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
             return false;
         }
     }
+
+    // 갈망포카 메세지 전송
+    @Override
+    public Boolean sendBiasMessage(NotificationDto notificationDto) {
+        // 유저 정보 가져오기
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(notificationDto.getReceiverId());
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            log.info("user_id : {}", userEntity.getUserId());
+
+            // 키워드 알림인 경우
+            notificationDto.setTitle("갈망포카 출현!");
+            notificationDto.setContent(userEntity.getNickname() + "님 새로운 갈망포카가 올라 왔어요!! 확인해보세요!!");
+
+            NotificationEntity notificationEntity = NotificationEntity.builder()
+                    .userEntity(userEntity)
+                    .content(notificationDto.getContent()) // 알림 내용
+                    .readStatus(false) // 읽지 않은 상태로 초기화
+                    .notificationType(NotificationType.Article) // 알림 유형 설정, 실제 유형으로 교체 필요
+                    .articleId(notificationDto.getArticleId()) // 관련 글 ID, 필요한 경우 설정
+                    .deleteStatus(false)
+                    .build();
+            // 데이터베이스에 저장
+            firebaseCloudMessageRepository.save(notificationEntity);
+        } else {
+            log.info("User with id {} not found", notificationDto.getReceiverId());
+            return false;
+        }
+
+        // 유저의 디바이스 정보 가져오기
+        Optional<UserDeviceEntity> userDeviceEntityOptional = userDeviceRepository.findByUserId(notificationDto.getReceiverId());
+        if (userDeviceEntityOptional.isPresent()) {
+            UserDeviceEntity userDeviceEntity = userDeviceEntityOptional.get();
+
+            try{
+                // 메세지 보내기
+                String message = makeMessage(
+                        userDeviceEntity.getDeviceToken(), notificationDto.getTitle(),
+                        notificationDto.getContent(), notificationDto.getLink()
+                );
+
+                OkHttpClient client = new OkHttpClient();
+                RequestBody requestBody = RequestBody.create(message,
+                        MediaType.get("application/json; charset=utf-8"));
+
+                Request request = new Request.Builder()
+                        .url(API_URL)
+                        .post(requestBody)
+                        .addHeader(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                        .addHeader(HttpHeaders.CONTENT_TYPE, "application/json; UTF-8")
+                        .build();
+                Response response = client.newCall(request).execute();
+
+                System.out.println(response.body().string());
+
+                return true;
+            } catch (Exception e){
+                log.info("request error");
+                return false;
+            }
+        }
+        else {
+            log.info("UserDevice with id {} not found", notificationDto.getReceiverId());
+            return false;
+        }
+    }
+
 
     // 메세지 보내기 테스트용
     @Override
