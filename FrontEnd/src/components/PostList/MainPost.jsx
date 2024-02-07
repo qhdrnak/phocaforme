@@ -93,11 +93,9 @@ const BasicTabs = ({ isPreview }) => {
               // target: searchs.targetMembers (멤버 고유 인덱스 변수)
               own: 4,
               // own: searchs.ownMembers (멤버 고유 인덱스 변수)
-              cardType: "미공포",
-              // cardType: searchs.cardType
+              cardType: searchs.cardType,
               query: "팬싸",
               // query: searchs.query
-
             },
           }
         );
@@ -107,7 +105,6 @@ const BasicTabs = ({ isPreview }) => {
         console.error("검색 오류 :", error);
       }
     };
-
     fetchData();
   }, [dispatch]);
 
@@ -151,7 +148,7 @@ const BasicTabs = ({ isPreview }) => {
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
           {visiblePosts
-            .filter((post) => post.type === "교환")
+            // .filter((post) => post.type === "교환")
             .map((post, index) => (
               <Card
                 key={post.id}
@@ -163,12 +160,12 @@ const BasicTabs = ({ isPreview }) => {
                 }}
                 id={post.id}
                 title={post.title}
-                images={post.images}
-                ownMembers={post.ownMembers}
-                targetMembers={post.targetMembers}
-                content={post.content}
-                type={post.type}
-                isBartered={post.isBartered}
+                images={post.imageUrl}
+                ownMembers={post.ownMember}
+                targetMembers={post.targetMember}
+                // content={post.content}
+                // type={post.type}
+                isBartered={post.Bartered}
               ></Card>
             ))}
         </div>
@@ -182,12 +179,6 @@ const BasicTabs = ({ isPreview }) => {
             .map((post, index) => (
               <Card
                 key={post.id}
-                style={{
-                  width: "calc(50% - 8px)",
-                  marginRight: "16px",
-                  marginBottom: "16px",
-                  cursor: "pointer",
-                }}
                 id={post.id}
                 title={post.title}
                 images={post.images}

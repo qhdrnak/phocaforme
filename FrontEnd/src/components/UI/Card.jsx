@@ -31,36 +31,40 @@ const CustomCard = (props) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-// 로컬스토리지에 최근본 게시물 추가
-  const goToDetail = (id) => { 
-    const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
+  // 로컬스토리지에 최근본 게시물 추가
+  const goToDetail = (id) => {
+    const existingRecentCard =
+      JSON.parse(localStorage.getItem("recentCard")) || [];
     const cardInfo = {
       id,
       title,
       images,
       ownMembers,
       targetMembers,
-      content,
-      type,
+      // content,
+      // type,
       isBartered,
-      isSold
+      // isSold,
     };
 
-    const isExisting = existingRecentCard.some(card => card.id === id);
+    const isExisting = existingRecentCard.some((card) => card.id === id);
 
-    if (isExisting) { // 이미 본 카드가 있으면 제거하고 새로운 카드 추가
-      const updatedRecentCard = existingRecentCard.filter(card => card.id !== id); 
+    if (isExisting) {
+      // 이미 본 카드가 있으면 제거하고 새로운 카드 추가
+      const updatedRecentCard = existingRecentCard.filter(
+        (card) => card.id !== id
+      );
       updatedRecentCard.push(cardInfo); // 새로운 카드 추가
       localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
-    } else { // 없으면 그냥 추가
-      const updatedRecentCard = [...existingRecentCard, cardInfo]; 
+    } else {
+      // 없으면 그냥 추가
+      const updatedRecentCard = [...existingRecentCard, cardInfo];
       if (updatedRecentCard.length > 5) {
         updatedRecentCard.shift();
       }
       localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
     }
 
-    
     navigate(`/post/${id}`);
   };
 
@@ -70,15 +74,16 @@ const CustomCard = (props) => {
     images,
     ownMembers,
     targetMembers,
-    content,
-    type,
+    // content,
+    // type,
     isBartered,
-    isSold,
+    // isSold,
   } = props;
 
   return (
     <Card
-      className={`card-style${isBartered || isSold ? " done-post" : ""}`}
+      // className={`card-style${isBartered || isSold ? " done-post" : ""}`}
+      className={`card-style${isBartered ? " done-post" : ""}`}
       onClick={() => goToDetail(id)}
     >
       {isBartered && (
@@ -86,22 +91,38 @@ const CustomCard = (props) => {
           <p>교환완료</p>
         </div>
       )}
-      {isSold && (
+      {/* {isSold && (
         <div className="overlay">
           <p>판매완료</p>
         </div>
-      )}
-      <CardMedia component="img" height="200" image={images[0]} />
+      )} */}
+      <CardMedia component="img" height="180" image={images} />
       <CardHeader
         sx={{
           padding: "1rem 1rem 0",
           width: "100%",
         }}
-        // action={<IconButton aria-label="settings"></IconButton>}
-        title={<TruncatedTitle truncateWidth="60%">{title}</TruncatedTitle>}
+        title={<TruncatedTitle truncateWidth="30%">{title}</TruncatedTitle>}
       />
       <CardContent className="card-content">
-        {type == "교환" ? (
+        <div>
+          <div>
+            <Typography variant="body2" color="text.secondary">
+              {`있어요: ${ownMembers
+                .map((member) => member.member_name)
+                .join(", ")}`}
+            </Typography>
+          </div>
+          <div>
+            <Typography variant="body2" color="text.secondary">
+              {`구해요: ${targetMembers
+                .map((member) => member.member_name)
+                .join(", ")}`}
+            </Typography>
+          </div>
+        </div>
+        {/* 판매 생략 */}
+        {/* {type == "교환" ? (
           <div>
             <div>
               <Typography variant="body2" color="text.secondary">
@@ -124,7 +145,7 @@ const CustomCard = (props) => {
               {`멤버: ${ownMembers.map((member) => member.value).join(", ")}`}
             </Typography>
           </div>
-        )}
+        )} */}
       </CardContent>
     </Card>
   );

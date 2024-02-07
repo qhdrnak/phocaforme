@@ -76,6 +76,16 @@ const theme = createTheme({
         }
       }
     },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          width: "calc(50% - 8px)",
+          marginRight: "16px",
+          marginBottom: "16px",
+          cursor: "pointer",
+        }
+      }
+    },
     MuiButton: {
       styleOverrides: {
         root: {
