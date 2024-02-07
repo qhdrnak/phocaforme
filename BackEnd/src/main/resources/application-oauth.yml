@@ -15,7 +15,7 @@ spring:
             client-secret: 4SxLoXSuTBMJJCxseJ27jKCZsF8jeMSi
             client-name: Kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://i10a703.p.ssafy.io:8080/login/oauth2/code/kakao
+            redirect-uri: http://i10a703.p.ssafy.io:4885/login/oauth2/code/kakao
             client-authentication-method: client_secret_post
             scope: profile_nickname, account_email
         provider:
@@ -24,5 +24,5 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
-auth-redirect-url: http://i10a703.p.ssafy.io:8080/main
+auth-redirect-url: http://i10a703.p.ssafy.io:4885/main
 
