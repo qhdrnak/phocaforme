@@ -69,16 +69,21 @@ const Search = function () {
     }
 
     const searchData = {
-      ownMembers: ownMembers.length > 0 ? ownMembers[0].value : ownMembersInput,
-      targetMembers:
-        targetMembers.length > 0 ? targetMembers[0].value : targetMembersInput,
+      query: userInput ? userInput : null,
+      ownMembers: ownMembers ? ownMembers.map((member) => member.value) : null,
+      targetMembers: targetMembers
+        ? targetMembers.map((member) => member.value)
+        : null,
       cardType: cardType ? cardType.value : null,
       ...userInputCondition,
     };
 
-    console.log(searchData);
     dispatch(addSearchData(searchData));
+    // 최근 검색 기록 저장
+    localStorage.setItem("searchCondition", JSON.stringify(searchData));
+
     navigate("/post");
+    onClick();
   }
 
   const handleUserInputClick = (event) => {
@@ -108,7 +113,6 @@ const Search = function () {
           <div id="search-container">
             <div style={{ position: "relative" }}>
               <input
-                onClick={onClick}
                 id="title-input"
                 value={userInput}
                 onChange={handleUserInputChange}

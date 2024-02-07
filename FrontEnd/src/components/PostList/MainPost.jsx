@@ -3,8 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
+import axios from "axios";
+
 import { fetchTitle, fetchUserTitle } from "../../http.js";
-import { loginUser, logoutUser, getLocation } from '../../store2/loginUser.js';
+import { loginUser, logoutUser, getLocation } from "../../store2/loginUser.js";
+import { searchPosts } from "../../store2/post.js";
+
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 
 import Card from "../../components/UI/Card";
@@ -30,10 +34,6 @@ const CustomTabPanel = (props) => {
   );
 };
 
-
-  
-
-
 CustomTabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.number.isRequired,
@@ -56,15 +56,14 @@ const BasicTabs = ({ isPreview }) => {
   const [title, setTitle] = useState("");
   const [userTitle, setUserTitle] = useState("");
 
-  const posts = useSelector((state) => (state.post ? state.post.posts : []));
+  // const posts = useSelector((state) => (state.post ? state.post.posts : []));
+  const posts = useSelector((state) => state.post.posts);
   const searchs = useSelector((state) =>
-    state.search ? state.search.searchs : []
+    state.search ? state.search.searchs : null
   );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -84,6 +83,30 @@ const BasicTabs = ({ isPreview }) => {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/barter/search",
+          {
+            params: {
+              target: 3,
+              own: 4,
+              cardType: "미공포",
+              query: "팬싸",
+            },
+          }
+        );
+        dispatch(searchPosts(response.data));
+        console.log(response.data);
+      } catch (error) {
+        console.error("검색 오류 :", error);
+      }
+    };
+
+    fetchData();
+  }, [dispatch]); // dispatch를 의존성 배열에 추가
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
@@ -97,11 +120,10 @@ const BasicTabs = ({ isPreview }) => {
     <div sx={{ width: "100%" }}>
       <p>
         값 전달 확인용 :{" "}
-        {searchs.length > 0 && (
+        {searchs && (
           <>
-            {searchs[searchs.length - 1].ownMembers}{" "}
-            {searchs[searchs.length - 1].targetMembers}{" "}
-            {searchs[searchs.length - 1].cardType}
+            {searchs.query} {searchs.ownMembers} {searchs.targetMembers}{" "}
+            {searchs.cardType}
           </>
         )}
       </p>
