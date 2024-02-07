@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import axios from "axios";
+
+import { setNickname } from "../../../store2/loginUser.js";
 
 import { Box, TextField, Button, Modal } from "@mui/material";
+import { combineSlices } from "@reduxjs/toolkit";
 
-const NicknameModal = ({ open, handleClose }) => {
+const NicknameModal = ({
+  open,
+  handleClose,
+  validFlag,
+  setValidFlag,
+  onNicknameChange,
+}) => {
+  const dispatch = useDispatch();
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -14,56 +28,88 @@ const NicknameModal = ({ open, handleClose }) => {
     p: 4,
   };
 
+  // 로그인 유저
+  const loginUser = useSelector((state) =>
+    state.user ? state.user.user : null
+  );
+
   // 닉네임 인풋 관련
   const [inputValue, setInputValue] = useState("");
   const minLength = 2;
 
   const handleChange = (e) => {
+    setValidFlag(false);
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = () => {
-    if (inputValue.length < minLength) {
-      alert("닉네임은 2글자 이상이어야 합니다.");
-    } else {
-      // 닉네임 중복 체크
-      // 중복 아니어야 확인 버튼 클릭 가능
-    }
+  const handleSubmit = (userId) => {
+    // 닉네임 중복 체크
+    // 중복 아니면 validFlag 수정
+    axios
+      .post(`http://localhost:8080/users/${userId}/nickname`, inputValue)
+      .then((response) => {
+        setValidFlag(true);
+      })
+      .catch((error) => {
+        console.error("요청 실패:", error);
+      });
   };
 
   // 닉네임 업데이트
+  useEffect(() => {
+    onNicknameChange(loginUser.nickname);
+  }, [loginUser.nickname]);
+
+  const handleChangeNickname = (userId) => {
+    axios
+      .put(`http://localhost:8080/users/${userId}/nickname`, null, {
+        params: {
+          isDuplicated: !validFlag,
+          nickname: inputValue,
+        },
+        withCredentials: true,
+      })
+      .then((response) => {
+        dispatch(setNickname(inputValue));
+        setInputValue("");
+        handleClose();
+      })
+      .catch((error) => {
+        console.error("요청 실패:", error);
+      });
+  };
 
   return (
-    <Modal
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
+    <Modal open={open} onClose={handleClose}>
       <Box id="nickname-modal-container" sx={style}>
         <h3 id="nickname-setting-title">새로운 닉네임</h3>
         <div id="nickname-setting-container">
-          <div>
-            <TextField
-              id="new-nickname-input"
-              value={inputValue}
-              onChange={handleChange}
-              helperText={
-                inputValue.length < minLength ? "2글자 이상 작성해주세요" : ""
-              }
-              error={inputValue.length < minLength}
-              size="small"
-              placeholder=""
-            />
-            <Button sx={{ ml: 0.5 }} onClick={handleSubmit} variant="contained">
-              중복확인
-            </Button>
-          </div>
+          <TextField
+            id="new-nickname-input"
+            value={inputValue}
+            onChange={handleChange}
+            helperText={
+              inputValue.length < minLength && inputValue.trim() != ""
+                ? "2글자 이상 필수"
+                : ""
+            }
+            error={inputValue.length < minLength && inputValue.trim() != ""}
+            size="small"
+            placeholder=""
+          />
+          <Button
+            size="small"
+            sx={{ ml: 0.5 }}
+            onClick={() => handleSubmit(loginUser.userId)}
+            variant="contained"
+          >
+            중복확인
+          </Button>
         </div>
         <div id="nickname-setting-button">
           <Button
-            disabled
-            onClick={handleClose}
+            disabled={!validFlag}
+            onClick={() => handleChangeNickname(loginUser.userId)}
             color="secondary"
             variant="contained"
           >
