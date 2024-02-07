@@ -48,8 +48,7 @@ const MemberDropdown2 = ({ selectedGroup, defaultMember, onChange }) => {
           width: "38vw",
 
           "& .MuiInputBase-root": {
-            height: "55px",
-            borderRadius: "13px",
+            borderRadius: "10px",
             borderWidth: "10px",
           },
         }}

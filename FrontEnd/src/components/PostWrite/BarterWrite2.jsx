@@ -62,17 +62,17 @@ const BarterWrite2 = ({ onChange }) => {
   return (
     <div>
       <div id="group-input" className="search-box-group">
-        <h3>그룹명</h3>
+        <div className="searchbar-title">그룹명</div>
         <GroupDropdown2
           onChange={(group) => {
             handleGroupChange(group);
           }}
-          stlye={{ width: "24rem" }}
         />
       </div>
       <div id="member-input">
         <div id="own-member-dropdown">
-          <h3>보유한 멤버</h3>
+          <div className="searchbar-title">보유한 멤버</div>
+
           <MemberDropdown2
             selectedGroup={selectedGroup.value}
             onChange={(member) => {
@@ -99,7 +99,8 @@ const BarterWrite2 = ({ onChange }) => {
           </div>
         </div>
         <div>
-          <h3>찾는 멤버</h3>
+          <div className="searchbar-title">찾는 멤버</div>
+
           <MemberDropdown2
             selectedGroup={selectedGroup.value}
             onChange={(member) => {

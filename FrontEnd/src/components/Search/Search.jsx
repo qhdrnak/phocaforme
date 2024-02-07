@@ -93,6 +93,7 @@ const Search = function () {
         {!isClicked ? (
           <div style={{ position: "relative" }}>
             <input
+              onClick={onClick}
               id="title-input"
               value={userInput}
               onChange={handleUserInputChange}
@@ -100,54 +101,22 @@ const Search = function () {
               placeholder="앨범, 버전명 등을 입력해주세요"
               style={{ paddingLeft: "10vw" }}
             />
-            <FaSearch
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "3vw",
-                transform: "translateY(-50%)",
-                color: "gray",
-              }}
-            />
-            <IoIosArrowDown
-              onClick={onClick}
-              style={{
-                position: "absolute",
-                top: "50%",
-                right: "3vw",
-                transform: "translateY(-50%)",
-              }}
-            />
+            <FaSearch className="search-icon-start" onClick={onClick} />
+            <IoIosArrowDown className="search-icon-end" onClick={onClick} />
           </div>
         ) : (
           <div id="search-container">
             <div style={{ position: "relative" }}>
               <input
+                onClick={onClick}
                 id="title-input"
                 value={userInput}
                 onChange={handleUserInputChange}
                 variant="outlined"
                 placeholder="앨범, 버전명 등을 입력해주세요"
-                style={{ paddingLeft: "10vw" }}
               />
-              <FaSearch
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "3vw",
-                  transform: "translateY(-50%)",
-                  color: "gray",
-                }}
-              />
-              <IoIosArrowDown
-                onClick={onClick}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "3vw",
-                  transform: "translateY(-50%)",
-                }}
-              />
+              <FaSearch className="search-icon-start" onClick={onClick} />
+              <IoIosArrowDown className="search-icon-end" onClick={onClick} />
             </div>
 
             <div>
@@ -163,7 +132,8 @@ const Search = function () {
               )}
             </div>
             <div>
-              <h3>포토카드 종류</h3>
+              <div className="searchbar-title">포토카드 종류</div>
+
               <TypeDropdown2
                 onChange={(type) => {
                   handleTypeChange(type);
@@ -172,7 +142,7 @@ const Search = function () {
             </div>
             <div id="search-buttons">
               <Button
-                id="search-button"
+                // id="search-button"
                 onClick={handleSearchClick}
                 sx={{
                   width: "20vw",
@@ -181,7 +151,7 @@ const Search = function () {
                 검색
               </Button>
               <Button
-                id="search-close-button"
+                // id="search-close-button"
                 onClick={onClick}
                 sx={{
                   width: "20vw",
