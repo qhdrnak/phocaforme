@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 
@@ -7,12 +8,33 @@ import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 
 const GroupDropdown2 = ({ defaultGroup, onChange }) => {
-  const groupItems = [
-    { value: "NCT", label: "NCT", avatarSrc: logo1 },
-    { value: "샤이니", label: "샤이니", avatarSrc: logo2 },
-    { value: "세븐틴", label: "세븐틴", avatarSrc: logo1 },
-    { value: "스트레이키즈", label: "스트레이키즈", avatarSrc: logo1 },
-  ];
+  // const groupItems = [
+  //   { value: "NCT", label: "NCT", avatarSrc: logo1 },
+  //   { value: "샤이니", label: "샤이니", avatarSrc: logo2 },
+  //   { value: "세븐틴", label: "세븐틴", avatarSrc: logo1 },
+  //   { value: "스트레이키즈", label: "스트레이키즈", avatarSrc: logo1 },
+  // ];
+
+  const [groupItems, setGroupItems] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/user/idol/group",
+          {
+            withCredentials: true,
+          }
+        );
+        console.log(response.data);
+        setGroupItems(response.data);
+      } catch (error) {
+        console.error("그룹 세팅 오류:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const [value, setValue] = useState(defaultGroup);
 
@@ -45,7 +67,7 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
               src={option.avatarSrc}
               sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
             />
-            {option.label}
+            {option.idolGroupName}
           </Box>
         )}
         renderInput={(params) => (
@@ -63,7 +85,8 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
                       sx={{ ml: 1, width: "1.5rem", height: "1.5rem" }}
                       src={
                         groupItems.find(
-                          (option) => option.label === value.label
+                          (option) =>
+                            option.idolGroupName === value.idolGroupName
                         )?.avatarSrc
                       }
                     />
