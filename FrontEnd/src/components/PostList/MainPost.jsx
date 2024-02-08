@@ -57,7 +57,11 @@ const BasicTabs = ({ isPreview }) => {
   const [userTitle, setUserTitle] = useState("");
 
   // const posts = useSelector((state) => (state.post ? state.post.posts : []));
-  const posts = useSelector((state) => state.post.posts);
+  const posts = useSelector((state) =>
+    state.post.posts ? state.post.posts : []
+  );
+
+  // const [searchs, setSearchs] = useState(null);
   const searchs = useSelector((state) =>
     state.search.searchs ? state.search.searchs : null
   );
@@ -88,12 +92,12 @@ const BasicTabs = ({ isPreview }) => {
         try {
           const params = {};
 
-          if (searchs.targetMembers.length > 0) {
+          if (searchs.targetMembers) {
             // params.target = searchs.targetMembers;
             params.target = 3;
           }
 
-          if (searchs.ownMembers.length > 0) {
+          if (searchs.ownMembers) {
             params.own = searchs.ownMembers;
           }
 
@@ -108,11 +112,12 @@ const BasicTabs = ({ isPreview }) => {
           // params.target = 3;
           // params.own = 4;
 
-          console.log(params);
+          // console.log(params);
           const response = await axios.get(
             "http://localhost:8080/barter/search",
             {
               params: params,
+              withCredentials: true,
             }
           );
 
@@ -136,6 +141,8 @@ const BasicTabs = ({ isPreview }) => {
     ? posts.slice(0, PAGE_SIZE)
     : posts.slice(0, visibleCards);
 
+  console.log(visiblePosts);
+
   return (
     <div sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -153,7 +160,7 @@ const BasicTabs = ({ isPreview }) => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        {visiblePosts.length === 0 ? (
+        {visiblePosts.length == 0 ? (
           <div className="no-content">게시글이 없습니다.</div>
         ) : (
           <div

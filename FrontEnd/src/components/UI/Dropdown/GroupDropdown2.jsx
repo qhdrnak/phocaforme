@@ -44,7 +44,7 @@ const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
         size="small"
         id="group-dropdown"
         options={groupItems}
-        getOptionLabel={(option) => option.idolGroupName}
+        getOptionLabel={(option) => option.idolGroupNameKr}
         // isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
           width: isProfile ? "12rem" : "80vw",
@@ -61,7 +61,7 @@ const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
               src={option.avatarSrc}
               sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
             />
-            {option.idolGroupName}
+            {option.idolGroupNameKr}
           </Box>
         )}
         renderInput={(params) => (
@@ -80,7 +80,7 @@ const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
                       src={
                         groupItems.find(
                           (option) =>
-                            option.idolGroupName === value.idolGroupName
+                            option.idolGroupNameKr === value.idolGroupNameKr
                         )?.avatarSrc
                       }
                     />
