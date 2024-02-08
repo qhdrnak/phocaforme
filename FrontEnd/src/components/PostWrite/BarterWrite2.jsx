@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -11,16 +11,14 @@ const BarterWrite2 = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState({
-    value: "",
-    label: "",
-    avatarSrc: "",
-  });
+  const [selectedGroup, setSelectedGroup] = useState(0);
 
   const loginUser = useSelector((state) => state.user.user);
 
   const handleGroupChange = (group) => {
-    setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
+    if (group) {
+      setSelectedGroup(group.idolGroupId);
+    }
   };
 
   const [ownMembers, setOwnMembers] = useState([]);
@@ -105,7 +103,7 @@ const BarterWrite2 = ({ onChange }) => {
           <div className="searchbar-title">찾는 멤버</div>
 
           <MemberDropdown2
-            selectedGroup={selectedGroup.value}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleTargetMemberChange(member);
             }}

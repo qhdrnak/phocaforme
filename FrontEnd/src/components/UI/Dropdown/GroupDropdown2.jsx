@@ -40,6 +40,7 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    console.log(newValue);
     onChange(newValue);
   };
 
@@ -51,7 +52,8 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
         size="small"
         id="group-dropdown"
         options={groupItems}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
+        getOptionLabel={(option) => option.idolGroupName}
+        // isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
           width: "80vw",
           "& .MuiInputBase-root": { borderRadius: "10px" },
