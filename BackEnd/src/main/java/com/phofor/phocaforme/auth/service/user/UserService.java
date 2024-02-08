@@ -1,7 +1,9 @@
 package com.phofor.phocaforme.auth.service.user;
 
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserDeviceEntity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
+import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +33,11 @@ public class UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository, RedisService redisService) {
+    private final UserDeviceRepository userDeviceRepository;
+
+    public UserService(UserRepository userRepository, UserDeviceRepository userDeviceRepository, RedisService redisService) {
         this.userRepository = userRepository;
+        this.userDeviceRepository = userDeviceRepository;
         this.redisService = redisService;
     }
 
@@ -118,7 +123,6 @@ public class UserService extends DefaultOAuth2UserService {
             return null;
         }
     }
-
     @Transactional
     public Boolean modifyNicknameByUserId(String userId, String newNickname, String accessToken) {
         Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
@@ -176,5 +180,37 @@ public class UserService extends DefaultOAuth2UserService {
         }
         else
             return false;
+    }
+    @Transactional
+    public Boolean registDeviceTokenByUserId(String userId, String deviceToken) {
+        // 회원 기기 등록 유무 확인
+        Optional<UserDeviceEntity> userDeviceEntityOptional = userDeviceRepository.findByUserId(userId);
+        if (userDeviceEntityOptional.isPresent()) {
+            log.info("user_id : {}", userDeviceEntityOptional.get().getUserId());
+
+            // 기존에 등록된 기기 토큰 업데이트
+            UserDeviceEntity userDeviceEntity = userDeviceEntityOptional.get();
+            userDeviceEntity.setDeviceToken(deviceToken); // 기기 토큰 저장
+
+            // 새로운 정보 저장 - 자동 update
+            userDeviceRepository.save(userDeviceEntity);
+            return true; // 성공적으로 업데이트된 경우 true 반환
+        } else {
+            log.info("User with id {} not found", userId);
+
+            // 회원 확인
+            Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+            if (userEntityOptional.isPresent()) {
+                // 새로운 UserDeviceEntity 생성 및 저장
+                UserDeviceEntity newUserDeviceEntity = new UserDeviceEntity();
+                newUserDeviceEntity.setDeviceToken(deviceToken);
+                newUserDeviceEntity.setUserEntity(userEntityOptional.get()); // UserEntity 설정
+
+                // ID 설정은 MapsId 어노테이션을 통해 자동으로 처리됨
+                userDeviceRepository.save(newUserDeviceEntity);
+                return true; // 성공적으로 저장된 경우 true 반환
+            }
+        }
+        return false; // 유저를 찾지 못한 경우 false 반환
     }
 }

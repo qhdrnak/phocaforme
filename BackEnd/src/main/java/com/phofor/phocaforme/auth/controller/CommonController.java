@@ -129,5 +129,17 @@ public class CommonController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(status);
     }
+
+    // 기기 코드 등록
+    @PostMapping("/users/{userId}/device")
+    public ResponseEntity<?> registDevice(@PathVariable String userId, @RequestParam String deviceToken) {
+        HttpStatus status;
+
+        if(userService.registDeviceTokenByUserId(userId, deviceToken))
+            status = HttpStatus.ACCEPTED;
+        else
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        return new ResponseEntity<>(status);
+    }
 }
 

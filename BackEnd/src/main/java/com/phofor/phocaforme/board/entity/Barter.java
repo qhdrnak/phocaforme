@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 @Getter
 @EntityListeners({AuditingEntityListener.class, BarterEntityListener.class})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class Barter extends BaseEntity {
 
     // 교환게시글 ID
@@ -76,12 +75,6 @@ public class Barter extends BaseEntity {
     private boolean barterStatus;
 
 
-    @CreatedDate
-    @Column(updatable = false)
-    private LocalDateTime registrationDate;
-
-    @LastModifiedDate
-    private LocalDateTime lastModifiedDate;
 
     @Builder
     public Barter(UserEntity userEntity, String nickname, String title, String content, String cardType) {

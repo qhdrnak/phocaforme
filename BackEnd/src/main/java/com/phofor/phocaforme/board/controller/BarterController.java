@@ -10,6 +10,7 @@ import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
 import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.service.BarterSearchService;
 import com.phofor.phocaforme.board.service.BarterService;
 import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
@@ -27,6 +28,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping("/barter")
@@ -68,7 +71,7 @@ public class BarterController {
         // String accessToken = CookieUtil.resolveToken(request).getValue();
         // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
         // UserEntity userEntity = customOAuth2User.getUserEntity();
-
+        System.out.println(registerDto);
         UserEntity userEntity = oauth2User.getUserEntity();
         Barter barter = barterService.registerBarter(registerDto , userEntity);
 

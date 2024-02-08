@@ -37,27 +37,27 @@ public class UserEntity implements Serializable {
     @Column(name = "user_name", columnDefinition = "CHAR(20)", nullable = false)
     private String userName;
 
-    @Column(name="kakao_id", columnDefinition = "VARCHAR(50)", unique = true)
+    @Column(name="user_kakao_id", columnDefinition = "VARCHAR(50)", unique = true)
     private String kakaoId;
 
-    @Column(name="email", columnDefinition="VARCHAR(100)", unique = true)
+    @Column(name="user_email", columnDefinition="VARCHAR(100)", unique = true)
     private String email;
 
-    @Column(name="nickname", columnDefinition = "VARCHAR(50)", unique = true)
+    @Column(name="user_nickname", columnDefinition = "VARCHAR(50)", unique = true)
     private String nickname;
 
-    @Column(name="bias_id", columnDefinition = "BIGINT")
+    @Column(name="user_bias_id", columnDefinition = "BIGINT")
     private Long biasId;
 
     @CreationTimestamp
-    @Column(name="created_at", nullable = false)
+    @Column(name="user_created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Column(name = "user_updated_at")
     private LocalDateTime updDatedAt;
 
-    @Column(name="oauth_type", columnDefinition="VARCHAR(50)")
+    @Column(name="user_oauth_type", columnDefinition="VARCHAR(50)")
     private String oauthType;
 
 //    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)

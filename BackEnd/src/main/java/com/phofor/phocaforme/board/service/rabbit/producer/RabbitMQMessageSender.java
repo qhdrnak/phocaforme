@@ -15,7 +15,7 @@ public class RabbitMQMessageSender {
     private final RabbitTemplate rabbitTemplate;
 
 
-    @Async // event 전달받은 순간 비동기적으로 별도 스레드에서 실행
+//    @Async // event 전달받은 순간 비동기적으로 별도 스레드에서 실행
     @EventListener
     public void handlePostPersistedEvent(PostPersistEvent event){
         PostMessage postMessage = (PostMessage) event.getSource();
