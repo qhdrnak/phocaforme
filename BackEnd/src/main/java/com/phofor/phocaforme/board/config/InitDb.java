@@ -1,7 +1,7 @@
 //package com.phofor.phocaforme.board.config;
 //
-//import com.phofor.phocaforme.board.repository.IdolMemberRepository;
-//import com.phofor.phocaforme.common.entity.IdolMember;
+//import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
+//import com.phofor.phocaforme.idol.entity.IdolMember;
 //import jakarta.annotation.PostConstruct;
 //import jakarta.transaction.Transactional;
 //import lombok.RequiredArgsConstructor;
