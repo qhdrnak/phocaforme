@@ -96,7 +96,7 @@ const CustomCard = (props) => {
           <p>판매완료</p>
         </div>
       )} */}
-      <CardMedia component="img" height="180" image={images} />
+      <CardMedia component="img" image={images} />
       <CardHeader
         sx={{
           padding: "1rem 1rem 0",

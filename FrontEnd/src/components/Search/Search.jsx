@@ -69,19 +69,19 @@ const Search = function () {
     }
 
     const searchData = {
-      query: userInput ? userInput : null,
-      ownMembers: ownMembers ? ownMembers.map((member) => member.value) : null,
+      query: userInput ? userInput : "",
+      ownMembers: ownMembers ? ownMembers.map((member) => member.value) : [],
       targetMembers: targetMembers
         ? targetMembers.map((member) => member.value)
-        : null,
-      cardType: cardType ? cardType.value : null,
+        : [],
+      cardType: cardType ? cardType.value : "",
       ...userInputCondition,
     };
 
     dispatch(addSearchData(searchData));
     // 최근 검색 기록 저장
-    localStorage.setItem("searchCondition", JSON.stringify(searchData));
 
+    localStorage.setItem("searchCondition", JSON.stringify(searchData));
     navigate("/post");
     onClick();
   }
@@ -104,7 +104,6 @@ const Search = function () {
               onChange={handleUserInputChange}
               variant="outlined"
               placeholder="앨범, 버전명 등을 입력해주세요"
-              style={{ paddingLeft: "10vw" }}
             />
             <FaSearch className="search-icon-start" onClick={onClick} />
             <IoIosArrowDown className="search-icon-end" onClick={onClick} />

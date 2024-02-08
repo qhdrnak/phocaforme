@@ -21,6 +21,13 @@ const theme = createTheme({
   },
 
   components: {
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          padding: "1rem 0",
+        }
+      }
+    },
     MuiContainer: {
       styleOverrides: {
         root: {
@@ -76,14 +83,23 @@ const theme = createTheme({
         }
       }
     },
+    MuiCardMedia: {
+      styleOverrides: {
+        root: {
+          height: "10rem",
+        }
+      }
+    },
     MuiCard: {
       styleOverrides: {
         root: {
-          width: "calc(50% - 8px)",
-          marginRight: "16px",
+          // minWidth: "8rem",
+          width: "calc(50vw-1rem)",
+          // marginRight: "16px",
           marginBottom: "16px",
           cursor: "pointer",
-        }
+        },
+      
       }
     },
     MuiButton: {

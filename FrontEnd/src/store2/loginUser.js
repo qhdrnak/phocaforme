@@ -18,10 +18,9 @@ const initialUserState = {
     userId: getDecodedCookie('userId') || null,
     nickname: getDecodedCookie('nickname') || null,
     location: null, // 현재 위치 정보
+    bias: null,
   },
 };
-
-
 
 
 const loginUserSlice = createSlice({
@@ -39,9 +38,12 @@ const loginUserSlice = createSlice({
     },
     setNickname: (state, action) => {
       state.user.nickname = action.payload;
+    },
+    setBias: (state, action) => {
+      state.user.nickname = action.payload;
     }
   },
 });
 
-export const { loginUser, logoutUser, setLocation, setNickname } = loginUserSlice.actions;
+export const { loginUser, logoutUser, setLocation, setNickname, setBias } = loginUserSlice.actions;
 export default loginUserSlice.reducer;
