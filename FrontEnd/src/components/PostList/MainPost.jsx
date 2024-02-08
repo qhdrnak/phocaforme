@@ -88,12 +88,12 @@ const BasicTabs = ({ isPreview }) => {
         try {
           const params = {};
 
-          if (searchs.targetMembers) {
+          if (searchs.targetMembers.length > 0) {
             // params.target = searchs.targetMembers;
             params.target = 3;
           }
 
-          if (searchs.ownMembers) {
+          if (searchs.ownMembers.length > 0) {
             params.own = searchs.ownMembers;
           }
 
@@ -108,12 +108,14 @@ const BasicTabs = ({ isPreview }) => {
           // params.target = 3;
           // params.own = 4;
 
+          console.log(params);
           const response = await axios.get(
             "http://localhost:8080/barter/search",
             {
               params: params,
             }
           );
+
           dispatch(searchPosts(response.data));
           console.log(response.data);
         } catch (error) {
@@ -151,50 +153,48 @@ const BasicTabs = ({ isPreview }) => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <div
-          style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
-        >
-          {visiblePosts
-            // .filter((post) => post.type === "교환")
-            .map((post, index) => (
+        {visiblePosts.length === 0 ? (
+          <div className="no-content">게시글이 없습니다.</div>
+        ) : (
+          <div
+            style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+          >
+            {visiblePosts.map((post, index) => (
               <Card
                 key={post.id}
-                style={{
-                  width: "calc(50% - 8px)",
-                  marginRight: "16px",
-                  marginBottom: "16px",
-                  cursor: "pointer",
-                }}
                 id={post.id}
                 title={post.title}
                 images={post.imageUrl}
                 ownMembers={post.ownMember}
                 targetMembers={post.targetMember}
-                // content={post.content}
-                // type={post.type}
                 isBartered={post.Bartered}
               ></Card>
             ))}
-        </div>
+          </div>
+        )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
         <div
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
-          {visiblePosts
-            .filter((post) => post.type === "판매")
-            .map((post, index) => (
-              <Card
-                key={post.id}
-                id={post.id}
-                title={post.title}
-                images={post.images}
-                content={post.content}
-                ownMembers={post.ownMembers}
-                type={post.type}
-                isSold={post.isSold}
-              ></Card>
-            ))}
+          {visiblePosts.filter((post) => post.type === "판매").length === 0 ? (
+            <div className="no-content">게시글이 없습니다.</div>
+          ) : (
+            visiblePosts
+              .filter((post) => post.type === "판매")
+              .map((post, index) => (
+                <Card
+                  key={post.id}
+                  id={post.id}
+                  title={post.title}
+                  images={post.images}
+                  content={post.content}
+                  ownMembers={post.ownMembers}
+                  type={post.type}
+                  isSold={post.isSold}
+                ></Card>
+              ))
+          )}
         </div>
       </CustomTabPanel>
     </div>

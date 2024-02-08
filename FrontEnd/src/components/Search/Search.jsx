@@ -75,7 +75,7 @@ const Search = function () {
         ? targetMembers.map((member) => member.value)
         : [],
       cardType: cardType ? cardType.value : "",
-      ...userInputCondition,
+      // ...userInputCondition,
     };
 
     dispatch(addSearchData(searchData));
@@ -90,6 +90,13 @@ const Search = function () {
     event.stopPropagation(); // 클릭 이벤트 버블링 중단
   };
 
+  // 엔터 키를 눌렀을 때도 send
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSearchClick();
+    }
+  };
+
   return (
     <div id="search-container">
       <h3>어떤 포카를 찾으시나요?</h3>
@@ -99,6 +106,7 @@ const Search = function () {
           <div style={{ position: "relative" }}>
             <input
               onClick={onClick}
+              onKeyDown={handleEnter}
               id="title-input"
               value={userInput}
               onChange={handleUserInputChange}
@@ -114,6 +122,7 @@ const Search = function () {
               <input
                 id="title-input"
                 value={userInput}
+                onKeyDown={handleEnter}
                 onChange={handleUserInputChange}
                 variant="outlined"
                 placeholder="앨범, 버전명 등을 입력해주세요"
