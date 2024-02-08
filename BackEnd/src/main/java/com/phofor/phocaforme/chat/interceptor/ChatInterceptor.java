@@ -45,25 +45,30 @@ public class ChatInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         StompCommand command = accessor.getCommand();
 
-        // Authorization은 프론트에서 해준 것과 같게 해주면 됨(이름을)
-//        String authToken = accessor.getFirstNativeHeader("Authorizaition");
-        String authToken = "ND5UAugQjZGzTrmYPSRb3xcT6a09HD3aF-EKPXKXAAABjXwyd9xDz1szkZmFRA";
+        if(StompCommand.CONNECT.equals(command)) {
+            // Authorization은 프론트에서 해준 것과 같게 해주면 됨(이름을)
+            String authToken = accessor.getFirstNativeHeader("Authorization");
+            log.info("토큰확인"+authToken);
+//        String authToken = "brfgpCqAIcG8IVq0z3w5Xvtx_ykOjKJ0SSkKPXRpAAABjX4k2LpUdd9ffL_GXA";
 
-        // authToken이 내가 프론트에서 받아온 유저의 토큰
-        // 이 토큰을 사용해서 유저의 정보를 받아오기
-        log.info("에바킹스" + redisService.getMapData(authToken).toString());
-        CustomOAuth2User customOAuth2User = (CustomOAuth2User) (redisService.getMapData(authToken)).get("oauth2User");
+            // authToken이 내가 프론트에서 받아온 유저의 토큰
+            // 이 토큰을 사용해서 유저의 정보를 받아오기
+            log.info("에바킹스" + redisService.getMapData(authToken).toString());
+            CustomOAuth2User customOAuth2User = (CustomOAuth2User) (redisService.getMapData(authToken)).get("oauth2User");
 
-        UserEntity userEntity = customOAuth2User.getUserEntity();
+            UserEntity userEntity = customOAuth2User.getUserEntity();
 
-        // 레디스에서 유저의 정보 받아오기
-        if (StompCommand.CONNECT.equals(command)){
-            setValue(accessor, "nickname", userEntity.getNickname());
-            setValue(accessor, "userId", userEntity.getUserId());
-            log.info(userEntity.getNickname());
-            log.info(userEntity.getUserName());
-            log.info(userEntity.getUserId());
+            // 레디스에서 유저의 정보 받아오기
+//            if (StompCommand.CONNECT.equals(command)){
+                setValue(accessor, "nickname", userEntity.getNickname());
+                setValue(accessor, "userId", userEntity.getUserId());
+                log.info(userEntity.getNickname());
+                log.info(userEntity.getUserName());
+                log.info(userEntity.getUserId());
+//            }
+
         }
+
 
 
         return message;
