@@ -3,13 +3,16 @@ package com.phofor.phocaforme.notification.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.messaging.BatchResponse;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.MulticastMessage;
+import com.google.firebase.messaging.SendResponse;
 import com.phofor.phocaforme.auth.entity.UserDeviceEntity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.notification.domain.FcmMessage;
-import com.phofor.phocaforme.notification.domain.FcmMessages;
 import com.phofor.phocaforme.notification.dto.NotificationDto;
 import com.phofor.phocaforme.notification.dto.message.NotificationMessageDto;
 import com.phofor.phocaforme.notification.dto.message.RequestDTO;
@@ -276,28 +279,67 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
                 int end = Math.min((i + 1) * 500, total);
 
                 List<String> batchTokens = deviceTokens.subList(start, end);
+                log.info("{}번 실행", i);
                 try {
                     // 메세지 보내기
-                    String message = makeMulticastMessage(batchTokens, title, content, link);
-                    sendMessage(message);
+                    MulticastMessage message = MulticastMessage.builder()
+                            .addAllTokens(batchTokens)
+                            .putData("title", title)
+                            .putData("content", content)
+                            .putData("link", link)
+                            .build();
+                    BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                    log.info(response.getSuccessCount() + " messages were sent successfully.");
+
+                    // 실패한 토큰 수
+                    if (response.getFailureCount() > 0) {
+                        List<SendResponse> responses = response.getResponses();
+                        for (int j = 0; j < responses.size(); j++) {
+                            if (!responses.get(j).isSuccessful()) {
+                                // The order of responses corresponds to the order of the registration tokens.
+                                sendFail.add(batchTokens.get(i));
+                            }
+                        }
+                    }
                 } catch (Exception e) {
                     log.info("request error");
                     requestError.add(i);
                 }
             }
             // 실패한 요청에 대한 재요청
-            fullBatches = requestError.size() / 500;
-            for(int i = 0; i <= fullBatches; i++) {
-                int start = i * 500;
-                int end = Math.min((i + 1) * 500, total);
+            if (!sendFail.isEmpty()) {
+                fullBatches = sendFail.size() / 500;
+                for(int i = 0; i <= fullBatches; i++) {
+                    int start = i * 500;
+                    int end = Math.min((i + 1) * 500, total);
 
-                List<String> batchTokens = deviceTokens.subList(start, end);
-                try {
-                    // 메세지 보내기
-                    String message = makeMulticastMessage(batchTokens, title, content, link);
-                    sendMessage(message);
-                } catch (Exception e) {
-                    log.info("request error");
+                    List<String> batchTokens = sendFail.subList(start, end);
+                    try {
+                        // 메세지 보내기
+                        MulticastMessage message = MulticastMessage.builder()
+                                .addAllTokens(batchTokens)
+                                .putData("title", title)
+                                .putData("content", content)
+                                .putData("link", link)
+                                .build();
+
+                        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+                        log.info(response.getSuccessCount() + " messages were sent successfully.");
+
+                        // 실패한 토큰 수
+                        if (response.getFailureCount() > 0) {
+                            List<SendResponse> responses = response.getResponses();
+                            for (int j = 0; j < responses.size(); j++) {
+                                if (!responses.get(j).isSuccessful()) {
+                                    // The order of responses corresponds to the order of the registration tokens.
+                                    sendFail.add(batchTokens.get(i));
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        log.info("request error");
+                        requestError.add(i);
+                    }
                 }
             }
             return true;
@@ -350,17 +392,6 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
                 .validateOnly(false)
                 .build();
         return objectMapper.writeValueAsString(fcmMessage);
-    }
-
-    private String makeMulticastMessage(List<String> targetTokens, String title, String body, String link) throws JsonProcessingException {
-        Map<String, Object> message = new HashMap<>();
-        message.put("registration_ids", targetTokens);
-        message.put("data", Map.of(
-                "title", title,
-                "body", body,
-                "link", link
-        )); // 데이터 메시지의 경우
-        return objectMapper.writeValueAsString(message);
     }
 
     private void sendMessage(String message) throws Exception{
