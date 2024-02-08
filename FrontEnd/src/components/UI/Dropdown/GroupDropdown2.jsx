@@ -7,14 +7,7 @@ import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 
-const GroupDropdown2 = ({ defaultGroup, onChange }) => {
-  // const groupItems = [
-  //   { value: "NCT", label: "NCT", avatarSrc: logo1 },
-  //   { value: "샤이니", label: "샤이니", avatarSrc: logo2 },
-  //   { value: "세븐틴", label: "세븐틴", avatarSrc: logo1 },
-  //   { value: "스트레이키즈", label: "스트레이키즈", avatarSrc: logo1 },
-  // ];
-
+const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
 
   useEffect(() => {
@@ -26,7 +19,6 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
             withCredentials: true,
           }
         );
-        console.log(response.data);
         setGroupItems(response.data);
       } catch (error) {
         console.error("그룹 세팅 오류:", error);
@@ -55,7 +47,7 @@ const GroupDropdown2 = ({ defaultGroup, onChange }) => {
         getOptionLabel={(option) => option.idolGroupName}
         // isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
-          width: "80vw",
+          width: isProfile ? "12rem" : "80vw",
           "& .MuiInputBase-root": { borderRadius: "10px" },
         }}
         noOptionsText="해당 그룹이 없습니다"
