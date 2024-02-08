@@ -30,4 +30,6 @@ logging:
     org:
       springframework:
         security: DEBUG
-
+project:
+  url: http://localhost:8080
+  API-URL: https://fcm.googleapis.com/v1/projects/phocaforme/messages:send
