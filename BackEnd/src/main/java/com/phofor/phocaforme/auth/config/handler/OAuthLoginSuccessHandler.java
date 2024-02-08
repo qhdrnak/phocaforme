@@ -111,7 +111,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 "token=" + accessToken + "; " +
                         "Path=/;" +
                         "Domain=" +
-                        request.getContextPath() +
+                        "phocafor.me" +
                         ";" +
 //                        "HttpOnly; " +
                         "Max-Age=" +
