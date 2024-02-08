@@ -30,7 +30,7 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
         isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
           width: "80vw",
-          "& .MuiInputBase-root": { height: "55px", borderRadius: "13px" },
+          "& .MuiInputBase-root": { borderRadius: "10px" },
         }}
         noOptionsText="해당 분류가 없습니다"
         renderOption={(props, option) => (

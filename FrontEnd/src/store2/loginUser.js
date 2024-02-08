@@ -1,4 +1,9 @@
+import { useState, useEffect } from "react";
+
+
 import { createSlice } from '@reduxjs/toolkit';
+import { accordionActionsClasses } from "@mui/material";
+
 
 // 쿠키에서 userId 및 nickname을 읽어오는 함수
 const getDecodedCookie = (name) => {
@@ -14,8 +19,10 @@ const initialUserState = {
     nickname: getDecodedCookie('nickname') || null,
     token: getDecodedCookie('token') || null,
     location: null, // 현재 위치 정보
+    bias: null,
   },
 };
+
 
 const loginUserSlice = createSlice({
   name: 'user',
@@ -23,16 +30,21 @@ const loginUserSlice = createSlice({
   reducers: {
     loginUser: (state, action) => {
       state.user = action.payload;
-
     },
     logoutUser: (state) => {
       state.user = null;
     },
-    getLocation: (state, action) => {
+    setLocation: (state, action) => {
       state.user.location = action.payload;
     },
+    setNickname: (state, action) => {
+      state.user.nickname = action.payload;
+    },
+    setBias: (state, action) => {
+      state.user.nickname = action.payload;
+    }
   },
 });
 
-export const { loginUser, logoutUser, getLocation } = loginUserSlice.actions;
+export const { loginUser, logoutUser, setLocation, setNickname, setBias } = loginUserSlice.actions;
 export default loginUserSlice.reducer;

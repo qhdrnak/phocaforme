@@ -18,7 +18,7 @@
     font-family: 'Pretendard';
 }
 
-.main-title,  #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
+.main-title, .no-content, #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
     font-weight: bold;
 }
@@ -116,6 +116,27 @@
 }
 
 /* 검색창 */
+.searchbar-title {
+    font-family: 'PyeongChangPeace' ;
+    font-weight: bold;
+    margin: 0.5rem;
+}
+
+.search-icon-start {
+    position: absolute;
+    top: 50%;
+    left: 3vw;
+    transform: translateY(-50%);
+    color: gray;
+}
+
+.search-icon-end {
+    position: absolute;
+    top: 50%;
+    right: 3vw;
+    transform: translateY(-50%);
+}
+
 .search-container {
     display: flex;
     justify-content: center;
@@ -485,8 +506,21 @@
     align-items: center;
 }
 
+#new-nickname-input {
+    width: 30vw;
+}
+
+#nickname-setting-container{
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+}
+
 
 /* 마이페이지 */
+#nickname-title {
+    width: 20vw;
+}
 #profile-page {
     display: flex;
     flex-direction: column;
@@ -589,7 +623,8 @@
     width: 70vw;
     height: 50px;
     box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.1);
-    padding: 0 1rem;
+    padding: 0 0 0 10vw;
+    margin: 1vh 0;
 }
 
 #image-preview {
@@ -711,6 +746,11 @@
 
 
 /* 게시글페이지 */
+
+.no-content {
+    text-align: center;
+    margin: 3rem;
+}
 
 .card-content {
     width: 10rem;

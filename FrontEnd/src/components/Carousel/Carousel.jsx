@@ -47,8 +47,8 @@ const MyCarousel = () => {
         infiniteLoop={true}
         hideArrows={true}
       >
-        {example.map((content) => (
-          <Link to={content.link}>
+        {example.map((content, index) => (
+          <Link key={index} to={content.link}>
             <img src={content.url} style={imageStyle} />
           </Link>
         ))}

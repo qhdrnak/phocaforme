@@ -21,8 +21,8 @@ const NavBar = ({ children }) => {
   };
 
   const test = () => {
-    console.log(user)
-  }
+    console.log(user);
+  };
 
   return (
     <div id="nav-bar">
@@ -33,7 +33,7 @@ const NavBar = ({ children }) => {
         }}
         src={logo}
       />
-      
+
       {user.userId ? (
         <div id="nav-menus">
           <ProfileImage />

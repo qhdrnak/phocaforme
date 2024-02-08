@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import axios from "axios";
+
 import { styled } from "@mui/material/styles";
 
 import { FormControlLabel, Switch } from "@mui/material";
 
-import { getLocation } from "../../store2/loginUser.js";
+import { setLocation } from "../../store2/loginUser.js";
 
 import {
   ReplayCircleFilledOutlined,
@@ -78,21 +80,31 @@ export default function GPS() {
   useEffect(() => {
     if (isSwitchOn) {
       navigator.geolocation.getCurrentPosition((position) => {
-        dispatch(
-          getLocation(
-            `${position.coords.latitude}, ${position.coords.longitude}`
-          )
+        setLocation(
+          getAddress(position.coords.longitude, position.coords.latitude)
         );
       });
     }
   }, [isSwitchOn, dispatch]);
 
+  const getAddress = (long, lat) => {
+    axios
+      .post("http://localhost:8080/gps", { longitude: long, latitude: lat })
+      .then((response) => {
+        console.log(response.data);
+        dispatch(setLocation(response.data));
+      })
+      .catch((error) => {
+        console.error("주소변환 실패:", error);
+      });
+  };
+
   const handleRefresh = () => {
     if (isSwitchOn) {
       navigator.geolocation.getCurrentPosition((position) => {
         dispatch(
-          getLocation(
-            `${position.coords.latitude}, ${position.coords.longitude}`
+          setLocation(
+            getAddress(position.coords.longitude, position.coords.latitude)
           )
         );
       });

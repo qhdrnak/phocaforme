@@ -21,12 +21,19 @@ const theme = createTheme({
   },
 
   components: {
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          padding: "1rem 0",
+        }
+      }
+    },
     MuiContainer: {
       styleOverrides: {
         root: {
           
           width: '85vw',
-          height: '85vh',
+          // height: '85vh',
         }
       }
     },
@@ -74,6 +81,25 @@ const theme = createTheme({
         title: {
           fontSize: '18px'
         }
+      }
+    },
+    MuiCardMedia: {
+      styleOverrides: {
+        root: {
+          height: "10rem",
+        }
+      }
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          // minWidth: "8rem",
+          width: "calc(50vw-1rem)",
+          // marginRight: "16px",
+          marginBottom: "16px",
+          cursor: "pointer",
+        },
+      
       }
     },
     MuiButton: {

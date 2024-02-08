@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import GroupDropdown2 from "../UI/Dropdown/GroupDropdown2.jsx";
@@ -11,14 +11,14 @@ const BarterWrite2 = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState({
-    value: "",
-    label: "",
-    avatarSrc: "",
-  });
+  const [selectedGroup, setSelectedGroup] = useState(0);
+
+  const loginUser = useSelector((state) => state.user.user);
 
   const handleGroupChange = (group) => {
-    setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
+    if (group) {
+      setSelectedGroup(group.idolGroupId);
+    }
   };
 
   const [ownMembers, setOwnMembers] = useState([]);
@@ -62,17 +62,18 @@ const BarterWrite2 = ({ onChange }) => {
   return (
     <div>
       <div id="group-input" className="search-box-group">
-        <h3>그룹명</h3>
+        <div className="searchbar-title">그룹명</div>
         <GroupDropdown2
+          defaultGroup={loginUser.bias}
           onChange={(group) => {
             handleGroupChange(group);
           }}
-          stlye={{ width: "24rem" }}
         />
       </div>
       <div id="member-input">
         <div id="own-member-dropdown">
-          <h3>보유한 멤버</h3>
+          <div className="searchbar-title">보유한 멤버</div>
+
           <MemberDropdown2
             selectedGroup={selectedGroup.value}
             onChange={(member) => {
@@ -99,9 +100,10 @@ const BarterWrite2 = ({ onChange }) => {
           </div>
         </div>
         <div>
-          <h3>찾는 멤버</h3>
+          <div className="searchbar-title">찾는 멤버</div>
+
           <MemberDropdown2
-            selectedGroup={selectedGroup.value}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleTargetMemberChange(member);
             }}
