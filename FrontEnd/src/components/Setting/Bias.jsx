@@ -19,17 +19,19 @@ const Bias = () => {
 
   const handleMemberChange = (member) => {
     setSelectedMember(member);
+    // member.idolMemberId 를 db 에 반영하기
   };
 
   const generateImageUrl = (group, member) => {
     if (group && member) {
-      return `assets/images/${group}_${member}.PNG`;
+      return member.idolImage;
     }
     return null;
   };
 
   const handleApplyClick = () => {
-    const url = generateImageUrl(selectedGroup.value, selectedMember?.value);
+    const url = generateImageUrl(selectedGroup, selectedMember);
+    console.log(selectedMember);
     setImageUrl(url);
   };
 

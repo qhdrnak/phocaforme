@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 import { Box, TextField, Autocomplete } from "@mui/material";
 
@@ -10,35 +11,35 @@ const MemberDropdown2 = ({
   onChange,
 }) => {
   const [value, setValue] = useState(defaultMember);
-  const [filteredOptions, setFilteredOptions] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
     onChange(newValue);
   };
 
-  const memberItems = [
-    { value: "도영", label: "도영", group: "NCT" },
-    { value: "제노", label: "제노", group: "NCT" },
-    { value: "재현", label: "재현", group: "NCT" },
-    { value: "키", label: "키", group: "샤이니" },
-    { value: "태민", label: "태민", group: "샤이니" },
-    { value: "민호", label: "민호", group: "샤이니" },
-    { value: "우지", label: "우지", group: "세븐틴" },
-    { value: "호시", label: "호시", group: "세븐틴" },
-    { value: "에스쿱스", label: "에스쿱스", group: "세븐틴" },
-    { value: "필릭스", label: "필릭스", group: "스트레이키즈" },
-  ];
+  const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
     setValue(null);
     onChange(null);
 
-    // 해당 그룹 멤버만 렌더링 (api 로 수정)
-    const filteredOptions = memberItems.filter(
-      (option) => option.group === selectedGroup
-    );
-    setFilteredOptions(filteredOptions);
+    const fetchData = async () => {
+      if (selectedGroup) {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/user/idol/member/${selectedGroup.idolGroupId}`,
+            {
+              withCredentials: true,
+            }
+          );
+          setMemberItems(response.data);
+        } catch (error) {
+          console.error("멤버 세팅 오류:", error);
+        }
+      }
+    };
+
+    fetchData();
   }, [selectedGroup]);
 
   return (
@@ -49,7 +50,9 @@ const MemberDropdown2 = ({
         size="small"
         disablePortal
         id="group-dropdown"
-        options={filteredOptions}
+        options={memberItems}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        getOptionLabel={(option) => option.idolName}
         sx={{
           width: isProfile ? "12rem" : "38vw",
 
@@ -64,16 +67,11 @@ const MemberDropdown2 = ({
             sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
             {...props}
           >
-            {option.label}
+            {option.idolName}
           </Box>
         )}
         renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            fullWidth
-            placeholder="선택하세요"
-          />
+          <TextField {...params} variant="outlined" placeholder="선택하세요" />
         )}
       />
     </div>
