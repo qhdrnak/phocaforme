@@ -1,6 +1,6 @@
 package com.phofor.phocaforme.auth.controller;
 
-import com.phofor.phocaforme.auth.dto.response.IdolGroupResponseDto;
+import com.phofor.phocaforme.idol.dto.response.IdolGroupResponseDto;
 import com.phofor.phocaforme.idol.service.IdolSelectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +26,6 @@ public class BiasSelectController {
     public ResponseEntity<List<IdolGroupResponseDto>> getIdolGroupAll(){
         return ResponseEntity.ok().body(idolSelectService.findAll());
     }
+
 
 }
