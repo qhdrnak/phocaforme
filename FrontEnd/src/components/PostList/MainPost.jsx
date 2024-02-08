@@ -13,31 +13,29 @@ import { searchPosts } from "../../store2/post.js";
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../../components/UI/Card";
 
-const BasicTabs = () => {
+const CustomTabPanel = (props) => {
+  const { children, value, index, ...other } = props;
+
   const [posts, setPosts] = useState([]);
-  const user = useSelector((state) => (state.user ? state.user.user : null)); 
+  const user = useSelector((state) => (state.user ? state.user.user : null));
 
   useEffect(() => {
     // 게시글 가져오기 요청
-    axios.get('http://localhost:8080/barter')
-      .then(response => {
+    axios
+      .get("http://localhost:8080/barter")
+      .then((response) => {
         // 요청 성공 시 받은 데이터를 상태에 저장
         const data = response.data;
         setPosts(data); // 가져온 게시글을 상태에 저장
       })
-      .catch(error => {
+      .catch((error) => {
         // 요청 실패 시 에러 처리
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
       });
   }, []); // 컴포넌트가 마운트될 때 한 번만 실행됨
 
   return (
     <div>
-    <div>
-      {posts.map(post => (
-        post.title
-      ))}
-      </div>
       <div
         role="tabpanel"
         hidden={value !== index}
@@ -165,6 +163,8 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <div sx={{ width: "100%" }}>
+      <div>{posts.map((post) => post.title)}</div>
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
