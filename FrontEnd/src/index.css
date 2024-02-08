@@ -18,7 +18,7 @@
     font-family: 'Pretendard';
 }
 
-.main-title,  #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
+.main-title, .no-content, #pay-modal-title, #nickname-setting-title, .guide-title, .write-title, .chat-title, .profile-title, .post-page-title, .alarm-title {
     font-family:'PyeongChangPeace';
     font-weight: bold;
 }
@@ -746,6 +746,11 @@
 
 
 /* 게시글페이지 */
+
+.no-content {
+    text-align: center;
+    margin: 3rem;
+}
 
 .card-content {
     width: 10rem;
