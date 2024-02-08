@@ -24,6 +24,7 @@ import java.util.Map;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class CommonController {
 
     private final RedisService redisService;
