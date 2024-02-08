@@ -32,12 +32,13 @@
 //    }
 //}
 
-package com.phofor.phocaforme.notification.dto.message;
+package com.phofor.phocaforme.notification.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Map;
 
 @Builder

@@ -30,6 +30,9 @@ public class NotificationEntity {
     @JoinColumn(name = "notification_user_id", columnDefinition = "CHAR(50)", nullable = false)
     private UserEntity userEntity;  // 회원
 
+    @Column(name = "notification_title", columnDefinition = "VARCHAR(50)", nullable = false)
+    private String title; // 알림 내용
+
     @Column(name = "notification_content", columnDefinition = "VARCHAR(100)", nullable = false)
     private String content; // 알림 내용
 
