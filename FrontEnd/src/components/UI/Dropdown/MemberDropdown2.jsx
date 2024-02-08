@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 
 import { Box, TextField, Autocomplete } from "@mui/material";
 
-const MemberDropdown2 = ({ selectedGroup, defaultMember, onChange }) => {
+const MemberDropdown2 = ({
+  isProfile,
+  selectedGroup,
+  defaultMember,
+  onChange,
+}) => {
   const [value, setValue] = useState(defaultMember);
   const [filteredOptions, setFilteredOptions] = useState([]);
 
@@ -29,6 +34,7 @@ const MemberDropdown2 = ({ selectedGroup, defaultMember, onChange }) => {
     setValue(null);
     onChange(null);
 
+    // 해당 그룹 멤버만 렌더링 (api 로 수정)
     const filteredOptions = memberItems.filter(
       (option) => option.group === selectedGroup
     );
@@ -45,11 +51,10 @@ const MemberDropdown2 = ({ selectedGroup, defaultMember, onChange }) => {
         id="group-dropdown"
         options={filteredOptions}
         sx={{
-          width: "38vw",
+          width: isProfile ? "12rem" : "38vw",
 
           "& .MuiInputBase-root": {
             borderRadius: "10px",
-            borderWidth: "10px",
           },
         }}
         noOptionsText="해당 멤버가 없습니다"

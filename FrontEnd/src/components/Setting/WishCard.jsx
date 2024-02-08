@@ -2,27 +2,19 @@ import React, { useState } from "react";
 
 import { Button, TextField, Chip } from "@mui/material";
 
-import GroupDropdown from "../UI/Dropdown/GroupDropdown";
-import MemberDropdown from "../UI/Dropdown/MemberDropdown";
+import GroupDropdown from "../UI/Dropdown/GroupDropdown2";
+import MemberDropdown from "../UI/Dropdown/MemberDropdown2";
 
 const WishCard = () => {
-  const [selectedGroup, setSelectedGroup] = useState({
-    value: "",
-    label: "",
-  });
+  const [selectedGroup, setSelectedGroup] = useState(0);
 
   const [selectedMember, setSelectedMember] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleGroupChange = (group) => {
-    if (group == null) {
-      group = {
-        value: "",
-        label: "",
-        avatarSrc: "",
-      };
+    if (group) {
+      setSelectedGroup(group);
     }
-    setSelectedGroup(group);
   };
 
   const handleMemberChange = (member) => {
@@ -82,6 +74,7 @@ const WishCard = () => {
           <div>그룹명</div>
           <div>
             <GroupDropdown
+              isProfile={true}
               onChange={(group) => {
                 handleGroupChange(group);
               }}
@@ -92,7 +85,8 @@ const WishCard = () => {
           <div>멤버명</div>
           <div>
             <MemberDropdown
-              selectedGroup={selectedGroup.value}
+              isProfile={true}
+              selectedGroup={selectedGroup}
               onChange={(member) => {
                 handleMemberChange(member);
               }}
