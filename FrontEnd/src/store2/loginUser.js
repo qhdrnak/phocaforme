@@ -41,7 +41,7 @@ const loginUserSlice = createSlice({
       state.user.nickname = action.payload;
     },
     setBias: (state, action) => {
-      state.user.nickname = action.payload;
+      state.user.bias = action.payload;
     }
   },
 });

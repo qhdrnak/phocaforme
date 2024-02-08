@@ -75,7 +75,7 @@ const BarterWrite2 = ({ onChange }) => {
           <div className="searchbar-title">보유한 멤버</div>
 
           <MemberDropdown2
-            selectedGroup={selectedGroup.value}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleOwnMemberChange(member);
             }}

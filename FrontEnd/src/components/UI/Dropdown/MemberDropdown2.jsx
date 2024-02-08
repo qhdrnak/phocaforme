@@ -27,7 +27,7 @@ const MemberDropdown2 = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/user/idol/member/${selectedGroup.idolGroupId}`,
+            `http://localhost:8080/user/idol/member/${selectedGroup}`,
             {
               withCredentials: true,
             }
