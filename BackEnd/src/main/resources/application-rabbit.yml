@@ -5,10 +5,11 @@ spring:
     username: guest
     password: guest
 
-rabbitmq:
-  queue:
-    name: your_queue_name
-  exchange:
-    name: your_exchange_name
-  routing:
-    key: your_routing_key
+
+#rabbitmq:
+#  queue:
+#    name: your_queue_name
+#  exchange:
+#    name: your_exchange_name
+#  routing:
+#    key: your_routing_key

@@ -10,6 +10,7 @@ import com.phofor.phocaforme.board.service.criteria.BarterCriteriaBuilder;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaDirector;
 import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilder;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHitSupport;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
@@ -31,14 +34,22 @@ public class BarterSearchService {
 //        return barterRepository.save(barter);
 //    }
 
+    public List<SearchResponse> searchAll(){
+        Sort sort = Sort.by(Sort.Direction.DESC, "created_at");
+        Iterable<BarterDocument> iterable = barterSearchRepository.findAll(sort);
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .map(this::convertToSearchResponse)
+                .collect(Collectors.toList());
+    }
+
     public List<SearchResponse> search(SearchRequest searchRequest){
 
         /* A's target is B's own. So exchange them for search. */
         List<Long> temp = searchRequest.getOwn();
         searchRequest.setOwn(searchRequest.getTarget());
         searchRequest.setTarget(temp);
-        System.out.println("target:"+searchRequest.getTarget());
-        System.out.println("own:"+searchRequest.getOwn());
+//        System.out.println("target:"+searchRequest.getTarget());
+//        System.out.println("own:"+searchRequest.getOwn());
 
         /* Build Criteria for Query. */
         BarterCriteriaBuilder builder = new BarterCriteriaBuilder(searchRequest);
@@ -77,6 +88,19 @@ public class BarterSearchService {
         return results;
     }
 
+
+    private SearchResponse convertToSearchResponse(BarterDocument document) {
+        // BarterDocument를 SearchResponse 객체로 변환하는 로직
+        // 필요한 필드를 매핑하여 새로운 SearchResponse 객체 생성
+        return new SearchResponse(
+                document.getArticleId(),
+                document.getImageUrl(),
+                document.getTitle(),
+                document.getOwnMember(), // 이 필드는 BarterDocument에 적절히 정의되어 있어야 함
+                document.getTargetMember(), // 마찬가지로 BarterDocument에 정의되어 있어야 함
+                document.isBartered()
+        );
+    }
 
 //    public ResponseEntity<List<SearchResponse>> findByOptions(SearchRequest searchRequest) {
 //        SearchResponse searchResponse = barterRepository.findByOptions(searchRequest);

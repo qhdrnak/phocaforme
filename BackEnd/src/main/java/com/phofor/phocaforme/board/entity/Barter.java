@@ -3,13 +3,13 @@ package com.phofor.phocaforme.board.entity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
+import com.phofor.phocaforme.board.service.rabbit.producer.DomainEventPublisher;
+import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Barter extends BaseEntity {
 
     // 교환게시글 ID
@@ -46,6 +47,7 @@ public class Barter extends BaseEntity {
     // 카드타입
     @Column(name = "barter_card_type")
     private String cardType;
+
 
     // 찾는 멤버(들)
     @OneToMany(mappedBy = "barter")
@@ -107,22 +109,16 @@ public class Barter extends BaseEntity {
                 .collect(Collectors.toList());
     }
 
+
     @PostPersist
     private void afterSave(){
-        PostMessage postMessage = PostMessage.builder()
-                .articleId(this.id)
-                .writerId(this.user.getUserId())
-                .writerNickname(this.user.getNickname())
-                .title(this.title)
-                .cardType(this.cardType)
-                .imageUrl(this.images.get(0).getImgCode())
-                .content(this.content)
-                .ownMember(getOwnMember())
-                .targetMember(getTargetMember())
-                .isBartered(this.bartered)
-                .createdAt(Instant.from(getRegistrationDate()))
-                .build();
-
+//        DomainEventPublisher.publish( // DomainEventPublisher의 publish() 호출
+//                new PostPersistEvent(new PostMessage(
+//                        this.getId(),
+//                        this.isBartered(),
+//                        Instant.from(this.getRegistrationDate())
+//                ))
+//        );
     }
 
 }

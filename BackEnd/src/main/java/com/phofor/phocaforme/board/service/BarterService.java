@@ -60,7 +60,7 @@ public class BarterService {
     }
 
     // 교환게시글 등록
-    public Long registerBarter(BarterRegisterDto registerDto, UserEntity userEntity) throws IOException {
+    public Barter registerBarter(BarterRegisterDto registerDto, UserEntity userEntity) throws IOException {
         Barter barter = Barter.builder()
                 .userEntity(userEntity)
                 .nickname(userEntity.getNickname())
@@ -114,7 +114,7 @@ public class BarterService {
             barterImageRepository.save(barterImage);
         }
 
-        return savedBarter.getId();
+        return savedBarter;
     }
 
     // 교환게시글 수정하기

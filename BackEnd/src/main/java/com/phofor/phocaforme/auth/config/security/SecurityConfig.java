@@ -85,7 +85,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
                         .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/favicon.ico",
-                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js").permitAll()
+                                "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js","/test/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // oauth2.0 로그인 설정
