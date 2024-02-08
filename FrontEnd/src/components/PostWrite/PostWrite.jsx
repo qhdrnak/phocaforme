@@ -24,14 +24,13 @@ const PostWrite = () => {
   const [content, setContent] = useState("");
   const [imagePreviews, setImagePreviews] = useState([]);
   const [isExchange, setIsExchange] = useState(true);
-  const [ownMembers, setOwnMembers] = useState([]);
-  const [targetMembers, setTargetMembers] = useState([]);
+  const [ownIdolMembers, setownIdolMembers] = useState([]);
+  const [findIdolMembers, setfindIdolMembers] = useState([]);
   // 카드 타입 핸들러
   const [cardType, setCardType] = useState(null);
 
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const user = useSelector((state) => (state.user ? state.user.user : [])); 
-  const postingTime = new Date().toLocaleString();
 
   // 교환인지 판매인지
   function onExchangeChange(value) {
@@ -39,11 +38,11 @@ const PostWrite = () => {
   }
 
   const handleOwnMemberSelection = (members) => {
-    setOwnMembers(members);
+    setownIdolMembers(members);
   };
 
   const handleTargetMemberSelection = (members) => {
-    setTargetMembers(members);
+    setfindIdolMembers(members);
   };
 
   const handleTypeChange = (cardType) => {
@@ -112,41 +111,36 @@ const PostWrite = () => {
   // 게시물 생성 버튼 클릭 핸들러
   const handlePostClick = () => {
     // 새로운 게시물 객체 생성
-    const newPost = isExchange
-      ? {
-          id: posts.length + 1,
-          title,
-          images, // photos로 수정
-          content,
-          ownMembers,
-          targetMembers,
-          type: "교환",
-        }
-      : {
-        id: posts.length + 1,
-        title,
-        images,
-        content,
-        ownMembers,
-        targetMembers,
-          type: "판매",
-        };
-    console.log(user.nickname);
+    const newPost = new FormData();
+    newPost.append("title", title);
+    newPost.append("content", content);
+    ownIdolMembers.forEach((memberId, index) => {
+      newPost.append(`ownIdolMembers${index}`, memberId);
+    });
+    
+    findIdolMembers.forEach((memberId, index) => {
+      newPost.append(`findIdolMembers${index}`, memberId);
+    });
+    newPost.append("cardType", isExchange ? "교환" : "판매");
+    images.forEach((image, index) => {
+      newPost.append(`image${index}`, image);
+    });
+    console.log(newPost);
     navigate("/post");    
-
-        // axios.post('/api/posts', newPost, {
-        //   withCredentials: true, // withCredentials 옵션 설정
-        //   headers: {
-        //     'Authorization': `Bearer ${YOUR_ACCESS_TOKEN}`
-        //   }
-        // })
-        // .then(response => {
-        //   console.log(response.data);
-        //   navigate("/post");
-        // })
-        // .catch(error => {
-        //   console.error('Error creating post:', error);
-        // });
+      
+        axios.post('http://localhost:8080/barter', newPost, {
+          withCredentials: true, // withCredentials 옵션 설정
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then(response => {
+          console.log(response.data);
+          navigate("/post");
+        })
+        .catch(error => {
+          console.error('Error creating post:', error);
+        });    
 
   };
 
