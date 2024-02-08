@@ -3,21 +3,24 @@ package com.phofor.phocaforme.board.entity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
+import com.phofor.phocaforme.board.service.BarterEntityListener;
+import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, BarterEntityListener.class})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Barter extends BaseEntity {
 
@@ -47,6 +50,7 @@ public class Barter extends BaseEntity {
     @Column(name = "barter_card_type")
     private String cardType;
 
+
     // 찾는 멤버(들)
     @OneToMany(mappedBy = "barter")
     @Column(name = "barter_find_idols")
@@ -69,6 +73,8 @@ public class Barter extends BaseEntity {
     // 교환게시글 상태(삭제유무)
     @Column(columnDefinition = "boolean default false")
     private boolean barterStatus;
+
+
 
     @Builder
     public Barter(UserEntity userEntity, String nickname, String title, String content, String cardType) {
@@ -107,22 +113,6 @@ public class Barter extends BaseEntity {
                 .collect(Collectors.toList());
     }
 
-    @PostPersist
-    private void afterSave(){
-        PostMessage postMessage = PostMessage.builder()
-                .articleId(this.id)
-                .writerId(this.user.getUserId())
-                .writerNickname(this.user.getNickname())
-                .title(this.title)
-                .cardType(this.cardType)
-                .imageUrl(this.images.get(0).getImgCode())
-                .content(this.content)
-                .ownMember(getOwnMember())
-                .targetMember(getTargetMember())
-                .isBartered(this.bartered)
-                .createdAt(Instant.from(getRegistrationDate()))
-                .build();
 
-    }
 
 }

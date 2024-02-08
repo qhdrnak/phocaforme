@@ -6,19 +6,31 @@ import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
+import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
+import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.service.BarterSearchService;
 import com.phofor.phocaforme.board.service.BarterService;
+import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("/barter")
 @RequiredArgsConstructor
@@ -27,6 +39,13 @@ public class BarterController {
     private final BarterService barterService;
     private final RedisService redisService;
 
+
+    @GetMapping
+    public ResponseEntity<List<SearchResponse>> searchAll()
+    {
+        List<SearchResponse> results = barterSearchService.searchAll();
+        return ResponseEntity.ok(results);
+    }
 
     @GetMapping("/search")
     public ResponseEntity<List<SearchResponse>> search(@Validated @ModelAttribute SearchRequest searchRequest)
@@ -37,14 +56,7 @@ public class BarterController {
         return ResponseEntity.ok(results);
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> findAll() throws IOException {
-//        List<BarterThumbnailDto> dtos = barterService.findAll();
-//        return new ResponseEntity<>(dtos, HttpStatus.OK);
-//
-//        Pageable pageable;
-//        pageable.ge
-//    }
+
 
     // 상세게시글 나타내기
     @GetMapping("/{barterId}")
@@ -59,10 +71,11 @@ public class BarterController {
         // String accessToken = CookieUtil.resolveToken(request).getValue();
         // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
         // UserEntity userEntity = customOAuth2User.getUserEntity();
-
+        System.out.println(registerDto);
         UserEntity userEntity = oauth2User.getUserEntity();
-        Long barterId = barterService.registerBarter(registerDto , userEntity);
-        return new ResponseEntity<Long>(barterId, HttpStatus.OK);
+        Barter barter = barterService.registerBarter(registerDto , userEntity);
+
+        return new ResponseEntity<Barter>(barter, HttpStatus.OK);
     }
 
     // 게시글 수정
@@ -78,4 +91,6 @@ public class BarterController {
         barterService.delete(barterId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

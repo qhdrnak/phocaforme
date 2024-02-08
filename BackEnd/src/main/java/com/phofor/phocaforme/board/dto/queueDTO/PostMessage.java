@@ -1,30 +1,21 @@
 package com.phofor.phocaforme.board.dto.queueDTO;
 
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @AllArgsConstructor
-public class PostMessage {
+public class PostMessage implements Serializable {
+
+    private static final long serialVersionUId = 1L;
+
     private Long articleId;
-    private String writerId;
-    private String writerNickname;
-    private String title;
-    private String cardType;
-    private String imageUrl;
-    private String content;
-
-    private List<IdolSearchMember> ownMember;
-
-    private List<IdolSearchMember> targetMember;
-
     private boolean isBartered;
     private Instant createdAt;
 }

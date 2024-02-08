@@ -16,6 +16,7 @@ import com.phofor.phocaforme.board.entity.BarterOwnIdol;
 import com.phofor.phocaforme.board.repository.*;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,6 +55,7 @@ public class BarterService {
 //    }
 
     // 상세게시물 보기
+    @Transactional
     public BarterDetailDto findOne(Long barterId){
         Barter barter = barterRepository.findById(barterId)
                 .orElseThrow(IllegalArgumentException::new);
@@ -61,7 +63,7 @@ public class BarterService {
     }
 
     // 교환게시글 등록
-    public Long registerBarter(BarterRegisterDto registerDto, UserEntity userEntity) throws IOException {
+    public Barter registerBarter(BarterRegisterDto registerDto, UserEntity userEntity) throws IOException {
         Barter barter = Barter.builder()
                 .userEntity(userEntity)
                 .nickname(userEntity.getNickname())
@@ -115,7 +117,7 @@ public class BarterService {
             barterImageRepository.save(barterImage);
         }
 
-        return savedBarter.getId();
+        return savedBarter;
     }
 
     // 교환게시글 수정하기

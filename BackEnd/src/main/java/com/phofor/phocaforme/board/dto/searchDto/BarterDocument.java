@@ -1,10 +1,7 @@
 package com.phofor.phocaforme.board.dto.searchDto;
 
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -18,6 +15,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @ToString
+@Builder
 @Document(indexName="barter_post")
 public class BarterDocument {
 
