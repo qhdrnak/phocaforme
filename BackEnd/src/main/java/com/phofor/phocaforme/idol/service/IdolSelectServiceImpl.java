@@ -1,8 +1,11 @@
 package com.phofor.phocaforme.idol.service;
 
 import com.phofor.phocaforme.idol.dto.response.IdolGroupResponseDto;
+import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
 import com.phofor.phocaforme.idol.entity.IdolGroup;
+import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolGroupRepository;
+import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import java.util.List;
 public class IdolSelectServiceImpl implements IdolSelectService{
 
     private final IdolGroupRepository idolGroupRepository;
+    private final IdolMemberRepository idolMemberRepository;
 
     @Override
     public List<IdolGroupResponseDto> findAll() {
@@ -26,5 +30,16 @@ public class IdolSelectServiceImpl implements IdolSelectService{
             allIdolGroupDto.add(IdolGroupResponseDto.of(idolGroup));
         }
         return allIdolGroupDto;
+    }
+
+    @Override
+    public List<IdolMemberResponseDto> getAllByIdolGroupId(Long idolGroupId) {
+
+        List<IdolMemberResponseDto> allIdolMemberDto = new ArrayList<>();
+        for (IdolMember idolMember: idolMemberRepository.findAllByIdolGroupId(idolGroupId)) {
+            allIdolMemberDto.add(IdolMemberResponseDto.of(idolMember));
+        }
+
+        return allIdolMemberDto;
     }
 }

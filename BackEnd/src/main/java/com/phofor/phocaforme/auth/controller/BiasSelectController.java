@@ -1,12 +1,15 @@
 package com.phofor.phocaforme.auth.controller;
 
 import com.phofor.phocaforme.idol.dto.response.IdolGroupResponseDto;
+import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
+import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.service.IdolSelectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -27,5 +30,8 @@ public class BiasSelectController {
         return ResponseEntity.ok().body(idolSelectService.findAll());
     }
 
-
+    @GetMapping("/idol/member/{idolGroupId}")
+    public ResponseEntity<List<IdolMemberResponseDto>> getIdolMemberAll(@PathVariable Long idolGroupId) {
+        return ResponseEntity.ok().body(idolSelectService.getAllByIdolGroupId(idolGroupId));
+    }
 }
