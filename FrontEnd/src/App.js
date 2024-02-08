@@ -21,7 +21,7 @@ import theme from './styles/theme';
 import { ThemeProvider } from '@mui/material/styles';
 
 import store from './store2/index.js';
-import './firebase-messaging.js';
+// import './firebase-messaging.js';
 
 
 const ScrollToTop = () => {

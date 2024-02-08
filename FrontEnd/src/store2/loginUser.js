@@ -12,6 +12,7 @@ const initialUserState = {
   user: {
     userId: getDecodedCookie('userId') || null,
     nickname: getDecodedCookie('nickname') || null,
+    token: getDecodedCookie('token') || null,
     location: null, // 현재 위치 정보
   },
 };

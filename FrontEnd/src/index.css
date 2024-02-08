@@ -5,7 +5,7 @@
     --secondary-color: #FD9DD1;
     --info-color: #FFFFFF;
     --warning-color: rgba(142, 96, 203, 1);
-    overflow: hidden;
+    overflow: scroll;
     height: 100vw;
     
   }
