@@ -12,7 +12,6 @@ public class SearchRequest {
     private Integer size = 10;
 
     private String query;
-    private String groupId;
     private String cardType;
     private List<Long> target;
     private List<Long> own;

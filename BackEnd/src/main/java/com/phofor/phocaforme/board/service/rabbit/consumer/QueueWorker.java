@@ -32,7 +32,7 @@ public class QueueWorker {
     private final BarterRepository barterRepository;
     private final ObjectMapper objectMapper;
 
-//    @Scheduled(fixedDelay = 3000) // 3초 TODO: application 파일에 schedule delay값 두고 쓰기
+    @Scheduled(fixedDelay = 3000) // 3초 TODO: application 파일에 schedule delay값 두고 쓰기
     public void work() throws JsonProcessingException {
         log.info("3초마다 스케쥴드");
         List<Barter> messages = new ArrayList<>();
@@ -47,7 +47,6 @@ public class QueueWorker {
 
             Long articleId = rootNode.path("article_id").asLong();
             Boolean isBartered = rootNode.path("isBartered").asBoolean();
-            String createdAt = rootNode.path("createdAt").asText();
             Optional<Barter> retrievedBarter = barterRepository.findById(articleId);
             Barter barter = retrievedBarter.orElse(null); // 또는 기본값
             messages.add(barter);

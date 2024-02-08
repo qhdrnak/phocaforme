@@ -3,21 +3,24 @@ package com.phofor.phocaforme.board.entity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
-import com.phofor.phocaforme.board.service.rabbit.producer.DomainEventPublisher;
+import com.phofor.phocaforme.board.service.BarterEntityListener;
 import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, BarterEntityListener.class})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Barter extends BaseEntity {
@@ -72,6 +75,14 @@ public class Barter extends BaseEntity {
     @Column(columnDefinition = "boolean default false")
     private boolean barterStatus;
 
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime registrationDate;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
+
     @Builder
     public Barter(UserEntity userEntity, String nickname, String title, String content, String cardType) {
         this.user = userEntity;
@@ -110,15 +121,5 @@ public class Barter extends BaseEntity {
     }
 
 
-    @PostPersist
-    private void afterSave(){
-//        DomainEventPublisher.publish( // DomainEventPublisher의 publish() 호출
-//                new PostPersistEvent(new PostMessage(
-//                        this.getId(),
-//                        this.isBartered(),
-//                        Instant.from(this.getRegistrationDate())
-//                ))
-//        );
-    }
 
 }

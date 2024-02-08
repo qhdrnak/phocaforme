@@ -37,6 +37,9 @@ public class BarterSearchService {
     public List<SearchResponse> searchAll(){
         Sort sort = Sort.by(Sort.Direction.DESC, "created_at");
         Iterable<BarterDocument> iterable = barterSearchRepository.findAll(sort);
+//        for (BarterDocument barterDocument : iterable) {
+//            System.out.println(barterDocument);
+//        }
         return StreamSupport.stream(iterable.spliterator(), false)
                 .map(this::convertToSearchResponse)
                 .collect(Collectors.toList());

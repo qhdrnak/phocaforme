@@ -12,7 +12,6 @@ import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
 import com.phofor.phocaforme.board.entity.Barter;
 import com.phofor.phocaforme.board.service.BarterSearchService;
 import com.phofor.phocaforme.board.service.BarterService;
-import com.phofor.phocaforme.board.service.rabbit.producer.DomainEventPublisher;
 import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,29 +35,9 @@ public class BarterController {
     private final BarterSearchService barterSearchService;
     private final BarterService barterService;
     private final RedisService redisService;
-    private final DomainEventPublisher domainEventPublisher;
-//    @GetMapping("/test")
-//    public void test(){
-//        log.info("publish!");
-//        try{
-//            LocalDateTime localDateTime = LocalDateTime.of(2024, 2, 8, 9, 41, 30);
-//// 시스템 기본 시간대를 사용하는 경우
-//            Instant instantFromSystemZone = localDateTime.atZone(ZoneId.systemDefault()).toInstant();
-//// UTC 시간대를 사용하는 경우
-//            Instant instantFromUtcZone = localDateTime.atZone(ZoneId.of("UTC")).toInstant();
-//            domainEventPublisher.publish( // DomainEventPublisher의 publish() 호출
-//                    new PostPersistEvent(new PostMessage(
-//                            Long.MAX_VALUE,
-//                            false,
-//                            instantFromUtcZone
-//                    )
-//            ));
-//        }catch(Exception e){
-//            log.error(e.getMessage());
-//        }
-//    }
 
-    @GetMapping("/")
+
+    @GetMapping
     public ResponseEntity<List<SearchResponse>> searchAll()
     {
         List<SearchResponse> results = barterSearchService.searchAll();
