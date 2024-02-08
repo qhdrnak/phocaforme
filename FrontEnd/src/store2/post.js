@@ -131,6 +131,7 @@ const postSlice = createSlice({
     },
     searchPosts: (state, action) => {
       state.posts = action.payload;
+      console.log(state.posts);
     },
   },
 });

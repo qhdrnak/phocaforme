@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import GroupDropdown2 from "../UI/Dropdown/GroupDropdown2.jsx";
@@ -16,6 +16,8 @@ const BarterWrite2 = ({ onChange }) => {
     label: "",
     avatarSrc: "",
   });
+
+  const loginUser = useSelector((state) => state.user.user);
 
   const handleGroupChange = (group) => {
     setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
@@ -64,6 +66,7 @@ const BarterWrite2 = ({ onChange }) => {
       <div id="group-input" className="search-box-group">
         <div className="searchbar-title">그룹명</div>
         <GroupDropdown2
+          defaultGroup={loginUser.bias}
           onChange={(group) => {
             handleGroupChange(group);
           }}

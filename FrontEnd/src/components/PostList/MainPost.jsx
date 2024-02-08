@@ -59,7 +59,7 @@ const BasicTabs = ({ isPreview }) => {
   // const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const posts = useSelector((state) => state.post.posts);
   const searchs = useSelector((state) =>
-    state.search ? state.search.searchs : null
+    state.search.searchs ? state.search.searchs : null
   );
 
   const dispatch = useDispatch();
@@ -83,33 +83,46 @@ const BasicTabs = ({ isPreview }) => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8080/barter/search",
-          {
-            params: {
-              target: 3,
-              // target: searchs.targetMembers (멤버 고유 인덱스 변수)
-              own: 4,
-              // own: searchs.ownMembers (멤버 고유 인덱스 변수)
-              cardType: "미공포",
-              // cardType: searchs.cardType
-              query: "팬싸",
-              // query: searchs.query
+    if (!isPreview) {
+      const fetchData = async () => {
+        try {
+          const params = {};
 
-            },
+          if (searchs.targetMembers) {
+            // params.target = searchs.targetMembers;
+            params.target = 3;
           }
-        );
-        dispatch(searchPosts(response.data));
-        console.log(response.data);
-      } catch (error) {
-        console.error("검색 오류 :", error);
-      }
-    };
 
-    fetchData();
-  }, [dispatch]);
+          if (searchs.ownMembers) {
+            params.own = searchs.ownMembers;
+          }
+
+          if (searchs.cardType) {
+            params.cardType = searchs.cardType;
+          }
+
+          if (searchs.query) {
+            params.query = searchs.query;
+          }
+
+          // params.target = 3;
+          // params.own = 4;
+
+          const response = await axios.get(
+            "http://localhost:8080/barter/search",
+            {
+              params: params,
+            }
+          );
+          dispatch(searchPosts(response.data));
+          console.log(response.data);
+        } catch (error) {
+          console.error("검색 오류 :", error);
+        }
+      };
+      fetchData();
+    }
+  }, [dispatch, searchs]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -123,15 +136,6 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <div sx={{ width: "100%" }}>
-      <p>
-        값 전달 확인용 :{" "}
-        {searchs && (
-          <>
-            {searchs.query} {searchs.ownMembers} {searchs.targetMembers}{" "}
-            {searchs.cardType}
-          </>
-        )}
-      </p>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -151,7 +155,7 @@ const BasicTabs = ({ isPreview }) => {
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
           {visiblePosts
-            .filter((post) => post.type === "교환")
+            // .filter((post) => post.type === "교환")
             .map((post, index) => (
               <Card
                 key={post.id}
@@ -163,12 +167,12 @@ const BasicTabs = ({ isPreview }) => {
                 }}
                 id={post.id}
                 title={post.title}
-                images={post.images}
-                ownMembers={post.ownMembers}
-                targetMembers={post.targetMembers}
-                content={post.content}
-                type={post.type}
-                isBartered={post.isBartered}
+                images={post.imageUrl}
+                ownMembers={post.ownMember}
+                targetMembers={post.targetMember}
+                // content={post.content}
+                // type={post.type}
+                isBartered={post.Bartered}
               ></Card>
             ))}
         </div>
@@ -182,12 +186,6 @@ const BasicTabs = ({ isPreview }) => {
             .map((post, index) => (
               <Card
                 key={post.id}
-                style={{
-                  width: "calc(50% - 8px)",
-                  marginRight: "16px",
-                  marginBottom: "16px",
-                  cursor: "pointer",
-                }}
                 id={post.id}
                 title={post.title}
                 images={post.images}

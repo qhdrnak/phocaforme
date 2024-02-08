@@ -58,8 +58,6 @@ const App = () => {
            
 
           </Routes>
-            
-          
          
         </BrowserRouter>
       </ThemeProvider>
