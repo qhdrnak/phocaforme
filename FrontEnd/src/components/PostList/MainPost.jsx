@@ -89,7 +89,8 @@ const BasicTabs = ({ isPreview }) => {
           const params = {};
 
           if (searchs.targetMembers) {
-            params.target = searchs.targetMembers;
+            // params.target = searchs.targetMembers;
+            params.target = 3;
           }
 
           if (searchs.ownMembers) {
