@@ -62,3 +62,18 @@ create table barter_chat_messages
     foreign key (barter_chat_sender_id) references user (user_id),
     barter_chat_img_code    varchar(8200)
 );
+
+CREATE TABLE Barter
+(
+    barter_board_id  BIGINT AUTO_INCREMENT PRIMARY KEY, -- 바터 게시물의 고유 ID
+    barter_title     VARCHAR(255) NULL,                  -- 게시물 제목
+    barter_content   VARCHAR(255) NULL,                  -- 게시물 내용
+    barter_card_type VARCHAR(255) NULL,                  -- 카드 타입
+    nickname         VARCHAR(255) NULL,                  -- 사용자 닉네임
+    barterStatus     TINYINT(1) DEFAULT 0 NULL,          -- 바터 상태 (0: 비활성, 1: 활성)
+    bartered         TINYINT(1) DEFAULT 0 NULL,          -- 거래 완료 여부 (0: 미완료, 1: 완료)
+    registrationDate DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL, -- 등록 날짜 및 시간
+    lastModifiedDate DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL, -- 마지막 수정 날짜 및 시간
+    user_id          CHAR(50) NULL,                      -- 사용자 ID
+    CONSTRAINT FK_Barter_User FOREIGN KEY (user_id) REFERENCES user (user_id) -- 사용자 테이블과의 관계
+);

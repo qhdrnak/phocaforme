@@ -59,6 +59,7 @@ public class BarterService {
     public BarterDetailDto findOne(Long barterId){
         Barter barter = barterRepository.findById(barterId)
                 .orElseThrow(IllegalArgumentException::new);
+        System.out.println(barter.getFindIdols());
         return BarterDetailDto.of(barter);
     }
 

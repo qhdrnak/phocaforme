@@ -1,5 +1,6 @@
 package com.phofor.phocaforme.board.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
@@ -52,16 +53,19 @@ public class Barter extends BaseEntity {
 
 
     // 찾는 멤버(들)
+    @JsonIgnore
     @OneToMany(mappedBy = "barter")
     @Column(name = "barter_find_idols")
     private List<BarterFindIdol> findIdols = new ArrayList<>();
 
     // 소유한 멤버(들)
+    @JsonIgnore
     @OneToMany(mappedBy = "barter")
     @Column(name = "barter_own_idols")
     private List<BarterOwnIdol> ownIdols = new ArrayList<>();
 
     // 이미지(들)
+    @JsonIgnore
     @OneToMany(mappedBy = "barter")
     @Column(name = "barter_images")
     private List<BarterImage> images = new ArrayList<>();

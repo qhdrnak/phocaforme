@@ -36,6 +36,7 @@ public class ElasticsearchBulkProcessor {
         String bulkRequestBody = buildBulkRequestBody(messages);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
         System.out.println("postman에서 확인!");
+
         restTemplate.postForObject("http://localhost:9200/barter_post/_bulk",entity,String.class);
     }
 
@@ -61,6 +62,7 @@ public class ElasticsearchBulkProcessor {
                     .append("\"is_bartered\": ").append(barter.isBartered()).append(", ")
                     .append("\"created_at\": \"").append(barter.getRegistrationDate()).append("\" }\n");
         }
+        System.out.println(bulkBody);
         return bulkBody.toString();
     }
 

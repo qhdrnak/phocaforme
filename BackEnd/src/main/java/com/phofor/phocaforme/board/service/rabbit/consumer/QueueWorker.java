@@ -47,7 +47,7 @@ public class QueueWorker {
 //            System.out.println(">>2"+retrievedBarter.orElse(null).getNickname());
 
             BarterDetailDto barter = barterService.findOne(articleId);
-
+            System.out.println(">>>>"+barter);
             // 날짜 데이터 포맷팅
 
 

@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 public class BarterController {
     private final BarterSearchService barterSearchService;
     private final BarterService barterService;
-    private final RedisService redisService;
 
 
     @GetMapping

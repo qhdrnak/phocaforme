@@ -2,14 +2,12 @@ package com.phofor.phocaforme.board.entity;
 
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class BarterFindIdol {
 
     @Id
