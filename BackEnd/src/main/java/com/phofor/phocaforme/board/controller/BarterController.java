@@ -37,7 +37,6 @@ import java.util.stream.Collectors;
 public class BarterController {
     private final BarterSearchService barterSearchService;
     private final BarterService barterService;
-    private final RedisService redisService;
 
 
     @GetMapping
@@ -71,7 +70,7 @@ public class BarterController {
         // String accessToken = CookieUtil.resolveToken(request).getValue();
         // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
         // UserEntity userEntity = customOAuth2User.getUserEntity();
-        System.out.println(registerDto);
+//        System.out.println(registerDto);
         UserEntity userEntity = oauth2User.getUserEntity();
         Barter barter = barterService.registerBarter(registerDto , userEntity);
 

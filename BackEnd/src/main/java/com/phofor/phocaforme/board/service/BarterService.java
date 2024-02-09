@@ -9,6 +9,7 @@ import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
+import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.entity.Barter;
 import com.phofor.phocaforme.board.entity.BarterFindIdol;
 import com.phofor.phocaforme.board.entity.BarterImage;
@@ -18,6 +19,7 @@ import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,6 +61,13 @@ public class BarterService {
     public BarterDetailDto findOne(Long barterId){
         Barter barter = barterRepository.findById(barterId)
                 .orElseThrow(IllegalArgumentException::new);
+//        List<IdolMemberDto> ownIdolMembers = barter.getOwnIdols().stream()
+//                .map(ownIdol -> new IdolMemberDto(ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()))
+//                .toList();
+////        System.out.println(ownIdolMembers.get(0).getName());
+//        List<IdolMemberDto> findIdolMembers = barter.getFindIdols().stream()
+//                .map(findIdol -> new IdolMemberDto(findIdol.getIdolMember().getId(), findIdol.getIdolMember().getName()))
+//                .toList();
         return BarterDetailDto.of(barter);
     }
 
@@ -213,4 +222,5 @@ public class BarterService {
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
         }
     }
+
 }
