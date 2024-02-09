@@ -6,6 +6,7 @@ import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
 import com.phofor.phocaforme.board.entity.Barter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import java.util.Base64;
 import java.util.List;
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ElasticsearchBulkProcessor {
 
     private final RestTemplate restTemplate;
@@ -34,8 +36,8 @@ public class ElasticsearchBulkProcessor {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         String bulkRequestBody = buildBulkRequestBody(messages);
+        log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
-        System.out.println("postman에서 확인!");
 
         restTemplate.postForObject("http://localhost:9200/barter_post/_bulk",entity,String.class);
     }
@@ -62,7 +64,6 @@ public class ElasticsearchBulkProcessor {
                     .append("\"is_bartered\": ").append(barter.isBartered()).append(", ")
                     .append("\"created_at\": \"").append(barter.getRegistrationDate()).append("\" }\n");
         }
-        System.out.println(bulkBody);
         return bulkBody.toString();
     }
 

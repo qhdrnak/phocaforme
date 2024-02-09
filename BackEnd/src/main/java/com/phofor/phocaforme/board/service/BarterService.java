@@ -223,9 +223,4 @@ public class BarterService {
         }
     }
 
-    public BarterDetailDto findOneWithIdol(Long articleId) {
-        Barter barter = barterRepository.findById(articleId)
-                .orElseThrow(IllegalArgumentException::new);
-        return BarterDetailDto.of(barter);
-    }
 }

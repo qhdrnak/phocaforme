@@ -29,56 +29,27 @@ public class QueueWorker {
     private final BarterService barterService;
     @Scheduled(fixedDelay = 10000) // 10초 TODO: application 파일에 schedule delay값 두고 쓰기
     public void work() throws JsonProcessingException {
-        log.info("10초마다 스케쥴드");
-        System.out.println("work()도착");
+        log.info("Another 10secs...");
+        log.info("Worker searching for messages....");
         List<BarterDetailDto> messages = new ArrayList<>();
 
         for(int i=0; i<BATCH_SIZE; i++){
             Message message = rabbitTemplate.receive(QUEUE_NAME);
             if(message==null){break;}
-            System.out.println("<<><><><><><><><>><>><><>><><><");
             String messageContent = new String(message.getBody(), StandardCharsets.UTF_8);
-            System.out.println("Received message: " + messageContent);
+            log.info("Received message: " + messageContent);
             JsonNode rootNode = objectMapper.readTree(messageContent);
             Long articleId = rootNode.path("articleId").asLong();
             Boolean isBartered = rootNode.path("isBartered").asBoolean();
-            System.out.println(">>1");
-//            System.out.println(">>2"+retrievedBarter.orElse(null).getNickname());
-            // 이 시점에 articleId, isBartered 만 있음.
-            //
 
-            BarterDetailDto barter = barterService.findOneWithIdol(articleId);
-            System.out.println(">>>>"+barter);
+            BarterDetailDto barter = barterService.findOne(articleId);
             // 날짜 데이터 포맷팅
 
-
-            // 다른 DTO로 이전
-//            BarterDocument barter = BarterDocument.builder()
-//                    .articleId(barterEntity.getId())
-//                    .title(barterEntity.getTitle())
-//                    .isBartered(barterEntity.isBartered())
-//                    .content(barterEntity.getContent())
-//                    .cardType(barterEntity.getCardType())
-//                    .writerId(barterEntity.getUser().getUserId()) // lazyInitializationException
-//                    .writerNickname(barterEntity.getUser().getNickname()) // lazyInitializationException
-//                    .ownMember(barterEntity.getOwnMember()) // lazyInitializationException
-//                    .targetMember(barterEntity.getTargetMember()) // lazyInitializationException
-//                    .imageUrl(barterEntity.getImages().get(0).getImgCode())
-//                    .createdAt(instant)
-//                    .build();
             messages.add(barter);
-            System.out.println(">>4");
-        }
-        for (BarterDetailDto barter: messages){
-            System.out.println(barter);
-            System.out.println(">>5");
         }
         if(!(messages.isEmpty())){
-            System.out.println("프로세서가 실행됨 -> 엘라스틱에 추가해줘!!");
+            log.info("Spring : \"plz sync to elastic\"");
             elasticsearchBulkProcessor.processToElasticsearch(messages);
-
-            //INSERT INTO barter (barter_board_id, user_id, nickname, barter_title, barter_content, barter_card_type, bartered, barter_status)
-            //VALUES (1, 1, 'exampleNickname', 'exampleTitle', 'exampleContent', 'exampleCardType', false, false);
         }
     }
 

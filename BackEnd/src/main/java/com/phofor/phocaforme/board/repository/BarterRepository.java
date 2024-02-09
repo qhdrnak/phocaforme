@@ -17,7 +17,6 @@ public interface BarterRepository extends JpaRepository<Barter, Long> {
 //    @Query()
 //    Optional<Barter> findByIdWithIdolMembers(@Param("id") Long id);
 
-    @EntityGraph(attributePaths = {"ownIdols.idolMember", "findIdols.idolMember", "images"})
-    Optional<Barter> findById(Long id);
+   Optional<Barter> findById(Long id);
 
 }
