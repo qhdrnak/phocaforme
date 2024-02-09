@@ -4,15 +4,14 @@ import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.notification.dto.NotificationDto;
 import com.phofor.phocaforme.notification.dto.message.NotificationMessageDto;
 import com.phofor.phocaforme.notification.dto.message.RequestDTO;
-import com.phofor.phocaforme.notification.entity.NotificationEntity;
 
 import java.io.IOException;
 import java.util.List;
 
-public interface FirebaseCloudMessageService {
+public interface FCMNotificationService {
     public void sendMessageTo(RequestDTO requestDTO) throws IOException;
 
-    public Boolean sendChatMessage(NotificationDto notificationDto, ChatRoom chatRoom, String userId);
+    public Boolean sendChatMessage(ChatRoom chatRoom, String userId);
     public Boolean sendChatMessage(NotificationDto notificationDto);
     public Boolean sendBiasMessage(List<String> ids, Long articleId);
 

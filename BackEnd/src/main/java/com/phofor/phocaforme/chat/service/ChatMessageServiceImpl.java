@@ -12,6 +12,8 @@ import com.phofor.phocaforme.chat.entity.ChatMessage;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.chat.repository.ChatMessageRepository;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
+import com.phofor.phocaforme.notification.dto.NotificationDto;
+import com.phofor.phocaforme.notification.service.FCMNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     private final AmazonS3Client amazonS3Client;
     private String S3Bucket = "photocardforme";  // Bucket 이름
 
+    private final FCMNotificationService fcmNotificationService;
 
 
     @Override
@@ -131,6 +134,13 @@ public class ChatMessageServiceImpl implements ChatMessageService{
         ChatRoom chatRoom = chatRoomRepository.findById(chatMessageRequestDto.getChatRoomId()).orElseThrow();
         chatRoom.setChatLatest(chatMessage);
 
+        // 채팅 알림 보내기
+        if(fcmNotificationService.sendChatMessage(chatRoom, userId)){
+            log.info("알림 성공");
+        }
+        else{
+            log.info("알림 실패");
+        }
 
         return chatMessageResponseDto;
 

@@ -34,7 +34,6 @@ self.addEventListener("push", (event) => {
     const notificationTitle = data.data.title; // 'data.title'로 변경
     const notificationOptions = {
         body: data.data.body, // 'data.body'로 변경
-        icon: data.data.icon || 'icons/icon-192x192.png', // 'data.icon' 사용
         data: {
             link: data.data.link // 링크 정보를 'data' 필드에서 직접 가져옴
         }

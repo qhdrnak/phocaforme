@@ -1,8 +1,8 @@
-package com.phofor.phocaforme.gps.model.service;
+package com.phofor.phocaforme.gps.dto;
 import lombok.Data;
 
 @Data
-public class MemberDto {
+public class GpsLocationDto {
     private Double longitude;
     private Double latitude;
 }
