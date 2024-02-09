@@ -46,7 +46,8 @@ public class QueueWorker {
 //            System.out.println(">>2"+retrievedBarter.orElse(null).getNickname());
             // 이 시점에 articleId, isBartered 만 있음.
             //
-            BarterDetailDto barter = barterService.findOne(articleId);
+
+            BarterDetailDto barter = barterService.findOneWithIdol(articleId);
             System.out.println(">>>>"+barter);
             // 날짜 데이터 포맷팅
 
