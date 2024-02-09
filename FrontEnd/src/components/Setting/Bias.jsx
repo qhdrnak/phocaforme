@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
+import { setBias } from "../../store2/loginUser.js";
 
 import { Avatar, Button } from "@mui/material";
 
@@ -6,20 +9,24 @@ import GroupDropdown from "../UI/Dropdown/GroupDropdown2";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown2";
 
 const Bias = () => {
-  const [selectedGroup, setSelectedGroup] = useState(0);
+  const dispatch = useDispatch();
 
+  const [selectedGroup, setSelectedGroup] = useState(0);
   const [selectedMember, setSelectedMember] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
+    } else {
+      setSelectedGroup(null);
+
     }
+    
   };
 
   const handleMemberChange = (member) => {
     setSelectedMember(member);
-    // member.idolMemberId 를 db 에 반영하기
   };
 
   const generateImageUrl = (group, member) => {
@@ -31,8 +38,10 @@ const Bias = () => {
 
   const handleApplyClick = () => {
     const url = generateImageUrl(selectedGroup, selectedMember);
-    console.log(selectedMember);
     setImageUrl(url);
+
+    dispatch(setBias([selectedGroup, selectedMember]));
+    // member.idolMemberId 를 db 에 반영하기
   };
 
   return (

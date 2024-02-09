@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -10,8 +11,10 @@ const MemberDropdown2 = ({
   defaultMember,
   onChange,
 }) => {
-  const [value, setValue] = useState(defaultMember);
 
+  const user = useSelector((state) => state.user.user);
+  const [value, setValue] = useState(user.defaultMember);
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
     onChange(newValue);
@@ -20,6 +23,7 @@ const MemberDropdown2 = ({
   const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
+    console.log(selectedGroup);
     setValue(null);
     onChange(null);
 
@@ -27,7 +31,7 @@ const MemberDropdown2 = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/user/idol/member/${selectedGroup.idolGroupId}`,
+            `http://localhost:8080/idol/member/${selectedGroup.idolGroupId}`,
             {
               withCredentials: true,
             }
@@ -36,6 +40,8 @@ const MemberDropdown2 = ({
         } catch (error) {
           console.error("멤버 세팅 오류:", error);
         }
+      } else {
+        setMemberItems([]);
       }
     };
 
@@ -60,7 +66,7 @@ const MemberDropdown2 = ({
             borderRadius: "10px",
           },
         }}
-        noOptionsText="해당 멤버가 없습니다"
+        noOptionsText={selectedGroup ? "해당 멤버가 없습니다" : '그룹을 선택해주세요'}
         renderOption={(props, option) => (
           <Box
             component="li"

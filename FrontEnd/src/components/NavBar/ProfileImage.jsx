@@ -1,8 +1,8 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { useTheme } from "@mui/material/styles";
-import { useDispatch, useSelector } from "react-redux";
 
 import {
   MenuItem,
@@ -13,6 +13,7 @@ import {
   IconButton,
   Divider,
   Paper,
+  Avatar,
 } from "@mui/material";
 
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
@@ -21,9 +22,8 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import { logoutUser } from "../../store2/loginUser.js";
 
 import GPS from "./GPS";
-import profile from "../../assets/images/NCT_도영.PNG";
-import Cookies from 'js-cookie';
-
+import profile from "../../assets/images/no_bias.jpg";
+import Cookies from "js-cookie";
 
 const ProfileImage = () => {
   const theme = useTheme();
@@ -45,13 +45,16 @@ const ProfileImage = () => {
   };
 
   const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user.user);
 
-  const handleLogout = () => {
 
+  const handleLogout = () => {
     // dispatch(logoutUser());
     window.location.href = "http://localhost:8080/logout";
   };
+
+  // useEffect 해서 랜더링할 때 db 에 있는 최애 정보 들고와라
 
   return (
     <div className="profile-image-container">
@@ -60,7 +63,8 @@ const ProfileImage = () => {
           <img
             id="profile-image"
             className="profile-image gradient-border background-image"
-            src={profile}
+            src={user.defaultMember ? user.defaultMember.idolImage : profile}
+            
           ></img>
         </IconButton>
         <Paper sx={{ backgroundColor: theme.palette.primary.main }}>

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -7,19 +8,21 @@ import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 
-const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
+const GroupDropdown2 = ({ isProfile, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
+  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/user/idol/group",
+          "http://localhost:8080/idol/group",
           {
             withCredentials: true,
           }
         );
         setGroupItems(response.data);
+        console.log(groupItems);
       } catch (error) {
         console.error("그룹 세팅 오류:", error);
       }
@@ -28,11 +31,11 @@ const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
     fetchData();
   }, []);
 
-  const [value, setValue] = useState(defaultGroup);
+  const user = useSelector((state) => state.user.user);
+  const [value, setValue] = useState(user.defaultGroup);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    console.log(newValue);
     onChange(newValue);
   };
 
@@ -44,8 +47,8 @@ const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
         size="small"
         id="group-dropdown"
         options={groupItems}
-        getOptionLabel={(option) => option.idolGroupNameKr}
-        // isOptionEqualToValue={(option, value) => option.value === value.value}
+        getOptionLabel={(option) => `${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
           width: isProfile ? "12rem" : "80vw",
           "& .MuiInputBase-root": { borderRadius: "10px" },
@@ -61,7 +64,7 @@ const GroupDropdown2 = ({ isProfile, defaultGroup, onChange }) => {
               src={option.avatarSrc}
               sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
             />
-            {option.idolGroupNameKr}
+            {`${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
           </Box>
         )}
         renderInput={(params) => (

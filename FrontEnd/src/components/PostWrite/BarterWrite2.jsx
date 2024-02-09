@@ -17,8 +17,17 @@ const BarterWrite2 = ({ onChange }) => {
 
   const handleGroupChange = (group) => {
     if (group) {
-      setSelectedGroup(group.idolGroupId);
+      setSelectedGroup(group);
+      
+    } else {
+      setSelectedGroup(null);
+
     }
+    // 그룹이 변경되었을 때 멤버와 입력값 초기화
+    setOwnMembers([]);
+    setTargetMembers([]);
+    setOwnMembersInput("");
+    setTargetMembersInput("");
   };
 
   const [ownMembers, setOwnMembers] = useState([]);
@@ -64,7 +73,6 @@ const BarterWrite2 = ({ onChange }) => {
       <div id="group-input" className="search-box-group">
         <div className="searchbar-title">그룹명</div>
         <GroupDropdown2
-          defaultGroup={loginUser.bias}
           onChange={(group) => {
             handleGroupChange(group);
           }}
@@ -75,7 +83,7 @@ const BarterWrite2 = ({ onChange }) => {
           <div className="searchbar-title">보유한 멤버</div>
 
           <MemberDropdown2
-            selectedGroup={selectedGroup.value}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleOwnMemberChange(member);
             }}
@@ -85,7 +93,7 @@ const BarterWrite2 = ({ onChange }) => {
               ownMembers.map((tag, index) => (
                 <Chip
                   key={index}
-                  label={tag?.label}
+                  label={tag?.idolName}
                   variant="outlined"
                   onClick={() => handleOwnMemberDelete(tag)}
                   onDelete={() => handleOwnMemberDelete(tag)}
@@ -113,7 +121,7 @@ const BarterWrite2 = ({ onChange }) => {
               targetMembers.map((tag, index) => (
                 <Chip
                   key={index}
-                  label={tag?.label}
+                  label={tag?.idolName}
                   variant="outlined"
                   onClick={() => handleTargetMemberDelete(tag)}
                   onDelete={() => handleTargetMemberDelete(tag)}
