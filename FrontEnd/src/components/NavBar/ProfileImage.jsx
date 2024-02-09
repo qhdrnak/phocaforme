@@ -48,9 +48,6 @@ const ProfileImage = () => {
 
   const user = useSelector((state) => state.user.user);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   const handleLogout = () => {
     // dispatch(logoutUser());
@@ -66,8 +63,8 @@ const ProfileImage = () => {
           <img
             id="profile-image"
             className="profile-image gradient-border background-image"
-            src={user.bias ? user.bias.idolImage : profile}
-            // src={profile}
+            src={user.defaultMember ? user.defaultMember.idolImage : profile}
+            
           ></img>
         </IconButton>
         <Paper sx={{ backgroundColor: theme.palette.primary.main }}>

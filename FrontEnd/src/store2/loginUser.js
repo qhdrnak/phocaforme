@@ -19,7 +19,9 @@ const initialUserState = {
     nickname: getDecodedCookie('nickname') || null,
     token: getDecodedCookie('token') || null,
     location: null, // 현재 위치 정보
-    bias: null,
+    // bias: null,
+    defaultGroup:null,
+    defaultMember: null,
   },
 };
 
@@ -41,7 +43,8 @@ const loginUserSlice = createSlice({
       state.user.nickname = action.payload;
     },
     setBias: (state, action) => {
-      state.user.bias = action.payload;
+      [state.user.defaultGroup, state.user.defaultMember] = action.payload;
+      console.log(state.user.defaultGroup)
     }
   },
 });

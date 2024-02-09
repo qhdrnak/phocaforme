@@ -18,7 +18,11 @@ const Bias = () => {
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
+    } else {
+      setSelectedGroup(null);
+
     }
+    
   };
 
   const handleMemberChange = (member) => {
@@ -35,9 +39,8 @@ const Bias = () => {
   const handleApplyClick = () => {
     const url = generateImageUrl(selectedGroup, selectedMember);
     setImageUrl(url);
-    console.log(selectedMember);
 
-    dispatch(setBias(selectedMember));
+    dispatch(setBias([selectedGroup, selectedMember]));
     // member.idolMemberId 를 db 에 반영하기
   };
 
