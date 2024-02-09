@@ -18,6 +18,8 @@ const CustomTabPanel = (props) => {
 
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
+  
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // 게시글 가져오기 요청
@@ -26,6 +28,7 @@ const CustomTabPanel = (props) => {
       .then((response) => {
         // 요청 성공 시 받은 데이터를 상태에 저장
         const data = response.data;
+        
         setPosts(data); // 가져온 게시글을 상태에 저장
       })
       .catch((error) => {
