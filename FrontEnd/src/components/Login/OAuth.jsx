@@ -2,6 +2,6 @@
 const Client_id = '0c667ea3c8f35cc83690ec0c37f136e2'
 const Redirect_URI = 'https://example.com/oauth'
 
-export const KAKAO_AUTH_URL = `http://i10a703.p.ssafy.io:4885/oauth2/authorization/kakao`
+export const KAKAO_AUTH_URL = `https://phocafor.me/oauth2/authorization/kakao`
 // export const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${Client_id}&redirect_uri=${Redirect_URI}&response_type=code`
 //dd
