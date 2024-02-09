@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface FirebaseCloudMessageRepository extends JpaRepository<NotificationEntity, Integer> {
+public interface FCMNotificationRepository extends JpaRepository<NotificationEntity, Integer> {
 
     @Query("SELECT new com.phofor.phocaforme.notification.dto.message.NotificationMessageDto" +
                     "(n.notificationId, n.content, n.createdAt, n.readStatus, n.notificationType, n.articleId" +

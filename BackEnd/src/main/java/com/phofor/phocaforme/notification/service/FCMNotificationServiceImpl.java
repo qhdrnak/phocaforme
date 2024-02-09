@@ -12,13 +12,14 @@ import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
-import com.phofor.phocaforme.notification.domain.FcmMessage;
+import com.phofor.phocaforme.notification.domain.FCMNotificationMessage;
 import com.phofor.phocaforme.notification.dto.NotificationDto;
 import com.phofor.phocaforme.notification.dto.message.NotificationMessageDto;
 import com.phofor.phocaforme.notification.dto.message.RequestDTO;
 import com.phofor.phocaforme.notification.entity.NotificationEntity;
 import com.phofor.phocaforme.notification.entity.NotificationType;
-import com.phofor.phocaforme.notification.repository.FirebaseCloudMessageRepository;
+import com.phofor.phocaforme.notification.repository.CustomFCMNotificationRepository;
+import com.phofor.phocaforme.notification.repository.FCMNotificationRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -37,9 +38,10 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageService{
+public class FCMNotificationServiceImpl implements FCMNotificationService {
 
-    private final FirebaseCloudMessageRepository firebaseCloudMessageRepository;
+    private final FCMNotificationRepository fcmNotificationRepository;
+    private final CustomFCMNotificationRepository customFCMNotificationRepository;
     private final UserRepository userRepository;
     private final UserDeviceRepository userDeviceRepository;
 
@@ -57,20 +59,20 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
     // 알림 리스트
     @Override
     public List<NotificationMessageDto> getMessageList(String userId) {
-        return firebaseCloudMessageRepository.findByUserEntity_UserId(userId);
+        return fcmNotificationRepository.findByUserEntity_UserId(userId);
     }
 
     // 알림 읽음 표시
     @Override
     public Boolean readMessage(Long notificationId) {
         // 해당 알림 SELECT
-        Optional<NotificationEntity> notificationEntityOptional = firebaseCloudMessageRepository.findByNotificationId(notificationId);
+        Optional<NotificationEntity> notificationEntityOptional = fcmNotificationRepository.findByNotificationId(notificationId);
         if (notificationEntityOptional.isPresent()) {
             NotificationEntity notificationEntity = notificationEntityOptional.get();
             notificationEntity.setReadStatus(true);
 
             // 데이터베이스에 변경 내용 저장
-            firebaseCloudMessageRepository.save(notificationEntity);
+            fcmNotificationRepository.save(notificationEntity);
             return true;
         }
         return false;
@@ -80,19 +82,19 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
     @Override
     public Boolean deleteMessage(Long notificationId) {
         // 알림 유무 확인
-        Optional<NotificationEntity> notificationEntityOptional = firebaseCloudMessageRepository.findByNotificationId(notificationId);
+        Optional<NotificationEntity> notificationEntityOptional = fcmNotificationRepository.findByNotificationId(notificationId);
         if (notificationEntityOptional.isPresent()) {
             NotificationEntity notificationEntity = notificationEntityOptional.get();
             notificationEntity.setDeleteStatus(true);
 
             // 데이터베이스에 변경 내용 저장
-            firebaseCloudMessageRepository.save(notificationEntity);
+            fcmNotificationRepository.save(notificationEntity);
             return true;
         }
         return false;
     }
 
-    // 테스트 용
+    // 채팅알림 보내기 포스트 맨 테스트 용
     @Override
     public Boolean sendChatMessage(NotificationDto notificationDto) {
         Optional<UserEntity> senderUserOptional, receiverUserOptional;
@@ -129,7 +131,7 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
                     .build();
 
             // 데이터베이스에 저장
-            firebaseCloudMessageRepository.save(notificationEntity);
+            fcmNotificationRepository.save(notificationEntity);
         } else {
             log.info("User with id not found");
             return false;
@@ -160,7 +162,7 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
     }
 
 
-    // 메세지 등록 후 알림 등록
+    // 채팅 메세지 등록 후 알림 등록
     @Override
     public Boolean sendChatMessage(NotificationDto notificationDto, ChatRoom chatRoom, String userId) {
         //전달받은 userId를 chatRoom에 있는 ownerId, visiterId를 비교하여 같은게 작성자, 다른게 수신자
@@ -198,7 +200,7 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
                     .build();
 
             // 데이터베이스에 저장
-            firebaseCloudMessageRepository.save(notificationEntity);
+            fcmNotificationRepository.save(notificationEntity);
         } else {
             log.info("User with id not found");
             return false;
@@ -258,15 +260,14 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
                         .deleteStatus(false)
                         .build();
                 // 데이터베이스에 저장
-                firebaseCloudMessageRepository.save(notificationEntity);
+                fcmNotificationRepository.save(notificationEntity);
             } else {
                 log.info("User with id {} not found", ids.get(i));
-                sendFail.add(ids.get(i));
                 continue;
             }
 
             // 유저들의 디바이스 정보 가져오기
-            deviceTokens = findDeviceTokensByIds(ids);
+            deviceTokens = customFCMNotificationRepository.findDeviceTokensByIds(ids);
         }
 
         if(!deviceTokens.isEmpty()) {
@@ -294,8 +295,8 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
                     // 실패한 토큰 수
                     if (response.getFailureCount() > 0) {
                         List<SendResponse> responses = response.getResponses();
-                        for (int j = 0; j < responses.size(); j++) {
-                            if (!responses.get(j).isSuccessful()) {
+                        for (SendResponse respons : responses) {
+                            if (!respons.isSuccessful()) {
                                 // The order of responses corresponds to the order of the registration tokens.
                                 sendFail.add(batchTokens.get(i));
                             }
@@ -347,12 +348,12 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
         return false;
     }
 
-    public List<String> findDeviceTokensByIds(List<String> ids) {
-        TypedQuery<String> query = entityManager.createQuery(
-                "SELECT ud.deviceToken FROM UserDeviceEntity ud WHERE ud.userId IN :ids", String.class);
-        query.setParameter("ids", ids);
-        return query.getResultList();
-    }
+//    public List<String> findDeviceTokensByIds(List<String> ids) {
+//        TypedQuery<String> query = entityManager.createQuery(
+//                "SELECT ud.deviceToken FROM UserDeviceEntity ud WHERE ud.userId IN :ids", String.class);
+//        query.setParameter("ids", ids);
+//        return query.getResultList();
+//    }
 
     // 메세지 보내기 테스트용
     @Override
@@ -378,9 +379,10 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
         System.out.println(response.body().string());
     }
 
+    // 채팅 알림 메세지 만들기
     private String makeMessage(String targetToken, String title, String body, String link) throws JsonProcessingException {
-        FcmMessage fcmMessage = FcmMessage.builder()
-                .message(FcmMessage.Message.builder()
+        FCMNotificationMessage fcmMessage = FCMNotificationMessage.builder()
+                .message(FCMNotificationMessage.Message.builder()
                         .token(targetToken)
                         .data(Map.of(
                                 "title", title,
@@ -394,6 +396,7 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
         return objectMapper.writeValueAsString(fcmMessage);
     }
 
+    // 알림 메세지 보내기
     private void sendMessage(String message) throws Exception{
         OkHttpClient client = new OkHttpClient();
         RequestBody requestBody = RequestBody.create(message,
@@ -408,6 +411,8 @@ public class FirebaseCloudMessageServiceImpl implements FirebaseCloudMessageServ
         Response response = client.newCall(request).execute();
         System.out.println(response.body().string());
     }
+    
+    // 토큰 받아오기
     private String getAccessToken() throws IOException {
         String firebaseConfigPath = "firebase/firebase_service_key.json";
 

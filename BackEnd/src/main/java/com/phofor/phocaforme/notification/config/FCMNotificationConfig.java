@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Configuration
-public class FCMConfig {
+public class FCMNotificationConfig {
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException {
         ClassPathResource resource = new ClassPathResource("firebase/firebase_service_key.json");
