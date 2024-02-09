@@ -40,12 +40,12 @@ public class QueueWorker {
             String messageContent = new String(message.getBody(), StandardCharsets.UTF_8);
             System.out.println("Received message: " + messageContent);
             JsonNode rootNode = objectMapper.readTree(messageContent);
-
             Long articleId = rootNode.path("articleId").asLong();
             Boolean isBartered = rootNode.path("isBartered").asBoolean();
             System.out.println(">>1");
 //            System.out.println(">>2"+retrievedBarter.orElse(null).getNickname());
-
+            // 이 시점에 articleId, isBartered 만 있음.
+            //
             BarterDetailDto barter = barterService.findOne(articleId);
             System.out.println(">>>>"+barter);
             // 날짜 데이터 포맷팅
