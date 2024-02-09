@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Getter
 @EntityListeners({AuditingEntityListener.class, BarterEntityListener.class})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "barter")
 public class Barter extends BaseEntity {
 
     // 교환게시글 ID
@@ -71,7 +72,7 @@ public class Barter extends BaseEntity {
     private boolean bartered;
     
     // 교환게시글 상태(삭제유무)
-    @Column(columnDefinition = "boolean default false")
+    @Column(name = "barter_status", columnDefinition = "boolean default false")
     private boolean barterStatus;
 
 

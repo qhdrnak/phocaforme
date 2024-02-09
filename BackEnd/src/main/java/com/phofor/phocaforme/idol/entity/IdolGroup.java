@@ -8,6 +8,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "idol_group")
 public class IdolGroup {
 
     @Id

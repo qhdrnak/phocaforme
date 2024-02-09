@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "idol_member")
 public class IdolMember {
 
     @Id
@@ -24,6 +25,8 @@ public class IdolMember {
     private String name;
 
     private String image;
+
+    @Column(name = "search_count")
     private Long searchCount;
 
 
