@@ -17,7 +17,7 @@ spring:
             authorization-grant-type: authorization_code
             redirect-uri: https://phocafor.me:4885/login/oauth2/code/kakao
             # redirect-uri: https://phocafor.me/login/oauth2/code/kakao
-            # 실험
+            # 실험중
             client-authentication-method: client_secret_post
             scope: profile_nickname, account_email
         provider:
