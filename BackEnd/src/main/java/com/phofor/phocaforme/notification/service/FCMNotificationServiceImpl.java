@@ -164,7 +164,10 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
     // 채팅 메세지 등록 후 알림 등록
     @Override
-    public Boolean sendChatMessage(NotificationDto notificationDto, ChatRoom chatRoom, String userId) {
+    public Boolean sendChatMessage(ChatRoom chatRoom, String userId) {
+        String senderNickname, receiverNickname;
+        String title, content, link; // 채팅함으로 이동
+
         //전달받은 userId를 chatRoom에 있는 ownerId, visiterId를 비교하여 같은게 작성자, 다른게 수신자
         Optional<UserEntity> senderUserOptional, receiverUserOptional;
         if(userId.equals(chatRoom.getOwnerId())){
@@ -177,23 +180,22 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
         }
 
         // 채팅방으로 회원 정보 가져오기
-//        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(notificationDto.getReceiverId());
         if (senderUserOptional.isPresent() && receiverUserOptional.isPresent()) {
             UserEntity senderUserEntity = senderUserOptional.get();
             UserEntity receiverUserEntity = receiverUserOptional.get();
             log.info("senderUser_id : {}, receiverUser_id : {}", senderUserEntity.getUserId(), receiverUserEntity.getUserId());
 
-            notificationDto.setSenderId(senderUserEntity.getNickname());
-            notificationDto.setReceiverId(receiverUserEntity.getNickname());
+            senderNickname = senderUserEntity.getNickname();
+            receiverNickname = receiverUserEntity.getNickname();
 
-            notificationDto.setTitle(receiverUserEntity.getNickname() + "님 채팅 도착하였습니다!");
-            notificationDto.setContent(senderUserEntity.getNickname() + "으로부터 새로운 채팅이 왔어요!! 확인 해보세요!!");
-            notificationDto.setLink(domain + "/chatRoom"); // 채팅함으로 이동
+            title = receiverNickname + "님 채팅 도착하였습니다!";
+            content = senderNickname + "으로부터 새로운 채팅이 왔어요!! 확인 해보세요!!";
+            link = domain + "/chatRoom"; // 채팅함으로 이동
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
                     .userEntity(receiverUserEntity)
-                    .title(notificationDto.getTitle())
-                    .content(notificationDto.getContent()) // 알림 내용
+                    .title(title)
+                    .content(content) // 알림 내용
                     .readStatus(false) // 읽지 않은 상태로 초기화
                     .notificationType(NotificationType.Chatting)
                     .deleteStatus(false)
@@ -214,8 +216,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
             try{
                 // 메세지 보내기
                 String message = makeMessage(
-                        userDeviceEntity.getDeviceToken(), notificationDto.getTitle(),
-                        notificationDto.getContent(), notificationDto.getLink()
+                        userDeviceEntity.getDeviceToken(), title, content, link
                 );
                 sendMessage(message);
                 return true;
@@ -225,7 +226,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
             }
         }
         else {
-            log.info("UserDevice with id {} not found", notificationDto.getReceiverId());
+            log.info("UserDevice with id {} not found", receiverUserOptional.get().getUserId());
             return false;
         }
     }

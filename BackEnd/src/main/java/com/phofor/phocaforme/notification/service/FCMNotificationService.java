@@ -11,7 +11,7 @@ import java.util.List;
 public interface FCMNotificationService {
     public void sendMessageTo(RequestDTO requestDTO) throws IOException;
 
-    public Boolean sendChatMessage(NotificationDto notificationDto, ChatRoom chatRoom, String userId);
+    public Boolean sendChatMessage(ChatRoom chatRoom, String userId);
     public Boolean sendChatMessage(NotificationDto notificationDto);
     public Boolean sendBiasMessage(List<String> ids, Long articleId);
 
