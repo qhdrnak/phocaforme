@@ -213,4 +213,23 @@ public class UserService extends DefaultOAuth2UserService {
         }
         return false; // 유저를 찾지 못한 경우 false 반환
     }
+
+
+    @Transactional
+    public Boolean updateBias(String userId, Long idolMemberId){
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+
+        // 최애 등록
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            userEntity.setBiasId(idolMemberId);
+            log.info("myBiasId : {}", idolMemberId);
+            // 새로운 최애 등록 - 자동 update
+            userRepository.save(userEntity);
+
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
