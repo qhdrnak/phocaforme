@@ -1,7 +1,7 @@
 spring:
   rabbitmq:
-    host: localhost
-    port: 5672
+    host: phocafor.me
+    port: 5000
     username: guest
     password: guest
 
