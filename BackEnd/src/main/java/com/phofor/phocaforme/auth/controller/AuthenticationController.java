@@ -140,6 +140,7 @@ public class AuthenticationController {
     @PostMapping("/user/device")
     public ResponseEntity<?> registDevice(@RequestBody Map<String, String> deviceToken,
                                           @AuthenticationPrincipal CustomOAuth2User oauth2User) {
+        log.info("deviceToken : {}", deviceToken.get("deviceToken"));
         HttpStatus status;
         UserEntity userEntity = oauth2User.getUserEntity();
         if(userService.registDeviceTokenByUserId(userEntity.getUserId(), deviceToken.get("deviceToken")))

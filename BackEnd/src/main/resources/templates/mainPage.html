@@ -38,7 +38,24 @@
                                 if (currentToken) {
                                     console.log("device_token: " + currentToken);
                                     // Send the token to your server and update the UI if necessary
-                                    // ...
+                                    fetch('http://localhost:8080/api/user/device', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        body: JSON.stringify({ deviceToken: currentToken })
+                                    })
+                                    .then(response => {
+                                        if (response.ok) { // HTTP 상태 코드가 200-299인 경우
+                                            console.log('Success:', response.status);
+                                        } else {
+                                            // 서버가 오류 응답을 반환한 경우 (예: 400, 401, 500 등)
+                                            console.error('Server error:', response.status);
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error('Network error:', error);
+                                    });
                                 } else {
                                     // Show permission request UI
                                     console.log('No registration token available. Request permission to generate one.');
