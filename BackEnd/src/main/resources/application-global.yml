@@ -24,3 +24,14 @@ spring:
     user:
       name: phocaforme
       password: 12345
+jwt:
+  secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4'
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+project:
+  url: http://phocafor.me:4885
+  API-URL: https://fcm.googleapis.com/v1/projects/phocaforme/messages:send
+  client-id: 0c667ea3c8f35cc83690ec0c37f136e2
