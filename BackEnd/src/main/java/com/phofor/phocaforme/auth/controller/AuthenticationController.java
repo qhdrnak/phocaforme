@@ -74,7 +74,6 @@ public class AuthenticationController {
     public String mainPage() {
         return "mainPage";
     }
-
     /**
      * 에러  페이지
      * @param error

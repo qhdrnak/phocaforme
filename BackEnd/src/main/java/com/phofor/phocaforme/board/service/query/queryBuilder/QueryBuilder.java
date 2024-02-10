@@ -2,13 +2,17 @@ package com.phofor.phocaforme.board.service.query.queryBuilder;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
+import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
 import com.phofor.phocaforme.board.service.query.filters.*;
 import lombok.Getter;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class QueryBuilder implements QueryBuilderInterface{
@@ -24,8 +28,6 @@ public class QueryBuilder implements QueryBuilderInterface{
     @Override
     public void createQuery(BarterSearchCriteria criteria) {
         this.setPageOffset(criteria);
-        this.setFields(criteria);
-        this.setSorting(criteria);
         this.setAggregation(criteria);
         this.setFilters(criteria);
     }
@@ -50,6 +52,8 @@ public class QueryBuilder implements QueryBuilderInterface{
 
         if (criteria.getQuery() != null) {
             boolQueryBuilder.must(QueryFilter.createFilter(criteria));
+        }else{
+            this.queryBuilder.withSort(Sort.by(Sort.Order.desc("created_at")));
         }
 
         if (criteria.getCardType() != null) {
@@ -70,27 +74,27 @@ public class QueryBuilder implements QueryBuilderInterface{
                 .bool(boolQueryBuilder.build())
         );
     }
+
     protected void setPageOffset(BarterSearchCriteria criteria) {
         // 페이지네이션
         int page = criteria.getPage() != null ? criteria.getPage() : 1;
         int size = criteria.getSize() != null ? criteria.getSize() : BarterSearchCriteria.SIZE_MAX;
-
+        System.out.println(page+","+size);
         int pageIndex = page - 1;
         if (pageIndex < 0) {
             pageIndex = 0;
         }
         this.pageRequest = PageRequest.of(pageIndex, size);
-    }
-
-    protected void setFields(BarterSearchCriteria criteria){
-        // 보여줄 필드 제한
+        this.queryBuilder.withPageable(this.pageRequest);
     }
 
     protected void setAggregation(BarterSearchCriteria criteria){
         // 집계 설정
     }
 
-    protected void setSorting(BarterSearchCriteria criteria){
-        // 반환값 어떤 기준으로 정렬 시킬 지
+
+    @Override
+    public void createQuery(String title, List<IdolMemberDto> idols) {
+
     }
 }

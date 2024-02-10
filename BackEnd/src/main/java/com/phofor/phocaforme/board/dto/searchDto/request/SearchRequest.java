@@ -8,8 +8,8 @@ import java.util.List;
 @Getter
 @Setter
 public class SearchRequest {
-    private Integer page = 2;
-    private Integer size = 100;
+    private Integer page = 1;
+    private Integer size = 20;
 
     private String query;
     private String cardType;
