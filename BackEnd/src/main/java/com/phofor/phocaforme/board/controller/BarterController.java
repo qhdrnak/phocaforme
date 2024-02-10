@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/barter")
+@RequestMapping("/api/barter")
 @RequiredArgsConstructor
 public class BarterController {
     private final BarterSearchService barterSearchService;
