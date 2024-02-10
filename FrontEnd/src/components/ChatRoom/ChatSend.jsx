@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import { Stomp } from "@stomp/stompjs";
@@ -14,6 +14,7 @@ import { ArrowCircleUp, Add, Image } from "@mui/icons-material";
 const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
 
   // 메시지 전송
   const [value, setValue] = useState("");
@@ -79,6 +80,8 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         })
       );
     }
+    // setValue("");
+    inputRef.current.focus();
   };
 
   const receiveMessage = () => {
@@ -92,17 +95,18 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const readImage = (input) => {
-    console.log(input.files[0])
     if (input.files && input.files[0]) {
       const FR = new FileReader();
       FR.onload = function (e) {
+        // 바이트 배열로 변환합니다.
+        const byteArray = new Uint8Array(e.target.result);
         ws.send(
           "/pub/chats/" + roomId,
           {},
           JSON.stringify({
             chatRoomId: roomId,
             userEmail: loginUser.userId,
-            imgCode: e.target.result,
+            imgCode: byteArray,
           })
         );
       };
@@ -111,7 +115,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setValue((prevValue) => event.target.value);
   };
 
   const handleSetImage = () => {
@@ -130,34 +134,36 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     handleClose();
   };
 
-  const handleSendClick = (receive) => {
-    // if (receive && receive.imgCode) {
-    // } else {
-    // }
-    // sendMessage(value);
-
-    if (receive) {
+  const handleSendClick = () => {
+    if (receive && receive.imgCode != null) {
       const newMessage = {
-        // chatId: 1,
         chatRoomId: roomId,
         sender: loginUser.nickname,
         message: value,
         imgCode: receive.imgCode,
-        // sendTime: receive.createdAt,
         sendTime: getCurrentTime(),
-        // isPay: false,
+      };
+      updateMessages(newMessage);
+      sendMessage();
+    } else {
+      // 이 부분은 receive가 비어있거나 imgCode가 없는 경우의 로직
+      const newMessage = {
+        chatRoomId: roomId,
+        sender: loginUser.nickname,
+        message: value,
+        sendTime: getCurrentTime(),
       };
       updateMessages(newMessage);
       sendMessage();
     }
-    setValue("");
-
   };
 
   // 엔터 키를 눌렀을 때도 send
   const handleSendEnter = (e) => {
     if (e.key === "Enter") {
-      handleSendClick(receive);
+      e.preventDefault();
+      handleSendClick();
+
     }
   };
 
@@ -224,6 +230,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         </div>
       </Popover>
       <TextField
+      
         fullWidth
         id="fullWidth"
         placeholder="메시지를 입력하세요"
@@ -231,6 +238,9 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         onChange={handleChange}
         onKeyDown={handleSendEnter}
         InputProps={{
+          inputProps: {
+            ref: inputRef,
+          },
           startAdornment: (
             <InputAdornment>
               <Add onClick={handleClick} />
@@ -238,7 +248,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           ),
           endAdornment: (
             <InputAdornment>
-              <ArrowCircleUp onClick={handleSendClick} fontSize="large" />
+              <ArrowCircleUp id="sendIcon" onClick={handleSendClick} fontSize="large" />
             </InputAdornment>
           ),
         }}

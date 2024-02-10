@@ -42,8 +42,9 @@ const ChatRoom = () => {
   // const chatList = chats.filter((chat) => chat.chatRoomId == roomId);
 
   const updateMessages = (newMessage) => {
-    
-    dispatch(sendChat(newMessage));
+    if (newMessage.message.trim() != "") {
+      dispatch(sendChat(newMessage));
+    }
   
   };
 
