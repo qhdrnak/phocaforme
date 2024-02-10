@@ -89,6 +89,11 @@
                 onclick="sendMessage()">
             보내기
         </button>
+        <button type="button" style="border:none; color: #4C4C4C; height: 32px; padding:0px 20px; border-radius:10px;
+            background-color:#B2CCFF; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); margin-left:15px;"
+                onclick="disconnectChat()">
+            나가기
+        </button>
     </div>
 </div>
 </body>
@@ -98,10 +103,10 @@
 <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
 
 <script>
-   // let userEmail = localStorage.getItem('userEmail');
+   let userEmail = localStorage.getItem('userEmail');
    // let roomId = localStorage.getItem('chatRoomId');
    let roomId = 1;
-   let userEmail = "제노야!!!"
+   // let userEmail = "제노야!!!"
    console.log(roomId);
 
    let sock = new SockJS("/ws-stomp"); //new SockJS()를 사용하여 아까 핸들러에서 지정해준 endPoint를 사용하여 연결을 해준다.
@@ -120,6 +125,11 @@
    }, function (error) {
       alert("error" + error);
    });
+
+   function disconnectChat() {
+      ws.disconnect();
+   }
+
 
 
    function sendMessage() {

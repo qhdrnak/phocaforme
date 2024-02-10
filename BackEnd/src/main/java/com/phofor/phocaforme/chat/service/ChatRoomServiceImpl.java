@@ -7,6 +7,7 @@ import com.phofor.phocaforme.board.repository.BarterRepository;
 import com.phofor.phocaforme.chat.dto.response.ChatRoomResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.chat.exception.BarterBoardNotFoundException;
+import com.phofor.phocaforme.chat.exception.ChatRoomNouFoundException;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true) // 한 사이클 안에서 디비 관리해주는거
+@Transactional // 한 사이클 안에서 디비 관리해주는거
 // 터지면 이제 아무것도 안됨요
 @RequiredArgsConstructor
 public class ChatRoomServiceImpl implements ChatRoomService{
@@ -81,5 +82,20 @@ public class ChatRoomServiceImpl implements ChatRoomService{
         }
         ChatRoomResponseDto singleChatRoomDto = ChatRoomResponseDto.of(chatRoom);
         return singleChatRoomDto;
+    }
+
+    @Override
+    public Boolean updateLatestChat(String userId, Long chatroomId) {
+        try {
+            ChatRoom chatRoom = chatRoomRepository.findById(chatroomId).orElseThrow(ChatRoomNouFoundException::new);
+            if (chatRoom.getOwnerId().equals(userId)){
+                chatRoom.setOwnerLatestId(chatRoom.getChatLatest().getId());
+            } else {
+                chatRoom.setVisitorLatestId(chatRoom.getChatLatest().getId());
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

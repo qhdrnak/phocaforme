@@ -1,41 +1,48 @@
 package com.phofor.phocaforme.auth.controller;
 
-import com.phofor.phocaforme.idol.dto.response.IdolGroupResponseDto;
-import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
-import com.phofor.phocaforme.idol.entity.IdolMember;
-import com.phofor.phocaforme.idol.service.IdolSelectService;
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.service.user.UserService;
+import com.phofor.phocaforme.auth.util.CookieUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 
 @Slf4j
-@RequestMapping("/user")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 @Controller
 public class BiasSelectController {
-    // 1. 들어오자마자 누르면 아이돌 그룹 뿌려주기
-    // 2. 아이돌 그룹 선택하면 해당하는 멤버 부려주기
 
-    private final IdolSelectService idolSelectService;
+    private Cookie tokenCookie;
+    private final UserService userService;
+
+    // 최애 등록
+    @PutMapping("/user/bias/{idolMemberId}")
+    public ResponseEntity<?> updateBias(@PathVariable Long idolMemberId, HttpServletRequest request,
+                                        @AuthenticationPrincipal CustomOAuth2User oauth2User) {
+
+        String userId = oauth2User.getUserEntity().getUserId();
+        HttpStatus staus;
+        tokenCookie = CookieUtil.resolveToken(request);
+
+        if (userService.updateBias(userId, idolMemberId)){
+            staus = HttpStatus.ACCEPTED;
+        } else {
+            staus = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(staus);
+    }
+
 //
-//    // 모든 아이돌 그룹 리스트 반환
-//    @GetMapping("/idol/group")
-//    public ResponseEntity<List<IdolGroupResponseDto>> getIdolGroupAll(){
-//        return ResponseEntity.ok().body(idolSelectService.findAll());
-//    }
-//
-//    @GetMapping("/idol/member/{idolGroupId}")
-//    public ResponseEntity<List<IdolMemberResponseDto>> getIdolMemberAll(@PathVariable Long idolGroupId) {
-//        return ResponseEntity.ok().body(idolSelectService.getAllByIdolGroupId(idolGroupId));
-//    }
 
 //    @PutMapping()
 //    public ResponseEntity<>

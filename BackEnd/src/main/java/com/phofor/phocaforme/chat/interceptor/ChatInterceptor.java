@@ -45,10 +45,10 @@ public class ChatInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         StompCommand command = accessor.getCommand();
 
-        if(StompCommand.CONNECT.equals(command)) {
+        if (StompCommand.CONNECT.equals(command)) {
             // Authorization은 프론트에서 해준 것과 같게 해주면 됨(이름을)
             String authToken = accessor.getFirstNativeHeader("Authorization");
-            log.info("토큰확인"+authToken);
+            log.info("토큰확인" + authToken);
 //        String authToken = "brfgpCqAIcG8IVq0z3w5Xvtx_ykOjKJ0SSkKPXRpAAABjX4k2LpUdd9ffL_GXA";
 
             // authToken이 내가 프론트에서 받아온 유저의 토큰
@@ -60,15 +60,15 @@ public class ChatInterceptor implements ChannelInterceptor {
 
             // 레디스에서 유저의 정보 받아오기
 //            if (StompCommand.CONNECT.equals(command)){
-                setValue(accessor, "nickname", userEntity.getNickname());
-                setValue(accessor, "userId", userEntity.getUserId());
-                log.info(userEntity.getNickname());
-                log.info(userEntity.getUserName());
-                log.info(userEntity.getUserId());
+            setValue(accessor, "nickname", userEntity.getNickname());
+            setValue(accessor, "userId", userEntity.getUserId());
+            setValue(accessor, "chatRoomId", 1L);
+            log.info(userEntity.getNickname());
+            log.info(userEntity.getUserName());
+            log.info(userEntity.getUserId());
 //            }
 
         }
-
 
 
         return message;

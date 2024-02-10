@@ -15,12 +15,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/api")
 //@CrossOrigin(origins="http://localhost:8080", allowedHeaders = "http://localhost:3000", allowCredentials = "true")
 @Controller
 public class ChatMessageController {
@@ -29,7 +31,7 @@ public class ChatMessageController {
     private Cookie tokenCookie;
 
     @GetMapping("/chats/{chatRoomId}")
-    public ResponseEntity<List<ChatMessageResponseDto>> getChatMessageAll(@PathVariable Long chatRoomId){
+    public ResponseEntity<List<ChatMessageResponseDto>> getChatMessageAll(@PathVariable Long chatRoomId) {
         return ResponseEntity.ok().body(chatMessageService.getAllByChatRoomId(chatRoomId));
     }
 

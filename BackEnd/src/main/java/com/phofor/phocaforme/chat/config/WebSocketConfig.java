@@ -1,11 +1,19 @@
 package com.phofor.phocaforme.chat.config;
 
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserEntity;
+import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.chat.interceptor.ChatInterceptor;
+import com.phofor.phocaforme.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.EventListener;
+import org.springframework.messaging.Message;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.messaging.simp.stomp.StompCommand;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -13,12 +21,19 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
+import java.util.Map;
+
+@Slf4j
 @Configuration
 @EnableWebSocketMessageBroker
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private  final ChatInterceptor chatInterceptor;
+    private final RedisService redisService;
+    private final ChatRoomService chatRoomService;
+
+    private String current = "blank";
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config){
         config.enableSimpleBroker("/sub");  // sub으로 들어오는 요청을 처리해주기 위해
@@ -40,15 +55,34 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @EventListener
     public void connectEvent(SessionConnectEvent sessionConnectEvent) {
+        current = "now I'm here";
         System.out.println(sessionConnectEvent);
         System.out.println("연결 성공 감지 !-!-!-!");
+        System.out.println(current);
         // return "redirect:chat/message";
     }
 
     @EventListener
     public void onDisconnectEvent(SessionDisconnectEvent sessionDisconnectEvent) {
+
+        Message<byte[]> message = sessionDisconnectEvent.getMessage();
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        StompCommand command = accessor.getCommand();
+
+        if (StompCommand.DISCONNECT.equals(command)){
+
+            Long chatRoomId = (Long) ((Map<String, Object>)message.getHeaders().get("simpSessionAttributes")).get("chatRoomId");
+            String userId = (String) ((Map<String, Object>)message.getHeaders().get("simpSessionAttributes")).get("userId");
+            log.info("chatRoomId : " + chatRoomId);
+
+            chatRoomService.updateLatestChat(userId, chatRoomId);
+
+        }
+
         System.out.println(sessionDisconnectEvent);
+        System.out.println(current);
         System.out.println("연결 끊어짐 감지 !-!-!-!");
+
     }
 
     @Override
