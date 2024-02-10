@@ -40,7 +40,7 @@ public class GpsController {
 
         String address;
         HttpStatus status;
-        int time = 60 * 60 * 3;
+        int time = (60 * 60 * 3) + (60 * 60 * 9);
 
         // gps 주소 받아오기
         try {
