@@ -120,9 +120,14 @@ public class AuthenticationController {
 
     // 닉네임 변경
     @PutMapping("/user/nickname")
-    public ResponseEntity<?> modifyNickname(@RequestParam boolean isDuplicated, @RequestBody String nickname,
+    public ResponseEntity<?> modifyNickname(@RequestParam boolean isDuplicated,
+                                            @RequestParam String nickname,
                                             @AuthenticationPrincipal CustomOAuth2User oauth2User,
                                             HttpServletRequest request) {
+
+//        String nickname = (String)nicknameData.get("nickname");
+//        boolean isDuplicated = (Boolean)nicknameData.get("isDuplicated");
+
         HttpStatus status;
         tokenCookie = CookieUtil.resolveToken(request);
         if(isDuplicated)
