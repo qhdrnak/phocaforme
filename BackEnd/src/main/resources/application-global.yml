@@ -12,9 +12,9 @@ spring:
     show-sql: true
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: ${GlOBAL_DB_URL}
-    username: ${GlOBAL_USER_NAME}
-    password: ${GlOBAL_USER_PASSWORD}
+    url: root
+    username: youRmybias1004
+    password: jdbc:mariadb://i10a703.p.ssafy.io:3306/PhocaForMe?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
   data:
     redis:
       host: i10a703.p.ssafy.io # Redis 서버 호스트 주소

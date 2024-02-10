@@ -4,7 +4,7 @@ spring:
       on-profile: elastic-global
 
 elasticsearch:
-  username: ${GLOBAL_ES_USER_NAME}
-  password: ${GLOBAL_ES_USER_PASSWORD}
-  hostname: ${GLOBAL_ES_HOSTNAME}
+  username: elastic
+  password: youRmybias1004
+  hostname: phocafor.me
   port: 9200
