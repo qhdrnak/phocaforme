@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-// @RequestMapping("/api")
+@RequestMapping("/api")
 public class IdolController {
     // 1. 들어오자마자 누르면 아이돌 그룹 뿌려주기
     // 2. 아이돌 그룹 선택하면 해당하는 멤버 부려주기
