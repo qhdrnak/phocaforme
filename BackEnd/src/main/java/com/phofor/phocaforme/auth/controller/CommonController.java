@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.auth.controller;
 
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.auth.service.user.UserService;
 import com.phofor.phocaforme.auth.util.CookieUtil;
@@ -132,10 +133,12 @@ public class CommonController {
 
     // 기기 코드 등록
     @PostMapping("/users/{userId}/device")
-    public ResponseEntity<?> registDevice(@PathVariable String userId, @RequestParam String deviceToken) {
+    public ResponseEntity<?> registDevice(@RequestBody Map<String, String> deviceToken,
+                                          @AuthenticationPrincipal CustomOAuth2User oauth2User) {
+        log.info("deviceToken : {}", deviceToken.get("deviceToken"));
         HttpStatus status;
-
-        if(userService.registDeviceTokenByUserId(userId, deviceToken))
+        UserEntity userEntity = oauth2User.getUserEntity();
+        if(userService.registDeviceTokenByUserId(userEntity.getUserId(), deviceToken.get("deviceToken")))
             status = HttpStatus.ACCEPTED;
         else
             status = HttpStatus.INTERNAL_SERVER_ERROR;

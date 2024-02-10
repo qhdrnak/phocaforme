@@ -6,6 +6,7 @@ import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
+import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
@@ -14,6 +15,7 @@ import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.service.BarterSearchService;
 import com.phofor.phocaforme.board.service.BarterService;
 import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
+import com.phofor.phocaforme.notification.service.FCMNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +34,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/barter")
+@RequestMapping("/api/barter")
 @RequiredArgsConstructor
 public class BarterController {
     private final BarterSearchService barterSearchService;
     private final BarterService barterService;
-
+    private final FCMNotificationService fcmNotificationService;
 
     @GetMapping
     public ResponseEntity<List<SearchResponse>> searchAll()
@@ -51,7 +53,6 @@ public class BarterController {
     {
         System.out.println(searchRequest.getQuery());
         List<SearchResponse> results = barterSearchService.search(searchRequest);
-
         return ResponseEntity.ok(results);
     }
 
@@ -72,8 +73,16 @@ public class BarterController {
         // UserEntity userEntity = customOAuth2User.getUserEntity();
 //        System.out.println(registerDto);
         UserEntity userEntity = oauth2User.getUserEntity();
-        Barter barter = barterService.registerBarter(registerDto , userEntity);
-
+        Barter barter = barterService.registerBarter(registerDto, userEntity);
+        List<IdolMemberDto> idols = barter.getOwnIdols().stream().map(
+                ownIdol -> new IdolMemberDto(
+                        ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()
+                )).toList();
+        List<String> ids = barterSearchService.wishPhoca(barter.getTitle(),idols);
+        System.out.println("ids의 size:"+ids.size());
+        System.out.println(ids.toString());
+//        //#주석 해제해서 사용
+        fcmNotificationService.sendBiasMessage(ids,barter.getId());
         return new ResponseEntity<Barter>(barter, HttpStatus.OK);
     }
 

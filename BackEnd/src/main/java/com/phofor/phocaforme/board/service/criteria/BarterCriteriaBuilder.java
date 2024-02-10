@@ -21,6 +21,7 @@ public class BarterCriteriaBuilder extends AbstractCriteriaBuilder{
     @Override
     void createCriteria() {
         if(searchRequest.getPage()>=1){
+            System.out.println("Page:"+searchRequest.getPage());
             this.barterSearchCriteria.setPage(searchRequest.getPage()-1);
         }
 
@@ -32,5 +33,6 @@ public class BarterCriteriaBuilder extends AbstractCriteriaBuilder{
         if(searchRequest.getSize() <= BarterSearchCriteria.SIZE_MAX && searchRequest.getSize() >=BarterSearchCriteria.SIZE_MIN){
             this.barterSearchCriteria.setSize(searchRequest.getSize());
         }
+        System.out.println(">>>"+this.barterSearchCriteria.getPage()+","+this.barterSearchCriteria.getSize());
     }
 }

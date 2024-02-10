@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.board.repository;
 
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
+import com.phofor.phocaforme.board.dto.searchDto.WishDocument;
 import lombok.AllArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -17,6 +18,11 @@ public class MyCustomRepositoryImpl implements MyCustomRepository {
     @Override
     public SearchHits<BarterDocument> findByOptions(NativeQuery searchQuery) {
         return operations.search(searchQuery,BarterDocument.class);
+    }
+
+    @Override
+    public SearchHits<WishDocument> findByTitleAndIdols(NativeQuery query) {
+        return operations.search(query, WishDocument.class);
     }
 
 //    public void func(){

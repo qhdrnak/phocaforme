@@ -10,7 +10,7 @@ import java.util.List;
 @ToString
 public class BarterSearchCriteria {
     public static final int SIZE_MIN = 1;
-    public static final int SIZE_MAX = 20;
+    public static final int SIZE_MAX = 30;
     private Integer page = 1;
     private Integer size = 10;
 

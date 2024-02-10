@@ -1,7 +1,9 @@
 package com.phofor.phocaforme.board.service;
 
 
+import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
+import com.phofor.phocaforme.board.dto.searchDto.WishDocument;
 import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
 import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
@@ -9,6 +11,7 @@ import com.phofor.phocaforme.board.repository.BarterSearchRepository;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaBuilder;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaDirector;
 import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilder;
+import com.phofor.phocaforme.board.service.query.queryBuilder.WishQueryBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -28,11 +31,25 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class BarterSearchService {
     private final QueryBuilder queryBuilder;
+    private final WishQueryBuilder wishQueryBuilder;
     private final BarterSearchRepository barterSearchRepository;
-//    private ElasticsearchOperations operations;
-//    public Barter save(Barter barter){
-//        return barterRepository.save(barter);
-//    }
+
+    public List<String> wishPhoca(String title, List<IdolMemberDto> idols){
+        wishQueryBuilder.createQuery(title,idols);
+        NativeQuery query = wishQueryBuilder.getSearch();
+        SearchHits<WishDocument> searchHits = barterSearchRepository.findByTitleAndIdols(query);
+        SearchPage<WishDocument> searchPage = SearchHitSupport.searchPageFor(
+                searchHits,
+                queryBuilder.getPageRequest()
+        );
+        Iterator<SearchHit<WishDocument>> iterator = searchPage.iterator();
+        List<String> ids = new ArrayList<>();
+        while(iterator.hasNext()) {
+            WishDocument document = iterator.next().getContent();
+            ids.add(document.getUserId());
+        }
+        return ids;
+    }
 
     public List<SearchResponse> searchAll(){
         Sort sort = Sort.by(Sort.Direction.DESC, "created_at");
