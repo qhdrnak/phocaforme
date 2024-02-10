@@ -55,8 +55,8 @@ public class WishCardServiceImpl implements WishCardService {
                     newWishCard.setIdolMember(idolMemberOptional.get()); // 아이돌 저장
                     // 키워드 저장
                     newWishCard.setKeyword1(wishCardInfoDto.getKeyword1());
-                    newWishCard.setKeyword1(wishCardInfoDto.getKeyword2());
-                    newWishCard.setKeyword1(wishCardInfoDto.getKeyword3());
+                    newWishCard.setKeyword2(wishCardInfoDto.getKeyword2());
+                    newWishCard.setKeyword3(wishCardInfoDto.getKeyword3());
 
                     // ID 설정은 MapsId 어노테이션을 통해 자동으로 처리됨
                     wishCardRepository.save(newWishCard);
