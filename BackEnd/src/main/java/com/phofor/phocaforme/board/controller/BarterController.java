@@ -79,8 +79,6 @@ public class BarterController {
                         ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()
                 )).toList();
         List<String> ids = barterSearchService.wishPhoca(barter.getTitle(),idols);
-        System.out.println("ids의 size:"+ids.size());
-        System.out.println(ids.toString());
 //        //#주석 해제해서 사용
         fcmNotificationService.sendBiasMessage(ids,barter.getId());
         return new ResponseEntity<Barter>(barter, HttpStatus.OK);
