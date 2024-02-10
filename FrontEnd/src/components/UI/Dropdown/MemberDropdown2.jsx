@@ -31,7 +31,7 @@ const MemberDropdown2 = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/idol/member/${selectedGroup.idolGroupId}`,
+            `http://phocafor.me:4885/api/idol/member/${selectedGroup.idolGroupId}`,
             {
               withCredentials: true,
             }
