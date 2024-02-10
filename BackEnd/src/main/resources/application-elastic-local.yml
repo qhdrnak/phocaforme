@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: elastic-local
+
+elasticsearch:
+  username: ${LOCAL_ES_USER_NAME}
+  password: ${LOCAL_ES_USER_PASSWORD}
+  hostname: ${LOCAL_ES_HOSTNAME}
+  port: 9200

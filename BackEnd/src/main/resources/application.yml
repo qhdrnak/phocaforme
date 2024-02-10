@@ -2,10 +2,18 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
-      - classpath:/application-ssafy-dev.yml
-      - classpath:/application-oauth.yml
+      - classpath:/application-local.yml
+      - classpath:/application-global.yml
+      - classpath:/application-oauth-local.yml
+      - classpath:/application-oauth-global.yml
       - classpath:/application-aws.yml
-      - classpath:/application-rabbit.yml
-      - classpath:/application-elastic.yml
+      - classpath:/application-rabbit-local.yml
+      - - classpath:/application-rabbit-global.yml
+      - classpath:/application-elastic-local.yml
+      - classpath:/application-elastic-global.yml
+
   profiles:
-    active: ssafy, oauth, aws, rabbit, elastic
+    # 배포시 사용
+    active: global, oath-global, aws, rabbit-global, elastic-global
+    # 로컬시 사용
+    # active: local, oauth-local, aws, rabbit-local, elastic-local

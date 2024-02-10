@@ -1,0 +1,10 @@
+spring:
+  config:
+    activate:
+      on-profile: elastic-global
+
+elasticsearch:
+  username: ${GLOBAL_ES_USER_NAME}
+  password: ${GLOBAL_ES_USER_PASSWORD}
+  hostname: ${GLOBAL_ES_HOSTNAME}
+  port: 9200

@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: ssafy
+      on-profile: local
   jpa:
     hibernate:
 
@@ -12,12 +12,12 @@ spring:
   # DB 연결
   datasource:
     # 설치된 H2 DB와 연결 URL
-    url: ${DB_URL}
+    url: ${LOCAL_DB_URL}
     # 접속을 위한 드라이버
     driver-class-name: org.mariadb.jdbc.Driver
     # springboot 2.4 부터는 username이 꼭 있어야합니다. 없으면 에러가 발생.
-    username: ${USER_NAME}
-    password: ${USER_PASSWORD}
+    username: ${LOCAL_USER_NAME}
+    password: ${LOCAL_USER_PASSWORD}
   data:
     redis:
       host: localhost # Redis 서버 호스트 주소
@@ -33,4 +33,4 @@ logging:
 project:
   url: http://localhost:8080
   API-URL: https://fcm.googleapis.com/v1/projects/phocaforme/messages:send
-  client-id: ${CLIENT_ID}
+  client-id: ${LOCAL_CLIENT_ID}

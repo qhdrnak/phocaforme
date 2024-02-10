@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: global
+    import:
+      - optional:file:.env[.properties]
+  jpa:
+    hibernate:
+      # ddl-auto: update #create update none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: ${GlOBAL_DB_URL}
+    username: ${GlOBAL_USER_NAME}
+    password: ${GlOBAL_USER_PASSWORD}
+  data:
+    redis:
+      host: i10a703.p.ssafy.io # Redis 서버 호스트 주소
+      port: 6379      # Redis 서버 포트
+      database: 0
+  security:
+    user:
+      name: phocaforme
+      password: 12345
