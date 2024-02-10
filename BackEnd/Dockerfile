@@ -9,18 +9,16 @@ RUN gradle build -x test --parallel --continue > /dev/null 2>&1 || true
 COPY . /build
 RUN gradle build -x test --parallel
 
-# .env 파일 복사
-# COPY .env /build
-
 # APP
 FROM openjdk:17-ea-4-jdk-slim
 WORKDIR /app
 
-# 빌더 이미지에서 jar 파일과 .env 파일 복사
+# 빌더 이미지에서 jar 파일만 복사
 COPY --from=builder /build/build/libs/PhocaForme-0.0.1-SNAPSHOT.jar .
-# COPY --from=builder /build/.env .
 
 EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "PhocaForme-0.0.1-SNAPSHOT.jar"]
 
 # root 대신 nobody 권한으로 실행
 USER nobody

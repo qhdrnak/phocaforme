@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: oauth-global
+      on-profile: oauth
   # 스프링 시큐리티
   security:
     # oauth2 사용
@@ -16,13 +16,14 @@ spring:
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: http://phocafor.me:4885/login/oauth2/code/kakao
+            # redirect-uri: https://phocafor.me/login/oauth2/code/kakao
+            # 실험중
             client-authentication-method: client_secret_post
             scope: profile_nickname, account_email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
-            token-uri: https://kauth.kakao.com/oauth/token
+            token-uri: https:/do/kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 auth-redirect-url: https://phocafor.me/main
-

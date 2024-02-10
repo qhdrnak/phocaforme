@@ -1,25 +1,14 @@
-# 배포시
+server:
+  port: 4885
+
 spring:
   config:
     import:
       - optional:file:.env[.properties]
-      - classpath:/application-global.yml
-      - classpath:/application-oauth-global.yml
+      - classpath:/application-oauth.yml
       - classpath:/application-aws.yml
-      - classpath:/application-elastic-global.yml
-      - classpath:/application-rabbit-global.yml
+      - classpath:/application-rabbit.yml
+      - classpath:/application-elastic.yml
+      - classpath:/application-global.yml
   profiles:
-    active: global, oath-global, aws, rabbit-global, elastic-global
-
-## 로컬시
-#spring:
-#  config:
-#    import:
-#      - optional:file:.env[.properties]
-#      - classpath:/application-aws.yml
-#      - classpath:/application-local.yml
-#      - classpath:/application-oauth-local.yml
-#      - classpath:/application-elastic-local.yml
-#      - classpath:/application-rabbit-local.yml
-#  profiles:
-#    active: local, oauth-local, aws, rabbit-local, elastic-local
+    active: global, oauth, aws, rabbit, elastic
