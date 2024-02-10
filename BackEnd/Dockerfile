@@ -10,7 +10,7 @@ COPY . /build
 RUN gradle build -x test --parallel
 
 # .env 파일 복사
-COPY .env /build
+# COPY .env /build
 
 # APP
 FROM openjdk:17-ea-4-jdk-slim
@@ -18,7 +18,7 @@ WORKDIR /app
 
 # 빌더 이미지에서 jar 파일과 .env 파일 복사
 COPY --from=builder /build/build/libs/PhocaForme-0.0.1-SNAPSHOT.jar .
-COPY --from=builder /build/.env .
+# COPY --from=builder /build/.env .
 
 EXPOSE 8080
 
