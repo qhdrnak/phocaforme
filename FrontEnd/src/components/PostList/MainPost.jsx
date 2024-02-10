@@ -1,3 +1,4 @@
+ 
 import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -18,8 +19,6 @@ const CustomTabPanel = (props) => {
 
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
-  
-  const dispatch = useDispatch();
 
   useEffect(() => {
     // 게시글 가져오기 요청
@@ -28,7 +27,6 @@ const CustomTabPanel = (props) => {
       .then((response) => {
         // 요청 성공 시 받은 데이터를 상태에 저장
         const data = response.data;
-        
         setPosts(data); // 가져온 게시글을 상태에 저장
       })
       .catch((error) => {
@@ -135,7 +133,7 @@ const BasicTabs = ({ isPreview }) => {
 
           // console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/barter/search",
+            "http://localhost:8080/barter",
             {
               params: params,
               withCredentials: true,

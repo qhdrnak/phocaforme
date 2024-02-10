@@ -25,7 +25,6 @@ const DetailPost = () => {
   const currentUser = useSelector((state) => state.user.user);
   // const isCurrentUserWriter = currentUser && currentUser.id === post.writerId;
 
-  // const chatRoomId = post.type == "교환" ? 1 : 2;
   const handleChatClick = () => {
     // 채팅방 생성
     axios
@@ -39,7 +38,7 @@ const DetailPost = () => {
         withCredentials: true,
       })
       .then((response) => {
-        const chatRoomInfo = response.data
+        const chatRoomInfo = response.data;
         console.log(response.data);
         navigate(`/chatroom/${chatRoomInfo.chatRoomId}`, {state: chatRoomInfo});
 

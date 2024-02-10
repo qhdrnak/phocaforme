@@ -92,6 +92,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const readImage = (input) => {
+    console.log(input.files[0])
     if (input.files && input.files[0]) {
       const FR = new FileReader();
       FR.onload = function (e) {
