@@ -34,4 +34,3 @@ project:
   url: http://localhost:8080
   API-URL: https://fcm.googleapis.com/v1/projects/phocaforme/messages:send
   client-id: ${CLIENT_ID}
-  domain: ${DOMAIN}

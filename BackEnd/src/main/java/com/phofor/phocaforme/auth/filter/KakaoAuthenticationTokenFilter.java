@@ -1,5 +1,6 @@
 package com.phofor.phocaforme.auth.filter;
 
+
 import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.auth.util.ClientId;
 import com.phofor.phocaforme.auth.util.CookieUtil;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
@@ -101,9 +103,6 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
                     response.setHeader("Set-Cookie",
                             "token=" + newToken + "; " +
                                     "Path=/;" +
-                                    "Domain=" +
-                                    request.getContextPath() +
-                                    ";" +
 //                                    "HttpOnly; " +
                                     "Max-Age=" +
                                     time
@@ -115,14 +114,16 @@ public class KakaoAuthenticationTokenFilter extends OncePerRequestFilter {
 //                    context.setAuthentication(authentication);
 //                    SecurityContextHolder.setContext(context);
 
-                    // 기존 인증 객체 불러오기
+//                    // 기존 인증 객체 불러오기
                     SecurityContextHolder.getContext()
                             .setAuthentication((Authentication)userData.get("authenticationToken"));
 
                     // 이전 토큰, 쿠키 제거
                     redisService.deleteMapData(pastToken);
+                    tokenCookie.setPath("/");
                     tokenCookie.setMaxAge(0);
-                    redisService.deleteMapData(pastToken);
+                    response.addCookie(tokenCookie);
+
                 }
                 // 토큰이 만료되지 않은 상태
                 else {

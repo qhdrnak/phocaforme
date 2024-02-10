@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.auth.controller;
 
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.auth.service.user.UserService;
 import com.phofor.phocaforme.auth.util.CookieUtil;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 @Slf4j
+@RequestMapping("/api")
 @RequiredArgsConstructor
-public class CommonController {
+public class AuthenticationController {
 
     private final RedisService redisService;
     private final UserService userService;
@@ -65,10 +65,16 @@ public class CommonController {
         return new ResponseEntity<>(status);
     }
 
+    /**
+     * 메인 페이지
+     * @return
+     */
+
     @GetMapping("/main")
     public String mainPage() {
         return "mainPage";
     }
+
     /**
      * 에러  페이지
      * @param error
@@ -80,12 +86,9 @@ public class CommonController {
         model.addAttribute("params", error);
         return "error";
     }
-    /**
-     * 메인 페이지
-     * @return
-     */
-    @GetMapping("/")
-    public String main(Model model, @AuthenticationPrincipal CustomOAuth2User oauth2User, HttpServletRequest request) {
+
+//    @GetMapping("/")
+    public String mainPage(Model model, @AuthenticationPrincipal CustomOAuth2User oauth2User, HttpServletRequest request) {
         // 레디스 세션에서 사용
         log.info("user : {}", oauth2User.getUserEntity().getEmail());
 
@@ -100,11 +103,12 @@ public class CommonController {
     }
 
     // 닉네임 중복 검사
-    @PostMapping("/users/{userId}/nickname")
-    public ResponseEntity<Map<String, Boolean>> nicknameIsDuplicated(@RequestParam String nickname){
+    @PostMapping("/user/nickname")
+    public ResponseEntity<Map<String, Boolean>> nicknameIsDuplicated(@AuthenticationPrincipal CustomOAuth2User oauth2User){
         Map<String, Boolean> resultMap = new HashMap<>();
         HttpStatus status;
-        Boolean isDuplicated = userService.isNicknameDuplicated(nickname);
+        UserEntity userEntity = oauth2User.getUserEntity();
+        Boolean isDuplicated = userService.isNicknameDuplicated(userEntity.getNickname());
         if(isDuplicated == null)
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         else{
@@ -115,15 +119,17 @@ public class CommonController {
     }
 
     // 닉네임 변경
-    @PutMapping("/users/{userId}/nickname")
-    public ResponseEntity<?> modifyNickname(@RequestParam boolean isDuplicated, @PathVariable String userId,
-                                            @RequestParam String nickname, HttpServletRequest request) {
+    @PutMapping("/user/nickname")
+    public ResponseEntity<?> modifyNickname(@RequestParam boolean isDuplicated, @RequestBody String nickname,
+                                            @AuthenticationPrincipal CustomOAuth2User oauth2User,
+                                            HttpServletRequest request) {
         HttpStatus status;
         tokenCookie = CookieUtil.resolveToken(request);
         if(isDuplicated)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        if(userService.modifyNicknameByUserId(userId, nickname, tokenCookie.getValue()))
+        UserEntity userEntity = oauth2User.getUserEntity();
+        if(userService.modifyNicknameByUserId(userEntity.getUserId(), nickname, tokenCookie.getValue()))
             status = HttpStatus.ACCEPTED;
         else
             status = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -131,11 +137,12 @@ public class CommonController {
     }
 
     // 기기 코드 등록
-    @PostMapping("/users/{userId}/device")
-    public ResponseEntity<?> registDevice(@PathVariable String userId, @RequestParam String deviceToken) {
+    @PostMapping("/user/device")
+    public ResponseEntity<?> registDevice(@RequestBody Map<String, String> deviceToken,
+                                          @AuthenticationPrincipal CustomOAuth2User oauth2User) {
         HttpStatus status;
-
-        if(userService.registDeviceTokenByUserId(userId, deviceToken))
+        UserEntity userEntity = oauth2User.getUserEntity();
+        if(userService.registDeviceTokenByUserId(userEntity.getUserId(), deviceToken.get("deviceToken")))
             status = HttpStatus.ACCEPTED;
         else
             status = HttpStatus.INTERNAL_SERVER_ERROR;

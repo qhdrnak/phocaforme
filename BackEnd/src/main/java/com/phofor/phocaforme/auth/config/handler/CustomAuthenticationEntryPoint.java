@@ -24,7 +24,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         // 예: response.sendRedirect("/login"); 또는 에러 메시지 전송
         log.error("error ----- {}",authException.getMessage());
         String errorURL = "/error?error=" + authException.getMessage();
-        response.sendRedirect(errorURL);
-//        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
+//        response.sendRedirect(errorURL);
+        response.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied");
     }
 }

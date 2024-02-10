@@ -4,6 +4,4 @@ package com.phofor.phocaforme.auth.util;
 public interface ClientId {
     public final String clientId = "0c667ea3c8f35cc83690ec0c37f136e2";
     public final String clientSecret = "4SxLoXSuTBMJJCxseJ27jKCZsF8jeMSi";
-
-    public final String domain = "localhost";
 }

@@ -45,6 +45,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             if(cookies != null) {
                 for(int i = cookies.length-1; i>=0; i--){
                     Cookie curr = cookies[i];
+                    curr.setPath("/");
                     curr.setMaxAge(0);
                     response.addCookie(curr);
                 }

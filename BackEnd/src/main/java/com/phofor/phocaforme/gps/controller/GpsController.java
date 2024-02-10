@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,16 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @Slf4j
 @RequiredArgsConstructor
 public class GpsController {
-
-    @Value("${project.domain}")
-    private String domain;
 
     private final GpsService gpsService;
     private final RedisService redisService;
@@ -62,7 +57,6 @@ public class GpsController {
                     Cookie addressCookie = new Cookie("address", encodedValue);
                     addressCookie.setPath("/");
                     // 필요하다면 쿠키의 도메인 설정
-                    addressCookie.setDomain(domain);
                     addressCookie.setMaxAge(time); // 쿠키 유효 시간 설정
                     response.addCookie(addressCookie); // 쿠키를 응답에 추가
                 }
@@ -71,11 +65,11 @@ public class GpsController {
                     // 기존 쿠키 지우기
                     userIdCookie.setMaxAge(0);
 
+                    // 갱신
                     String encodedValue = URLEncoder.encode(address, StandardCharsets.UTF_8);
                     Cookie addressCookie = new Cookie("address", encodedValue);
                     addressCookie.setPath("/");
                     // 필요하다면 쿠키의 도메인 설정
-                    addressCookie.setDomain(domain);
                     addressCookie.setMaxAge(time); // 쿠키 유효 시간 설정
                     response.addCookie(addressCookie); // 쿠키를 응답에 추가
                 }
@@ -106,7 +100,6 @@ public class GpsController {
         if(selectedCookie != null) {
             status = HttpStatus.ACCEPTED;
             selectedCookie.setPath("/");
-            selectedCookie.setDomain(domain);
             selectedCookie.setMaxAge(0);
             response.addCookie(selectedCookie);
         }
