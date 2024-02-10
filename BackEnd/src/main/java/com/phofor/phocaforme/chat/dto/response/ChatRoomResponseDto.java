@@ -19,6 +19,8 @@ public class ChatRoomResponseDto {  // 여기는 이미 디비에 반영이 된 
     private String visiterId;   // 교환 희망자
     private String boardTitle;  // 게시글 제목
     private ChatMessage latestChat;  // 가장 마지막 채팅
+    private Long visitorLatestChatId;
+    private Long ownerLatestChatId;
     private LocalDateTime createdAt;    // 채팅방 생성 날짜
 
 //    public ChatRoomResponseDto(ChatRoomRequestDto chatRoomRequestDto) {
@@ -39,6 +41,8 @@ public class ChatRoomResponseDto {  // 여기는 이미 디비에 반영이 된 
                 .visiterId(chatroom.getVisiterId())
                 .latestChat(chatroom.getChatLatest())
                 .createdAt(chatroom.getCreatedAt())
+                .visitorLatestChatId(chatroom.getVisitorLatestId())
+                .ownerLatestChatId(chatroom.getOwnerLatestId())
                 .build();
     }
 }

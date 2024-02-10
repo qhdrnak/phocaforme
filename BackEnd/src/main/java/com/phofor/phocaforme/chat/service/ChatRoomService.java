@@ -13,6 +13,9 @@ public interface ChatRoomService {
     // 유저의 채팅 내역 모두 가져오기
     List<ChatRoomResponseDto> getAllByOwnerIdOrVisiterId(CustomOAuth2User customOAuth2User);
 
+    // 마지막 채팅 업데이트
+    Boolean updateLatestChat(String userId, Long chatroomId);
+
     // 채팅방 만들기
 //    @Transactional
 //    ChatRoomResponseDto getChatRoomByBoardIdAndVisiterId(ChatRoomRequestDto chatRoomRequestDto, Long boardId, String userId);
