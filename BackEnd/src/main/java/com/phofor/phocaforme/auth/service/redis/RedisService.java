@@ -60,4 +60,23 @@ public class RedisService {
     public void deleteMapData(String key) {
         redisTemplate.delete(key);
     }
+
+    // 유저 id, 위치 정보 레디스 저장 - 3시간 유지
+    public void saveGpsData(String key, Map<String, Double> gpsData) {
+        redisTemplate.opsForValue();
+        HashOperations<String, String, Double> hashOperations = redisTemplate.opsForHash();
+        hashOperations.putAll(key, gpsData);
+
+        redisTemplate.expire(key, 3, TimeUnit.HOURS);
+    }
+
+    public Map<String, Double> getGpsData(String key) {
+        HashOperations<String, String, Double> hashOperations = redisTemplate.opsForHash();
+        return hashOperations.entries(key);
+    }
+
+    // 유저 id, 위치 정보 레디스 제거
+    public void deleteGpsData(String key) {
+        redisTemplate.delete(key);
+    }
 }

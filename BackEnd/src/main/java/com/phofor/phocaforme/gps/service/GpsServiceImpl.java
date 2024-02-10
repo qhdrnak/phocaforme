@@ -1,6 +1,8 @@
 package com.phofor.phocaforme.gps.service;
 
+import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.gps.dto.GpsLocationDto;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,13 +13,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class GpsServiceImpl implements GpsService {
 
     @Value("${project.client-id}")
-    String REST_KEY;
+    private String REST_KEY;
+
+    private final RedisService redisService;
 
     @Override
     public String getAddress(GpsLocationDto gpsLocationDto) throws Exception {
@@ -41,6 +48,21 @@ public class GpsServiceImpl implements GpsService {
             }
         }
         throw new Exception();
+    }
+
+    @Override
+    public Boolean saveGpsData(String userId, GpsLocationDto gpsLocationDto) {
+        Map<String, Double> userGpsData = new HashMap<>();
+        userGpsData.put("longitude", gpsLocationDto.getLongitude());
+        userGpsData.put("latitude", gpsLocationDto.getLatitude());
+        try{
+            redisService.saveGpsData(userId, userGpsData);
+            return true;
+        }
+        catch (Exception e) {
+            log.info("데이터 저장 오류");
+            return false;
+        }
     }
 
     public JSONObject convertAddress(double x, double y) {
