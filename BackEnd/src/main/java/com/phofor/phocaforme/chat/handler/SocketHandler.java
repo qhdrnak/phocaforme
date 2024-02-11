@@ -75,6 +75,8 @@ public class SocketHandler extends TextWebSocketHandler {   // TextWebSocketHand
     public void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
         // 바이너리 메시지 발송
         ByteBuffer byteBuffer = message.getPayload();
+//        byte[] bytes = message.getPayload().array();
+//        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
         // BinaryMessage를 getPayload()함수를 통해 ByteBuffer로 변환시켜준다
         String fileName = "file.jpg";
 
