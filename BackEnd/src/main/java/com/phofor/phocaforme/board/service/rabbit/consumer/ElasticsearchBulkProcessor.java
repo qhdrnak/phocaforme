@@ -39,7 +39,7 @@ public class ElasticsearchBulkProcessor {
         log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
 
-        restTemplate.postForObject("http://localhost:9200/barter_post/_bulk",entity,String.class);
+        restTemplate.postForObject("http://phocafor.me:9200/barter_post/_bulk",entity,String.class);
     }
 
     private String buildBulkRequestBody(List<BarterDetailDto> messages){
