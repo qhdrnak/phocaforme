@@ -109,7 +109,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
+            config.setAllowedOriginPatterns(Collections.singletonList("phocafor.me"));
             config.setAllowCredentials(true);
             return config;
         };
