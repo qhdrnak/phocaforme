@@ -6,6 +6,7 @@ import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.wishcard.entity.WishCard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -125,6 +126,7 @@ public class UserService extends DefaultOAuth2UserService {
     }
     @Transactional
     public Boolean modifyNicknameByUserId(String userId, String newNickname, String accessToken) {
+        // 유저 찾기
         Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
         if (userEntityOptional.isPresent()) {
             log.info("user_id : {}", userEntityOptional.get().getUserId());
@@ -137,14 +139,12 @@ public class UserService extends DefaultOAuth2UserService {
             userEntity.setNickname(newNickname);
             log.info("newNickname : {}", newNickname);
             // 새로운 정보 저장 - 자동 update
-            userRepository.save(userEntity);
+            UserEntity newUserEntity = userRepository.save(userEntity);
 
             // 레디스에 저장된 유저 정보
             Map<String, Object> pastMapData = redisService.getMapData(accessToken);
             Map<String, Object> updateMapData = new HashMap<>();
 
-            // DB에서 유저 정보 가져오기
-            UserEntity newUserEntity = getUserByUserId(userId);
             log.info("DBNickname : {}", newUserEntity.getNickname());
 
             // 유저 정보 재설정
@@ -229,6 +229,20 @@ public class UserService extends DefaultOAuth2UserService {
 
             return true;
         } else {
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteDeviceToken(String userId) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        Optional<UserDeviceEntity> userDeviceEntityOptional = userDeviceRepository.findByUserId(userId);
+        if (userEntityOptional.isPresent() && userDeviceEntityOptional.isPresent()) {
+            userDeviceRepository.deleteByUserId(userId);
+            return true; // 성공적으로 저장된 경우 true 반환
+        }
+        else{
+            log.info("User with deviceToken {} not found", userId);
             return false;
         }
     }

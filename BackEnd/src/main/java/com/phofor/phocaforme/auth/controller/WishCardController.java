@@ -10,14 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class WishCardController {
 
@@ -34,6 +30,20 @@ public class WishCardController {
         HttpStatus status;
         UserEntity userEntity = oauth2User.getUserEntity();
         if(wishCardSelectService.registWishCardByUserId(userEntity.getUserId(), wishCardInfoDto)) {
+            status = HttpStatus.ACCEPTED;
+        }
+        else {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(status);
+    }
+
+    // 갈망포카 제거
+    @DeleteMapping("/user/wishCard")
+    public ResponseEntity<?> deleteWishCard(@AuthenticationPrincipal CustomOAuth2User oauth2User) {
+        HttpStatus status;
+        UserEntity userEntity = oauth2User.getUserEntity();
+        if(wishCardSelectService.deleteWishCardByUserId(userEntity.getUserId())) {
             status = HttpStatus.ACCEPTED;
         }
         else {

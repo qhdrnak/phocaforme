@@ -58,14 +58,14 @@ public class SecurityConfig {
 
     @Bean
     public CustomLogoutHandler customLogoutHandler() {
-        return new CustomLogoutHandler(redisService);
+        return new CustomLogoutHandler(redisService, userService);
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .logout(logout -> logout
-                        .logoutUrl("/api/auth/logout")
+                        .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("https://kauth.kakao.com/oauth/logout?client_id=" + clientId
                                 + "&logout_redirect_uri=" + redirectUrl)
                         .deleteCookies("JSESSIONID", "token") // 쿠키 삭제
@@ -85,9 +85,9 @@ public class SecurityConfig {
                 .addFilterAfter(new KakaoAuthenticationTokenFilter(redisService), UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(request -> request
                         .dispatcherTypeMatchers(FORWARD, ERROR).permitAll()
-                        .requestMatchers("/api/auth/**", "/api/main", "/error", "/static/**", "/favicon.ico",
+                        .requestMatchers("/auth/**", "/main", "/error", "/static/**", "/favicon.ico",
                                 "/firebase/**", "/css/**","/js/**", "/firebase-messaging-sw.js",
-                                "/api/gps", "/api/barter/search"
+                                "/gps", "/barter/search"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

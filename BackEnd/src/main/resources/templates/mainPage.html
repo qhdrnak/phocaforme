@@ -38,7 +38,7 @@
                                 if (currentToken) {
                                     console.log("device_token: " + currentToken);
                                     // Send the token to your server and update the UI if necessary
-                                    fetch('http://localhost:8080/api/user/device', {
+                                    fetch('http://localhost:8080/user/device', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/json',

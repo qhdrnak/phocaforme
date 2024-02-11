@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface UserDeviceRepository extends CrudRepository<UserDeviceEntity, String> {
     Optional<UserDeviceEntity> findByUserId(String userId);
+
+    void deleteByUserId(String userId);
 }

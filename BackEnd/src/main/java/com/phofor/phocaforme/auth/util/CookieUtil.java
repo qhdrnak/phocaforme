@@ -19,6 +19,18 @@ public class CookieUtil {
         return selectedCookie;
     }
 
+    public static Cookie resolveNickname(HttpServletRequest request) {
+        Cookie selectedCookie = null;
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                if("nickname".equals(cookie.getName()))
+                    selectedCookie = cookie;
+            }
+        }
+        return selectedCookie;
+    }
+
     public static Cookie resolveAddress(HttpServletRequest request) {
         Cookie selectedCookie = null;
         Cookie[] cookies = request.getCookies();

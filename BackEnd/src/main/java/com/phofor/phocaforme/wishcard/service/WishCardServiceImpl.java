@@ -73,4 +73,20 @@ public class WishCardServiceImpl implements WishCardService {
             return false;
         }
     }
+
+    @Transactional
+    @Override
+    public Boolean deleteWishCardByUserId(String userId) {
+        // 회원 확인 및 갈망 포카 유무 확인
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        Optional<WishCard> wishCardEntityOptional = wishCardRepository.findByUserEntity_UserId(userId);
+        if (userEntityOptional.isPresent() && wishCardEntityOptional.isPresent()) {
+            wishCardRepository.deleteByUserEntity_UserId(userId);
+            return true; // 성공적으로 저장된 경우 true 반환
+        }
+        else{
+            log.info("User with wish card {} not found", userId);
+            return false;
+        }
+    }
 }
