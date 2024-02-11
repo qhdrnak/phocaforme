@@ -38,10 +38,14 @@ const ChatRoom = () => {
   // }, [dispatch, roomId]);
 
   const chatList = useSelector((state) => (state.chat ? state.chat.chat : []));
+  
   // const chatList = chats.filter((chat) => chat.chatRoomId == roomId);
 
   const updateMessages = (newMessage) => {
-    dispatch(sendChat(newMessage));
+    if (newMessage.message.trim() != "") {
+      dispatch(sendChat(newMessage));
+    }
+  
   };
 
   const price = useSelector((state) =>
@@ -70,6 +74,7 @@ const ChatRoom = () => {
             {chatList.map((messageData, index) => (
               <div>
                 <div
+                  key={index}
                   className={
                     messageData.sender == loginUser.name
                       ? "chat-owner-name"
@@ -90,7 +95,7 @@ const ChatRoom = () => {
                     <p>{messageData.sendTime}</p>
                   ) : null}
                   <div className="chat-message">
-                    {messageData.imgCode == null ? (
+                    {!messageData.imgCode ? (
                       <div>{messageData.message}</div>
                     ) : (
                       <img src={messageData.imgCode}></img>

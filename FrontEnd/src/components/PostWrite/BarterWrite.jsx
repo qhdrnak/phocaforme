@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
-import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
+import GroupDropdown from "../UI/Dropdown/GroupDropdown2.jsx";
+import MemberDropdown from "../UI/Dropdown/MemberDropdown2.jsx";
 
 import Chip from "@mui/material/Chip";
 
@@ -15,8 +15,17 @@ const BarterWrite = ({ onChange }) => {
 
   const handleGroupChange = (group) => {
     if (group) {
-      setSelectedGroup(group.idolGroupId);
+      setSelectedGroup(group);
+      
+    } else {
+      setSelectedGroup(null);
+
     }
+    // 그룹이 변경되었을 때 멤버와 입력값 초기화
+    setOwnMembers([]);
+    setTargetMembers([]);
+    setOwnMembersInput("");
+    setTargetMembersInput("");
   };
 
   const [ownMembers, setOwnMembers] = useState([]);
@@ -82,7 +91,7 @@ const BarterWrite = ({ onChange }) => {
               ownMembers.map((tag, index) => (
                 <Chip
                   key={index}
-                  label={tag?.label}
+                  label={tag?.idolName}
                   variant="outlined"
                   onClick={() => handleOwnMemberDelete(tag)}
                   onDelete={() => handleOwnMemberDelete(tag)}

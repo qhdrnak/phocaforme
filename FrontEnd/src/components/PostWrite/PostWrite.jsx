@@ -1,3 +1,4 @@
+ 
 // 게시글 생성 페이지
 import React, { useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";

@@ -3,18 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import getCurrentTime from "../utils/currentTime";
 
 const initialChatState = {
-  // 임의의 값 넣어놓음
-  chat: [ 
-  // {
-  //   chatId: 1,
-  //   chatRoomId : 1,
-  //   sender: '아궁빵뎡',
-  //   message: '안녕하세요! 거래 희망합니다',
-  //   imgCode: '',
-  //   sendTime : getCurrentTime(),
-  //   isPay: false,
-  // }, 
-   ],
+  chat: [],
 };
 
 const chatSlice = createSlice({
@@ -23,6 +12,7 @@ const chatSlice = createSlice({
   reducers: {
     sendChat: (state, action) => {
       state.chat = [...state.chat, action.payload];
+      console.log(state.chat);
     },
     initChat: async (state, action) => {
       const roomId = action.payload;

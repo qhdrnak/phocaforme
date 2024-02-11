@@ -1,6 +1,6 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useSelector,  } from "react-redux";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
 import PaymentIcon from "@mui/icons-material/Payment";
@@ -23,6 +23,7 @@ import PayModal from "../UI/Modal/PayRequestModal";
 const ChatMenu = ({ updateMessages, postId }) => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const loginUser = useSelector((state) =>
     state.user ? state.user.user.name : ""
@@ -30,9 +31,8 @@ const ChatMenu = ({ updateMessages, postId }) => {
 
   const { roomId } = useParams();
 
-  const posts = useSelector((state) => (state.post ? state.post.posts : []));
-  const chatRoomInfo = posts.find((post) => post.id == postId);
-  // console.log(chatRoomInfo);
+  const chatRoomInfo = location.state;
+  console.log(chatRoomInfo);
 
   // 메뉴 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,10 +78,10 @@ const ChatMenu = ({ updateMessages, postId }) => {
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div" id="chatroom-title">
-            {chatRoomInfo.writerNickname}
+            {chatRoomInfo.ownerId}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {chatRoomInfo.title}
+            {chatRoomInfo.boardTitle}
           </Typography>
         </div>
         <div id="chat-top-right">
@@ -126,7 +126,7 @@ const ChatMenu = ({ updateMessages, postId }) => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            {chatRoomInfo.type === "교환" && (
+            {chatRoomInfo && (
               <div>
                 {chatRoomInfo.writerNickname === loginUser && (
                   <MenuItem onClick={handleDone}>
@@ -144,7 +144,7 @@ const ChatMenu = ({ updateMessages, postId }) => {
                 </MenuItem>
               </div>
             )}
-            {chatRoomInfo.type === "판매" && (
+            {/* {chatRoomInfo.type === "판매" && (
               <div>
                 {chatRoomInfo.writerNickname === loginUser && (
                   <div>
@@ -170,7 +170,7 @@ const ChatMenu = ({ updateMessages, postId }) => {
                   나가기
                 </MenuItem>
               </div>
-            )}
+            )} */}
           </Menu>
         </div>
       </div>
