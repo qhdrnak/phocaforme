@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -102,11 +104,14 @@ public class AuthenticationController {
 
     // 닉네임 중복 검사
     @PostMapping("/user/nickname")
-    public ResponseEntity<Map<String, Boolean>> nicknameIsDuplicated(@AuthenticationPrincipal CustomOAuth2User oauth2User){
+    public ResponseEntity<?> nicknameIsDuplicated(@RequestBody Map<String, String> nickname){
         Map<String, Boolean> resultMap = new HashMap<>();
         HttpStatus status;
-        UserEntity userEntity = oauth2User.getUserEntity();
-        Boolean isDuplicated = userService.isNicknameDuplicated(userEntity.getNickname());
+
+        String newNickname = nickname.get("nickname");
+        log.info("새로운 닉네임:{}", newNickname);
+
+        Boolean isDuplicated = userService.isNicknameDuplicated(newNickname);
         if(isDuplicated == null)
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         else{
@@ -118,22 +123,40 @@ public class AuthenticationController {
 
     // 닉네임 변경
     @PutMapping("/user/nickname")
-    public ResponseEntity<?> modifyNickname(@RequestParam boolean isDuplicated,
-                                            @RequestParam String nickname,
+    public ResponseEntity<?> modifyNickname(@RequestBody Map<String, Object> nickname,
                                             @AuthenticationPrincipal CustomOAuth2User oauth2User,
-                                            HttpServletRequest request) {
-
-//        String nickname = (String)nicknameData.get("nickname");
-//        boolean isDuplicated = (Boolean)nicknameData.get("isDuplicated");
+                                            HttpServletRequest request,
+                                            HttpServletResponse response) {
 
         HttpStatus status;
-        tokenCookie = CookieUtil.resolveToken(request);
+
+        boolean isDuplicated = (Boolean) nickname.get("isDuplicated");
+        String newNickname = (String) nickname.get("nickname");
+        log.info("새로운 닉네임:{}, {}", newNickname, isDuplicated);
+
         if(isDuplicated)
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
+        // 쿠키에 있는 유저 닉네임도 변경
+        tokenCookie = CookieUtil.resolveToken(request);
+        Cookie nicknameCookie = CookieUtil.resolveNickname(request);
+
+        int time = tokenCookie.getMaxAge();
+        log.info("시간 :{}", tokenCookie.getMaxAge());
+
         UserEntity userEntity = oauth2User.getUserEntity();
-        if(userService.modifyNicknameByUserId(userEntity.getUserId(), nickname, tokenCookie.getValue()))
+        if(userService.modifyNicknameByUserId(userEntity.getUserId(), newNickname, tokenCookie.getValue())) {
+            // 기존 쿠키 지우기
+            nicknameCookie.setMaxAge(0);
+
+            // 쿠키에 있는 유저 데이터 변경
+            String encodedValue = URLEncoder.encode(newNickname, StandardCharsets.UTF_8);
+            Cookie newNicknameCookie = new Cookie("nickname", encodedValue);
+            newNicknameCookie.setPath("/");
+            newNicknameCookie.setMaxAge(time);
+            response.addCookie(newNicknameCookie);
             status = HttpStatus.ACCEPTED;
+        }
         else
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         return new ResponseEntity<>(status);

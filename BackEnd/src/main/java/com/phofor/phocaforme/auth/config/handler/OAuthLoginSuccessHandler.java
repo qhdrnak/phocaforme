@@ -105,7 +105,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         // 쿠키에 Access token을 저장, 3시간 유지
         int time = (60*60*3) + (60*60*9);
 
-        String userName = URLEncoder.encode(userEntity.getUserName(), StandardCharsets.UTF_8);
+        String nickname = URLEncoder.encode(userEntity.getNickname(), StandardCharsets.UTF_8);
         // 토큰 설정
         response.addHeader("Set-Cookie",
                 "token=" + accessToken + "; " +
@@ -126,7 +126,7 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // 유저 닉네임
         response.addHeader("Set-Cookie",
-                "nickname=" + userName + "; " +
+                "nickname=" + nickname + "; " +
                         "Path=/;" +
 //                        "HttpOnly; " +
                         "Max-Age=" +

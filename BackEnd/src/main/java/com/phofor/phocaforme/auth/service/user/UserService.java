@@ -126,6 +126,7 @@ public class UserService extends DefaultOAuth2UserService {
     }
     @Transactional
     public Boolean modifyNicknameByUserId(String userId, String newNickname, String accessToken) {
+        // 유저 찾기
         Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
         if (userEntityOptional.isPresent()) {
             log.info("user_id : {}", userEntityOptional.get().getUserId());
@@ -138,14 +139,12 @@ public class UserService extends DefaultOAuth2UserService {
             userEntity.setNickname(newNickname);
             log.info("newNickname : {}", newNickname);
             // 새로운 정보 저장 - 자동 update
-            userRepository.save(userEntity);
+            UserEntity newUserEntity = userRepository.save(userEntity);
 
             // 레디스에 저장된 유저 정보
             Map<String, Object> pastMapData = redisService.getMapData(accessToken);
             Map<String, Object> updateMapData = new HashMap<>();
 
-            // DB에서 유저 정보 가져오기
-            UserEntity newUserEntity = getUserByUserId(userId);
             log.info("DBNickname : {}", newUserEntity.getNickname());
 
             // 유저 정보 재설정
