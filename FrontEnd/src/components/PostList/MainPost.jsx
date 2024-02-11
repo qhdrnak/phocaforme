@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,27 +12,14 @@ import { searchPosts } from "../../store2/post.js";
 
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../../components/UI/Card";
+/////////////////////////////////////////////////////////
+import usePostSearch from "../../utils/infiScroll.js";
 
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
-
-  useEffect(() => {
-    // 게시글 가져오기 요청
-    axios
-      .get("http://localhost:8080/barter")
-      .then((response) => {
-        // 요청 성공 시 받은 데이터를 상태에 저장
-        const data = response.data;
-        setPosts(data); // 가져온 게시글을 상태에 저장
-      })
-      .catch((error) => {
-        // 요청 실패 시 에러 처리
-        console.error("Error fetching posts:", error);
-      });
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행됨
 
   return (
     <div>
@@ -65,19 +52,36 @@ const a11yProps = (index) => {
   };
 };
 
-const PAGE_SIZE = 5; // 페이지당 표시할 카드 수
 
 const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
-  const [visibleCards, setVisibleCards] = useState(PAGE_SIZE);
+  const [pageNumber, setPageNumber] = useState(1);
 
-  const [title, setTitle] = useState("");
-  const [userTitle, setUserTitle] = useState("");
+const {
+  boards,
+  hasMore,
+  loading,
+  error
+} = usePostSearch(pageNumber)
 
-  // const posts = useSelector((state) => (state.post ? state.post.posts : []));
-  const posts = useSelector((state) =>
-    state.post.posts ? state.post.posts : []
+const observer = useRef();
+  const lastBookElementRef = useCallback(
+    (node) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          // 스크롤이 끝에 닿았고 추가 데이터가 있을 때만 페이지 번호를 증가시킴
+          setPageNumber((prevPageNumber) => prevPageNumber + 1);
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore]
   );
+
+
+//////////////////////////////////////////////////////////////////////
 
   // const [searchs, setSearchs] = useState(null);
   const searchs = useSelector((state) =>
@@ -90,81 +94,11 @@ const BasicTabs = ({ isPreview }) => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } =
-      window.document.documentElement;
-
-    if (scrollTop + clientHeight >= scrollHeight - 20) {
-      const nextPageCards = posts.slice(visibleCards, visibleCards + PAGE_SIZE);
-
-      setVisibleCards((prev) => prev + PAGE_SIZE);
-
-      dispatch({ type: "ADD_CARDS", payload: nextPageCards });
-    }
-  };
-
-  useEffect(() => {
-    if (!isPreview) {
-      const fetchData = async () => {
-        try {
-          const params = {};
-
-          if (searchs.targetMembers) {
-            // params.target = searchs.targetMembers;
-            params.target = 3;
-          }
-
-          if (searchs.ownMembers) {
-            params.own = searchs.ownMembers;
-          }
-
-          if (searchs.cardType) {
-            params.cardType = searchs.cardType;
-          }
-
-          if (searchs.query) {
-            params.query = searchs.query;
-          }
-
-          // params.target = 3;
-          // params.own = 4;
-
-          // console.log(params);
-          const response = await axios.get(
-            "http://localhost:8080/barter/search",
-            {
-              params: params,
-              withCredentials: true,
-            }
-          );
-
-          dispatch(searchPosts(response.data));
-          console.log(response.data);
-        } catch (error) {
-          console.error("검색 오류 :", error);
-        }
-      };
-      fetchData();
-    }
-  }, [dispatch, searchs]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
-
-  // Infinity scroll을 적용할 때 추가된 부분
-  const visiblePosts = isPreview
-    ? posts.slice(0, PAGE_SIZE)
-    : posts.slice(0, visibleCards);
-
-  console.log(visiblePosts);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
+    
     <div sx={{ width: "100%" }}>
-      <div>{posts.map((post) => post.title)}</div>
-
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -180,22 +114,30 @@ const BasicTabs = ({ isPreview }) => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        {visiblePosts.length == 0 ? (
+        {boards.length === 0 ? (
           <div className="no-content">게시글이 없습니다.</div>
         ) : (
           <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
           >
-            {visiblePosts.map((post, index) => (
-              <Card
-                key={post.id}
-                id={post.id}
-                title={post.title}
-                images={post.imageUrl}
-                ownMembers={post.ownMember}
-                targetMembers={post.targetMember}
-                isBartered={post.Bartered}
-              ></Card>
+            {boards.map((post, index) => (
+              <div key={index}>
+                <Card
+                  id={post.id}
+                  title={post.title}
+                  images={'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + post.imageUrl}
+                  ownMembers={post.ownMember}
+                  targetMembers={post.targetMember}
+                  isBartered={post.Bartered}
+                  onClick={() => {
+                    setSelectedPostId(post.id)
+                    navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
+                  }} // 클릭 이벤트 추가
+                  
+                />
+                {/* 마지막 요소일 때만 ref를 전달합니다 */}
+                {index === boards.length - 1 ? <div ref={lastBookElementRef} /> : null}
+              </div>
             ))}
           </div>
         )}
@@ -204,10 +146,10 @@ const BasicTabs = ({ isPreview }) => {
         <div
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
-          {visiblePosts.filter((post) => post.type === "판매").length === 0 ? (
+          {boards.filter((post) => post.type === "판매").length === 0 ? (
             <div className="no-content">게시글이 없습니다.</div>
           ) : (
-            visiblePosts
+            boards
               .filter((post) => post.type === "판매")
               .map((post, index) => (
                 <Card
@@ -223,26 +165,11 @@ const BasicTabs = ({ isPreview }) => {
               ))
           )}
         </div>
+        <div>{loading && 'Loading...'}</div>
+        <div>{error && 'Error'}</div>
       </CustomTabPanel>
     </div>
-    // <Container>
-    //   {/* 가져온 데이터를 카드 형식으로 표시합니다. */}
-    //   <div style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}>
-    //     {posts.map(post => (
-    //       <Card
-    //         key={post.id}
-    //         title={post.title}
-    //         images={post.images}
-    //         ownMembers={post.ownMembers}
-    //         targetMembers={post.targetMembers}
-    //         content={post.content}
-    //         type={post.type}
-    //         isBartered={post.isBartered}
-    //         isSold={post.isSold}
-    //       />
-    //     ))}
-    //   </div>
-    // </Container>
+    
   );
 };
 
