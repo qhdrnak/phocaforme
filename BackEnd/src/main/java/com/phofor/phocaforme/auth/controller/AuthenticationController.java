@@ -140,20 +140,21 @@ public class AuthenticationController {
         tokenCookie = CookieUtil.resolveToken(request);
         Cookie nicknameCookie = CookieUtil.resolveNickname(request);
 
-        int time = tokenCookie.getMaxAge();
-        log.info("시간 :{}", tokenCookie.getMaxAge());
+        int time = nicknameCookie.getMaxAge();
+        log.info("시간 :{}", nicknameCookie.getMaxAge());
 
         UserEntity userEntity = oauth2User.getUserEntity();
         if(userService.modifyNicknameByUserId(userEntity.getUserId(), newNickname, tokenCookie.getValue())) {
             // 기존 쿠키 지우기
             nicknameCookie.setMaxAge(0);
 
-            // 쿠키에 있는 유저 데이터 변경
+            // 갱신
             String encodedValue = URLEncoder.encode(newNickname, StandardCharsets.UTF_8);
             Cookie newNicknameCookie = new Cookie("nickname", encodedValue);
             newNicknameCookie.setPath("/");
-            newNicknameCookie.setMaxAge(time);
-            response.addCookie(newNicknameCookie);
+            // 필요하다면 쿠키의 도메인 설정
+            newNicknameCookie.setMaxAge(time); // 쿠키 유효 시간 설정
+            response.addCookie(newNicknameCookie); // 쿠키를 응답에 추가
             status = HttpStatus.ACCEPTED;
         }
         else
