@@ -1,7 +1,4 @@
-<<<<<<< HEAD
  
-=======
->>>>>>> cfb9155bbf0000d011180f6e8019026b0b0a0f49
 // 게시글 생성
 import * as React from "react";
 import { useState, useEffect } from "react";
@@ -34,11 +31,7 @@ const MemberDropdown = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-<<<<<<< HEAD
             `http://localhost:8080/idol/member/${selectedGroup.idolGroupId}`,
-=======
-            `http://localhost:8080/idol/member/${selectedGroup}`,
->>>>>>> cfb9155bbf0000d011180f6e8019026b0b0a0f49
             {
               withCredentials: true,
             }
