@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -17,10 +17,28 @@ const DetailPost = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  const posts = useSelector((state) => (state.post ? state.post.posts : []));
-  const post = posts.find((p) => p.id == id);
-  console.log(post);
+  // 일단 주석 
+  // const posts = useSelector((state) => (state.post ? state.post.posts : [])); //이건 필요 없을 듯?
+  // const post = posts.find((p) => p.id === id); // 얘도 필요 없을 거 같은데
+  const [post, setPost] = useState({});
+  
+  // console.log(id) 
 
+  useEffect(() => {
+    // API 호출
+    axios.get(`http://localhost:8080/barter/${id}`)
+      .then(response => {
+        // API 응답 처리
+        console.log(response.data)
+        setPost(response.data);
+      })
+      .catch(error => {
+        // 에러 처리
+        console.error('Error fetching post:', error);
+      });
+  }, [id]); 
+
+  console.log(post) // undefined
   // 내 게시글인지 판별
   const currentUser = useSelector((state) => state.user.user);
   // const isCurrentUserWriter = currentUser && currentUser.id === post.writerId;
@@ -60,6 +78,7 @@ const DetailPost = () => {
   };
 
   const handlePullupClick = () => {};
+
   return (
     <Container
       className={`card-style${

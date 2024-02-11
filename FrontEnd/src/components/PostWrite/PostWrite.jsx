@@ -151,7 +151,7 @@ const PostWrite = () => {
         })
         .then(response => {
           console.log(response.data);
-          navigate("/post");
+          // navigate("/post"); 
         })
         .catch(error => {
           console.error('Error creating post:', error);

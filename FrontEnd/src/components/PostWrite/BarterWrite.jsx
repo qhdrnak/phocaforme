@@ -11,11 +11,7 @@ const BarterWrite = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState({
-    value: "",
-    label: "",
-    avatarSrc: "",
-  });
+  const [selectedGroup, setSelectedGroup] = useState(0);
 
   const handleGroupChange = (group) => {
     if (group) {

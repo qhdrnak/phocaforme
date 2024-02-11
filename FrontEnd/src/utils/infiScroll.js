@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-export default function infiScroll(query, pageNumber) {
+export default function usePostSearch(pageNumber) {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
-	const [posts, setPosts] = useState([]);
+	const [boards, setBoards] = useState([]);
 	const [hasMore, setHasMore] = useState(false)
 
 	useEffect(() => {
-		setPosts([])
-	}, [query])
+		setBoards([])
+	}, [])
 
 	useEffect(() => {
 		setLoading(true)
@@ -17,14 +17,20 @@ export default function infiScroll(query, pageNumber) {
 		let cancel
 		axios({
 			method: 'GET',
-			url: 'http://openlibrary.org/search.json', // http://localhost:8080/barter
-			params: {q: query, page: pageNumber },
+			url: `http://localhost:8080/barter/search?page=${pageNumber}`,
+			// params: {page: pageNumber },
+			withCredentials: true,
+			params: { page: pageNumber },
 			cancelToken: new axios.CancelToken(c => cancel = c)
 		}).then(res => {
-			setPosts(prevBooks => {
-				return [...new Set([...prevBooks, ...res.data.docs.map(b => b.title)])]
-			})
-			setHasMore(res.data.docs.length > 0)
+			console.log(res.data)
+			console.log(pageNumber) //<-
+			setBoards(prevBoards => {
+				// Concatenate the new data with the previous boards
+				return [...prevBoards, ...res.data];
+				
+		});
+			setHasMore(res.data.length > 0)
 			setLoading(false)
 			
 		}).catch(e => {
@@ -32,8 +38,9 @@ export default function infiScroll(query, pageNumber) {
 			setError(true)
 		})
 		return () => cancel()
-	}, [query, pageNumber])
+	}, [pageNumber])
+
 	
-	return { loading, error, posts, hasMore } 
+	return { loading, error, boards, hasMore } 
 
 }
