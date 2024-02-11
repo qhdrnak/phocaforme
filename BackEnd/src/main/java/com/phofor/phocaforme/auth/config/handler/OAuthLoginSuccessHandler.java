@@ -110,9 +110,6 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.addHeader("Set-Cookie",
                 "token=" + accessToken + "; " +
                         "Path=/;" +
-                        "Domain=" +
-                        request.getContextPath() +
-                        ";" +
 //                        "HttpOnly; " +
                         "Max-Age=" +
                         time
@@ -122,9 +119,6 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.addHeader("Set-Cookie",
                 "userId=" + userEntity.getUserId() + "; " +
                         "Path=/;" +
-                        "Domain=" +
-                        request.getContextPath() +
-                        ";" +
 //                        "HttpOnly; " +
                         "Max-Age=" +
                         time
@@ -134,9 +128,6 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.addHeader("Set-Cookie",
                 "nickname=" + userName + "; " +
                         "Path=/;" +
-                        "Domain=" +
-                        request.getContextPath() +
-                        ";" +
 //                        "HttpOnly; " +
                         "Max-Age=" +
                         time

@@ -19,7 +19,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api")
 public class FCMNotificationController {
 
     private final FCMNotificationService fcmNotificationService;

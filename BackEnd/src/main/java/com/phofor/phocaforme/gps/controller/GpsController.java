@@ -21,7 +21,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @RestController
-@RequestMapping("/api")
 @Slf4j
 @RequiredArgsConstructor
 public class GpsController {
