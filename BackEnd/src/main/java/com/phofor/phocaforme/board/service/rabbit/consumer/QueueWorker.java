@@ -32,7 +32,7 @@ public class QueueWorker {
         log.info("Another 10secs...");
         log.info("Worker searching for messages....");
         List<BarterDetailDto> messages = new ArrayList<>();
-
+        List<Integer> types = new ArrayList<>();
         for(int i=0; i<BATCH_SIZE; i++){
             Message message = rabbitTemplate.receive(QUEUE_NAME);
             if(message==null){break;}
@@ -41,15 +41,15 @@ public class QueueWorker {
             JsonNode rootNode = objectMapper.readTree(messageContent);
             Long articleId = rootNode.path("articleId").asLong();
             Boolean isBartered = rootNode.path("isBartered").asBoolean();
-
+            Integer type = rootNode.path("type").asInt();
             BarterDetailDto barter = barterService.findOne(articleId);
             // 날짜 데이터 포맷팅
-
+            types.add(type);
             messages.add(barter);
         }
         if(!(messages.isEmpty())){
             log.info("Spring : \"plz sync to elastic\"");
-            elasticsearchBulkProcessor.processToElasticsearch(messages);
+            elasticsearchBulkProcessor.processToElasticsearch(messages,types);
         }
     }
 

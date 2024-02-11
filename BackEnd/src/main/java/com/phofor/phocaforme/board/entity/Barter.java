@@ -2,10 +2,8 @@ package com.phofor.phocaforme.board.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phofor.phocaforme.auth.entity.UserEntity;
-import com.phofor.phocaforme.board.dto.queueDTO.PostMessage;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
 import com.phofor.phocaforme.board.service.BarterEntityListener;
-import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +11,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +21,7 @@ import java.util.stream.Collectors;
 @EntityListeners({AuditingEntityListener.class, BarterEntityListener.class})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "barter")
-public class Barter extends BaseEntity {
+public class Barter {
 
     // 교환게시글 ID
     @Id
@@ -79,6 +76,13 @@ public class Barter extends BaseEntity {
     @Column(name = "barter_status", columnDefinition = "boolean default false")
     private boolean barterStatus;
 
+    @CreatedDate
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime registrationDate;
+
+    @LastModifiedDate
+    @Column(name = "last_modified_date")
+    private LocalDateTime lastModifiedDate;
 
 
     @Builder
@@ -91,12 +95,13 @@ public class Barter extends BaseEntity {
         //userEntity.getBarters().add(this);
     }
 
-    public void update(UserEntity userEntity, String nickname, String title, String content, String cardType){
+    public void update(UserEntity userEntity, String nickname, String title, String content, String cardType, LocalDateTime lastModifiedDate){
         this.user = userEntity;
         this.nickname = userEntity.getNickname();
         this.title = title;
         this.content = content;
         this.cardType = cardType;
+        this.lastModifiedDate = lastModifiedDate;
         //userEntity.getBarters().add(this);
     }
 

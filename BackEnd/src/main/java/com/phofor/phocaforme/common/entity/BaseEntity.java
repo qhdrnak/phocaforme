@@ -16,11 +16,11 @@ import java.time.LocalDateTime;
 @Getter
 public class BaseEntity {
 
-    @CreatedDate
-    @Column(name = "created_date", updatable = false)
-    private LocalDateTime registrationDate;
-
-    @LastModifiedDate
-    @Column(name = "last_modified_date")
-    private LocalDateTime lastModifiedDate;
+//    @CreatedDate
+//    @Column(name = "created_date", updatable = false)
+//    private LocalDateTime registrationDate;
+//
+//    @LastModifiedDate
+//    @Column(name = "last_modified_date")
+//    private LocalDateTime lastModifiedDate;
 }

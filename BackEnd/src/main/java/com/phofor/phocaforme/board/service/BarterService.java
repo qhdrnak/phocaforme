@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -136,8 +137,7 @@ public class BarterService {
 
         // 일정 부분을 찾아 수정하는 것보다 전부 다 지워주고 다시 올려주는 방식을 선택
         deleteAll(barter);
-
-        barter.update(user, user.getNickname(), updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType());
+        barter.update(user, user.getNickname(), updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType(), LocalDateTime.now());
 
         // register 방법과 똑같음
         List<IdolMember> newOwnIdols = idolMemberRepository.findAllById(updateDto.getOwnIdolMembers());
