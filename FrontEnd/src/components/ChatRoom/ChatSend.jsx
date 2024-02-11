@@ -27,7 +27,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
 
   useEffect(() => {
     // WebSocket 연결 설정
-    const sock = new SockJS("http://localhost:8080/ws-stomp");
+    const sock = new SockJS("https://phocafor.me/api/ws-stomp");
     const ws = Stomp.over(sock);
 
     ws.connect(

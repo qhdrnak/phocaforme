@@ -23,7 +23,7 @@ const CustomTabPanel = (props) => {
   useEffect(() => {
     // 게시글 가져오기 요청
     axios
-      .get("http://localhost:8080/barter")
+      .get("https://phocafor.me/api/barter")
       .then((response) => {
         // 요청 성공 시 받은 데이터를 상태에 저장
         const data = response.data;
@@ -133,7 +133,7 @@ const BasicTabs = ({ isPreview }) => {
 
           // console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/barter",
+            "https://phocafor.me/api/barter",
             {
               params: params,
               withCredentials: true,

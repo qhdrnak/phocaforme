@@ -29,7 +29,7 @@ const DetailPost = () => {
     // 채팅방 생성
     axios
       // .post(`http://localhost:8080/chatRoom/${id}`, 
-      .post(`http://localhost:8080/chatRoom/1`, 
+      .post(`https://phocafor.me/api/chatRoom/1`,
       null,
       {
         headers: {

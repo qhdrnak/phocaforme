@@ -57,7 +57,7 @@ const Main = () => {
         };
 
         const sendTokenToServerBackend = (token) => {
-            fetch(`http://localhost:8080/users/${userId}/device`, {
+            fetch(`https://phocafor.me/api/users/${userId}/device`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
