@@ -1,4 +1,3 @@
- 
 import React, { useState, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -133,7 +132,7 @@ const BasicTabs = ({ isPreview }) => {
 
           // console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/barter",
+            "http://localhost:8080/barter/search",
             {
               params: params,
               withCredentials: true,
