@@ -77,7 +77,6 @@ public class AuthenticationController {
     }
     /**
      * 에러  페이지
-     * @param error
      * @param model
      * @return
      */
