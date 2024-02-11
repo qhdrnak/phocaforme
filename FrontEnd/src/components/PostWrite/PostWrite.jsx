@@ -117,11 +117,11 @@ const PostWrite = () => {
     newPost.append("title", title);
     newPost.append("content", content);
     ownIdolMembers.forEach(memberId => {
-      newPost.append('ownIdolMembers', member.idolMemberId);
+      newPost.append('ownIdolMembers', memberId);
     });
     
     findIdolMembers.forEach(memberId => {
-      newPost.append('findIdolMembers', member.idolMemberId);
+      newPost.append('findIdolMembers', memberId);
     });
     newPost.append("cardType", isExchange ? "교환" : "판매");
     images.forEach((image) => {
