@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface WishCardRepository extends JpaRepository<WishCard, String> {
 
     Optional<WishCard> findByUserEntity_UserId(String userId);
+
+    void deleteByUserEntity_UserId(String userId);
 }

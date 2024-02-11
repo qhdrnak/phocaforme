@@ -5,4 +5,6 @@ import com.phofor.phocaforme.wishcard.dto.WishCardInfoDto;
 public interface WishCardService {
     public Boolean registWishCardByUserId(String userId, WishCardInfoDto wishCardInfoDto);
 
+    public Boolean deleteWishCardByUserId(String userId);
+
 }
