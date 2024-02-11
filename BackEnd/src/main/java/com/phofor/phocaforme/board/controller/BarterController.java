@@ -24,7 +24,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/barter")
+@RequestMapping("/barter")
 @RequiredArgsConstructor
 public class BarterController {
     private final BarterSearchService barterSearchService;

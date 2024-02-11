@@ -4,7 +4,6 @@ import com.phofor.phocaforme.board.config.ApplicationEventPublisherHolder;
 import com.phofor.phocaforme.board.dto.queueDTO.BarterMessage;
 import com.phofor.phocaforme.board.dto.queueDTO.WishMessage;
 import com.phofor.phocaforme.board.entity.Barter;
-import com.phofor.phocaforme.board.service.rabbit.producer.PostDeleteEvent;
 import com.phofor.phocaforme.board.service.rabbit.producer.PostPersistEvent;
 import com.phofor.phocaforme.board.service.rabbit.producer.PostUpdateEvent;
 import com.phofor.phocaforme.wishcard.entity.WishCard;
