@@ -48,5 +48,8 @@ public class BarterDocument {
     @Field(type = FieldType.Date, format = DateFormat.date_time)
     private Instant createdAt;
 
+    @Field(type = FieldType.Date, format = DateFormat.date_time)
+    private Instant updatedAt;
+
 
 }

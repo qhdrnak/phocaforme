@@ -41,11 +41,12 @@ public class BarterDetailDto {
     private boolean isBartered;
     // 생성 일자
     private Instant registrationDate;
+
+    private Instant modifiedDate;
     // Entity -> Dto 바꿔주는 메소드
     public static BarterDetailDto of(Barter barter) {
-        LocalDateTime localDateTime = barter.getRegistrationDate();
-        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        Instant instant = zonedDateTime.toInstant();
+        Instant registInstant = toInstantFormat(barter.getRegistrationDate());
+        Instant modifyInstant = toInstantFormat(barter.getLastModifiedDate());
         return BarterDetailDto.builder()
                 .id(barter.getId())
                 .userId(barter.getUser().getUserId())
@@ -61,7 +62,13 @@ public class BarterDetailDto {
                 .photos(barter.getImages().stream().map(BarterImage::getImgCode).collect(Collectors.toList()))
                 .cardType(barter.getCardType())
                 .isBartered(barter.isBartered())
-                .registrationDate(instant)
+                .registrationDate(registInstant)
+                .modifiedDate(modifyInstant)
                 .build();
+    }
+
+    private static Instant toInstantFormat(LocalDateTime date){
+        ZonedDateTime zonedDateTime = date.atZone(ZoneId.systemDefault());
+        return zonedDateTime.toInstant();
     }
 }
