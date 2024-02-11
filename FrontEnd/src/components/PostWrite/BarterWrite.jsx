@@ -11,14 +11,12 @@ const BarterWrite = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState({
-    value: "",
-    label: "",
-    avatarSrc: "",
-  });
+  const [selectedGroup, setSelectedGroup] = useState(0);
 
   const handleGroupChange = (group) => {
-    setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
+    if (group) {
+      setSelectedGroup(group.idolGroupId);
+    }
   };
 
   const [ownMembers, setOwnMembers] = useState([]);
@@ -74,7 +72,7 @@ const BarterWrite = ({ onChange }) => {
         <div id="own-member-dropdown">
           <h3>보유한 멤버</h3>
           <MemberDropdown
-            selectedGroup={selectedGroup.value}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleOwnMemberChange(member);
             }}
@@ -101,7 +99,7 @@ const BarterWrite = ({ onChange }) => {
         <div>
           <h3>찾는 멤버</h3>
           <MemberDropdown
-            selectedGroup={selectedGroup.value}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleTargetMemberChange(member);
             }}
@@ -111,7 +109,7 @@ const BarterWrite = ({ onChange }) => {
               targetMembers.map((tag, index) => (
                 <Chip
                   key={index}
-                  label={tag?.label}
+                  label={tag?.idolName}
                   variant="outlined"
                   onClick={() => handleTargetMemberDelete(tag)}
                   onDelete={() => handleTargetMemberDelete(tag)}

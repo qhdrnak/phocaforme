@@ -24,6 +24,7 @@ const MemberDropdown2 = ({
 
   useEffect(() => {
     console.log(selectedGroup);
+    console.log('change')
     setValue(null);
     onChange(null);
 
@@ -37,6 +38,7 @@ const MemberDropdown2 = ({
             }
           );
           setMemberItems(response.data);
+    
         } catch (error) {
           console.error("멤버 세팅 오류:", error);
         }

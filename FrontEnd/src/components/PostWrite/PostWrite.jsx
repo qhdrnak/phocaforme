@@ -26,6 +26,7 @@ const PostWrite = () => {
   const [isExchange, setIsExchange] = useState(true);
   const [ownIdolMembers, setownIdolMembers] = useState([]);
   const [findIdolMembers, setfindIdolMembers] = useState([]);
+ 
   // 카드 타입 핸들러
   const [cardType, setCardType] = useState(null);
 
@@ -114,19 +115,32 @@ const PostWrite = () => {
     const newPost = new FormData();
     newPost.append("title", title);
     newPost.append("content", content);
-    ownIdolMembers.forEach((memberId, index) => {
-      newPost.append(`ownIdolMembers${index}`, memberId);
+    ownIdolMembers.forEach(memberId => {
+      newPost.append('ownIdolMembers', memberId);
     });
     
-    findIdolMembers.forEach((memberId, index) => {
-      newPost.append(`findIdolMembers${index}`, memberId);
+    findIdolMembers.forEach(memberId => {
+      newPost.append('findIdolMembers', memberId);
     });
     newPost.append("cardType", isExchange ? "교환" : "판매");
-    images.forEach((image, index) => {
-      newPost.append(`image${index}`, image);
+    images.forEach((image) => {
+      newPost.append(`photos`, image);
     });
-    console.log(newPost);
-    navigate("/post");    
+    
+    // console.log(newPost)
+
+    // formdata값확인용 코드 //////
+    const formDataToJson = (formData) => {
+      const jsonObject = {};
+      for (const [key, value] of formData.entries()) {
+        jsonObject[key] = value;
+      }
+      return JSON.stringify(jsonObject);
+    };
+    
+    const test = formDataToJson(newPost);
+    console.log(test);
+    // navigate("/post");    
       
         axios.post('http://localhost:8080/barter', newPost, {
           withCredentials: true, // withCredentials 옵션 설정
@@ -136,7 +150,7 @@ const PostWrite = () => {
         })
         .then(response => {
           console.log(response.data);
-          navigate("/post");
+          // navigate("/post"); 
         })
         .catch(error => {
           console.error('Error creating post:', error);
@@ -171,15 +185,15 @@ const PostWrite = () => {
         <div id="group-member-input">
           {isExchange ? (
             <BarterWrite
-              onChange={(ownMembers, targetMembers) => {
-                handleOwnMemberSelection(ownMembers);
-                handleTargetMemberSelection(targetMembers);
+              onChange={(ownIdolMembers, findIdolMembers) => {
+                handleOwnMemberSelection(ownIdolMembers);
+                handleTargetMemberSelection(findIdolMembers);
               }}
             />
           ) : (
             <SellWrite
-              onChange={(ownMembers) => {
-                handleOwnMemberSelection(ownMembers);
+              onChange={(ownIdolMembers) => {
+                handleOwnMemberSelection(ownIdolMembers);
               }}
             />
           )}
