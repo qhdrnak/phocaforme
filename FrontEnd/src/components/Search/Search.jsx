@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { addSearchData } from "../../store2/search.js";
+import { addSearchData, clearSearchData } from "../../store2/search.js";
 
 import { FaSearch } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
@@ -11,7 +11,6 @@ import { IoIosArrowUp } from "react-icons/io";
 import { useTheme } from "@mui/material/styles";
 
 import { Button } from "../UI/Button.jsx";
-import RadioButton2 from "../UI/RadioButton.jsx";
 import BarterWrite2 from "../../components/PostWrite/BarterWrite2.jsx";
 import SellWrite2 from "../../components/PostWrite/SellWrite2.jsx";
 import TypeDropdown2 from "../UI/Dropdown/TypeDropdown2.jsx";
@@ -30,6 +29,19 @@ const Search = function () {
   const dispatch = useDispatch();
 
   const theme = useTheme();
+
+  // 보류! (삭제 ㄴㄴ)
+  // useEffect(() => {
+  //   // 최근 검색 기록 가져와
+  //   const searchHistory = JSON.parse(localStorage.getItem("searchCondition"));
+  //   console.log(searchHistory);
+  //   setUserInput(searchHistory.query);
+  //   setOwnMembers(searchHistory.ownMembers);
+  //   setTargetMembers(searchHistory.targetMembers);
+  //   setCardType(searchHistory.cardType);
+
+  // }, []);
+
   const handleTypeChange = (cardType) => {
     if (cardType == null) {
       cardType = {
@@ -61,29 +73,22 @@ const Search = function () {
   }
 
   function handleSearchClick() {
-    let userInputCondition = {};
-
-    // 사용자가 입력한 값이 있으면 검색 조건에 추가
-    if (userInput) {
-      userInputCondition = { userInput: userInput };
-    }
 
     const searchData = {
       query: userInput ? userInput : "",
-      ownMembers: ownMembers ? ownMembers.map((member) => member.value) : [],
+      ownMembers: ownMembers ? ownMembers : [],
       targetMembers: targetMembers
-        ? targetMembers.map((member) => member.value)
-        : [],
+        ? targetMembers : [],
       cardType: cardType ? cardType.value : "",
-      // ...userInputCondition,
     };
 
     dispatch(addSearchData(searchData));
-    // 최근 검색 기록 저장
 
+    // 최근 검색 기록 저장
     localStorage.setItem("searchCondition", JSON.stringify(searchData));
+    
     navigate("/post");
-    onClick();
+    onClick(); // 검색창 닫기
   }
 
   const handleUserInputClick = (event) => {
@@ -134,6 +139,8 @@ const Search = function () {
             <div>
               {isExchange ? (
                 <BarterWrite2
+                  // defaultOwnMembers = {ownMembers}
+                  // defaultTargetMembers = {targetMembers}
                   onChange={(ownMembers, targetMembers) => {
                     handleOwnMemberSelection(ownMembers);
                     handleTargetMemberSelection(targetMembers);
@@ -147,6 +154,7 @@ const Search = function () {
               <div className="searchbar-title">포토카드 종류</div>
 
               <TypeDropdown2
+                // defaultCardType = {cardType}
                 onChange={(type) => {
                   handleTypeChange(type);
                 }}
