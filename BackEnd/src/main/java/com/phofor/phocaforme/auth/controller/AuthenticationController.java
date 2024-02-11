@@ -22,7 +22,6 @@ import java.util.Map;
 
 @Controller
 @Slf4j
-@RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -80,11 +79,11 @@ public class AuthenticationController {
      * @param model
      * @return
      */
-    @GetMapping("/error")
-    public String error(@RequestParam String error, Model model) {
-        model.addAttribute("params", error);
-        return "error";
-    }
+//    @GetMapping("/error")
+//    public String error(@RequestParam String error, Model model) {
+//        model.addAttribute("params", error);
+//        return "error";
+//    }
 
 //    @GetMapping("/")
     public String mainPage(Model model, @AuthenticationPrincipal CustomOAuth2User oauth2User, HttpServletRequest request) {

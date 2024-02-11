@@ -6,6 +6,7 @@ import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.wishcard.entity.WishCard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -229,6 +230,20 @@ public class UserService extends DefaultOAuth2UserService {
 
             return true;
         } else {
+            return false;
+        }
+    }
+
+    @Transactional
+    public Boolean deleteDeviceToken(String userId) {
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        Optional<UserDeviceEntity> userDeviceEntityOptional = userDeviceRepository.findByUserId(userId);
+        if (userEntityOptional.isPresent() && userDeviceEntityOptional.isPresent()) {
+            userDeviceRepository.deleteByUserId(userId);
+            return true; // 성공적으로 저장된 경우 true 반환
+        }
+        else{
+            log.info("User with deviceToken {} not found", userId);
             return false;
         }
     }
