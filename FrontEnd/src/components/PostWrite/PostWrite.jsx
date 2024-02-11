@@ -116,12 +116,12 @@ const PostWrite = () => {
     const newPost = new FormData();
     newPost.append("title", title);
     newPost.append("content", content);
-    ownIdolMembers.forEach(memberId => {
-      newPost.append('ownIdolMembers', memberId);
+    ownIdolMembers.forEach(member => {
+      newPost.append('ownIdolMembers', member.idolMemberId);
     });
     
-    findIdolMembers.forEach(memberId => {
-      newPost.append('findIdolMembers', memberId);
+    findIdolMembers.forEach(member => {
+      newPost.append('findIdolMembers', member.idolMemberId);
     });
     newPost.append("cardType", isExchange ? "교환" : "판매");
     images.forEach((image) => {
