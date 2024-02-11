@@ -1,4 +1,4 @@
-package com.phofor.phocaforme.board.dto.queueDTO;
+package com.phofor.phocaforme.wishcard.dto;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ import java.time.Instant;
 public class WishMessage implements Serializable {
 
     private static final long serialVersionUId = 1L;
-    private Long articleId;
+    private String userId;
     private Instant createdAt;
-
+    private Integer type;
 }

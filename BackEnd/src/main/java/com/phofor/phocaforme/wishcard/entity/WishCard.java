@@ -48,5 +48,5 @@ public class WishCard {
 
     @UpdateTimestamp
     @Column(name = "user_wish_updated_at")
-    private LocalDateTime updDatedAt;
+    private LocalDateTime updatedAt;
 }

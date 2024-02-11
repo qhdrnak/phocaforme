@@ -1,8 +1,9 @@
-package com.phofor.phocaforme.board.service.rabbit.consumer;
+package com.phofor.phocaforme.common.rabbit.consumer;
 
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.IdolMemberDto;
 
+import com.phofor.phocaforme.wishcard.dto.WishDocument;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,8 @@ public class ElasticsearchBulkProcessor {
     private String username;
     @Value("${elasticsearch.password}")
     private String password;
-    public void processToElasticsearch(List<BarterDetailDto> messages,List<Integer> types){
+    public void processToElasticsearch(List<BarterDetailDto> messages, List<Integer> barterTypes,
+                                       List<WishDocument> wishes,List<Integer> wishTypes){
         String plainCreds = username+":"+password;
         String base64Creds = Base64.getEncoder().encodeToString(plainCreds.getBytes());
 
@@ -33,29 +35,25 @@ public class ElasticsearchBulkProcessor {
         headers.add("Authorization", "Basic " + base64Creds);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String bulkRequestBody = buildBulkRequestBody(messages,types);
+        String bulkRequestBody = buildBulkRequestBody(messages,barterTypes,wishes,wishTypes);
         log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
 
         restTemplate.postForObject("http://localhost:9200/barter_post/_bulk",entity,String.class);
     }
 
-    private String buildBulkRequestBody(List<BarterDetailDto> messages, List<Integer> types){
+    private String buildBulkRequestBody(List<BarterDetailDto> messages, List<Integer> barterTypes,
+                                        List<WishDocument> wishes,List<Integer> wishTypes){
         StringBuilder bulkBody = new StringBuilder();
 
-        String persist_meta_data_prefix = "{ \"index\": { \"_id\": \"";
-        String persist_meta_data_suffix = "\", \"_index\": \"barter_post\"}}\n";
-
-
-        String update_meta_data_prefix = "{ \"update\": { \"_id\": \"";
-        String update_meta_data_suffix = "\", \"_index\": \"barter_post\"}}\n";
-        for(int i=0; i< messages.size() && i< types.size(); i++){
+        for(int i=0; i< messages.size() && i< barterTypes.size(); i++){
             BarterDetailDto barter = messages.get(i);
             System.out.println(barter.getId());
-            if(types.get(i)==0){
-                bulkBody.append(persist_meta_data_prefix)
-                        .append(barter.getId())
-                        .append(persist_meta_data_suffix);
+            if(barterTypes.get(i)==0){
+                bulkBody.append("{ \"").append("index")
+                        .append("\": { \"_id\": \"").append(barter.getId())
+                        .append("\", \"_index\": \"").append("barter_post")
+                        .append("\"}}\n");
                 bulkBody.append("{ ")
                         .append("\"article_id\": ").append(barter.getId()).append(", ")
                         .append("\"writer_id\": \"").append(barter.getUserId()).append("\", ")
@@ -70,10 +68,11 @@ public class ElasticsearchBulkProcessor {
                         .append("\"created_at\": \"").append(barter.getRegistrationDate()).append("\",")
                         .append("\"updated_at\": \"").append(barter.getModifiedDate()).append("\" }\n");
             }
-            else if(types.get(i)==1) {
-                bulkBody.append(update_meta_data_prefix)
-                        .append(barter.getId())
-                        .append(update_meta_data_suffix);
+            else if(barterTypes.get(i)==1) {
+                bulkBody.append("{ \"").append("update")
+                        .append("\": { \"_id\": \"").append(barter.getId())
+                        .append("\", \"_index\": \"").append("barter_post")
+                        .append("\"}}\n");
                 bulkBody.append("{ \"doc\": {")
                         .append("\"title\": \"").append(barter.getTitle()).append("\", ")
                         .append("\"card_type\": \"").append(barter.getCardType()).append("\", ")
@@ -85,8 +84,35 @@ public class ElasticsearchBulkProcessor {
                         .append("\"updated_at\": \"").append(barter.getModifiedDate()).append("\"")
                         .append("} }\n");
             }
+            else if (barterTypes.get(i)==2) {
+                bulkBody.append("{ \"").append("delete")
+                        .append("\": { \"_id\": \"").append(barter.getId())
+                        .append("\", \"_index\": \"").append("barter_post")
+                        .append("\"}}\n");
+            }
 
 
+        }
+        for(int i=0; i< wishes.size() && i< wishTypes.size(); i++){
+            WishDocument wish = wishes.get(i);
+            if(wishTypes.get(i)==3){
+                bulkBody.append("{ \"").append("index")
+                        .append("\": { \"_id\": \"").append(wish.getUserId())
+                        .append("\", \"_index\": \"").append("wish_phoca")
+                        .append("\"}}\n");
+                bulkBody.append("{ ")
+                        .append("\"user_id\": \"").append(wish.getUserId()).append("\", ")
+                        .append("\"idol_member_id\": ").append(wish.getIdolMemberId()).append(", ")
+                        .append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
+                        .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\", ")
+                        .append("\"keyword3\": \"").append(wish.getKeyword3()).append("\" ")
+                        .append("}\n");
+            } else if (wishTypes.get(i)==4) {
+                bulkBody.append("{ \"").append("delete")
+                        .append("\": { \"_id\": \"").append(wish.getUserId())
+                        .append("\", \"_index\": \"").append("wish_phoca")
+                        .append("\"}}\n");
+            }
         }
 
         return bulkBody.toString();

@@ -15,6 +15,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toInstantFormat;
+
 @Builder
 @Getter
 @ToString
@@ -67,8 +69,5 @@ public class BarterDetailDto {
                 .build();
     }
 
-    private static Instant toInstantFormat(LocalDateTime date){
-        ZonedDateTime zonedDateTime = date.atZone(ZoneId.systemDefault());
-        return zonedDateTime.toInstant();
-    }
+
 }

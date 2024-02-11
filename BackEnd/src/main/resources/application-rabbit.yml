@@ -8,7 +8,7 @@ spring:
 
 #rabbitmq:
 #  queue:
-#    name: your_queue_name
+#    name: "your_queue_name"
 #  exchange:
 #    name: your_exchange_name
 #  routing:

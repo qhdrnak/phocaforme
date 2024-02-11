@@ -6,6 +6,7 @@ import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import com.phofor.phocaforme.wishcard.dto.WishCardInfoDto;
+import com.phofor.phocaforme.wishcard.dto.WishDocument;
 import com.phofor.phocaforme.wishcard.entity.WishCard;
 import com.phofor.phocaforme.wishcard.repository.WishCardRepository;
 import lombok.RequiredArgsConstructor;
@@ -88,5 +89,12 @@ public class WishCardServiceImpl implements WishCardService {
             log.info("User with wish card {} not found", userId);
             return false;
         }
+    }
+
+    @Override
+    public WishDocument findWishCardByUserId(String userId) {
+        WishCard wishCardEntity = wishCardRepository.findByUserEntity_UserId(userId)
+                .orElseThrow(IllegalArgumentException::new);;
+        return WishDocument.of(wishCardEntity);
     }
 }
