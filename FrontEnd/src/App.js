@@ -10,7 +10,7 @@ import Login from './pages/login';
 import NavBar from './components/NavBar/NavBar';
 import ChatRoom from './pages/chatRoom';
 import PostWrite from './pages/postWrite.js';
-import PostMain from './pages/post.js';
+import Post from './pages/post.js';
 import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
@@ -52,7 +52,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/chatroom/:roomId" element={<ChatRoom />} />
             <Route path="/write" element={<PostWrite />}/>
-            <Route path="/post" element={<PostMain />} />
+            <Route path="/post" element={<Post />} />
             <Route path="/post/:id" element={<DetailPost />} />
             <Route path="/login" element={<Login /> } />
             <Route path="/help" element={<Guide /> } />
