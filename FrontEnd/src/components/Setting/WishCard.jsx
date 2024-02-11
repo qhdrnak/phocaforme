@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios'
 
 import { Button, TextField, Chip } from "@mui/material";
 
@@ -11,6 +12,11 @@ const WishCard = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
+  // 키워드 관련
+  const [inputValue, setInputValue] = useState("");
+  const [tags, setTags] = useState([]);
+  const [helperText, setHelperText] = useState("");
+
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
@@ -21,22 +27,37 @@ const WishCard = () => {
     setSelectedMember(member);
   };
 
-  const generateImageUrl = (group, member) => {
-    if (group && member) {
-      return `assets/images/${group}_${member}.PNG`;
-    }
-    return null;
-  };
+  
+  const labels = tags.map(tag => tag.label);
+
+  const data = {
+    memberId: selectedMember ? selectedMember.idolMemberId : null, 
+    keyword1: labels.length > 0 ? labels[0] : null, 
+    keyword2: labels.length > 1 ? labels[1] : null, 
+    keyword3: labels.length > 2 ? labels[2] : null, 
+  }
 
   const handleWishCard = () => {
-    // 갈망포카 등록 메서드
+    console.log(data);
+    // db 에 반영하기
+    axios.put(`http://localhost:8080/api/user/wishCard`
+    , data
+    , {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error('Error setting bias:', error);
+    }); 
   };
 
   // 키워드 관련
-  const [inputValue, setInputValue] = useState("");
-  const [tags, setTags] = useState([]);
-  const [helperText, setHelperText] = useState("");
-
   const getChipColor = (index) => {
     const colors = ["#FB37A3", "#FD9DD1", "rgba(142, 96, 203, 1)"];
     return colors[index];
