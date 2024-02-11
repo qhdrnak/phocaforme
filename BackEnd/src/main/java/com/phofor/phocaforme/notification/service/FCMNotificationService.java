@@ -17,7 +17,7 @@ public interface FCMNotificationService {
 
     public List<NotificationMessageDto> getMessageList(String userId);
 
-    public Boolean readMessage(Long notificationId);
+    public String readMessage(Long notificationId);
 
     public Boolean deleteMessage(Long notificationId);
 }

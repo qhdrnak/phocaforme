@@ -64,7 +64,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
     // 알림 읽음 표시
     @Override
-    public Boolean readMessage(Long notificationId) {
+    public String readMessage(Long notificationId) {
         // 해당 알림 SELECT
         Optional<NotificationEntity> notificationEntityOptional = fcmNotificationRepository.findByNotificationId(notificationId);
         if (notificationEntityOptional.isPresent()) {
@@ -72,10 +72,19 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
             notificationEntity.setReadStatus(true);
 
             // 데이터베이스에 변경 내용 저장
-            fcmNotificationRepository.save(notificationEntity);
-            return true;
+            NotificationEntity dbNotificationEntity = fcmNotificationRepository.save(notificationEntity);
+
+            String URL = "";
+            // 알림 타입 확인
+            if(dbNotificationEntity.getNotificationType() == NotificationType.Chatting){
+                URL =  "/chatRoom";
+            }
+            else{
+                URL =  "/barter/" + notificationEntity.getArticleId();
+            }
+            return URL;
         }
-        return false;
+        return "";
     }
 
     // 알림 제거

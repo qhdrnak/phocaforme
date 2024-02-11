@@ -1,5 +1,6 @@
 package com.phofor.phocaforme.notification.controller;
 
+import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
 import com.phofor.phocaforme.notification.dto.NotificationDto;
 import com.phofor.phocaforme.notification.dto.message.NotificationMessageDto;
 import com.phofor.phocaforme.notification.dto.message.RequestDTO;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,9 @@ public class FCMNotificationController {
     private final FCMNotificationService fcmNotificationService;
 
     // 알림 리스트
-    @GetMapping("/notification/{userId}")
-    public ResponseEntity<?> getMessages(@PathVariable String userId) {
+    @GetMapping("/notification")
+    public ResponseEntity<?> getMessages(@AuthenticationPrincipal CustomOAuth2User oAuth2User) {
+        String userId = oAuth2User.getUserEntity().getUserId();
         List<NotificationMessageDto> notificationMessages = fcmNotificationService.getMessageList(userId);
 
         // 서버 오류
@@ -37,11 +40,13 @@ public class FCMNotificationController {
         return new ResponseEntity<>(notificationMessages, HttpStatus.OK);
     }
 
-    // 읽음 처리
-    @GetMapping("/notification/{notificationId}/read")
+    // 알림 읽기
+    @GetMapping("/notification/{notificationId}")
     public ResponseEntity<?> readMessage(@PathVariable Long notificationId) {
         HttpStatus httpStatus;
-        if(fcmNotificationService.readMessage(notificationId))  {
+
+        String URL = fcmNotificationService.readMessage(notificationId);
+        if(!URL.isEmpty())  {
             log.info("성공");
             httpStatus = HttpStatus.OK;
         }
@@ -49,7 +54,7 @@ public class FCMNotificationController {
             log.info("실패");
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity<>(httpStatus);
+        return new ResponseEntity<>(URL, httpStatus);
     }
 
     // 알림 제거
