@@ -1,7 +1,3 @@
-<<<<<<< HEAD
- 
-=======
->>>>>>> cfb9155bbf0000d011180f6e8019026b0b0a0f49
 // 게시물 생성용
 import * as React from "react";
 import { useState, useEffect } from "react";
