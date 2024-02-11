@@ -89,7 +89,7 @@ export default function GPS() {
 
   const getAddress = (long, lat) => {
     axios
-      .post("http://localhost:8080/gps", { longitude: long, latitude: lat })
+      .post("https://phocafor.me/api/gps", { longitude: long, latitude: lat })
       .then((response) => {
         console.log(response.data);
         dispatch(setLocation(response.data));

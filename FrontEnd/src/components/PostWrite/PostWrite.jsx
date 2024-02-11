@@ -143,7 +143,7 @@ const PostWrite = () => {
     console.log(test);
     // navigate("/post");    
       
-        axios.post('http://localhost:8080/barter', newPost, {
+        axios.post('https://phocafor.me/api/barter', newPost, {
           withCredentials: true, // withCredentials 옵션 설정
           headers: {
             "Content-Type": "multipart/form-data",

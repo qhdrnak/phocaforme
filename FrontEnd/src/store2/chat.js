@@ -18,7 +18,7 @@ const chatSlice = createSlice({
       const roomId = action.payload;
       // state.chat = [{chatRoomId:1,userEmail:"b1fec529-d473-40a0-8024-fc4850885f8d",message:"ㅇㄴㅇ",imgCode:null,createdAt:"2024-02-05T15:35:43.425057"},]
       try {
-        const res = await axios.get(`http://localhost:8080/chats/${roomId}`);
+        const res = await axios.get(`https://phocafor.me/api/chats/${roomId}`);
         console.log(res);
         state.chat = res.data; 
       } catch (err) {

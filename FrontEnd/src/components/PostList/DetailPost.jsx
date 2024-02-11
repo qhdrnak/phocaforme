@@ -26,7 +26,7 @@ const DetailPost = () => {
 
   useEffect(() => {
     // API 호출
-    axios.get(`http://localhost:8080/barter/${id}`)
+    axios.get(`https://phocafor.me/api/barter/${id}`)
       .then(response => {
         // API 응답 처리
         console.log(response.data)
@@ -47,7 +47,7 @@ const DetailPost = () => {
     // 채팅방 생성
     axios
       // .post(`http://localhost:8080/chatRoom/${id}`, 
-      .post(`http://localhost:8080/chatRoom/1`, 
+      .post(`https://phocafor.me/api/chatRoom/1`,
       null,
       {
         headers: {

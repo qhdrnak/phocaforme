@@ -43,7 +43,7 @@ const Bias = () => {
     dispatch(setBias([selectedGroup, selectedMember]));
     
     // db 에 반영하기
-    axios.put(`http://localhost:8080/api/user/bias/${selectedMember.idolMemberId}`
+    axios.put(`https://phocafor.me/api/user/bias/${selectedMember.idolMemberId}`
     , null
     , {
       withCredentials: true,

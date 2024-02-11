@@ -16,7 +16,7 @@ const GroupDropdown2 = ({ isProfile, onChange }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/idol/group",
+          "https://phocafor.me/api/idol/group",
           {
             withCredentials: true,
           }
