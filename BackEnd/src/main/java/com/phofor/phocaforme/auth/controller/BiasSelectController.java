@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Slf4j
-@RequestMapping("/api")
 @RequiredArgsConstructor
 @Controller
 public class BiasSelectController {
