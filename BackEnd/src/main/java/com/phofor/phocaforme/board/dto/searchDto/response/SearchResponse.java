@@ -23,4 +23,6 @@ public class SearchResponse implements Serializable {
 //    private String createdAt; // 게시물 생성 일자
 
     private boolean isBartered;
+
+    private Double distance;
 }

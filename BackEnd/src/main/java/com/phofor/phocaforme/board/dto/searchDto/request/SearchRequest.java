@@ -1,5 +1,6 @@
 package com.phofor.phocaforme.board.dto.searchDto.request;
 
+import com.phofor.phocaforme.gps.dto.GpsLocationDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,4 +16,5 @@ public class SearchRequest {
     private String cardType;
     private List<Long> target;
     private List<Long> own;
+    private GpsLocationDto locationDto;
 }
