@@ -10,7 +10,6 @@ const WishCard = () => {
   const [selectedGroup, setSelectedGroup] = useState(0);
 
   const [selectedMember, setSelectedMember] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
 
   // 키워드 관련
   const [inputValue, setInputValue] = useState("");
@@ -20,25 +19,35 @@ const WishCard = () => {
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
+    } else {
+      setSelectedGroup(null);
+      setSelectedMember(null);
     }
+
   };
 
   const handleMemberChange = (member) => {
     setSelectedMember(member);
   };
 
-  
+  // 갈망포카 객체 생성
   const labels = tags.map(tag => tag.label);
 
-  const data = {
-    memberId: selectedMember ? selectedMember.idolMemberId : null, 
-    keyword1: labels.length > 0 ? labels[0] : null, 
-    keyword2: labels.length > 1 ? labels[1] : null, 
-    keyword3: labels.length > 2 ? labels[2] : null, 
-  }
-
+  
   const handleWishCard = () => {
-    console.log(data);
+    // 그룹, 멤버 설정 안하면 안됨
+    if (selectedMember == null) {
+      alert("그룹, 멤버를 설정해주세요.");
+      return;
+    }
+
+    const data = {
+      memberId: selectedMember ? selectedMember.idolMemberId : null, 
+      keyword1: labels.length > 0 ? labels[0] : null, 
+      keyword2: labels.length > 1 ? labels[1] : null, 
+      keyword3: labels.length > 2 ? labels[2] : null, 
+    }
+    
     // db 에 반영하기
     axios.put(`http://localhost:8080/api/user/wishCard`
     , data
@@ -69,7 +78,9 @@ const WishCard = () => {
   };
 
   const handleInputKeyDown = (e) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter" && inputValue.trim() !== "") {
+      e.preventDefault();
       if (tags.length < 3) {
         setTags([
           ...tags,
