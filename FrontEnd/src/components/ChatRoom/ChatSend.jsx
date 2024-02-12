@@ -42,6 +42,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
             receiveMessage(receive);
           }
         });
+        
       },
       (error) => {
         alert("error" + error);

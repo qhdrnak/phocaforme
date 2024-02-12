@@ -74,7 +74,7 @@ const ChatRoom = () => {
   return (
     <Container>
       <div id="chat-container">
-        <ChatMenu updateMessages={updateMessages} postId={location.state} />
+        <ChatMenu updateMessages={updateMessages} chatroomInfo={location.state} />
         <div id="chat-content-container" ref={sendMessageBoxRef}>
           <div id="chat-message-area">
             <div id="notice-content">
@@ -94,7 +94,7 @@ const ChatRoom = () => {
                       : "chat-visiter-name"
                   }
                 >
-                  {loginUser.nickname}
+                  {messageData.userEmail}
                 </div>
                 <div
                   // key={index}

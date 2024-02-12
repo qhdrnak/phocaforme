@@ -104,9 +104,6 @@ const DetailPost = () => {
         console.error("Error fetching posts:", error);
       }
     )
-    // 해당 채팅방 id 리턴 받아서 그 채팅방으로 이동
-    // navigate(`/chatroom/${chatRoomId}`, { state: id });
-    // navigate(`/chatroom/${id}`);
   
   };
 
