@@ -46,7 +46,14 @@ const NicknameModal = ({
     // 닉네임 중복 체크
     // 중복 아니면 validFlag 수정
     axios
-      .post(`http://localhost:8080/users/${userId}/nickname`, inputValue)
+      .post(`http://localhost:8080/user/nickname`,
+        { nickname: inputValue },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json", 
+          },
+        })
       .then((response) => {
         setValidFlag(true);
       })
@@ -62,13 +69,15 @@ const NicknameModal = ({
 
   const handleChangeNickname = (userId) => {
     axios
-      .put(`http://localhost:8080/users/${userId}/nickname`, null, {
-        params: {
+      .put(`http://localhost:8080/user/nickname`,
+        {
           isDuplicated: !validFlag,
           nickname: inputValue,
         },
+        {
         withCredentials: true,
-      })
+        }
+      )
       .then((response) => {
         dispatch(setNickname(inputValue));
         setInputValue("");

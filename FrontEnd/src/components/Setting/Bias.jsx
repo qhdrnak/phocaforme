@@ -43,7 +43,7 @@ const Bias = () => {
     dispatch(setBias([selectedGroup, selectedMember]));
     
     // db 에 반영하기
-    axios.put(`http://localhost:8080/api/user/bias/${selectedMember.idolMemberId}`
+    axios.put(`http://localhost:8080/user/bias/${selectedMember.idolMemberId}`
     , null
     , {
       withCredentials: true,
@@ -63,7 +63,7 @@ const Bias = () => {
 
   return (
     <div className="profile-item-container">
-      <h2 className="profile-title">최애 추가</h2>
+      <h2 className="profile-title">최애 설정</h2>
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
           <div>그룹명</div>
