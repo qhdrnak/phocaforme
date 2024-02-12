@@ -60,7 +60,7 @@ const BasicTabs = ({ isPreview }) => {
  
  //////////////////////////////////////////////////
  //////////////////////////////////// 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const searchs = useSelector((state) =>
     state.search.searchs ? state.search.searchs : null
   );
@@ -92,7 +92,7 @@ const BasicTabs = ({ isPreview }) => {
           // params.own = 4;
 
           const response = await axios.get(
-            "http://localhost:8080/api/barter/search",
+            "https://phocafor.me/api/barter/search",
             {
               withCredentials: true,
               params: params,

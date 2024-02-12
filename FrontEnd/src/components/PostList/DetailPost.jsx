@@ -24,7 +24,7 @@ const DetailPost = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/barter/${id}`,
+      const response = await axios.get(`https://phocafor.me/api/barter/${id}`,
         { withCredentials: true }
       );
       const detailData = response.data;
@@ -85,7 +85,7 @@ const DetailPost = () => {
     // 채팅방 생성
     axios
       // .post(`http://localhost:8080/chatRoom/${id}`, 
-      .post(`http://localhost:8080/chatRoom/1`, 
+      .post(`https://phocafor.me/api/chatRoom/1`,
       null,
       {
         headers: {
