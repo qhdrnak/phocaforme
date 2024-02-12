@@ -16,7 +16,7 @@ const BarterModify = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState({ defaultGroup });
+  const [selectedGroup, setSelectedGroup] = useState(defaultGroup);
 
   const handleGroupChange = (group) => {
     setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
@@ -76,7 +76,7 @@ const BarterModify = ({
         <div id="own-member-dropdown">
           <h3>보유한 멤버</h3>
           <MemberDropdown
-            selectedGroup={defaultGroup.value}
+            selectedGroup={defaultGroup}
             onChange={(member) => {
               handleOwnMemberChange(member);
             }}
@@ -103,7 +103,7 @@ const BarterModify = ({
         <div>
           <h3>찾는 멤버</h3>
           <MemberDropdown
-            selectedGroup={defaultGroup.value}
+            selectedGroup={defaultGroup}
             defaultMember={defaultTargetMember}
             onChange={(member) => {
               handleTargetMemberChange(member);

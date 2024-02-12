@@ -18,6 +18,7 @@ const PostModify = () => {
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cardType, setCardType] = useState(null);
   ////
   // const [ownMembers, setOwnMembers] = useState(post.ownMembers);
   // const [targetMembers, setTargetMembers] = useState(
@@ -36,15 +37,15 @@ const PostModify = () => {
     setTargetMembers(members);
   };
 
-  // const handleTypeChange = (cardType) => {
-  //   if (cardType == null) {
-  //     cardType = {
-  //       value: "",
-  //       label: "",
-  //     };
-  //   }
-  //   setCardType(cardType);
-  // };
+  const handleTypeChange = (cardType) => {
+    if (cardType == null) {
+      cardType = {
+        value: "",
+        label: "",
+      };
+    }
+    setCardType(cardType);
+  };
 
   ////
   const dispatch = useDispatch();
@@ -62,9 +63,10 @@ const PostModify = () => {
         setTitle(response.data.title);
         setContent(response.data.content);
         setImages(response.data.images);
-        setImagePreviews(response.data.images);
+        setImagePreviews(response.data.photos.map(photo => `https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`));
         setOwnMembers(response.data.ownIdolMembers);
         setTargetMembers(response.data.findIdolMembers);
+        setCardType(response.data.cardType)
         setLoading(false);
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -158,7 +160,7 @@ const PostModify = () => {
       <h2 className="write-title">게시글 수정하기</h2>
       <div id="write-container">
         <div id="write-radio-container">
-          <RadioButton2 defaultType={post.type} />
+          <RadioButton2 defaultType={post.cardType} />
         </div>
         <div id="title-container">
           <h3>제목</h3>
@@ -172,7 +174,7 @@ const PostModify = () => {
         </div>
 
         <div id="group-member-input">
-          {post.type === "교환" ? (
+          {post.cardType === "교환" ? (
             <BarterModify
               defaultGroup={post.group}
               defaultOwnMember={ownMembers}
