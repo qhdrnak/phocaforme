@@ -20,11 +20,8 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   const [value, setValue] = useState("");
   const [image, setImage] = useState("");
 
-  // const [userId, setUserId] = useState(localStorage.getItem("userId") || "");
-  // const [userEmail, setUserEmail] = useState(loginUser.userEmail || "");
   const [ws, setWs] = useState(null);
   const [receive, setReceive] = useState("");
-  // const [chatMessages, setChatMessages] = useState();
 
   useEffect(() => {
     // WebSocket 연결 설정
@@ -37,15 +34,15 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         setWs(ws);
         ws.subscribe("/sub/chat/room" + roomId, (message) => {
           const receive = JSON.parse(message.body);
-          setReceive(receive);
-          alert(receive.imgCode);
+          // alert(receive.imgCode);
           
-          if (receive.imgCode != null) {
-            receiveImg();
+          if (receive.imgCode !== null) {
+            receiveImg(receive);
           } else {
-            receiveMessage();
+            receiveMessage(receive);
           }
         });
+        
       },
       (error) => {
         alert("error" + error);
@@ -75,38 +72,33 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         {},
         JSON.stringify({
           chatRoomId: roomId,
-          userEmail: loginUser.userId,
+          userEmail: loginUser.nickname,
           message: value,
         })
       );
     }
-    // setValue("");
-    inputRef.current.focus();
+    setValue("");
   };
 
-  const receiveMessage = () => {
-    // 화면 상에 반영
-    handleSendClick();
+  const receiveMessage = (receive) => {
+    handleSendClick(receive);
   };
 
-  const receiveImg = () => {
-    // 화면 상에 반영
-    handleSetImage();
+  const receiveImg = (receive) => {
+    handleSetImage(receive);
   };
 
   const readImage = (input) => {
     if (input.files && input.files[0]) {
       const FR = new FileReader();
       FR.onload = function (e) {
-        // 바이트 배열로 변환합니다.
-        const byteArray = new Uint8Array(e.target.result);
         ws.send(
           "/pub/chats/" + roomId,
           {},
           JSON.stringify({
             chatRoomId: roomId,
-            userEmail: loginUser.userId,
-            imgCode: byteArray,
+            userEmail: loginUser.nickname,
+            imgCode: e.target.result,
           })
         );
       };
@@ -118,52 +110,37 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     setValue((prevValue) => event.target.value);
   };
 
-  const handleSetImage = () => {
+  const handleSetImage = (receive) => {
     const newMessage = {
-      // chatId: 1,
       chatRoomId: roomId,
-      sender: loginUser.nickname,
-      message: "",
+      createdAt: new Date().toISOString(),
       imgCode: receive.imgCode,
-      // sendTime: receive.createdAt,
-      sendTime: getCurrentTime(),
+      message: "",
+      userEmail: loginUser.userId,
       isPay: false,
     };
     updateMessages(newMessage);
-    sendMessage();
     handleClose();
   };
 
   const handleSendClick = () => {
-    if (receive && receive.imgCode != null) {
       const newMessage = {
         chatRoomId: roomId,
-        sender: loginUser.nickname,
+        createdAt: new Date().toISOString(),
+        imgCode: null,
         message: value,
-        imgCode: receive.imgCode,
-        sendTime: getCurrentTime(),
+        userEmail: loginUser.userId,
       };
       updateMessages(newMessage);
       sendMessage();
-    } else {
-      // 이 부분은 receive가 비어있거나 imgCode가 없는 경우의 로직
-      const newMessage = {
-        chatRoomId: roomId,
-        sender: loginUser.nickname,
-        message: value,
-        sendTime: getCurrentTime(),
-      };
-      updateMessages(newMessage);
-      sendMessage();
-    }
   };
 
   // 엔터 키를 눌렀을 때도 send
   const handleSendEnter = (e) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendClick();
-
     }
   };
 
@@ -184,13 +161,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
 
   const handleFileSelection = (e) => {
     const selectedFile = document.getElementById("fileInput").files[0];
-    // console.log(selectedFile);
-    // readImage(e.target);
-
-    // 이미지 전송 간 딜레이 추가 (예: 500ms)
-    setTimeout(() => {
-      readImage(e.target);
-    }, 500);
+    readImage(e.target);
   };
 
   const open = Boolean(anchorEl);
