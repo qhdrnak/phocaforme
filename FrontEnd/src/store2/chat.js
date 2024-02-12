@@ -12,7 +12,6 @@ const chatSlice = createSlice({
   reducers: {
     sendChat: (state, action) => {
       state.chat = [...state.chat, action.payload];
-      console.log(state.chat);
     },
     initChat: (state, action) => {
       return {

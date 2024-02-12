@@ -55,8 +55,6 @@ const ChatRoom = () => {
   
   const chatList = useSelector((state) => state.chat.chat ? state.chat.chat : []);
 
-  console.log(chatList);
-
   const updateMessages = (newMessage) => {
     if (newMessage.message.trim() !== '' || newMessage.imgCode !== null) {
       dispatch(sendChat(newMessage));
@@ -91,22 +89,22 @@ const ChatRoom = () => {
                 <div
                   // key={messageData.}
                   className={
-                    messageData.userEmail == loginUser.nickname
+                    messageData.userEmail == loginUser.userId
                       ? "chat-owner-name"
                       : "chat-visiter-name"
                   }
                 >
-                  {messageData.userEmail}
+                  {loginUser.nickname}
                 </div>
                 <div
                   // key={index}
                   className={
-                    messageData.userEmail == loginUser.nickname
+                    messageData.userEmail == loginUser.userId
                       ? "chat-owner"
                       : "chat-visiter"
                   }
                 >
-                  {messageData.userEmail == loginUser.nickname ? (
+                  {messageData.userEmail == loginUser.userId ? (
                     <p>{timeFormat(messageData.createdAt)}</p>
                   ) : null}
                   <div className="chat-message">
@@ -123,7 +121,7 @@ const ChatRoom = () => {
                       ) : null}
                     </div>
                   </div>
-                  {messageData.userEmail != loginUser.nickname ? (
+                  {messageData.userEmail != loginUser.userId ? (
                     <p>{timeFormat(messageData.createdAt)}</p>
                   ) : null}
                 </div>
