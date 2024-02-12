@@ -106,6 +106,19 @@ public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         int time = (60*60*3) + (60*60*9);
 
         String nickname = URLEncoder.encode(userEntity.getNickname(), StandardCharsets.UTF_8);
+
+        if(!oauth2User.getProfilePhotoUrl().isEmpty()){
+            String profile = URLEncoder.encode(oauth2User.getProfilePhotoUrl(), StandardCharsets.UTF_8);
+            // 유저 프로필
+            response.addHeader("Set-Cookie",
+                    "profile=" + profile + "; " +
+                            "Path=/;" +
+//                        "HttpOnly; " +
+                            "Max-Age=" +
+                            time
+            );
+        }
+
         // 토큰 설정
         response.addHeader("Set-Cookie",
                 "token=" + accessToken + "; " +
