@@ -56,7 +56,7 @@ const a11yProps = (index) => {
 
 const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(2);
  
  //////////////////////////////////////////////////
  //////////////////////////////////// 
