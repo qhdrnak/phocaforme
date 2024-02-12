@@ -105,15 +105,28 @@ public class BarterSearchService {
             BarterDocument barter = iterator.next().getContent();
             /* Select article near 2km from user */
             Double distance = -1.0;
-            if(searchRequest.getLongitude()!=0.0 && searchRequest.getLatitude()!=0.0){
-                distance = checkDistance(barter,searchRequest.getLatitude(), searchRequest.getLongitude());
-                if(distance>2){
+            Double longitude = searchRequest.getLongitude();
+            Double latitude = searchRequest.getLatitude();
+            // 검색자가 gps를 보내왔으면,
+            if(longitude!=null && latitude!=null) {
+//                System.out.print("검색자 gps 잘 받음 >>");
+                Map<String,Double> gpsData = redisService.getGpsData(barter.getWriterId());
+//                System.out.print(gpsData+" >>>");
+                // 해당 게시글 작성자가 gps ON 상태라면
+                if(gpsData.get("latitude")!=null){
+                    distance = checkDistance(barter,latitude, longitude);
+//                    System.out.print(distance+"만큼의 거리가 있음 >>");
+                    if(distance>2){
+//                        System.out.println("2km 밖에 있으므로 패스 >>");
+                        continue;
+                    }
+                }else{
                     continue;
                 }
             }
-
-
-            results.add(new SearchResponse(
+//            System.out.println("results에 추가!");
+            // 안 보내왔으면, 기존 로직
+           results.add(new SearchResponse(
                     barter.getArticleId(),
                     barter.getImageUrl(),
                     barter.getTitle(),
