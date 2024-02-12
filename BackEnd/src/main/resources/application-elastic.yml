@@ -1,5 +1,5 @@
 elasticsearch:
-  username: "elastic"
-  password: "elastic"
-  hostname: "localhost"
+  username: ${ES_USER_NAME}
+  password: ${ES_USER_PASSWORD}
+  hostname: ${HOST}
   port: 9200
