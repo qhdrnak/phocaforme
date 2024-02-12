@@ -104,10 +104,14 @@ public class BarterSearchService {
         while(iterator.hasNext()){
             BarterDocument barter = iterator.next().getContent();
             /* Select article near 2km from user */
-            Double distance = checkDistance(barter,searchRequest.getLatitude(), searchRequest.getLongitude());
-            if(distance>2){
-                continue;
+            Double distance = -1.0;
+            if(searchRequest.getLongitude()!=0.0 && searchRequest.getLatitude()!=0.0){
+                distance = checkDistance(barter,searchRequest.getLatitude(), searchRequest.getLongitude());
+                if(distance>2){
+                    continue;
+                }
             }
+
 
             results.add(new SearchResponse(
                     barter.getArticleId(),
