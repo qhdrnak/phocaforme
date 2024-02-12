@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.board.service;
 
 
+import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
 import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
@@ -10,9 +11,12 @@ import com.phofor.phocaforme.board.repository.BarterSearchRepository;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaBuilder;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaDirector;
 import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilder;
+import com.phofor.phocaforme.board.service.query.queryBuilder.WishQueryBuilder;
+import com.phofor.phocaforme.gps.dto.GpsLocationDto;
 import com.phofor.phocaforme.wishcard.dto.WishDocument;
 import com.phofor.phocaforme.wishcard.service.WishQueryBuilder;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -24,15 +28,19 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class BarterSearchService {
+    private static final int EARTH_RADIUS_KM = 6371;
     private final QueryBuilder queryBuilder;
     private final WishQueryBuilder wishQueryBuilder;
     private final BarterSearchRepository barterSearchRepository;
+    private final RedisService redisService;
 
     public List<String> wishPhoca(String title, List<IdolMemberDto> idols){
         wishQueryBuilder.createQuery(title,idols);
@@ -88,24 +96,30 @@ public class BarterSearchService {
                 searchHits,
                 queryBuilder.getPageRequest()
         );
-        System.out.println(">>> hits : "+searchPage.getSearchHits().getTotalHits());
-        System.out.println(searchPage.getContent());
+        log.info(">>> hits : "+searchPage.getSearchHits().getTotalHits());
+        log.info(searchPage.getContent().toString());
+
         /* SearchPage<Barter> -> List<SearchResponse> and Return */
         Iterator<SearchHit<BarterDocument>> iterator = searchPage.iterator();
         List<SearchResponse> results = new ArrayList<>();
         while(iterator.hasNext()){
             BarterDocument barter = iterator.next().getContent();
-            System.out.println(barter.getOwnMember());
+            /* Select article near 2km from user */
+            Double distance = checkDistance(barter,searchRequest.getLocationDto());
+            if(distance>2){
+                continue;
+            }
+
             results.add(new SearchResponse(
                     barter.getArticleId(),
                     barter.getImageUrl(),
                     barter.getTitle(),
                     barter.getOwnMember(),
                     barter.getTargetMember(),
-                    barter.isBartered()
+                    barter.isBartered(),
+                    distance
             ));
         }
-
         return results;
     }
 
@@ -119,8 +133,36 @@ public class BarterSearchService {
                 document.getTitle(),
                 document.getOwnMember(), // 이 필드는 BarterDocument에 적절히 정의되어 있어야 함
                 document.getTargetMember(), // 마찬가지로 BarterDocument에 정의되어 있어야 함
-                document.isBartered()
+                document.isBartered(),
+                null
         );
+    }
+
+
+    public static double calculateDistanceInKilometer(double lat1, double lon1, double lat2, double lon2) {
+        // 위도, 경도를 라디안으로 변환
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        // 허버사인 공식 사용
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS_KM * c;
+    }
+
+    public Double checkDistance(BarterDocument barter,GpsLocationDto gpsLocationDto){
+        Map<String,Double> writerGPS = redisService.getGpsData(barter.getWriterId());
+
+        Double writerLatitude = writerGPS.get("latitude");
+        Double writerLongitude = writerGPS.get("longitude");
+        Double searcherLatitude = gpsLocationDto.getLatitude();
+        Double searcherLongitude = gpsLocationDto.getLongitude();
+
+        return calculateDistanceInKilometer(
+                writerLatitude,writerLongitude,
+                searcherLatitude,searcherLongitude);
     }
 
 //    public ResponseEntity<List<SearchResponse>> findByOptions(SearchRequest searchRequest) {
