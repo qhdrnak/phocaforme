@@ -60,7 +60,9 @@ const BasicTabs = ({ isPreview }) => {
  
  //////////////////////////////////////////////////
  //////////////////////////////////// 
-  const dispatch = useDispatch();
+
+ const dispatch = useDispatch();
+ 
   const searchs = useSelector((state) =>
     state.search.searchs ? state.search.searchs : null
   );
@@ -92,7 +94,7 @@ const BasicTabs = ({ isPreview }) => {
           // params.own = 4;
 
           const response = await axios.get(
-            "http://localhost:8080/api/barter/search",
+            "http://localhost:8080/barter/search",
             {
               withCredentials: true,
               params: params,
@@ -136,7 +138,6 @@ const observer = useRef();
 
   // search 부분 삭제
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
 

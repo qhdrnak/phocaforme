@@ -310,6 +310,9 @@
 }
 
 /* 채팅페이지 */
+.chat-image {
+    width: 40vw;
+}
 
 #fileInput {
     display: none;
@@ -320,7 +323,6 @@
 }
 
 .chatlist-item {
-
     border: 1px solid grey;
     margin: 0.2rem;
     border-radius: 10px;

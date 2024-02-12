@@ -40,7 +40,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           setReceive(receive);
           alert(receive.imgCode);
           
-          if (receive.imgCode != null) {
+          if (receive.imgCode !== null) {
             receiveImg();
           } else {
             receiveMessage();
@@ -75,13 +75,12 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         {},
         JSON.stringify({
           chatRoomId: roomId,
-          userEmail: loginUser.userId,
+          userEmail: loginUser.nickname,
           message: value,
         })
       );
     }
-    // setValue("");
-    inputRef.current.focus();
+    setValue("");
   };
 
   const receiveMessage = () => {
@@ -91,22 +90,20 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
 
   const receiveImg = () => {
     // 화면 상에 반영
-    handleSetImage();
+    handleSendClick();
   };
 
   const readImage = (input) => {
     if (input.files && input.files[0]) {
       const FR = new FileReader();
       FR.onload = function (e) {
-        // 바이트 배열로 변환합니다.
-        const byteArray = new Uint8Array(e.target.result);
         ws.send(
           "/pub/chats/" + roomId,
           {},
           JSON.stringify({
             chatRoomId: roomId,
-            userEmail: loginUser.userId,
-            imgCode: byteArray,
+            userEmail: loginUser.nickname,
+            imgCode: e.target.result,
           })
         );
       };
@@ -120,13 +117,11 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
 
   const handleSetImage = () => {
     const newMessage = {
-      // chatId: 1,
       chatRoomId: roomId,
-      sender: loginUser.nickname,
-      message: "",
+      createdAt: new Date().toISOString(),
       imgCode: receive.imgCode,
-      // sendTime: receive.createdAt,
-      sendTime: getCurrentTime(),
+      message: "",
+      userEmail: loginUser.nickname,
       isPay: false,
     };
     updateMessages(newMessage);
@@ -135,23 +130,26 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const handleSendClick = () => {
-    if (receive && receive.imgCode != null) {
+    if (receive && receive.imgCode !== null) {
       const newMessage = {
         chatRoomId: roomId,
-        sender: loginUser.nickname,
-        message: value,
+        createdAt: new Date().toISOString(),
         imgCode: receive.imgCode,
-        sendTime: getCurrentTime(),
+        message: "",
+        userEmail: loginUser.nickname,
       };
       updateMessages(newMessage);
       sendMessage();
+      handleClose();
+
     } else {
       // 이 부분은 receive가 비어있거나 imgCode가 없는 경우의 로직
       const newMessage = {
         chatRoomId: roomId,
-        sender: loginUser.nickname,
+        createdAt: new Date().toISOString(),
+        imgCode: null,
         message: value,
-        sendTime: getCurrentTime(),
+        userEmail: loginUser.nickname,
       };
       updateMessages(newMessage);
       sendMessage();
@@ -160,6 +158,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
 
   // 엔터 키를 눌렀을 때도 send
   const handleSendEnter = (e) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendClick();
@@ -184,7 +183,6 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
 
   const handleFileSelection = (e) => {
     const selectedFile = document.getElementById("fileInput").files[0];
-    // console.log(selectedFile);
     // readImage(e.target);
 
     // 이미지 전송 간 딜레이 추가 (예: 500ms)

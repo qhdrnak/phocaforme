@@ -84,8 +84,8 @@ const DetailPost = () => {
   const handleChatClick = () => {
     // 채팅방 생성
     axios
-      // .post(`http://localhost:8080/chatRoom/${id}`, 
-      .post(`http://localhost:8080/chatRoom/1`, 
+      .post(`http://localhost:8080/chatRoom/${id}`, 
+      // .post(`http://localhost:8080/api/chatRoom/1`, 
       null,
       {
         headers: {
@@ -147,7 +147,7 @@ const DetailPost = () => {
         </div>
         <hr />
         <div id="writer-type-container">
-          <div>작성자 ⯌ {post.nickName}</div>
+          <div>작성자 ✦ {post.nickName}</div>
           <Chip
             id="card-type-container"
             label={post.cardType}

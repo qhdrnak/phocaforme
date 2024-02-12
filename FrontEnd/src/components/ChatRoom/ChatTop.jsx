@@ -32,7 +32,6 @@ const ChatMenu = ({ updateMessages, postId }) => {
   const { roomId } = useParams();
 
   const chatRoomInfo = location.state;
-  console.log(chatRoomInfo);
 
   // 메뉴 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,7 +77,7 @@ const ChatMenu = ({ updateMessages, postId }) => {
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div" id="chatroom-title">
-            {chatRoomInfo.ownerId}
+            {decodeURIComponent(chatRoomInfo.ownerId)}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
             {chatRoomInfo.boardTitle}
