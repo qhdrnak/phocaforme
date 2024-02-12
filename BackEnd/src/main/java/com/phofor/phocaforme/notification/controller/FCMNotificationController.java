@@ -58,7 +58,7 @@ public class FCMNotificationController {
     }
 
     // 알림 제거
-    @GetMapping("/notification/{notificationId}/delete")
+    @DeleteMapping("/notification/{notificationId}")
     public ResponseEntity<?> deleteMessage(@PathVariable Long notificationId) {
         HttpStatus httpStatus;
         if(fcmNotificationService.deleteMessage(notificationId))  {
