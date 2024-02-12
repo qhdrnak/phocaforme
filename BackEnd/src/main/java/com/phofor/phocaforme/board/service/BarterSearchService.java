@@ -3,7 +3,6 @@ package com.phofor.phocaforme.board.service;
 
 import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
-import com.phofor.phocaforme.board.dto.searchDto.WishDocument;
 import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
 import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
@@ -11,7 +10,8 @@ import com.phofor.phocaforme.board.repository.BarterSearchRepository;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaBuilder;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaDirector;
 import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilder;
-import com.phofor.phocaforme.board.service.query.queryBuilder.WishQueryBuilder;
+import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.service.WishQueryBuilder;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
@@ -37,10 +37,11 @@ public class BarterSearchService {
     public List<String> wishPhoca(String title, List<IdolMemberDto> idols){
         wishQueryBuilder.createQuery(title,idols);
         NativeQuery query = wishQueryBuilder.getSearch();
+        System.out.println(query.getQuery());
         SearchHits<WishDocument> searchHits = barterSearchRepository.findByTitleAndIdols(query);
         SearchPage<WishDocument> searchPage = SearchHitSupport.searchPageFor(
                 searchHits,
-                queryBuilder.getPageRequest()
+                null
         );
         Iterator<SearchHit<WishDocument>> iterator = searchPage.iterator();
         List<String> ids = new ArrayList<>();

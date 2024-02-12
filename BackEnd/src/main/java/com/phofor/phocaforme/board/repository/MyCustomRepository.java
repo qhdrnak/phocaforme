@@ -1,7 +1,7 @@
 package com.phofor.phocaforme.board.repository;
 
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
-import com.phofor.phocaforme.board.dto.searchDto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.WishDocument;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHits;
 

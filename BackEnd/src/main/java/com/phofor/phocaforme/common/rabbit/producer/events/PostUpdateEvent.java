@@ -1,4 +1,4 @@
-package com.phofor.phocaforme.board.service.rabbit.producer;
+package com.phofor.phocaforme.common.rabbit.producer.events;
 
 import org.springframework.context.ApplicationEvent;
 

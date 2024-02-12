@@ -4,6 +4,7 @@ import com.phofor.phocaforme.board.entity.Barter;
 import com.phofor.phocaforme.board.entity.BarterFindIdol;
 import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.entity.BarterOwnIdol;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,9 +16,12 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toInstantFormat;
+
 @Builder
 @Getter
 @ToString
+@AllArgsConstructor
 public class BarterDetailDto {
     // 게시글 id
     private Long id;
@@ -67,8 +71,8 @@ public class BarterDetailDto {
                 .build();
     }
 
-    private static Instant toInstantFormat(LocalDateTime date){
-        ZonedDateTime zonedDateTime = date.atZone(ZoneId.systemDefault());
-        return zonedDateTime.toInstant();
+    public BarterDetailDto(Long id){
+        this.id=id;
     }
+
 }

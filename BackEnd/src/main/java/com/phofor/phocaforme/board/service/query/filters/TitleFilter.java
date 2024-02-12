@@ -14,6 +14,7 @@ public class TitleFilter {
         for(String keyword : keywords) {
             QueryVariant matchTitleQuery = new MultiMatchQuery.Builder()
                     .query(keyword)
+//                    .fuzziness("1")
                     .fields("keyword1","keyword2","keyword3")
                     .type(TextQueryType.CrossFields)
                     .build();

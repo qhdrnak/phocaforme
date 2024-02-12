@@ -13,6 +13,7 @@ public class QueryFilter {
     public static Query createFilter(BarterSearchCriteria criteria) {
         QueryVariant matchQueryQuery = new MatchQuery.Builder()
                 .field("title")
+//                .fuzziness("1")
                 .query(criteria.getQuery())
                 .build();
         return new Query(matchQueryQuery);

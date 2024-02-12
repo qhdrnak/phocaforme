@@ -1,4 +1,4 @@
-package com.phofor.phocaforme.board.config;
+package com.phofor.phocaforme.common.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -44,38 +44,35 @@ public class RabbitMQConfig {
 
 
 
-    /**
-     * 지정된 큐 이름으로 Queue 빈을 생성
-     *
-     * @return Queue 빈 객체
-     */
-    @Bean
-    public Queue queue() {
-        return new Queue("hello.queue",false);
-    }
 
-    /**
-     * 지정된 익스체인지 이름으로 DirectExchange 빈을 생성
-     *
-     * @return TopicExchange 빈 객체
-     */
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange("hello.exchange");
+    public Queue barterQueue() {
+        return new Queue("barter.queue",false);
     }
+//    @Bean
+//    public Queue wishQueue() {
+//        return new Queue("wish.queue",false);
+//    }
 
-    /**
-     * 주어진 큐와 익스체인지를 바인딩하고 라우팅 키를 사용하여 Binding 빈을 생성
-     *
-     * @param queue    바인딩할 Queue
-     * @param exchange 바인딩할 TopicExchange
-     * @return Binding 빈 객체
-     */
+
     @Bean
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("hello.key");
+    public DirectExchange barterExchange() {
+        return new DirectExchange("barter.exchange");
     }
+//    @Bean
+//    public DirectExchange wishExchange() {
+//        return new DirectExchange("wish.exchange");
+//    }
 
+
+    @Bean
+    public Binding barterBinding(Queue barterQueue, DirectExchange barterExchange) {
+        return BindingBuilder.bind(barterQueue).to(barterExchange).with("barter.key");
+    }
+//    @Bean
+//    public Binding wishBinding(Queue wishQueue, DirectExchange wishExchange) {
+//        return BindingBuilder.bind(wishQueue).to(wishExchange).with("wish.key");
+//    }
     /**
      * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환
      *

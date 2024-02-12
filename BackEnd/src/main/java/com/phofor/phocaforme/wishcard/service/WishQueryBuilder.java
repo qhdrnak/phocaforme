@@ -1,4 +1,4 @@
-package com.phofor.phocaforme.board.service.query.queryBuilder;
+package com.phofor.phocaforme.wishcard.service;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
@@ -6,6 +6,7 @@ import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
 import com.phofor.phocaforme.board.service.query.filters.MemberIdFilter;
 import com.phofor.phocaforme.board.service.query.filters.TitleFilter;
+import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilderInterface;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class WishQueryBuilder implements QueryBuilderInterface{
+public class WishQueryBuilder implements QueryBuilderInterface {
 
     private final NativeQueryBuilder queryBuilder;
 
