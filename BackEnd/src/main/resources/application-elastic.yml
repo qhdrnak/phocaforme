@@ -3,3 +3,4 @@ elasticsearch:
   password: ${ES_USER_PASSWORD}
   hostname: ${HOST}
   port: 9200
+  post-url: ${ES_POST_URL}

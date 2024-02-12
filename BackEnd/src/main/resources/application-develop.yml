@@ -31,5 +31,7 @@ logging:
         security: DEBUG
 project:
   url: ${URL}
-  API-URL: ${API-URL}
+  API-URL: ${API_URL}
   client-id: ${CLIENT_ID}
+  front-url: ${FRONT_URL}
+

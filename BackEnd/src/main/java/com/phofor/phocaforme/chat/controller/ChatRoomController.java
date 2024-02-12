@@ -6,6 +6,7 @@ import com.phofor.phocaforme.chat.dto.response.ChatRoomResponseDto;
 import com.phofor.phocaforme.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
