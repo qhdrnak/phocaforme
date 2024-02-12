@@ -15,6 +15,7 @@ import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toIns
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Builder
 @Document(indexName = "wish_phoca")
