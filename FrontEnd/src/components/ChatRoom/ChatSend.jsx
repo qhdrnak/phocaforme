@@ -102,12 +102,12 @@ const ChatSend = ({roomId, loginUser, updateMessages}) => {
             const byteArray = new Uint8Array(e.target.result);
             ws.send(
                "/pub/chats/" + roomId,
+               {},
                JSON.stringify({
                   chatRoomId: roomId,
                   userEmail: loginUser.userId,
                   imgCode: e.target.result,
-               }),
-               {}
+               })
             );
          };
          FR.readAsDataURL(input.files[0]);
