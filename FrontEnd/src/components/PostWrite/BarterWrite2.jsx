@@ -7,18 +7,17 @@ import MemberDropdown2 from "../UI/Dropdown/MemberDropdown2.jsx";
 
 import Chip from "@mui/material/Chip";
 
-const BarterWrite2 = ({ onChange }) => {
+const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState(0);
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   const loginUser = useSelector((state) => state.user.user);
 
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
-      
     } else {
       setSelectedGroup(null);
 
@@ -30,8 +29,8 @@ const BarterWrite2 = ({ onChange }) => {
     setTargetMembersInput("");
   };
 
-  const [ownMembers, setOwnMembers] = useState([]);
-  const [targetMembers, setTargetMembers] = useState([]);
+  const [ownMembers, setOwnMembers] = useState(defaultOwnMembers ? defaultOwnMembers : []);
+  const [targetMembers, setTargetMembers] = useState(defaultTargetMembers ? defaultTargetMembers : []);
 
   const [ownMembersInput, setOwnMembersInput] = useState("");
   const [targetMembersInput, setTargetMembersInput] = useState("");
@@ -73,6 +72,7 @@ const BarterWrite2 = ({ onChange }) => {
       <div id="group-input" className="search-box-group">
         <div className="searchbar-title">그룹명</div>
         <GroupDropdown2
+          defaultGroup = {selectedGroup}
           onChange={(group) => {
             handleGroupChange(group);
           }}

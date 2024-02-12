@@ -1,4 +1,3 @@
- 
 // 게시글 생성
 import * as React from "react";
 import { useState, useEffect } from "react";

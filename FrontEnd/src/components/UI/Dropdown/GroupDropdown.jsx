@@ -1,4 +1,3 @@
- 
 // 게시물 생성용
 import * as React from "react";
 import { useState, useEffect } from "react";

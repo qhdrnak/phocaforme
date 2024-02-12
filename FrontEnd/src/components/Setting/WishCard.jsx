@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios'
 
 import { Button, TextField, Chip } from "@mui/material";
 
@@ -9,34 +10,63 @@ const WishCard = () => {
   const [selectedGroup, setSelectedGroup] = useState(0);
 
   const [selectedMember, setSelectedMember] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
-
-  const handleGroupChange = (group) => {
-    if (group) {
-      setSelectedGroup(group);
-    }
-  };
-
-  const handleMemberChange = (member) => {
-    setSelectedMember(member);
-  };
-
-  const generateImageUrl = (group, member) => {
-    if (group && member) {
-      return `assets/images/${group}_${member}.PNG`;
-    }
-    return null;
-  };
-
-  const handleWishCard = () => {
-    // 갈망포카 등록 메서드
-  };
 
   // 키워드 관련
   const [inputValue, setInputValue] = useState("");
   const [tags, setTags] = useState([]);
   const [helperText, setHelperText] = useState("");
 
+  const handleGroupChange = (group) => {
+    if (group) {
+      setSelectedGroup(group);
+    } else {
+      setSelectedGroup(null);
+      setSelectedMember(null);
+    }
+
+  };
+
+  const handleMemberChange = (member) => {
+    setSelectedMember(member);
+  };
+
+  // 갈망포카 객체 생성
+  const labels = tags.map(tag => tag.label);
+
+  
+  const handleWishCard = () => {
+    // 그룹, 멤버 설정 안하면 안됨
+    if (selectedMember == null) {
+      alert("그룹, 멤버를 설정해주세요.");
+      return;
+    }
+
+    const data = {
+      memberId: selectedMember ? selectedMember.idolMemberId : null, 
+      keyword1: labels.length > 0 ? labels[0] : null, 
+      keyword2: labels.length > 1 ? labels[1] : null, 
+      keyword3: labels.length > 2 ? labels[2] : null, 
+    }
+    
+    // db 에 반영하기
+    axios.put(`http://localhost:8080/api/user/wishCard`
+    , data
+    , {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error('Error setting bias:', error);
+    }); 
+  };
+
+  // 키워드 관련
   const getChipColor = (index) => {
     const colors = ["#FB37A3", "#FD9DD1", "rgba(142, 96, 203, 1)"];
     return colors[index];
@@ -48,7 +78,9 @@ const WishCard = () => {
   };
 
   const handleInputKeyDown = (e) => {
+    if (e.nativeEvent.isComposing) return;
     if (e.key === "Enter" && inputValue.trim() !== "") {
+      e.preventDefault();
       if (tags.length < 3) {
         setTags([
           ...tags,

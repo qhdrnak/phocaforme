@@ -1,27 +1,24 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import axios from "axios";
 
+import { addSearchData, clearSearchData } from "../../store2/search.js";
 import { fetchTitle, fetchUserTitle } from "../../http.js";
 import { loginUser, logoutUser, getLocation } from "../../store2/loginUser.js";
 import { searchPosts } from "../../store2/post.js";
 
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
-import Card from "../../components/UI/Card";
+import Card from "../UI/Card.jsx";
 /////////////////////////////////////////////////////////
 import usePostSearch from "../../utils/infiScroll.js";
-//////////
+
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
-  const [posts, setPosts] = useState([]);
-  const user = useSelector((state) => (state.user ? state.user.user : null));
-  ////////
-
+  
   return (
     <div>
       <div
@@ -55,63 +52,14 @@ const a11yProps = (index) => {
 
 
 const BasicTabs = ({ isPreview }) => {
+  const posts = useSelector((state) => (state.post ? state.post.posts : []));
+  const user = useSelector((state) => (state.user ? state.user.user : null));
+
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
- 
- //////////////////////////////////////////////////
- //////////////////////////////////// 
-  const dispatch = useDispatch();
-  const searchs = useSelector((state) =>
-    state.search.searchs ? state.search.searchs : null
-  );
-
-  useEffect(() => {
-    if (!isPreview) {
-      const fetchData = async () => {
-        try {
-          const params = {};
-
-          if (searchs.targetMembers) {
-            params.target = searchs.targetMembers;
-            // params.target = 3;
-          }
-
-          if (searchs.ownMembers) {
-            params.own = searchs.ownMembers;
-          }
-
-          if (searchs.cardType) {
-            params.cardType = searchs.cardType;
-          }
-
-          if (searchs.query) {
-            params.query = searchs.query;
-          }
-
-          // params.target = 3;
-          // params.own = 4;
-
-          const response = await axios.get(
-            "http://localhost:8080/api/barter/search",
-            {
-              withCredentials: true,
-              params: params,
-            }
-          );
-          dispatch(searchPosts(response.data));
-          console.log(response.data);
-        } catch (error) {
-          console.error("검색 오류 :", error);
-        }
-      };
-      fetchData();
-    }
-  }, [dispatch, searchs]);
-//////////////////////////////////////////////////
- //////////////////////////////////// 
 
 const {
-  boards,
+  // boards,
   hasMore,
   loading,
   error
@@ -133,20 +81,69 @@ const observer = useRef();
     [loading, hasMore]
   );
 
-
-  // search 부분 삭제
+  const searchs = useSelector((state) =>
+    state.search.searchs ? state.search.searchs : null
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!isPreview && searchs) {
+      const fetchData = async () => {
+        try {
+          const params = {};
+
+          if (searchs.targetMembers.length > 0) {
+            if (searchs.targetMembers.length == 1) {
+              params.target = searchs.targetMembers[0].idolMemberId;
+            } else {
+              params.target = searchs.targetMembers.idolMemberId.join(',');
+            }
+          }
+
+          if (searchs.ownMembers.length > 0) {
+            if (searchs.ownMembers.length == 1) {
+              params.own = searchs.ownMembers[0];
+            } else {
+              params.own = searchs.ownMembers.idolMemberId.join(',');
+            }
+          }
+
+          if (searchs.cardType) {
+            params.cardType = searchs.cardType;
+          }
+
+          if (searchs.query) {
+            params.query = searchs.query;
+          }
+
+          const response = await axios.get(
+            "http://localhost:8080/api/barter/search",
+            { params }
+          );
+
+          dispatch(searchPosts(response.data));
+          
+        } catch (error) {
+          console.error("검색 오류 :", error);
+        } 
+      };
+      
+      // dispatch(clearSearchData());
+      // if (searchs) {
+        fetchData();
+      // }
+    }
+  }, [dispatch, searchs]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
-    
     <div sx={{ width: "100%" }}>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
@@ -162,15 +159,16 @@ const observer = useRef();
           />
         </Tabs>
       </Box>
-      <div>전체 게시글</div>
       <CustomTabPanel value={value} index={0}>
-        {boards.length === 0 ? (
+        <div>검색 결과</div>
+
+        {posts.length === 0 ? (
           <div className="no-content">게시글이 없습니다.</div>
         ) : (
           <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
           >
-            {boards.map((post, index) => (
+            {posts.map((post, index) => (
               <div key={index}>
                 <Card
                   id={post.id}
@@ -186,7 +184,7 @@ const observer = useRef();
                   
                 />
                 {/* 마지막 요소일 때만 ref를 전달합니다 */}
-                {index === boards.length - 1 ? <div ref={lastBookElementRef} /> : null}
+                {index === posts.length - 1 ? <div ref={lastBookElementRef} /> : null}
               </div>
             ))}
           </div>
@@ -196,10 +194,10 @@ const observer = useRef();
         <div
           style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
         >
-          {boards.filter((post) => post.type === "판매").length === 0 ? (
+          {posts.filter((post) => post.type === "판매").length === 0 ? (
             <div className="no-content">게시글이 없습니다.</div>
           ) : (
-            boards
+            posts
               .filter((post) => post.type === "판매")
               .map((post, index) => (
                 <Card
