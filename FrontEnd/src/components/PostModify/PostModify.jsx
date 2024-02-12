@@ -1,36 +1,33 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-
-import { modifyPost } from "../../store2/post.js";
-
-import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
-
-import AddIcon from "@mui/icons-material/Add";
-
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { Container, Button } from "@mui/material";
 import RadioButton2 from "../../components/UI/RadioButton2.jsx";
 import BarterModify from "./BarterModify.jsx";
 import SellModify from "./SellModify.jsx";
+import AddIcon from "@mui/icons-material/Add";
 import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";
 
+
 const PostModify = () => {
-  // 어떤 게시글의 수정페이지 인가?
   const { id } = useParams();
-  const posts = useSelector((state) => (state.post ? state.post.posts : []));
-  const post = posts.find((p) => p.id == id);
+  const [post, setPost] = useState(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [cardType, setCardType] = useState(null);
+  ////
+  // const [ownMembers, setOwnMembers] = useState(post.ownMembers);
+  // const [targetMembers, setTargetMembers] = useState(
+  //   post.type === "교환" ? post.targetMembers : []
+  // );
+  const [ownMembers, setOwnMembers] = useState(null); // null로 해야할지 []로 해야할지
+  const [targetMembers, setTargetMembers] = useState(null);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [title, setTitle] = useState(post.title);
-  const [images, setImages] = useState(post.images);
-  const [imagePreviews, setImagePreviews] = useState(post.images);
-  const [content, setContent] = useState(post.content);
-  const [ownMembers, setOwnMembers] = useState(post.ownMembers);
-  const [targetMembers, setTargetMembers] = useState(
-    post.type === "교환" ? post.targetMembers : []
-  );
-  const [cardType, setCardType] = useState(post.cardType);
+  // const [cardType, setCardType] = useState(post.cardType);
 
   const handleOwnMemberSelection = (members) => {
     setOwnMembers(members);
@@ -50,12 +47,43 @@ const PostModify = () => {
     setCardType(cardType);
   };
 
-  // 제목 변경 핸들러
+  ////
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/barter/${id}`,
+        { withCredentials: true }
+        );
+        console.log(response.data)
+        setPost(response.data);
+        setTitle(response.data.title);
+        setContent(response.data.content);
+        setImages(response.data.images);
+        setImagePreviews(response.data.photos.map(photo => `https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`));
+        setOwnMembers(response.data.ownIdolMembers);
+        setTargetMembers(response.data.findIdolMembers);
+        setCardType(response.data.cardType)
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+    };
+
+    fetchPost();
+  }, [id]);
+
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
 
-  // 이미지 변경 핸들러
+  const handleContentChange = (event) => {
+    setContent(event.target.value);
+  };
+
   const handleImageDelete = (index) => {
     setImages((prevImages) => {
       const newImages = [...prevImages];
@@ -70,7 +98,6 @@ const PostModify = () => {
     });
   };
 
-  const fileInputRef = useRef(null);
   const handleImageAdd = () => {
     fileInputRef.current.click();
   };
@@ -86,7 +113,6 @@ const PostModify = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         newImagePreviews.push(reader.result);
-        // 모든 파일의 미리보기 이미지가 준비되면 상태 업데이트
         if (newImagePreviews.length === newImages.length) {
           setImagePreviews((prevImagePreviews) => [
             ...prevImagePreviews,
@@ -98,46 +124,26 @@ const PostModify = () => {
     });
   };
 
-  // 내용 변경 핸들러
-  const handleContentChange = (event) => {
-    setContent(event.target.value);
-  };
+  const handleModifyClick = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      images.forEach((image) => {
+        formData.append("images", image);
+      });
 
-  // 게시물 수정
-  // 날짜는 그대로
-  const handleModifyClick = () => {
-    const modifiedPost =
-      post.type === "교환"
-        ? {
-            id: post.id,
-            writerId: post.writerId,
-            writerNickname: post.writerNickname,
-            title,
-            images,
-            group: post.group,
-            ownMembers,
-            targetMembers,
-            content,
-            cardType,
-            type: "교환",
-            isBartered: post.isBartered,
-          }
-        : {
-            id: post.id,
-            writerId: post.writerId,
-            writerNickname: post.writerNickname,
-            title,
-            images,
-            group: post.group,
-            ownMembers,
-            content,
-            type: "판매",
-            isSold: post.isSold,
-          };
+      await axios.put(`http://localhost:8080/barter/${id}`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-    // Redux를 통해 게시물 수정
-    dispatch(modifyPost(modifiedPost));
-    navigate("/post");
+      navigate("/post");
+    } catch (error) {
+      console.error("Error modifying post:", error);
+    }
   };
 
   const handleCancelButton = () => {
@@ -145,12 +151,16 @@ const PostModify = () => {
     navigate("/post");
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Container>
       <h2 className="write-title">게시글 수정하기</h2>
       <div id="write-container">
         <div id="write-radio-container">
-          <RadioButton2 defaultType={post.type} />
+          <RadioButton2 defaultType={post.cardType} />
         </div>
         <div id="title-container">
           <h3>제목</h3>
@@ -164,7 +174,7 @@ const PostModify = () => {
         </div>
 
         <div id="group-member-input">
-          {post.type === "교환" ? (
+          {post.cardType === "교환" ? (
             <BarterModify
               defaultGroup={post.group}
               defaultOwnMember={ownMembers}
@@ -186,12 +196,12 @@ const PostModify = () => {
         </div>
         <div id="card-input">
           <h3>포토카드 종류</h3>
-          <TypeDropdown
+          {/* <TypeDropdown
             defaultCardType={cardType}
             onChange={(type) => {
               handleTypeChange(type);
             }}
-          />
+          /> */}
         </div>
         <div id="image-input">
           <div>

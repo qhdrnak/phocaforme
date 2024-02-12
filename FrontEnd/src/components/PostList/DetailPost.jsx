@@ -20,28 +20,66 @@ const DetailPost = () => {
   // 일단 주석 
   // const posts = useSelector((state) => (state.post ? state.post.posts : [])); //이건 필요 없을 듯?
   // const post = posts.find((p) => p.id === id); // 얘도 필요 없을 거 같은데
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/barter/${id}`,
+        { withCredentials: true }
+      );
+      const detailData = response.data;
+      setPost(detailData);
+    
+    } catch (error) {
+      console.error('Error fetching post:', error);
+    }
+  };
+  // 디테일 페이지에 진입했을 떄 로컬스토리지에 저장
+  const saveToLocalStorage = () => {
+    if (post && post.id) {
+      const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
+      const cardInfo = {
+        id: post.id,
+        title: post.title,
+        images: post.photos,
+        ownMembers: post.ownIdolMembers,
+        targetMembers: post.findIdolMembers,
+        isBartered: post.bartered,
+        type: post.cardType
+      };
   
-  // console.log(id) 
+      const isExisting = existingRecentCard.some((card) => card.id === post.id);
+  
+      if (isExisting) {
+        const updatedRecentCard = existingRecentCard.filter((card) => card.id !== post.id);
+        updatedRecentCard.push(cardInfo);
+        localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
+      } else {
+        const updatedRecentCard = [...existingRecentCard, cardInfo];
+        if (updatedRecentCard.length > 5) {
+          updatedRecentCard.shift();
+        }
+        localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
+      }
+    }
+  };
 
   useEffect(() => {
-    // API 호출
-    axios.get(`http://localhost:8080/barter/${id}`)
-      .then(response => {
-        // API 응답 처리
-        console.log(response.data)
-        setPost(response.data);
-      })
-      .catch(error => {
-        // 에러 처리
-        console.error('Error fetching post:', error);
-      });
-  }, [id]); 
+    fetchData();
+  }, [id]);
+  
+  useEffect(() => {
+    if (post) {
+      saveToLocalStorage();
+    }
+  }, [post]);
 
-  console.log(post) // undefined
+ 
+
+  console.log(post) // 현재 이 컴포넌트가 4번 렌더링됨 이유는 모르겠음 나중에 여유있으면 수정해야 할듯?
   // 내 게시글인지 판별
   const currentUser = useSelector((state) => state.user.user);
-  // const isCurrentUserWriter = currentUser && currentUser.id === post.writerId;
+  const isCurrentUserWriter = post && currentUser && currentUser.userId === post.userId;
 
   const handleChatClick = () => {
     // 채팅방 생성
@@ -79,6 +117,14 @@ const DetailPost = () => {
 
   const handlePullupClick = () => {};
 
+  if (post === null) {
+    return <div>Loading...</div>; // 데이터가 로드되기 전에는 로딩 중을 표시
+  }
+
+  const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
+  const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
+
+
   return (
     <Container
       className={`card-style${
@@ -101,20 +147,20 @@ const DetailPost = () => {
         </div>
         <hr />
         <div id="writer-type-container">
-          {/* <div>작성자 ⯌ {post.writerNickname}</div> */}
-          {/* <Chip
+          <div>작성자 ⯌ {post.nickName}</div>
+          <Chip
             id="card-type-container"
             label={post.cardType}
             size="small"
             sx={{ ml: 1 }}
-          ></Chip> */}
+          ></Chip>
         </div>
         <div id="image-list-container">
           <ImageList sx={{ display: "flex", width: "100%" }} rowHeight={200}>
-            {/* {post.images.map((image, index) => (
+            {post.photos.map((photo, index) => (
               <ImageListItem key={index}>
                 <img
-                  src={image}
+                  src={`https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`}
                   loading="lazy"
                   style={{
                     width: "20vw",
@@ -123,7 +169,7 @@ const DetailPost = () => {
                   }}
                 />
               </ImageListItem>
-            ))} */}
+            ))}
             <img
               src={post.imageUrl}
               loading="lazy"
@@ -141,15 +187,16 @@ const DetailPost = () => {
             {/* {post.type == "교환" ? ( */}
               <div>
                 <div>
-                  <div id="post-member-container">
-                    {`있어요: ${post.ownMember
-                      .map((member) => member.member_name)
-                      .join(", ")}`}
-                    {" ✦ "}
-                    {`구해요: ${post.targetMember
-                      .map((member) => member.member_name)
-                      .join(", ")}`}
-                  </div>
+                  
+                <div id="post-member-container">
+                  {`있어요: ${ownMembers
+                    .map((member) => member.name)
+                    .join(", ")}`}
+                  {" ✦ "}
+                  {`구해요: ${targetMembers
+                    .map((member) => member.name)
+                    .join(", ")}`}
+                </div>
                 </div>
                 <div>
                   <div></div>
@@ -168,12 +215,12 @@ const DetailPost = () => {
         </div>
         <hr style={{ margin: "1rem 0" }} />
         <div id="post-content-container" style={{ whiteSpace: "pre-line" }}>
-          {/* <div>{post.content}</div> */}
+          <div>{post.content}</div>
         </div>
       </div>
 
       <div id="chat-button-container">
-        {/* {isCurrentUserWriter ? (
+        {isCurrentUserWriter ? (
           <div>
             <Button
               id="modify-button"
@@ -192,7 +239,7 @@ const DetailPost = () => {
               끌어올리기
             </Button>
           </div>
-        ) : ( */}
+        ) : (
           <Button
             id="chat-button"
             variant="contained"
@@ -201,7 +248,7 @@ const DetailPost = () => {
           >
             1:1 채팅하기
           </Button>
-        {/* )} */}
+        )}
       </div>
     </Container>
   );

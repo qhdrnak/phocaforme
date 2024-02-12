@@ -116,12 +116,12 @@ const PostWrite = () => {
     const newPost = new FormData();
     newPost.append("title", title);
     newPost.append("content", content);
-    ownIdolMembers.forEach(memberId => {
-      newPost.append('ownIdolMembers', memberId);
+    ownIdolMembers.forEach(member => {
+      newPost.append('ownIdolMembers', member.idolMemberId);
     });
     
-    findIdolMembers.forEach(memberId => {
-      newPost.append('findIdolMembers', memberId);
+    findIdolMembers.forEach(member => {
+      newPost.append('findIdolMembers', member.idolMemberId);
     });
     newPost.append("cardType", isExchange ? "교환" : "판매");
     images.forEach((image) => {
@@ -141,7 +141,7 @@ const PostWrite = () => {
     
     const test = formDataToJson(newPost);
     console.log(test);
-    // navigate("/post");    
+    navigate("/post");    
       
         axios.post('http://localhost:8080/barter', newPost, {
           withCredentials: true, // withCredentials 옵션 설정

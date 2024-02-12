@@ -14,12 +14,13 @@ import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../../components/UI/Card";
 /////////////////////////////////////////////////////////
 import usePostSearch from "../../utils/infiScroll.js";
-
+//////////
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
+  ////////
 
   return (
     <div>
@@ -56,6 +57,58 @@ const a11yProps = (index) => {
 const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
+ 
+ //////////////////////////////////////////////////
+ //////////////////////////////////// 
+  const dispatch = useDispatch();
+  const searchs = useSelector((state) =>
+    state.search.searchs ? state.search.searchs : null
+  );
+
+  useEffect(() => {
+    if (!isPreview) {
+      const fetchData = async () => {
+        try {
+          const params = {};
+
+          if (searchs.targetMembers) {
+            params.target = searchs.targetMembers;
+            // params.target = 3;
+          }
+
+          if (searchs.ownMembers) {
+            params.own = searchs.ownMembers;
+          }
+
+          if (searchs.cardType) {
+            params.cardType = searchs.cardType;
+          }
+
+          if (searchs.query) {
+            params.query = searchs.query;
+          }
+
+          // params.target = 3;
+          // params.own = 4;
+
+          const response = await axios.get(
+            "http://localhost:8080/api/barter/search",
+            {
+              withCredentials: true,
+              params: params,
+            }
+          );
+          dispatch(searchPosts(response.data));
+          console.log(response.data);
+        } catch (error) {
+          console.error("검색 오류 :", error);
+        }
+      };
+      fetchData();
+    }
+  }, [dispatch, searchs]);
+//////////////////////////////////////////////////
+ //////////////////////////////////// 
 
 const {
   boards,

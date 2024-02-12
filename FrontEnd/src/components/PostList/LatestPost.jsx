@@ -70,6 +70,7 @@ const LatestPost = () => {
     navigate(`/post/${id}`);
   };
 
+  console.log(recentPosts)
   return (
     <Container>
       <h2 className="profile-title">최근 본 게시글</h2>
@@ -112,11 +113,11 @@ const LatestPost = () => {
                       }}
                       id={post.id}
                       title={post.title}
-                      images={post.images}
-                      ownMembers={post.ownMembers}
-                      targetMembers={post.targetMembers}
+                      images={'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + post.images}
+                      ownMembers={post.ownMembers.map(member => ({ member_name: member.name }))} // 변경된 부분
+                      targetMembers={post.targetMembers.map(member => ({ member_name: member.name }))} // 변경된 부분
                       content={post.content}
-                      type={post.type}
+                      type={post.cardType}
                       isBartered={post.isBartered}
                     ></Card>
                   </div>
