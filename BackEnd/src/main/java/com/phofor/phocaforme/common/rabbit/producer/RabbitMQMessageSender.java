@@ -45,13 +45,13 @@ public class RabbitMQMessageSender {
     public void handleWishPersistedEvent(WishCardPersistEvent event){
         WishMessage wishMessage = (WishMessage) event.getSource();
         System.out.println(wishMessage);
-        rabbitTemplate.convertAndSend("wish.exchange","wish.key",wishMessage);
+        rabbitTemplate.convertAndSend("barter.exchange","barter.key",wishMessage);
     }
 
     @EventListener
     public void handleWishRemovedEvent(WishCardDeleteEvent event){
         WishMessage wishMessage = (WishMessage) event.getSource();
         System.out.println(wishMessage);
-        rabbitTemplate.convertAndSend("wish.exchange","wish.key",wishMessage);
+        rabbitTemplate.convertAndSend("barter.exchange","barter.key",wishMessage);
     }
 }

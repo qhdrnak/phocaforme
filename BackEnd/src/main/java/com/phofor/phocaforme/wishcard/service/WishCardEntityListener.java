@@ -9,13 +9,17 @@ import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Component;
 
 import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toInstantFormat;
-
+@Component
 public class WishCardEntityListener {
 
+
+    @PostUpdate
     @PostPersist
     public void afterUpdate(WishCard wishCard){
+        System.out.println(">>>>>>");
         ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
         if(publisher != null){
             WishCardPersistEvent event = new WishCardPersistEvent(new WishMessage(

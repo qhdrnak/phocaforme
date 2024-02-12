@@ -30,9 +30,9 @@ public class QueueWorker {
     private final ObjectMapper objectMapper;
     private final BarterService barterService;
     private final WishCardService wishCardService;
-    @Scheduled(fixedDelay = 10000) // 10초 TODO: application 파일에 schedule delay값 두고 쓰기
+    @Scheduled(fixedDelay = 5000) // 5초 TODO: application 파일에 schedule delay값 두고 쓰기
     public void work() throws JsonProcessingException {
-        log.info("Another 10secs...");
+        log.info("Another 5secs...");
         log.info("Worker searching for messages....");
         List<BarterDetailDto> barterMessages = new ArrayList<>();
         List<Integer> barterTypes = new ArrayList<>();
@@ -42,25 +42,32 @@ public class QueueWorker {
             Message message = rabbitTemplate.receive(QUEUE_NAME);
             if(message==null){break;}
             String messageContent = new String(message.getBody(), StandardCharsets.UTF_8);
-            log.info("Received message: " + messageContent);
             JsonNode rootNode = objectMapper.readTree(messageContent);
             int type = rootNode.path("type").asInt();
 //            Boolean isBartered = rootNode.path("isBartered").asBoolean();
-            if(type==0 ||type==1 || type==2){ // 교환 게시글
+            if(type==0 ||type==1){ // 교환 게시글
                 Long articleId = rootNode.path("articleId").asLong();
                 BarterDetailDto barter = barterService.findOne(articleId);
                 barterTypes.add(type);
                 barterMessages.add(barter);
-            }else{ // 3번 4번 위시포카
+            }else if(type==3){ // 3번 4번 위시포카
                 String userId = rootNode.path("userId").asText();
                 WishDocument wish = wishCardService.findWishCardByUserId(userId);
                 wishTypes.add(type);
                 wishMessages.add(wish);
+            }else if(type==2){
+                Long articleId = rootNode.path("articleId").asLong();
+                barterTypes.add(type);
+                barterMessages.add(new BarterDetailDto(articleId));
+            }else if(type==4){
+                String userId = rootNode.path("userId").asText();
+                wishTypes.add(type);
+                wishMessages.add(new WishDocument(userId));
             }
             // 날짜 데이터 포맷팅
 
         }
-        if(!(barterMessages.isEmpty())){
+        if(!(barterMessages.isEmpty()) || !(wishMessages.isEmpty())){
             elasticsearchBulkProcessor.processToElasticsearch(barterMessages, barterTypes, wishMessages, wishTypes);
         }
     }

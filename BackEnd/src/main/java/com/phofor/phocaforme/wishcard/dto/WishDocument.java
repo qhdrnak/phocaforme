@@ -23,8 +23,8 @@ public class WishDocument {
 //    @Id
 //    @Field(name="wish_card_id")
 //    private Long wishCardId;
-
-    @Field(name="user_id",type= FieldType.Long)
+    @Id
+    @Field(name="user_id",type= FieldType.Keyword)
     private String userId;
 
     @Field(name="idol_member_id",type = FieldType.Long)
@@ -50,5 +50,9 @@ public class WishDocument {
                 .keyword2(wishCard.getKeyword2())
                 .keyword3(wishCard.getKeyword3())
                 .build();
+    }
+
+    public WishDocument(String userId){
+        this.userId = userId;
     }
 }

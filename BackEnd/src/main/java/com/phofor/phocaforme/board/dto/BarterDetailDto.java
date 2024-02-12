@@ -4,6 +4,7 @@ import com.phofor.phocaforme.board.entity.Barter;
 import com.phofor.phocaforme.board.entity.BarterFindIdol;
 import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.entity.BarterOwnIdol;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -20,6 +21,7 @@ import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toIns
 @Builder
 @Getter
 @ToString
+@AllArgsConstructor
 public class BarterDetailDto {
     // 게시글 id
     private Long id;
@@ -69,5 +71,8 @@ public class BarterDetailDto {
                 .build();
     }
 
+    public BarterDetailDto(Long id){
+        this.id=id;
+    }
 
 }

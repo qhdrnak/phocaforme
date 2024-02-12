@@ -37,10 +37,11 @@ public class BarterSearchService {
     public List<String> wishPhoca(String title, List<IdolMemberDto> idols){
         wishQueryBuilder.createQuery(title,idols);
         NativeQuery query = wishQueryBuilder.getSearch();
+        System.out.println(query.getQuery());
         SearchHits<WishDocument> searchHits = barterSearchRepository.findByTitleAndIdols(query);
         SearchPage<WishDocument> searchPage = SearchHitSupport.searchPageFor(
                 searchHits,
-                queryBuilder.getPageRequest()
+                null
         );
         Iterator<SearchHit<WishDocument>> iterator = searchPage.iterator();
         List<String> ids = new ArrayList<>();

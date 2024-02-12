@@ -2,6 +2,7 @@ package com.phofor.phocaforme.wishcard.entity;
 
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.idol.entity.IdolMember;
+import com.phofor.phocaforme.wishcard.service.WishCardEntityListener;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners({WishCardEntityListener.class})
 @Table(name="user_wish_card")
 public class WishCard {
 

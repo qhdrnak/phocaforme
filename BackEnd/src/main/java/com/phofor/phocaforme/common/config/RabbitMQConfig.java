@@ -49,30 +49,30 @@ public class RabbitMQConfig {
     public Queue barterQueue() {
         return new Queue("barter.queue",false);
     }
-    @Bean
-    public Queue wishQueue() {
-        return new Queue("wish.queue",false);
-    }
+//    @Bean
+//    public Queue wishQueue() {
+//        return new Queue("wish.queue",false);
+//    }
 
 
     @Bean
     public DirectExchange barterExchange() {
         return new DirectExchange("barter.exchange");
     }
-    @Bean
-    public DirectExchange wishExchange() {
-        return new DirectExchange("wish.exchange");
-    }
+//    @Bean
+//    public DirectExchange wishExchange() {
+//        return new DirectExchange("wish.exchange");
+//    }
 
 
     @Bean
     public Binding barterBinding(Queue barterQueue, DirectExchange barterExchange) {
         return BindingBuilder.bind(barterQueue).to(barterExchange).with("barter.key");
     }
-    @Bean
-    public Binding wishBinding(Queue wishQueue, DirectExchange wishExchange) {
-        return BindingBuilder.bind(wishQueue).to(wishExchange).with("wish.key");
-    }
+//    @Bean
+//    public Binding wishBinding(Queue wishQueue, DirectExchange wishExchange) {
+//        return BindingBuilder.bind(wishQueue).to(wishExchange).with("wish.key");
+//    }
     /**
      * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환
      *
