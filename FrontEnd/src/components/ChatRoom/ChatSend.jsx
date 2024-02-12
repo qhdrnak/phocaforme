@@ -106,7 +106,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           JSON.stringify({
             chatRoomId: roomId,
             userEmail: loginUser.userId,
-            imgCode: byteArray,
+            imgCode: e.target.result,
           })
         );
       };
