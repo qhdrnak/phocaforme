@@ -56,6 +56,9 @@ public class SecurityConfig {
     @Value("${auth-redirect-url}")
     String redirectUrl;
 
+    @Value("${project.front-url}")
+    String frontUrl;
+
     @Bean
     public CustomLogoutHandler customLogoutHandler() {
         return new CustomLogoutHandler(redisService, userService);
@@ -110,7 +113,7 @@ public class SecurityConfig {
             CorsConfiguration config = new CorsConfiguration();
             config.setAllowedHeaders(Collections.singletonList("*"));
             config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000"));
+            config.setAllowedOriginPatterns(Collections.singletonList(frontUrl));
             config.setAllowCredentials(true);
             return config;
         };

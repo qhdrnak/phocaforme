@@ -26,6 +26,8 @@ public class ElasticsearchBulkProcessor {
     private String username;
     @Value("${elasticsearch.password}")
     private String password;
+    @Value("${elasticsearch.post-url}")
+    private String postUrl;
     public void processToElasticsearch(List<BarterDetailDto> messages, List<Integer> barterTypes,
                                        List<WishDocument> wishes,List<Integer> wishTypes){
         String plainCreds = username+":"+password;
@@ -39,7 +41,7 @@ public class ElasticsearchBulkProcessor {
         log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
 
-        restTemplate.postForObject("http://localhost:9200/barter_post/_bulk",entity,String.class);
+        restTemplate.postForObject(postUrl,entity,String.class);
     }
 
     private String buildBulkRequestBody(List<BarterDetailDto> messages, List<Integer> barterTypes,
