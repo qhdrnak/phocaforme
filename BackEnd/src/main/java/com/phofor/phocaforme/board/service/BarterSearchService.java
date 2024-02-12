@@ -104,7 +104,7 @@ public class BarterSearchService {
         while(iterator.hasNext()){
             BarterDocument barter = iterator.next().getContent();
             /* Select article near 2km from user */
-            Double distance = checkDistance(barter,searchRequest.getLocationDto());
+            Double distance = checkDistance(barter,searchRequest.getLatitude(), searchRequest.getLongitude());
             if(distance>2){
                 continue;
             }
@@ -151,13 +151,13 @@ public class BarterSearchService {
         return EARTH_RADIUS_KM * c;
     }
 
-    public Double checkDistance(BarterDocument barter,GpsLocationDto gpsLocationDto){
+    public Double checkDistance(BarterDocument barter, Double latitude, Double longitude){
         Map<String,Double> writerGPS = redisService.getGpsData(barter.getWriterId());
 
         Double writerLatitude = writerGPS.get("latitude");
         Double writerLongitude = writerGPS.get("longitude");
-        Double searcherLatitude = gpsLocationDto.getLatitude();
-        Double searcherLongitude = gpsLocationDto.getLongitude();
+        Double searcherLatitude = latitude;
+        Double searcherLongitude = longitude;
 
         return calculateDistanceInKilometer(
                 writerLatitude,writerLongitude,

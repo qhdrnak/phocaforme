@@ -16,5 +16,6 @@ public class SearchRequest {
     private String cardType;
     private List<Long> target;
     private List<Long> own;
-    private GpsLocationDto locationDto;
+    private Double longitude;
+    private Double latitude;
 }
