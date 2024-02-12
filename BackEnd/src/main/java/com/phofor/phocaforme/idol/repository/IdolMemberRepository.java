@@ -10,4 +10,7 @@ public interface IdolMemberRepository extends JpaRepository<IdolMember, Long> {
 
     // 해당하는 그룹의 아이돌 멤버 가져오기
     List<IdolMember> findAllByIdolGroupId(@Param("idolGroup") Long idolGroupId);
+
+    // 해당하는 ID의 멤버 가져오기
+    IdolMember findIdolMemberById(@Param("idolMemberId") Long idolMemberId);
 }
