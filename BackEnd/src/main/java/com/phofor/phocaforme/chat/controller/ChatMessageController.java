@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-@CrossOrigin(origins="http://localhost:8080", allowedHeaders = "http://localhost:3000", allowCredentials = "true")
+//@CrossOrigin(origins="http://localhost:8080", allowedHeaders = "http://localhost:3000", allowCredentials = "true")
 @Controller
 public class ChatMessageController {
     private final SimpMessageSendingOperations messagingTemplate;
