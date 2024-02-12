@@ -11,7 +11,6 @@ import com.phofor.phocaforme.board.repository.BarterSearchRepository;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaBuilder;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaDirector;
 import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilder;
-import com.phofor.phocaforme.board.service.query.queryBuilder.WishQueryBuilder;
 import com.phofor.phocaforme.gps.dto.GpsLocationDto;
 import com.phofor.phocaforme.wishcard.dto.WishDocument;
 import com.phofor.phocaforme.wishcard.service.WishQueryBuilder;
