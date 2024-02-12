@@ -44,7 +44,8 @@ public class ChatInterceptor implements ChannelInterceptor {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         StompCommand command = accessor.getCommand();
-        log.info(message.toString());
+        log.info("message : " + message.toString());
+        log.info("payload : " + message.getPayload().toString());
 
         if (StompCommand.CONNECT.equals(command)) {
             // Authorization은 프론트에서 해준 것과 같게 해주면 됨(이름을)
@@ -63,7 +64,7 @@ public class ChatInterceptor implements ChannelInterceptor {
 //            if (StompCommand.CONNECT.equals(command)){
             setValue(accessor, "nickname", userEntity.getNickname());
             setValue(accessor, "userId", userEntity.getUserId());
-            setValue(accessor, "chatRoomId", 1L);
+//            setValue(accessor, "chatRoomId", userEntity.get);
 //            }
 
         }
