@@ -52,9 +52,9 @@ const ChatList = () => {
             <ListItem
               className={
                 (chatroom.visiterId == loginUser &&
-                  chatroom.latestChat.id !== chatroom.visitorLatestChatId) ||
+                  chatroom.latestChat !== chatroom.visitorLatestChatId) ||
                 (chatroom.ownerId == loginUser &&
-                  chatroom.latestChat.id !== chatroom.ownerLatestChatId)
+                  chatroom.latestChat !== chatroom.ownerLatestChatId)
                   ? "unread-chatlist-item"
                   : "chatlist-item"
               }
