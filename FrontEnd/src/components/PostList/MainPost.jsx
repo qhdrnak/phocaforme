@@ -94,7 +94,7 @@ const BasicTabs = ({ isPreview }) => {
           // params.own = 4;
 
           const response = await axios.get(
-            "http://localhost:8080/barter/search",
+              process.env.REACT_APP_API_URL + "barter/search",
             {
               withCredentials: true,
               params: params,

@@ -25,7 +25,7 @@ const ChatList = () => {
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get(`http://localhost:8080/chatRoom`, {
+        .get(process.env.REACT_APP_API_URL + `chatRoom`, {
           withCredentials: true,
         })
         .then((response) => {

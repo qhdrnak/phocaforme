@@ -89,8 +89,8 @@ export default function GPS() {
 
   const getAddress = (long, lat) => {
     axios
-      .post("http://localhost:8080/gps", { longitude: long, latitude: lat })
-      .then((response) => {
+        .post(process.env.REACT_APP_API_URL + "gps", { longitude: long, latitude: lat })
+        .then((response) => {
         console.log(response.data);
         dispatch(setLocation(response.data));
       })

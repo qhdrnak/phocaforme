@@ -51,7 +51,7 @@ const ProfileImage = () => {
 
   const handleLogout = () => {
     // dispatch(logoutUser());
-    window.location.href = "http://localhost:8080/logout";
+    window.location.href = process.env.REACT_APP_LOGIN_API_URL + "auth/logout";
   };
 
   // useEffect 해서 랜더링할 때 db 에 있는 최애 정보 들고와라

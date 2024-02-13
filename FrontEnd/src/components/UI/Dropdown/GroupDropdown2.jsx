@@ -16,7 +16,7 @@ const GroupDropdown2 = ({ isProfile, onChange }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/idol/group",
+            process.env.REACT_APP_API_URL + "idol/group",
           {
             withCredentials: true,
           }

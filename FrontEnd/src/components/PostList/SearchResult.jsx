@@ -120,7 +120,7 @@ const observer = useRef();
 
           console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/barter/search",
+              process.env.REACT_APP_API_URL + "barter/search",
             { params }
           );
 

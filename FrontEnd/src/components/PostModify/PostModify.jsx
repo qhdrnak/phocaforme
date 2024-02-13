@@ -149,7 +149,7 @@ const PostModify = () => {
       for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]); 
       }
-      await axios.put(`http://localhost:8080/barter/${id}`, formData, {
+      await axios.put(process.env.REACT_APP_API_URL + `barter/${id}`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",

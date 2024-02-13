@@ -17,7 +17,7 @@ export default function usePostSearch(pageNumber) {
         let cancel
         axios({
             method: 'GET',
-            url: `http://localhost:8080/barter/search?page=${pageNumber}`,
+            url: process.env.REACT_APP_API_URL + `barter/search?page=${pageNumber}`,
             // params: {page: pageNumber },
             withCredentials: true,
             params: { page: pageNumber },

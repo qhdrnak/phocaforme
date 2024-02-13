@@ -46,7 +46,7 @@ const NicknameModal = ({
     // 닉네임 중복 체크
     // 중복 아니면 validFlag 수정
     axios
-      .post(`http://localhost:8080/user/nickname`,
+      .post(process.env.REACT_APP_API_URL + `user/nickname`,
         { nickname: inputValue },
         {
           withCredentials: true,
@@ -69,7 +69,7 @@ const NicknameModal = ({
 
   const handleChangeNickname = (userId) => {
     axios
-      .put(`http://localhost:8080/user/nickname`,
+      .put(process.env.REACT_APP_API_URL + `user/nickname`,
         {
           isDuplicated: !validFlag,
           nickname: inputValue,

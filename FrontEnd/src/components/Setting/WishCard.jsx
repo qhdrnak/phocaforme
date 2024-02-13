@@ -47,7 +47,7 @@ const WishCard = () => {
     }
     
     // db 에 반영하기
-    axios.put(`http://localhost:8080/user/wishCard`
+    axios.put(process.env.REACT_APP_API_URL + `user/wishCard`
     , data
     , {
       withCredentials: true,
