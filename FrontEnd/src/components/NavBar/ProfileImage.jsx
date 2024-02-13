@@ -21,11 +21,8 @@ import {
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 
-import { logoutUser } from "../../store2/loginUser.js";
-
 import GPS from "./GPS";
 import noBiasImg from "../../assets/images/no_bias.jpg";
-import Cookies from "js-cookie";
 
 const ProfileImage = () => {
   const theme = useTheme();
@@ -60,7 +57,7 @@ const ProfileImage = () => {
   // useEffect 해서 랜더링할 때 최애 정보 들고와라
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/user/bias`, {
+      .get(process.env.REACT_APP_API_URL + `user/bias`, {
         withCredentials: true,
       })
       .then((response) => {

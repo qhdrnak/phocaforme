@@ -21,7 +21,7 @@ const Bias = () => {
   // useEffect 해서 렌더링할 때 최애 정보 들고와라
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/user/bias`, {
+      .get(process.env.REACT_APP_API_URL + `user/bias`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -52,23 +52,23 @@ const Bias = () => {
   };
 
   const handleApplyClick = () => {
-    const url = generateImageUrl(selectedGroup, selectedMember);
-    setImageUrl(url);
 
-    dispatch(setBias([selectedGroup, selectedMember]));
-
+    
     // db 에 반영하기
-    axios.put(process.env.REACT_APP_API_URL + `user/bias/${selectedMember.idolMemberId}`
-    , null
+    axios.put(process.env.REACT_APP_API_URL + `user/bias`
+    , {
+      idolMemberId: selectedMember.idolMemberId
+    }
     , {
       withCredentials: true,
       headers: {
         'Content-Type': 'application/json',
       },
-
+      
     })
     .then(response => {
-      console.log(response);
+      setImageUrl(response.data);
+      dispatch(setBias([selectedGroup, selectedMember]));
     })
     .catch(error => {
       console.error('Error setting bias:', error);
@@ -79,7 +79,6 @@ const Bias = () => {
   return (
     <div className="profile-item-container">
       <h2 className="profile-title">최애 설정</h2>
-      <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
 
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
@@ -105,6 +104,8 @@ const Bias = () => {
             />
           </div>
         </div>
+      <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
+
       </div>
       <div>
         <Avatar id="bias-avatar" src={imageUrl} />
