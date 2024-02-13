@@ -57,8 +57,6 @@ const App = () => {
             <Route path="/login" element={<Login /> } />
             <Route path="/help" element={<Guide /> } />
             <Route path="/modify/:id" element={<Modify /> } />
-           
-
           </Routes>
          
         </BrowserRouter>

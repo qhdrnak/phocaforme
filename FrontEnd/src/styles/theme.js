@@ -21,21 +21,14 @@ const theme = createTheme({
   },
 
   components: {
+    
     MuiGrid: {
       styleOverrides: {
         root: {
         }
       }
     },
-    MuiContainer: {
-      styleOverrides: {
-        root: {
-          alignItems: 'center',
-          width: '95vw',
-          // height: '85vh',
-        }
-      }
-    },
+    
     MuiMenu: {
       styleOverrides: {
         paper: {
