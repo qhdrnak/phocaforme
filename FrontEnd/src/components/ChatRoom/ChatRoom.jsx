@@ -42,9 +42,18 @@ const ChatRoom = () => {
     state.chat.chat ? state.chat.chat : []
   );
 
-  const updateMessages = (newMessage) => {
-    if (newMessage.message.trim() !== "" || newMessage.imgCode !== null) {
-      dispatch(sendChat(newMessage));
+  const updateMessages = (receive) => {
+    if (receive) {
+      const newMessage = {
+        chatRoomId: receive.chatRoomId,
+        createdAt: new Date().toISOString(),
+        imgCode: receive.imgCode,
+        message: receive.message,
+        userEmail: receive.userEmail,
+      };
+      if (newMessage.message || newMessage.imgCode !== null) {
+        dispatch(sendChat(newMessage));
+      }
     }
   };
 
@@ -55,6 +64,7 @@ const ChatRoom = () => {
           withCredentials: true,
         })
         .then((response) => {
+          console.log(response.data);
           dispatch(initChat(response.data));
         })
         .catch((error) => {
@@ -63,17 +73,21 @@ const ChatRoom = () => {
     };
     fetchData();
   }, [dispatch, roomId]);
-  // }, [dispatch, roomId, updateMessages]);
 
   const price = useSelector((state) =>
     state.pay ? state.pay.status.price : 0
   );
+
+  console.log(chatList);
 
   const handlePay = () => {
     // 결제 기능
     console.log(price);
     console.log("카카오페이 연결");
   };
+
+  // 내 id, 채팅 상대방 id 저장
+  // 내 채팅인지 판별 후 닉네임으로 변경하기
 
   return (
     <Container>
@@ -102,6 +116,7 @@ const ChatRoom = () => {
                   }
                 >
                   {messageData.userEmail}
+                  {/* 여기서 파싱 */}
                 </div>
                 <div
                   // key={index}

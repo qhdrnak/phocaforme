@@ -75,7 +75,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         {},
         JSON.stringify({
           chatRoomId: roomId,
-          userEmail: loginUser.nickname,
+          userEmail: loginUser.userId,
           message: value,
         })
       );
@@ -100,7 +100,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           {},
           JSON.stringify({
             chatRoomId: roomId,
-            userEmail: loginUser.nickname,
+            userEmail: loginUser.userId,
             imgCode: e.target.result,
           })
         );
@@ -114,27 +114,12 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const handleSetImage = (receive) => {
-    const newMessage = {
-      chatRoomId: roomId,
-      createdAt: new Date().toISOString(),
-      imgCode: receive.imgCode,
-      message: "",
-      userEmail: loginUser.userId,
-      isPay: false,
-    };
-    updateMessages(newMessage);
+    updateMessages(receive);
     handleClose();
   };
 
-  const handleSendClick = () => {
-    const newMessage = {
-      chatRoomId: roomId,
-      createdAt: new Date().toISOString(),
-      imgCode: null,
-      message: value,
-      userEmail: loginUser.userId,
-    };
-    updateMessages(newMessage);
+  const handleSendClick = (receive) => {
+    updateMessages(receive);
     sendMessage();
   };
 

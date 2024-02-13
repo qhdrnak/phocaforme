@@ -24,15 +24,14 @@ const theme = createTheme({
     MuiGrid: {
       styleOverrides: {
         root: {
-          padding: "1rem 0",
         }
       }
     },
     MuiContainer: {
       styleOverrides: {
         root: {
-          
-          width: '85vw',
+          alignItems: 'center',
+          width: '95vw',
           // height: '85vh',
         }
       }
