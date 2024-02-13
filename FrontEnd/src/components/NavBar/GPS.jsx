@@ -84,18 +84,41 @@ export default function GPS() {
           getAddress(position.coords.longitude, position.coords.latitude)
         );
       });
+    } else {
+      turnOffGps();
     }
   }, [isSwitchOn, dispatch]);
 
   const getAddress = (long, lat) => {
     axios
-      .post("http://localhost:8080/gps", { longitude: long, latitude: lat })
+      .put(
+        process.env.REACT_APP_API_URL + `gps`,
+        {
+          longitude: long,
+          latitude: lat,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
-        console.log(response.data);
         dispatch(setLocation(response.data));
       })
       .catch((error) => {
         console.error("주소변환 실패:", error);
+      });
+  };
+
+  const turnOffGps = () => {
+    axios
+      .get(process.env.REACT_APP_API_URL + `gps`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        dispatch(setLocation(null));
+      })
+      .catch((error) => {
+        console.error("gps off error:", error);
       });
   };
 

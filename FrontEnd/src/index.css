@@ -527,6 +527,11 @@
 
 
 /* 마이페이지 */
+#bias-description {
+    margin: 0 0 0.5rem 0;
+    color: #FD9DD1;
+}
+
 .bias-title {
     margin: 0.5rem 0;
 }

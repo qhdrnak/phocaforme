@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
@@ -18,7 +18,19 @@ const Bias = () => {
   const [selectedMember, setSelectedMember] = useState(user.defalutMember);
   const [imageUrl, setImageUrl] = useState(null);
 
-  console.log(selectedGroup);
+  // useEffect 해서 렌더링할 때 최애 정보 들고와라
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/user/bias`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setImageUrl(response.data.idolImage);
+      })
+      .catch((error) => {
+        console.error("Error get bias:", error);
+      });
+  }, [user]);
 
   const handleGroupChange = (group) => {
     if (group) {
@@ -70,6 +82,8 @@ const Bias = () => {
   return (
     <div className="profile-item-container">
       <h2 className="profile-title">최애 설정</h2>
+      <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
+
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
           <div className="bias-title">그룹명</div>
@@ -96,11 +110,11 @@ const Bias = () => {
         </div>
       </div>
       <div>
-        <Avatar id="bias-avatar" key={imageUrl} src={imageUrl} />
+        <Avatar id="bias-avatar" src={imageUrl} />
       </div>
       <div>
         <Button variant="contained" onClick={handleApplyClick}>
-          적용
+          설정
         </Button>
       </div>
     </div>
