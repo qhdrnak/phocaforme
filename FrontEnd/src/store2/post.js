@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import logo1 from "../assets/images/logo_nct.png";
 
 const initialPostState = {
   posts: [],
