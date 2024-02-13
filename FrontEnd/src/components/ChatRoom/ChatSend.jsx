@@ -66,7 +66,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     return () => {
       ws.disconnect();
     };
-  }, []);
+  }, [receive]);
 
   const sendMessage = () => {
     if (ws && roomId && loginUser && value) {

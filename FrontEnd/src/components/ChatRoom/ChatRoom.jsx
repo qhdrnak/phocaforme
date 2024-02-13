@@ -38,6 +38,10 @@ const ChatRoom = () => {
     }
   });
 
+  const chatList = useSelector((state) =>
+    state.chat.chat ? state.chat.chat : []
+  );
+
   const updateMessages = (newMessage) => {
     if (newMessage.message.trim() !== "" || newMessage.imgCode !== null) {
       dispatch(sendChat(newMessage));
@@ -58,11 +62,8 @@ const ChatRoom = () => {
         });
     };
     fetchData();
-  }, [dispatch, roomId, updateMessages]);
-
-  const chatList = useSelector((state) =>
-    state.chat.chat ? state.chat.chat : []
-  );
+  }, [dispatch, roomId]);
+  // }, [dispatch, roomId, updateMessages]);
 
   const price = useSelector((state) =>
     state.pay ? state.pay.status.price : 0
