@@ -48,7 +48,7 @@ public class ChatInterceptor implements ChannelInterceptor {
         if (StompCommand.SUBSCRIBE.equals(command)){
             log.info("ChatInterceptor");
             String[] destination = accessor.getDestination().split("/");
-            log.info(destination[destination.length-1]);
+            log.info(destination[destination.length-1].replace("room",""));
             setValue(accessor, "chatRoomId", Long.parseLong(destination[destination.length-1]));
         }
 
