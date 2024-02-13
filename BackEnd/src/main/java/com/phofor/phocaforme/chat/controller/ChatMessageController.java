@@ -43,7 +43,6 @@ public class ChatMessageController {
         // Redis로 유저 정보 뽑아오기
         //tokenCookie = CookieUtil.resolveToken(request);
         //log.info(tokenCookie.getValue());
-        simpSessionAttributes.put("chatRoomId", chatRoomId);
         return chatMessageService.save(chatMessageRequestDto, chatRoomId, simpSessionAttributes);
     }
 

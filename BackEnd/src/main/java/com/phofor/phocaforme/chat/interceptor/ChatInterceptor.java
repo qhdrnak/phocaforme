@@ -45,6 +45,11 @@ public class ChatInterceptor implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         StompCommand command = accessor.getCommand();
 
+        if (StompCommand.SUBSCRIBE.equals(command)){
+            String[] destination = accessor.getDestination().split("/");
+            setValue(accessor, "chatRoomId", Long.parseLong(destination[destination.length-1]));
+        }
+
         if (StompCommand.CONNECT.equals(command)) {
             // Authorization은 프론트에서 해준 것과 같게 해주면 됨(이름을)
             String authToken = accessor.getFirstNativeHeader("Authorization");
