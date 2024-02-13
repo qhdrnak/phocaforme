@@ -197,8 +197,8 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
             senderNickname = senderUserEntity.getNickname();
             receiverNickname = receiverUserEntity.getNickname();
 
-            title = receiverNickname + "님 채팅 도착하였습니다!";
-            content = senderNickname + "으로부터 새로운 채팅이 왔어요!! 확인 해보세요!!";
+            title = receiverNickname + "님 채팅이 도착했어요!";
+            content = senderNickname + "님으로부터 새로운 채팅이 왔어요!";
             link = domain + "/chatRoom"; // 채팅함으로 이동
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
