@@ -3,6 +3,7 @@ package com.phofor.phocaforme.auth.controller;
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
 import com.phofor.phocaforme.auth.service.user.UserService;
 import com.phofor.phocaforme.auth.util.CookieUtil;
+import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,12 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 
 @Slf4j
@@ -28,11 +28,12 @@ public class BiasSelectController {
     private final UserService userService;
 
     // 최애 등록
-    @PutMapping("/user/bias/{idolMemberId}")
-    public ResponseEntity<?> updateBias(@PathVariable Long idolMemberId,
+    @PutMapping("/user/bias")
+    public ResponseEntity<?> updateBias(@RequestBody Map<String, Long> biasIdol,
                                         HttpServletRequest request, HttpServletResponse response,
                                         @AuthenticationPrincipal CustomOAuth2User oauth2User) {
 
+        Long idolMemberId = biasIdol.get("idolMemberId");
         String userId = oauth2User.getUserEntity().getUserId();
         HttpStatus status;
         Cookie tokenCookie = CookieUtil.resolveToken(request);
@@ -54,6 +55,7 @@ public class BiasSelectController {
             }
 
             // 갱신
+            log.info("쿠키 :{}", profileCookie);
             String encodedValue = URLEncoder.encode(profileURL, StandardCharsets.UTF_8);
             Cookie newProfileCookie = new Cookie("profile", encodedValue);
             newProfileCookie.setPath("/");
@@ -61,15 +63,27 @@ public class BiasSelectController {
             newProfileCookie.setMaxAge(time); // 쿠키 유효 시간 설정
             response.addCookie(newProfileCookie); // 쿠키를 응답에 추가
             status = HttpStatus.ACCEPTED;
-
+            log.info("쿠키 시간:{}", newProfileCookie.getMaxAge());
+            log.info("쿠키 값:{}", newProfileCookie.getValue());
         } else {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<>(profileURL, status);
     }
 
-//
-
-//    @PutMapping()
-//    public ResponseEntity<>
+    // 최애 불러오기
+    @GetMapping("/user/bias")
+    public ResponseEntity<?> getBias(@AuthenticationPrincipal CustomOAuth2User oauth2User) {
+        String userId = oauth2User.getUserEntity().getUserId();
+        HttpStatus status;
+        IdolMemberResponseDto idolMemberResponseDto = userService.loadBias(userId);
+        if(idolMemberResponseDto != null) {
+            status = HttpStatus.ACCEPTED;
+            return new ResponseEntity<>(idolMemberResponseDto, status);
+        }
+        else {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity<>(status);
+        }
+    }
 }

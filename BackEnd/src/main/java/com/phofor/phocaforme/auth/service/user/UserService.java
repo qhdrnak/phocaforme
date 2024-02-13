@@ -6,6 +6,7 @@ import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import com.phofor.phocaforme.wishcard.entity.WishCard;
@@ -207,7 +208,7 @@ public class UserService extends DefaultOAuth2UserService {
         return false; // 유저를 찾지 못한 경우 false 반환
     }
 
-
+    // 최애 업데이트
     @Transactional
     public String updateBias(String userId, Long idolMemberId, String accessToken){
         Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
@@ -248,6 +249,26 @@ public class UserService extends DefaultOAuth2UserService {
         } else {
             return "";
         }
+    }
+
+    // 최애 불러오기
+    @Transactional
+    public IdolMemberResponseDto loadBias(String userId){
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        // 최애 가져오기
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            // 최애가 있다면 아이돌 정보 가져오기
+            if(userEntity.getBiasId() != null) {
+                Optional<IdolMember> idolMemberOptional = idolMemberRepository.findById(userEntity.getBiasId());
+                if (idolMemberOptional.isPresent()) {
+                    IdolMember idolMember = idolMemberOptional.get();
+                    return IdolMemberResponseDto.of(idolMember);
+                }
+            }
+            return null;
+        }
+        return null;
     }
 
     private void refreshRedisData(Map<String, Object> pastMapData, CustomOAuth2User oAuth2User,
