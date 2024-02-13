@@ -1,18 +1,18 @@
 package com.phofor.phocaforme.idol.controller;
 
-import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
+import com.phofor.phocaforme.idol.dto.response.IdolRankResponseDto;
 import com.phofor.phocaforme.idol.dto.response.IdolGroupResponseDto;
 import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
+import com.phofor.phocaforme.idol.service.IdolRankService;
 import com.phofor.phocaforme.idol.service.IdolSelectService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -23,7 +23,7 @@ public class IdolController {
     // 2. 아이돌 그룹 선택하면 해당하는 멤버 부려주기
 
     private final IdolSelectService idolSelectService;
-
+    private final IdolRankService idolRankService;
 
     // 모든 아이돌 그룹 리스트 반환
     @GetMapping("/idol/group")
@@ -41,5 +41,11 @@ public class IdolController {
     @GetMapping("/idol/{idolMemberId}")
     public ResponseEntity<IdolMemberResponseDto> getIdolMember(@PathVariable Long idolMemberId) {
         return ResponseEntity.ok().body(idolSelectService.getIdolMemberByIdolMemberId(idolMemberId));
+    }
+
+    // 어제 날짜(연월일 형식) 전달 시 아이돌 랭킹 남녀 각 3위까지 반환
+    @GetMapping("/idol/rank")
+    public ResponseEntity<IdolRankResponseDto> getIdolRank(LocalDate date){
+        return ResponseEntity.ok().body(idolRankService.findByDate(date));
     }
 }
