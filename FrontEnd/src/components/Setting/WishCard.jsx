@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { Button, TextField, Chip } from "@mui/material";
@@ -93,11 +93,37 @@ const WishCard = () => {
     setHelperText("");
   };
 
+  const [wishCards, setWishCards] = useState([]);
+
+  // 이미 갈망포카가 있다면 가져와라
+  useEffect(() => {
+    axios
+      .get(process.env.REACT_APP_API_URL + `user/wishCard`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setWishCards(response.data);
+      })
+      .catch((error) => {
+        console.error("Error get wishcard:", error);
+      });
+  }, []);
+
   return (
     <div className="profile-item-container">
       <h2 className="profile-title">갈망포카 설정</h2>
       <div id="wishcard-container">
         <h4 className="profile-title">현재 나의 갈망포카</h4>
+        <div className="wishcard-content">
+          <div>
+            {wishCards.length !== 0
+              ? wishCards.idolMemberResponseDto.idolName
+              : "아직 갈망포카가 없어요"}
+          </div>
+          <div>{wishCards.keyword1 ? wishCards.keyword1 : null}</div>
+          <div>{wishCards.keyword2 ? wishCards.keyword2 : null}</div>
+          <div>{wishCards.keyword3 ? wishCards.keyword3 : null}</div>
+        </div>
         <div></div>
       </div>
       <div className="profile-dropdown-container">

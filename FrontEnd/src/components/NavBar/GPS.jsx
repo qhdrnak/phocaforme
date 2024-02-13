@@ -75,6 +75,9 @@ export default function GPS() {
   const [isSwitchOn, setIsSwitchOn] = React.useState(false);
   const handleSwitchChange = () => {
     setIsSwitchOn((prev) => !prev);
+    if (!isSwitchOn) {
+      turnOffGps();
+    }
   };
 
   useEffect(() => {
@@ -84,8 +87,6 @@ export default function GPS() {
           getAddress(position.coords.longitude, position.coords.latitude)
         );
       });
-    } else {
-      turnOffGps();
     }
   }, [isSwitchOn, dispatch]);
 
