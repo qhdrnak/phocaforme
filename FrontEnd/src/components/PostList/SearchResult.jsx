@@ -81,8 +81,10 @@ const BasicTabs = ({ isPreview }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isPreview && searchs) {
-      console.log(searchs);
+    // if (!isPreview && !searchs.isCleared) {
+    if (!isPreview) {
+
+
       const fetchData = async () => {
         try {
           const params = {};
@@ -103,15 +105,13 @@ const BasicTabs = ({ isPreview }) => {
             }
           }
 
-          if (searchs.cardType) {
-            params.cardType = searchs.cardType;
+          if (searchs.cardType.value) {
+            params.cardType = searchs.cardType.value;
           }
 
           if (searchs.query) {
             params.query = searchs.query;
           }
-
-          console.log(params);
 
           const response = await axios.get(
             process.env.REACT_APP_API_URL + "barter/search",
@@ -124,15 +124,14 @@ const BasicTabs = ({ isPreview }) => {
           );
 
           dispatch(searchPosts(response.data));
+
         } catch (error) {
           console.error("검색 오류 :", error);
         }
       };
 
-      // dispatch(clearSearchData());
-      // if (searchs) {
-      fetchData();
-      // }
+        fetchData();
+      
     }
   }, [dispatch, searchs]);
 

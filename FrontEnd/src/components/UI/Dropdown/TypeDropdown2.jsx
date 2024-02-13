@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Box, TextField, Autocomplete } from "@mui/material";
 
@@ -12,7 +11,14 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
     { value: "기타", label: "기타" },
   ];
 
-  const [value, setValue] = useState(defaultCardType);
+  const [value, setValue] = useState(null);
+
+  useEffect(() => {
+    if (defaultCardType) {
+      setValue(defaultCardType);
+      onChange(defaultCardType);
+    }
+  }, []);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
