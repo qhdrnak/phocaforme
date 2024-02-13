@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 
 import Chip from "@mui/material/Chip";
 
-import GroupDropdown from "../UI/Dropdown/GroupDropdown.jsx";
-import MemberDropdown from "../UI/Dropdown/MemberDropdown.jsx";
+import GroupDropdown from "../UI/Dropdown/GroupDropdown2.jsx";
+import MemberDropdown from "../UI/Dropdown/MemberDropdown2.jsx";
 
 const BarterModify = ({
   defaultGroup,
   defaultOwnMember,
   defaultTargetMember,
   onChange,
+  
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const BarterModify = ({
 
   const handleGroupChange = (group) => {
     setSelectedGroup(group || { value: "", label: "", avatarSrc: "" });
+    
   };
 
   const [ownMembers, setOwnMembers] = useState([]);
@@ -59,13 +61,13 @@ const BarterModify = ({
       targetMembers.filter((member) => member !== deletedMember)
     );
   };
-
+ 
   return (
     <div>
       <div id="group-input" className="search-box-group">
         <h3>그룹명</h3>
         <GroupDropdown
-          defaultGroup={defaultGroup}
+          defaultGroup={selectedGroup}
           onChange={(group) => {
             handleGroupChange(group);
           }}
@@ -76,17 +78,17 @@ const BarterModify = ({
         <div id="own-member-dropdown">
           <h3>보유한 멤버</h3>
           <MemberDropdown
-            selectedGroup={defaultGroup}
+            selectedGroup={selectedGroup}
             onChange={(member) => {
               handleOwnMemberChange(member);
             }}
           />
           <div>
-            {defaultOwnMember &&
-              defaultOwnMember.map((tag, index) => (
+            {ownMembers &&
+              ownMembers.map((tag, index) => (
                 <Chip
                   key={index}
-                  label={tag?.label}
+                  label={tag?.idolName}
                   variant="outlined"
                   onClick={() => handleOwnMemberDelete(tag)}
                   onDelete={() => handleOwnMemberDelete(tag)}
@@ -103,18 +105,19 @@ const BarterModify = ({
         <div>
           <h3>찾는 멤버</h3>
           <MemberDropdown
-            selectedGroup={defaultGroup}
-            defaultMember={defaultTargetMember}
+            selectedGroup={selectedGroup}
+            defaultMember={defaultTargetMember.map((member) => member.idolName)}
             onChange={(member) => {
               handleTargetMemberChange(member);
             }}
           />
           <div>
-            {defaultTargetMember &&
-              defaultTargetMember.map((tag, index) => (
+            {targetMembers &&
+              targetMembers.map((tag) => (
+                
                 <Chip
-                  key={index}
-                  label={tag?.label}
+                  key={tag.id}
+                  label={tag?.idolName}
                   variant="outlined"
                   onClick={() => handleTargetMemberDelete(tag)}
                   onDelete={() => handleTargetMemberDelete(tag)}

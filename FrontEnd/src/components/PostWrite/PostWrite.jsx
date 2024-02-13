@@ -128,6 +128,7 @@ const PostWrite = () => {
       newPost.append(`photos`, image);
     });
     
+    
     // console.log(newPost)
 
     // formdata값확인용 코드 //////
@@ -163,7 +164,7 @@ const PostWrite = () => {
     console.log("게시물 생성 취소");
     navigate("/post");
   };
-
+  
   return (
     <Container>
       <h2 className="write-title">게시글 작성하기</h2>

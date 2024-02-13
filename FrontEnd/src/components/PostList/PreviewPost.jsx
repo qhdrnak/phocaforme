@@ -41,7 +41,7 @@ const PreviewPost = () => {
 
   // 맨처음 4개만 보여줄거니까 짤라서 previewPost에 담아서 얘를 화면에 렌더링
   const previewPost = postData.slice(0,4)
-
+ 
   return (
     <Container id="preview-container">
       <h2 className="main-title">둘러보기 🔍</h2>

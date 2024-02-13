@@ -9,8 +9,9 @@ import { initializeApp } from 'firebase/app'; // Firebase 모듈 가져오기
 import { getMessaging, getToken } from 'firebase/messaging'; // Firebase Messaging 모듈 가져오기
 
 const Main = () => {
+    // Redux 스토어에서 유저 정보 가져오기
     const user = useSelector((state) => (state.user ? state.user.user : [])); 
-    const userId = user.userId; // 사용자를 식별할 수 있는 ID
+    const token = user.token; // 토큰 추출
 
     useEffect(() => {
         const firebaseConfig = {
@@ -56,13 +57,18 @@ const Main = () => {
                 });
         };
 
-        const sendTokenToServerBackend = (token) => {
-            fetch(`http://localhost:8080/users/${userId}/device`, {
+        const sendTokenToServerBackend = (currentToken) => {
+            fetch(`http://localhost:8080/user/device`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    // 'Authorization': `Bearer ${token}`, // 토큰을 요청 헤더에 추가
                 },
-                body: JSON.stringify({ token: token }),
+                body: JSON.stringify({ 
+                    deviceToken: currentToken,
+                    
+                }),
+                credentials: 'include'
             })
             .then(response => {
                 if (!response.ok) {
@@ -74,7 +80,7 @@ const Main = () => {
                 console.error('푸시 토큰을 서버로 전송하는 중 오류 발생:', error);
             });
         };
-
+        
         handlePageLoad();
     }, []);
 

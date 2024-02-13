@@ -109,7 +109,7 @@ const DetailPost = () => {
 
   const handleModifyClick = (id) => {
     console.log(id);
-    navigate(`/modify/${id}`);
+    navigate(`/modify/${id}`, { state: post });
   };
 
   const handlePullupClick = () => {};
@@ -121,7 +121,7 @@ const DetailPost = () => {
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
   const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
 
-
+  console.log(post.cardType)
   return (
     <Container
       className={`card-style${
