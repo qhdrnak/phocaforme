@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import axios from 'axios'
+import axios from "axios";
 
 import { setBias } from "../../store2/loginUser.js";
 
@@ -22,7 +22,6 @@ const Bias = () => {
     } else {
       setSelectedGroup(null);
     }
-    
   };
 
   const handleMemberChange = (member) => {
@@ -41,24 +40,27 @@ const Bias = () => {
     setImageUrl(url);
 
     dispatch(setBias([selectedGroup, selectedMember]));
-    
+
     // db 에 반영하기
-    axios.put(`http://localhost:8080/user/bias/${selectedMember.idolMemberId}`
-    , null
-    , {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-
-    })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error('Error setting bias:', error);
-    }); 
-
+    axios
+      .put(
+        `http://localhost:8080/user/bias`,
+        {
+          idolMemberId: selectedMember.idolMemberId,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error setting bias:", error);
+      });
   };
 
   return (
