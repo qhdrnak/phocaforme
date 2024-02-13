@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -56,11 +56,13 @@ const a11yProps = (index) => {
 
 const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(2);
  
  //////////////////////////////////////////////////
  //////////////////////////////////// 
-  const dispatch = useDispatch();
+
+ const dispatch = useDispatch();
+ 
   const searchs = useSelector((state) =>
     state.search.searchs ? state.search.searchs : null
   );
@@ -92,7 +94,7 @@ const BasicTabs = ({ isPreview }) => {
           // params.own = 4;
 
           const response = await axios.get(
-            "http://localhost:8080/api/barter/search",
+            "http://localhost:8080/barter/search",
             {
               withCredentials: true,
               params: params,
@@ -136,7 +138,6 @@ const observer = useRef();
 
   // search 부분 삭제
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
 
