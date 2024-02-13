@@ -79,7 +79,6 @@ const Bias = () => {
   return (
     <div className="profile-item-container">
       <h2 className="profile-title">최애 설정</h2>
-      <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
 
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
@@ -105,6 +104,8 @@ const Bias = () => {
             />
           </div>
         </div>
+      <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
+
       </div>
       <div>
         <Avatar id="bias-avatar" src={imageUrl} />
