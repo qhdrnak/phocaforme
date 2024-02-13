@@ -58,59 +58,9 @@ const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(2);
  
- //////////////////////////////////////////////////
- //////////////////////////////////// 
-
  const dispatch = useDispatch();
  
-  const searchs = useSelector((state) =>
-    state.search.searchs ? state.search.searchs : null
-  );
-
-  useEffect(() => {
-    if (!isPreview) {
-      const fetchData = async () => {
-        try {
-          const params = {};
-
-          if (searchs.targetMembers) {
-            params.target = searchs.targetMembers;
-            // params.target = 3;
-          }
-
-          if (searchs.ownMembers) {
-            params.own = searchs.ownMembers;
-          }
-
-          if (searchs.cardType) {
-            params.cardType = searchs.cardType;
-          }
-
-          if (searchs.query) {
-            params.query = searchs.query;
-          }
-
-          // params.target = 3;
-          // params.own = 4;
-
-          const response = await axios.get(
-              process.env.REACT_APP_API_URL + "barter/search",
-            {
-              withCredentials: true,
-              params: params,
-            }
-          );
-          dispatch(searchPosts(response.data));
-          console.log(response.data);
-        } catch (error) {
-          console.error("검색 오류 :", error);
-        }
-      };
-      fetchData();
-    }
-  }, [dispatch, searchs]);
-//////////////////////////////////////////////////
- //////////////////////////////////// 
+ // search 부분 삭제
 
 const {
   boards,
@@ -136,7 +86,7 @@ const observer = useRef();
   );
 
 
-  // search 부분 삭제
+  
 
   const navigate = useNavigate();
 

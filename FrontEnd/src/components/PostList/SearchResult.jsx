@@ -81,41 +81,37 @@ const BasicTabs = ({ isPreview }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isPreview && searchs) {
-      console.log(searchs);
+    // if (!isPreview && !searchs.isCleared) {
+    if (!isPreview) {
+
+
       const fetchData = async () => {
         try {
           const params = {};
 
-          if (searchs.targetMembers && searchs.targetMembers.length > 0) {
+          if (searchs.targetMembers.length > 0) {
             if (searchs.targetMembers.length == 1) {
-              params.target = searchs.targetMembers.idolMemberId;
+              params.target = searchs.targetMembers[0].idolMemberId;
             } else {
-              params.target = searchs.targetMembers
-                .map((member) => member.idolMemberId)
-                .join(",");
+              params.target = searchs.targetMembers.idolMemberId.join(",");
             }
           }
 
-          if (searchs.ownMembers && searchs.ownMembers.length > 0) {
+          if (searchs.ownMembers.length > 0) {
             if (searchs.ownMembers.length == 1) {
-              params.own = searchs.ownMembers.idolMemberId;
+              params.own = searchs.ownMembers[0].idolMemberId;
             } else {
-              params.own = searchs.ownMembers
-                .map((member) => member.idolMemberId)
-                .join(",");
+              params.own = searchs.ownMembers.idolMemberId.join(",");
             }
           }
 
-          if (searchs.cardType) {
-            params.cardType = searchs.cardType;
+          if (searchs.cardType.value) {
+            params.cardType = searchs.cardType.value;
           }
 
           if (searchs.query) {
             params.query = searchs.query;
           }
-
-          console.log(params);
 
           const response = await axios.get(
             process.env.REACT_APP_API_URL + "barter/search",
@@ -128,15 +124,14 @@ const BasicTabs = ({ isPreview }) => {
           );
 
           dispatch(searchPosts(response.data));
+
         } catch (error) {
           console.error("검색 오류 :", error);
         }
       };
 
-      // dispatch(clearSearchData());
-      // if (searchs) {
-      fetchData();
-      // }
+        fetchData();
+      
     }
   }, [dispatch, searchs]);
 
