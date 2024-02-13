@@ -87,23 +87,28 @@ const BasicTabs = ({ isPreview }) => {
 
   useEffect(() => {
     if (!isPreview && searchs) {
+      console.log(searchs);
       const fetchData = async () => {
         try {
           const params = {};
 
-          if (searchs.targetMembers.length > 0) {
+          if (searchs.targetMembers && searchs.targetMembers.length > 0) {
             if (searchs.targetMembers.length == 1) {
               params.target = searchs.targetMembers[0].idolMemberId;
             } else {
-              params.target = searchs.targetMembers.idolMemberId.join(",");
+              params.target = searchs.targetMembers
+                .map((member) => member.idolMemberId)
+                .join(",");
             }
           }
 
-          if (searchs.ownMembers.length > 0) {
+          if (searchs.ownMembers && searchs.ownMembers.length > 0) {
             if (searchs.ownMembers.length == 1) {
               params.own = searchs.ownMembers[0].idolMemberId;
             } else {
-              params.own = searchs.ownMembers.idolMemberId.join(",");
+              params.own = searchs.ownMembers
+                .map((member) => member.idolMemberId)
+                .join(",");
             }
           }
 
@@ -118,7 +123,12 @@ const BasicTabs = ({ isPreview }) => {
           console.log(params);
           const response = await axios.get(
             "http://localhost:8080/barter/search",
-            { params }
+            { params },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
 
           dispatch(searchPosts(response.data));
