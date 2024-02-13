@@ -39,24 +39,15 @@ const WishCard = () => {
     }
 
     const data = {
-      memberId: selectedMember ? selectedMember.idolMemberId : null, 
-      keyword1: labels.length > 0 ? labels[0] : null, 
-      keyword2: labels.length > 1 ? labels[1] : null, 
-      keyword3: labels.length > 2 ? labels[2] : null, 
-    }
-    
-    // db 에 반영하기
-    axios.put(process.env.REACT_APP_API_URL + `user/wishCard`
-    , data
-    , {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      memberId: selectedMember ? selectedMember.idolMemberId : null,
+      keyword1: labels.length > 0 ? labels[0] : null,
+      keyword2: labels.length > 1 ? labels[1] : null,
+      keyword3: labels.length > 2 ? labels[2] : null,
+    };
 
     // db 에 반영하기
     axios
-      .put(`http://localhost:8080/user/wishCard`, data, {
+      .put(process.env.REACT_APP_API_URL + `user/wishCard`, data, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
