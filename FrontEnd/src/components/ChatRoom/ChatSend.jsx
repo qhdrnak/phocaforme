@@ -200,12 +200,12 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
             ref: inputRef,
           },
           startAdornment: (
-            <InputAdornment>
+            <InputAdornment position="start">
               <Add onClick={handleClick} />
             </InputAdornment>
           ),
           endAdornment: (
-            <InputAdornment>
+            <InputAdornment position="end">
               <ArrowCircleUp
                 id="sendIcon"
                 onClick={handleSendClick}

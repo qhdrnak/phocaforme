@@ -64,7 +64,6 @@ const ChatRoom = () => {
           withCredentials: true,
         })
         .then((response) => {
-          console.log(response.data);
           dispatch(initChat(response.data));
         })
         .catch((error) => {
@@ -78,16 +77,37 @@ const ChatRoom = () => {
     state.pay ? state.pay.status.price : 0
   );
 
-  console.log(chatList);
-
   const handlePay = () => {
     // 결제 기능
     console.log(price);
     console.log("카카오페이 연결");
   };
 
-  // 내 id, 채팅 상대방 id 저장
-  // 내 채팅인지 판별 후 닉네임으로 변경하기
+  // 채팅 상대방 이름 가져와
+  const [visiterNickname, setVisiterNickname] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .post(
+          `http://localhost:8080/users/nickname`,
+          {
+            userId: location.state.visiterId,
+          },
+          {
+            "Content-Type": "application/json",
+            withCredentials: true,
+          }
+        )
+        .then((response) => {
+          setVisiterNickname(response.data);
+        })
+        .catch((error) => {
+          console.error("Error get nickname:", error);
+        });
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container>
@@ -106,20 +126,19 @@ const ChatRoom = () => {
               </div>
             </div>
             {chatList.map((messageData, index) => (
-              <div>
+              <div key={index}>
                 <div
-                  // key={messageData.}
                   className={
                     messageData.userEmail == loginUser.userId
                       ? "chat-owner-name"
                       : "chat-visiter-name"
                   }
                 >
-                  {messageData.userEmail}
-                  {/* 여기서 파싱 */}
+                  {messageData.userEmail == loginUser.userId
+                    ? loginUser.nickname
+                    : visiterNickname}
                 </div>
                 <div
-                  // key={index}
                   className={
                     messageData.userEmail == loginUser.userId
                       ? "chat-owner"
