@@ -56,23 +56,28 @@ const Main = () => {
                 });
         };
 
-        const sendTokenToServerBackend = (token) => {
-            fetch(`https://phocafor.me/api/users/${userId}/device`, {
+        const sendTokenToServerBackend = (currentToken) => {
+            fetch(process.env.REACT_APP_API_URL + `user/device`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    // 'Authorization': `Bearer ${token}`, // 토큰을 요청 헤더에 추가
                 },
-                body: JSON.stringify({ token: token }),
+                body: JSON.stringify({
+                    deviceToken: currentToken,
+
+                }),
+                credentials: 'include'
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('서버 응답이 실패했습니다.');
-                }
-                console.log('푸시 토큰을 서버로 전송했습니다.');
-            })
-            .catch(error => {
-                console.error('푸시 토큰을 서버로 전송하는 중 오류 발생:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('서버 응답이 실패했습니다.');
+                    }
+                    console.log('푸시 토큰을 서버로 전송했습니다.');
+                })
+                .catch(error => {
+                    console.error('푸시 토큰을 서버로 전송하는 중 오류 발생:', error);
+                });
         };
 
         handlePageLoad();
