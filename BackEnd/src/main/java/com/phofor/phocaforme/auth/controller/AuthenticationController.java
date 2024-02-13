@@ -162,6 +162,18 @@ public class AuthenticationController {
         return new ResponseEntity<>(status);
     }
 
+    // 닉네임 가져오기
+    @PostMapping("/users/nickname")
+    public ResponseEntity<?> loadNickname(@RequestBody Map<String, String> userId) {
+        HttpStatus status;
+        String userNickname = userService.loadNickname(userId.get("userId"));
+        if(userNickname != null)
+            status = HttpStatus.ACCEPTED;
+        else
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        return new ResponseEntity<>(userNickname, status);
+    }
+
     // 기기 코드 등록
     @PostMapping("/user/device")
     public ResponseEntity<?> registDevice(@RequestBody Map<String, String> deviceToken,

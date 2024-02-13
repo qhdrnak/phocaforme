@@ -139,6 +139,13 @@ public class UserService extends DefaultOAuth2UserService {
             return null;
         }
     }
+
+    @Transactional
+    public String loadNickname(String userId) {
+        // 유저 찾기
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        return userEntityOptional.map(UserEntity::getNickname).orElse(null);
+    }
     @Transactional
     public Boolean modifyNicknameByUserId(String userId, String newNickname, String accessToken) {
         // 유저 찾기
