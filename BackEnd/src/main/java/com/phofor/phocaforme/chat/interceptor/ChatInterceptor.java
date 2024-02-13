@@ -62,7 +62,7 @@ public class ChatInterceptor implements ChannelInterceptor {
 //            if (StompCommand.CONNECT.equals(command)){
             setValue(accessor, "nickname", userEntity.getNickname());
             setValue(accessor, "userId", userEntity.getUserId());
-//            setValue(accessor, "chatRoomId", 1L);
+            setValue(accessor, "chatRoomId", 1L);
             log.info(userEntity.getNickname());
             log.info(userEntity.getUserName());
             log.info(userEntity.getUserId());
