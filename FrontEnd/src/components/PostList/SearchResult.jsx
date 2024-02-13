@@ -55,12 +55,7 @@ const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
 
-  const {
-    // boards,
-    hasMore,
-    loading,
-    error,
-  } = usePostSearch(pageNumber);
+  const { hasMore, loading, error } = usePostSearch(pageNumber);
 
   const observer = useRef();
   const lastBookElementRef = useCallback(
@@ -94,7 +89,7 @@ const BasicTabs = ({ isPreview }) => {
 
           if (searchs.targetMembers && searchs.targetMembers.length > 0) {
             if (searchs.targetMembers.length == 1) {
-              params.target = searchs.targetMembers[0].idolMemberId;
+              params.target = searchs.targetMembers.idolMemberId;
             } else {
               params.target = searchs.targetMembers
                 .map((member) => member.idolMemberId)
@@ -104,7 +99,7 @@ const BasicTabs = ({ isPreview }) => {
 
           if (searchs.ownMembers && searchs.ownMembers.length > 0) {
             if (searchs.ownMembers.length == 1) {
-              params.own = searchs.ownMembers[0].idolMemberId;
+              params.own = searchs.ownMembers.idolMemberId;
             } else {
               params.own = searchs.ownMembers
                 .map((member) => member.idolMemberId)
@@ -121,9 +116,15 @@ const BasicTabs = ({ isPreview }) => {
           }
 
           console.log(params);
+
           const response = await axios.get(
-              process.env.REACT_APP_API_URL + "barter/search",
-            { params }
+            process.env.REACT_APP_API_URL + "barter/search",
+            { params },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
 
           dispatch(searchPosts(response.data));
