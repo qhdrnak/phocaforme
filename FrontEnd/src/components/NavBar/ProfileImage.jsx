@@ -48,13 +48,12 @@ const ProfileImage = () => {
 
   const user = useSelector((state) => state.user.user);
 
-
   const handleLogout = () => {
     // dispatch(logoutUser());
     window.location.href = "http://localhost:8080/logout";
   };
 
-  // useEffect 해서 랜더링할 때 db 에 있는 최애 정보 들고와라
+  // useEffect 해서 랜더링할 때 쿠키에 있는 최애 정보 들고와라
 
   return (
     <div className="profile-image-container">
@@ -64,7 +63,6 @@ const ProfileImage = () => {
             id="profile-image"
             className="profile-image gradient-border background-image"
             src={user.defaultMember ? user.defaultMember.idolImage : profile}
-            
           ></img>
         </IconButton>
         <Paper sx={{ backgroundColor: theme.palette.primary.main }}>
