@@ -12,9 +12,13 @@ import MemberDropdown from "../UI/Dropdown/MemberDropdown2";
 const Bias = () => {
   const dispatch = useDispatch();
 
-  const [selectedGroup, setSelectedGroup] = useState(0);
-  const [selectedMember, setSelectedMember] = useState(null);
+  const user = useSelector((state) => state.user.user);
+
+  const [selectedGroup, setSelectedGroup] = useState(user.defalutGroup);
+  const [selectedMember, setSelectedMember] = useState(user.defalutMember);
   const [imageUrl, setImageUrl] = useState(null);
+
+  console.log(selectedGroup);
 
   const handleGroupChange = (group) => {
     if (group) {
@@ -56,7 +60,7 @@ const Bias = () => {
         }
       )
       .then((response) => {
-        console.log(response);
+        console.log("최애 반영 성공");
       })
       .catch((error) => {
         console.error("Error setting bias:", error);
@@ -68,7 +72,7 @@ const Bias = () => {
       <h2 className="profile-title">최애 설정</h2>
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
-          <div>그룹명</div>
+          <div className="bias-title">그룹명</div>
           <div>
             <GroupDropdown
               isProfile={true}
@@ -79,7 +83,7 @@ const Bias = () => {
           </div>
         </div>
         <div id="bias-member-container">
-          <div>멤버명</div>
+          <div className="bias-title">멤버명</div>
           <div>
             <MemberDropdown
               isProfile={true}

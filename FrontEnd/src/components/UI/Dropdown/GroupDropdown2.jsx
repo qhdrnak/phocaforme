@@ -10,19 +10,14 @@ import logo2 from "../../../assets/images/logo_shinee.jpg";
 
 const GroupDropdown2 = ({ isProfile, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/idol/group",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get("http://localhost:8080/idol/group", {
+          withCredentials: true,
+        });
         setGroupItems(response.data);
-        console.log(groupItems);
       } catch (error) {
         console.error("그룹 세팅 오류:", error);
       }
@@ -47,8 +42,12 @@ const GroupDropdown2 = ({ isProfile, onChange }) => {
         size="small"
         id="group-dropdown"
         options={groupItems}
-        getOptionLabel={(option) => `${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
+        getOptionLabel={(option) =>
+          `${option.idolGroupNameKr} (${option.idolGroupNameEng})`
+        }
+        isOptionEqualToValue={(option, value) =>
+          option.idolGroupNameKr === value.idolGroupNameKr
+        }
         sx={{
           width: isProfile ? "12rem" : "80vw",
           "& .MuiInputBase-root": { borderRadius: "10px" },

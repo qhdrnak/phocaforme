@@ -527,6 +527,14 @@
 
 
 /* 마이페이지 */
+.bias-title {
+    margin: 0.5rem 0;
+}
+
+#bias-keyword {
+    text-align: center;
+}
+
 #nickname-title {
     width: 20vw;
 }

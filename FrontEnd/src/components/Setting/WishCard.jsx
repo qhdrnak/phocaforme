@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 
 import { Button, TextField, Chip } from "@mui/material";
 
@@ -22,7 +22,6 @@ const WishCard = () => {
       setSelectedGroup(null);
       setSelectedMember(null);
     }
-
   };
 
   const handleMemberChange = (member) => {
@@ -30,8 +29,8 @@ const WishCard = () => {
   };
 
   // 갈망포카 객체 생성
-  const labels = tags.map(tag => tag.label);
-  
+  const labels = tags.map((tag) => tag.label);
+
   const handleWishCard = () => {
     // 그룹, 멤버 설정 안하면 안됨
     if (selectedMember == null) {
@@ -40,28 +39,26 @@ const WishCard = () => {
     }
 
     const data = {
-      memberId: selectedMember ? selectedMember.idolMemberId : null, 
-      keyword1: labels.length > 0 ? labels[0] : null, 
-      keyword2: labels.length > 1 ? labels[1] : null, 
-      keyword3: labels.length > 2 ? labels[2] : null, 
-    }
-    
-    // db 에 반영하기
-    axios.put(`http://localhost:8080/user/wishCard`
-    , data
-    , {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      memberId: selectedMember ? selectedMember.idolMemberId : null,
+      keyword1: labels.length > 0 ? labels[0] : null,
+      keyword2: labels.length > 1 ? labels[1] : null,
+      keyword3: labels.length > 2 ? labels[2] : null,
+    };
 
-    })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error('Error setting bias:', error);
-    }); 
+    // db 에 반영하기
+    axios
+      .put(`http://localhost:8080/user/wishCard`, data, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error setting bias:", error);
+      });
   };
 
   // 키워드 관련
@@ -99,15 +96,13 @@ const WishCard = () => {
   return (
     <div className="profile-item-container">
       <h2 className="profile-title">갈망포카 설정</h2>
-      <div id='wishcard-container'>
+      <div id="wishcard-container">
         <h4 className="profile-title">현재 나의 갈망포카</h4>
-        <div>
-
-        </div>
+        <div></div>
       </div>
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
-          <div>그룹명</div>
+          <div className="bias-title">그룹명</div>
           <div>
             <GroupDropdown
               isProfile={true}
@@ -118,7 +113,7 @@ const WishCard = () => {
           </div>
         </div>
         <div id="wishcard-member-container">
-          <div>멤버명</div>
+          <div className="bias-title">멤버명</div>
           <div>
             <MemberDropdown
               isProfile={true}
@@ -132,6 +127,9 @@ const WishCard = () => {
       </div>
       <div>
         <div id="wishcard-input-container">
+          <div className="bias-title" id="bias-keyword">
+            키워드를 입력해주세요
+          </div>
           <TextField
             size="small"
             placeholder="앨범명, 콘서트명, 버전명, 종류 등을 입력하세요."
