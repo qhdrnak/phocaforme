@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Container, Button } from "@mui/material";
 import RadioButton2 from "../../components/UI/RadioButton2.jsx";
@@ -9,32 +8,61 @@ import SellModify from "./SellModify.jsx";
 import AddIcon from "@mui/icons-material/Add";
 import TypeDropdown from "../UI/Dropdown/TypeDropdown.jsx";
 
-
 const PostModify = () => {
+  const navigate = useNavigate(); // useNavigate 훅 추가
+
   const { id } = useParams();
-  const [post, setPost] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cardType, setCardType] = useState(null);
-  ////
-  // const [ownMembers, setOwnMembers] = useState(post.ownMembers);
-  // const [targetMembers, setTargetMembers] = useState(
-  //   post.type === "교환" ? post.targetMembers : []
-  // );
-  const [ownMembers, setOwnMembers] = useState(null); // null로 해야할지 []로 해야할지
+  const [ownIdolMembers, setOwnIdolMembers] = useState([]);
+  const [findIdolMembers, setFindIdolMembers] = useState([]);
+
+  const location = useLocation();
+  const { state: post } = location;
+  const {
+    id: postId,
+    title: postTitle,
+    content: postContent,
+    images: postImages,
+    cardType: postCardType,
+    ownMembers: postOwnIdolMembers,
+    targetMembers: postFindIdolMembers,
+  } = location.state;
+
+  console.log(postCardType)
+  useEffect(() => {
+    if (post.photos && post.photos.length > 0) {
+      const defaultImagePreviews = post.photos.map(photo => `https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`);
+      setImagePreviews(defaultImagePreviews);
+    }
+  }, [post]);
+
+  useEffect(() => {
+    setTitle(postTitle || "");
+    setContent(postContent || "");
+    setImages(postImages || []);
+    // setOwnIdolMembers(postOwnIdolMembers || []);
+    // setFindIdolMembers(findIdolMembers || []);
+    setCardType(postCardType || null);
+    setLoading(false);
+  }, [postTitle, postContent, postImages, postCardType, postOwnIdolMembers, postFindIdolMembers]);
+
+
+  const [ownMembers, setOwnMembers] = useState(null);
   const [targetMembers, setTargetMembers] = useState(null);
 
-  // const [cardType, setCardType] = useState(post.cardType);
+  const fileInputRef = useRef(null); // useRef를 사용하여 fileInputRef 정의
 
   const handleOwnMemberSelection = (members) => {
-    setOwnMembers(members);
+    setOwnIdolMembers(members);
   };
 
   const handleTargetMemberSelection = (members) => {
-    setTargetMembers(members);
+    setFindIdolMembers(members);
   };
 
   const handleTypeChange = (cardType) => {
@@ -46,35 +74,6 @@ const PostModify = () => {
     }
     setCardType(cardType);
   };
-
-  ////
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8080/barter/${id}`,
-        { withCredentials: true }
-        );
-        console.log(response.data)
-        setPost(response.data);
-        setTitle(response.data.title);
-        setContent(response.data.content);
-        setImages(response.data.images);
-        setImagePreviews(response.data.photos.map(photo => `https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`));
-        setOwnMembers(response.data.ownIdolMembers);
-        setTargetMembers(response.data.findIdolMembers);
-        setCardType(response.data.cardType)
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching post:", error);
-      }
-    };
-
-    fetchPost();
-  }, [id]);
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -102,22 +101,26 @@ const PostModify = () => {
     fileInputRef.current.click();
   };
 
+  
+
   const handleImageChange = (event) => {
     const files = event.target.files;
-    setImages((prevImages) => [...prevImages, ...Array.from(files)]);
-
+  
+    // 이미지를 추가할 때 이전 상태를 기반으로 새로운 배열을 생성합니다.
+    setImages((prevImages) => {
+      const newImages = prevImages ? [...prevImages, ...Array.from(files)] : Array.from(files);
+      return newImages;
+    });
+  
     const newImages = Array.from(files);
     const newImagePreviews = [];
-
+  
     newImages.forEach((file) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         newImagePreviews.push(reader.result);
         if (newImagePreviews.length === newImages.length) {
-          setImagePreviews((prevImagePreviews) => [
-            ...prevImagePreviews,
-            ...newImagePreviews,
-          ]);
+          setImagePreviews((prevImagePreviews) => [...prevImagePreviews, ...newImagePreviews]);
         }
       };
       reader.readAsDataURL(file);
@@ -129,38 +132,51 @@ const PostModify = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
-      images.forEach((image) => {
-        formData.append("images", image);
+      formData.append("cardType", cardType);
+      ownIdolMembers.forEach(member => {
+        formData.append('ownIdolMembers', member.idolMemberId);
+      });
+      
+      findIdolMembers.forEach(member => {
+        formData.append('findIdolMembers', member.idolMemberId);
       });
 
-      await axios.put(`http://localhost:8080/barter/${id}`, formData, {
+      images.forEach((image) => {
+        formData.append("photos", image);
+      });
+      console.log(images)
+
+      for (var pair of formData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]); 
+      }
+      await axios.put(process.env.REACT_APP_API_URL + `barter/${id}`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-
+      
       navigate("/post");
     } catch (error) {
+      
       console.error("Error modifying post:", error);
     }
   };
 
   const handleCancelButton = () => {
-    console.log("게시물 수정 취소");
     navigate("/post");
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
+ 
   return (
     <Container>
       <h2 className="write-title">게시글 수정하기</h2>
       <div id="write-container">
         <div id="write-radio-container">
-          <RadioButton2 defaultType={post.cardType} />
+          <RadioButton2 defaultType={cardType} />
         </div>
         <div id="title-container">
           <h3>제목</h3>
@@ -174,11 +190,11 @@ const PostModify = () => {
         </div>
 
         <div id="group-member-input">
-          {post.cardType === "교환" ? (
+          {postCardType === "교환" ? (
             <BarterModify
-              defaultGroup={post.group}
-              defaultOwnMember={ownMembers}
-              defaultTargetMember={targetMembers}
+              defaultGroup={post.group || []} // defaultGroup 수정 필요
+              defaultOwnMember={ownMembers || []}
+              defaultTargetMember={targetMembers || []}
               onChange={(ownMembers, targetMembers) => {
                 handleOwnMemberSelection(ownMembers);
                 handleTargetMemberSelection(targetMembers);
@@ -186,8 +202,8 @@ const PostModify = () => {
             />
           ) : (
             <SellModify
-              defaultGroup={post.group}
-              defaultOwnMember={ownMembers}
+              defaultGroup={post.group || []} // defaultGroup 수정 필요
+              defaultOwnMember={ownMembers || []}
               onChange={(ownMembers) => {
                 handleOwnMemberSelection(ownMembers);
               }}
@@ -196,19 +212,17 @@ const PostModify = () => {
         </div>
         <div id="card-input">
           <h3>포토카드 종류</h3>
-          {/* <TypeDropdown
-            defaultCardType={cardType}
+          <TypeDropdown
+            // defaultCardType={cardType}
             onChange={(type) => {
               handleTypeChange(type);
             }}
-          /> */}
+          />
         </div>
         <div id="image-input">
           <div>
             <h3>사진 (클릭시 삭제됩니다.)</h3>
-            <p className="info-msg">
-              * 사진 사이즈는 포토카드 사이즈가 좋아요!
-            </p>
+            <p className="info-msg">* 사진 사이즈는 포토카드 사이즈가 좋아요!</p>
           </div>
           <div id="image-list">
             <input
@@ -222,18 +236,11 @@ const PostModify = () => {
             <div id="image-add-button" onClick={handleImageAdd}>
               <AddIcon id="image-add-icon" />
             </div>
+      
             {imagePreviews &&
               imagePreviews.map((preview, index) => (
-                <div
-                  className="image-container"
-                  key={index}
-                  onClick={() => handleImageDelete(index)}
-                >
-                  <img
-                    className="image-preview"
-                    src={preview}
-                    alt={`Image Preview ${index + 1}`}
-                  />
+                <div className="image-container" key={index} onClick={() => handleImageDelete(index)}>
+                  <img className="image-preview" src={preview} alt={`Image Preview ${index + 1}`} />
                 </div>
               ))}
           </div>
@@ -256,11 +263,7 @@ const PostModify = () => {
           >
             수정
           </Button>
-          <Button
-            variant="contained"
-            color="warning"
-            onClick={handleCancelButton}
-          >
+          <Button variant="contained" color="warning" onClick={handleCancelButton}>
             취소
           </Button>
         </div>

@@ -65,7 +65,7 @@ const BarterWrite = ({ onChange }) => {
       targetMembers.filter((member) => member !== deletedMember)
     );
   };
-
+  console.log(ownMembers)
   return (
     <div>
       <div id="group-input" className="search-box-group">

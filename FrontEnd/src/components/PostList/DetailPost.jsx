@@ -24,7 +24,7 @@ const DetailPost = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/barter/${id}`,
+      const response = await axios.get(process.env.REACT_APP_API_URL + `barter/${id}`,
         { withCredentials: true }
       );
       const detailData = response.data;
@@ -84,8 +84,7 @@ const DetailPost = () => {
   const handleChatClick = () => {
     // 채팅방 생성
     axios
-      .post(`http://localhost:8080/chatRoom/${id}`, 
-      // .post(`http://localhost:8080/api/chatRoom/1`, 
+        .post(process.env.REACT_APP_API_URL + `chatRoom/${id}`,
       null,
       {
         headers: {
@@ -109,7 +108,7 @@ const DetailPost = () => {
 
   const handleModifyClick = (id) => {
     console.log(id);
-    navigate(`/modify/${id}`);
+    navigate(`/modify/${id}`, { state: post });
   };
 
   const handlePullupClick = () => {};
@@ -121,7 +120,7 @@ const DetailPost = () => {
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
   const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
 
-
+  console.log(post.cardType)
   return (
     <Container
       className={`card-style${

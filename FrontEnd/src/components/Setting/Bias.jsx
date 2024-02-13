@@ -58,25 +58,22 @@ const Bias = () => {
     dispatch(setBias([selectedGroup, selectedMember]));
 
     // db 에 반영하기
-    axios
-      .put(
-        `http://localhost:8080/user/bias`,
-        {
-          idolMemberId: selectedMember.idolMemberId,
-        },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        console.log("최애 반영 성공");
-      })
-      .catch((error) => {
-        console.error("Error setting bias:", error);
-      });
+    axios.put(process.env.REACT_APP_API_URL + `user/bias/${selectedMember.idolMemberId}`
+    , null
+    , {
+      withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error('Error setting bias:', error);
+    }); 
+
   };
 
   return (

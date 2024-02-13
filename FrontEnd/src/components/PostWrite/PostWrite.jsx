@@ -128,6 +128,7 @@ const PostWrite = () => {
       newPost.append(`photos`, image);
     });
     
+    
     // console.log(newPost)
 
     // formdata값확인용 코드 //////
@@ -143,7 +144,7 @@ const PostWrite = () => {
     console.log(test);
     navigate("/post");    
       
-        axios.post('http://localhost:8080/barter', newPost, {
+        axios.post(process.env.REACT_APP_API_URL + 'barter', newPost, {
           withCredentials: true, // withCredentials 옵션 설정
           headers: {
             "Content-Type": "multipart/form-data",
@@ -163,7 +164,7 @@ const PostWrite = () => {
     console.log("게시물 생성 취소");
     navigate("/post");
   };
-
+  
   return (
     <Container>
       <h2 className="write-title">게시글 작성하기</h2>

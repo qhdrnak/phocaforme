@@ -122,13 +122,8 @@ const BasicTabs = ({ isPreview }) => {
 
           console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/barter/search",
-            { params },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
+              process.env.REACT_APP_API_URL + "barter/search",
+            { params }
           );
 
           dispatch(searchPosts(response.data));

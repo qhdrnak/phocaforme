@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+ import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -94,7 +94,7 @@ const BasicTabs = ({ isPreview }) => {
           // params.own = 4;
 
           const response = await axios.get(
-            "http://localhost:8080/barter/search",
+              process.env.REACT_APP_API_URL + "barter/search",
             {
               withCredentials: true,
               params: params,

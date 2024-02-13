@@ -19,7 +19,7 @@ const PreviewPost = () => {
     // 데이터를 불러오는 비동기 함수를 정의합니다.
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/barter/search', {
+          const response = await axios.get(process.env.REACT_APP_API_URL + 'barter/search', {
           withCredentials: true,
         });
         // 받아온 데이터를 상태 변수에 저장합니다.
@@ -41,7 +41,7 @@ const PreviewPost = () => {
 
   // 맨처음 4개만 보여줄거니까 짤라서 previewPost에 담아서 얘를 화면에 렌더링
   const previewPost = postData.slice(0,4)
-
+ 
   return (
     <Container id="preview-container">
       <h2 className="main-title">둘러보기 🔍</h2>

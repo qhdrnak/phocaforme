@@ -40,10 +40,10 @@ const NavBar = ({ children }) => {
           {/* <button onClick={handleLogout}>로그아웃</button> */}
           <div
             id="bell"
-            // onClick={() => {
-            //   navigate("/alarm");
-            // }}
-            onClick={test}
+            onClick={() => {
+              navigate("/alarm");
+            }}
+            // onClick={test}
           >
             <Bell />
           </div>

@@ -73,8 +73,7 @@ const NicknameModal = ({
 
   const handleChangeNickname = (userId) => {
     axios
-      .put(
-        `http://localhost:8080/user/nickname`,
+      .put(process.env.REACT_APP_API_URL + `user/nickname`,
         {
           isDuplicated: !validFlag,
           nickname: inputValue,

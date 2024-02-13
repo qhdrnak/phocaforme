@@ -52,7 +52,7 @@ const ProfileImage = () => {
 
   const handleLogout = () => {
     // dispatch(logoutUser());
-    window.location.href = "http://localhost:8080/logout";
+    window.location.href = process.env.REACT_APP_LOGIN_API_URL + "auth/logout";
   };
 
   const [biasImg, setBiasImg] = useState(null);

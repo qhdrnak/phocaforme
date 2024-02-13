@@ -14,9 +14,12 @@ const GroupDropdown2 = ({ isProfile, onChange }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/idol/group", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+            process.env.REACT_APP_API_URL + "idol/group",
+          {
+            withCredentials: true,
+          }
+        );
         setGroupItems(response.data);
       } catch (error) {
         console.error("그룹 세팅 오류:", error);
