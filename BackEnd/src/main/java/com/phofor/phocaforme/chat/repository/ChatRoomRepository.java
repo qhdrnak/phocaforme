@@ -18,7 +18,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //            order by cr.createdAt
 //            """)
     // ownerId나 visiterId와 userId가 같은거 불러오기
-    List<ChatRoom> findAllByOwnerIdOrVisiterId(@Param("userId") String ownerId, @Param("userId") String visiterId);
+    List<ChatRoom> findAllByOwnerIdOrVisiterIdOrderByChatLatestDesc(@Param("userId") String ownerId, @Param("userId") String visiterId);
 
 //    @Query("""
 //        SELECT new com.example.chatimage.chat.dto.response.ChatRoomResponseDto

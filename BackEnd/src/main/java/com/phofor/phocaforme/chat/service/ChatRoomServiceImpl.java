@@ -42,7 +42,7 @@ public class ChatRoomServiceImpl implements ChatRoomService{
         String userId = customOAuth2User.getUserEntity().getUserId();
         log.info(userId);
         List<ChatRoomResponseDto> allChatRoomDto = new ArrayList<>();
-        for (ChatRoom c : chatRoomRepository.findAllByOwnerIdOrVisiterId(userId, userId)) {
+        for (ChatRoom c : chatRoomRepository.findAllByOwnerIdOrVisiterIdOrderByChatLatestDesc(userId, userId)) {
             allChatRoomDto.add(ChatRoomResponseDto.of(c));
         }
         return allChatRoomDto;
