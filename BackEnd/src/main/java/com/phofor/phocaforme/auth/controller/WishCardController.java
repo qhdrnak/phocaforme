@@ -2,7 +2,6 @@ package com.phofor.phocaforme.auth.controller;
 
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
 import com.phofor.phocaforme.auth.entity.UserEntity;
-import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
 import com.phofor.phocaforme.wishcard.dto.WishCardInfoDto;
 import com.phofor.phocaforme.wishcard.dto.response.WishCardResponseDto;
 import com.phofor.phocaforme.wishcard.service.WishCardService;
