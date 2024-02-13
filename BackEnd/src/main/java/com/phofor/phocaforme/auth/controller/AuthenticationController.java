@@ -140,13 +140,15 @@ public class AuthenticationController {
         tokenCookie = CookieUtil.resolveToken(request);
         Cookie nicknameCookie = CookieUtil.resolveNickname(request);
 
-        int time = nicknameCookie.getMaxAge();
-        log.info("시간 :{}", nicknameCookie.getMaxAge());
+        int time = (60*60*24*14) + (60*60*9); //14일 유지
+        log.info("시간 :{}", time);
 
         UserEntity userEntity = oauth2User.getUserEntity();
         if(userService.modifyNicknameByUserId(userEntity.getUserId(), newNickname, tokenCookie.getValue())) {
-            // 기존 쿠키 지우기
-            nicknameCookie.setMaxAge(0);
+
+            if(nicknameCookie != null)
+                // 기존 쿠키 지우기
+                nicknameCookie.setMaxAge(0);
 
             // 갱신
             String encodedValue = URLEncoder.encode(newNickname, StandardCharsets.UTF_8);
