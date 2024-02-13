@@ -34,11 +34,13 @@ const Search = function () {
   // 최근 검색 기록 가져와
   useEffect(() => {
     const searchHistory = JSON.parse(localStorage.getItem("searchCondition"));
-    // console.log(searchHistory);
-    setUserInput(searchHistory.query);
-    setOwnMembers(searchHistory.ownMembers);
-    setTargetMembers(searchHistory.targetMembers);
-    setCardType(searchHistory.cardType);
+    
+    if (searchHistory) {
+      setUserInput(searchHistory.query);
+      setOwnMembers(searchHistory.ownMembers);
+      setTargetMembers(searchHistory.targetMembers);
+      setCardType(searchHistory.cardType);
+    }
   }, [isClicked]);
 
   const handleTypeChange = (cardType) => {
