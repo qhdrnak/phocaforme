@@ -14,6 +14,7 @@ import java.util.Map;
  * OAuth2User 객체가 Redis에 저장될 것이며, 개인 프로필 사진 링크(S3)도 저장될 예정
  * Controller에서는 이 객체를 통해 사용자 정보를 받아와 DTO를 생성해 사용
  */
+
 public class CustomOAuth2User implements OAuth2User, Serializable {
 
     @Serial
@@ -56,5 +57,9 @@ public class CustomOAuth2User implements OAuth2User, Serializable {
 
     public void setUserEntity(UserEntity userEntity) {
         this.userEntity = userEntity;
+    }
+
+    public void setProfilePhotoUrl(String profilePhotoUrl) {
+        this.profilePhotoUrl = profilePhotoUrl;
     }
 }

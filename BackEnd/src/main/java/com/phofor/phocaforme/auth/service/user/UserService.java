@@ -6,6 +6,9 @@ import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserDeviceRepository;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
+import com.phofor.phocaforme.idol.entity.IdolMember;
+import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import com.phofor.phocaforme.wishcard.entity.WishCard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,10 +39,14 @@ public class UserService extends DefaultOAuth2UserService {
 
     private final UserDeviceRepository userDeviceRepository;
 
-    public UserService(UserRepository userRepository, UserDeviceRepository userDeviceRepository, RedisService redisService) {
+    private final IdolMemberRepository idolMemberRepository;
+
+    public UserService(UserRepository userRepository, UserDeviceRepository userDeviceRepository,
+                       RedisService redisService, IdolMemberRepository idolMemberRepository) {
         this.userRepository = userRepository;
         this.userDeviceRepository = userDeviceRepository;
         this.redisService = redisService;
+        this.idolMemberRepository = idolMemberRepository;
     }
 
     @Override
@@ -72,9 +79,6 @@ public class UserService extends DefaultOAuth2UserService {
 
         // UserEntity 존재여부 확인 및 없으면 생성
         UserEntity check = getUserByKakaoId(kakaoId);
-
-        // 유저 프로필
-        String profileUrl = "프로필 사진";
         
         if(check == null){
             // 시간 정보는 DB안에서 생성됨, 닉네임은 초기값으로 이메일로 통일
@@ -88,6 +92,17 @@ public class UserService extends DefaultOAuth2UserService {
         }else{
             // 회원 정보가 있다면 레코드 불러오기
             userEntity = check;
+        }
+
+        // 프로필 사진 초기화
+        String profileUrl = "";
+        // 최애 설정이 된 경우
+        if(userEntity.getBiasId() != null){
+            // 유저 프로필 설정
+            Optional<IdolMember> optionalIdolMember = idolMemberRepository.findIdolMemberById(userEntity.getBiasId());
+            if(optionalIdolMember.isPresent()){
+                profileUrl = optionalIdolMember.get().getImage();
+            }
         }
         return new CustomOAuth2User(oauth2User, userEntity, profileUrl);
     }
@@ -141,42 +156,21 @@ public class UserService extends DefaultOAuth2UserService {
             // 새로운 정보 저장 - 자동 update
             UserEntity newUserEntity = userRepository.save(userEntity);
 
-            // 레디스에 저장된 유저 정보
-            Map<String, Object> pastMapData = redisService.getMapData(accessToken);
-            Map<String, Object> updateMapData = new HashMap<>();
+            // 레디스 유저 갱신
+            try{
+                Map<String, Object> pastMapData = redisService.getMapData(accessToken);
+                log.info("DBNickname : {}", newUserEntity.getNickname());
 
-            log.info("DBNickname : {}", newUserEntity.getNickname());
+                // 유저 정보 재설정
+                CustomOAuth2User oAuth2User = (CustomOAuth2User)pastMapData.get("oauth2User");
+                oAuth2User.setUserEntity(newUserEntity);
 
-            // 유저 정보 재설정
-            CustomOAuth2User oAuth2User = (CustomOAuth2User)pastMapData.get("oauth2User");
-            oAuth2User.setUserEntity(newUserEntity);
-
-            // 레디스에 저장된 인증객체 정보
-            OAuth2AuthenticationToken pastOAuth2AuthenticationToken =
-                    (OAuth2AuthenticationToken)pastMapData.get("authenticationToken");
-            // 새로운 인증 객체로 갱신
-            OAuth2AuthenticationToken newOAuth2AuthenticationToken =
-                    new OAuth2AuthenticationToken(
-                            oAuth2User,
-                            pastOAuth2AuthenticationToken.getAuthorities(),
-                            pastOAuth2AuthenticationToken.getAuthorizedClientRegistrationId()
-                    );
-            // 새로운 인증객체를 Security context에 반영
-            SecurityContextHolder.getContext()
-                    .setAuthentication(newOAuth2AuthenticationToken);
-
-            // 닉네임 변경 후 Redis에 회원 정보 반영
-            updateMapData.put("authenticationToken", newOAuth2AuthenticationToken);
-            updateMapData.put("oauth2User", oAuth2User);
-            updateMapData.put("refreshToken", pastMapData.get("refreshToken"));
-            updateMapData.put("createAt", pastMapData.get("createAt"));
-            long time = redisService.getExpireTime(accessToken);
-            // 기존 토큰 지우기
-            redisService.deleteMapData(accessToken);
-            log.info("new Time : {}", time);
-            // 새로운 토큰 넣기
-            redisService.saveMapData(accessToken, updateMapData, time);
-            return true;
+                refreshRedisData(pastMapData, oAuth2User, accessToken);
+                return true;
+            }
+            catch (Exception e) {
+                return false;
+            }
         }
         else
             return false;
@@ -214,24 +208,104 @@ public class UserService extends DefaultOAuth2UserService {
         return false; // 유저를 찾지 못한 경우 false 반환
     }
 
-
+    // 최애 업데이트
     @Transactional
-    public Boolean updateBias(String userId, Long idolMemberId){
+    public String updateBias(String userId, Long idolMemberId, String accessToken){
         Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        Optional<IdolMember> idolMemberOptional = idolMemberRepository.findById(idolMemberId);
 
         // 최애 등록
-        if (userEntityOptional.isPresent()) {
+        if (userEntityOptional.isPresent() && idolMemberOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
+            IdolMember idolMember = idolMemberOptional.get();
+
+            // 최애 설정
             userEntity.setBiasId(idolMemberId);
             log.info("myBiasId : {}", idolMemberId);
             // 새로운 최애 등록 - 자동 update
-            userRepository.save(userEntity);
+            UserEntity newUserEntity = userRepository.save(userEntity);
 
-            return true;
+            // 레디스 유저 갱신
+            try{
+                // 레디스에 저장된 유저 정보
+                Map<String, Object> pastMapData = redisService.getMapData(accessToken);
+                log.info("DBBiasId : {}", newUserEntity.getBiasId());
+
+                // 유저 정보 재설정
+                CustomOAuth2User oAuth2User = (CustomOAuth2User)pastMapData.get("oauth2User");
+                oAuth2User.setUserEntity(newUserEntity);
+
+                // 사진 저장
+                String profileURL = idolMember.getImage();
+                oAuth2User.setProfilePhotoUrl(profileURL);
+
+                // 레디스 갱신 - CustomOAuth2User에 반영
+                refreshRedisData(pastMapData, oAuth2User, accessToken);
+                return profileURL;
+            }
+            catch (Exception e) {
+                return "";
+            }
         } else {
-            return false;
+            return "";
         }
     }
+
+    // 최애 불러오기
+    @Transactional
+    public IdolMemberResponseDto loadBias(String userId){
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        // 최애 가져오기
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            // 최애가 있다면 아이돌 정보 가져오기
+            if(userEntity.getBiasId() != null) {
+                Optional<IdolMember> idolMemberOptional = idolMemberRepository.findById(userEntity.getBiasId());
+                if (idolMemberOptional.isPresent()) {
+                    IdolMember idolMember = idolMemberOptional.get();
+                    return IdolMemberResponseDto.of(idolMember);
+                }
+            }
+            return null;
+        }
+        return null;
+    }
+
+    private void refreshRedisData(Map<String, Object> pastMapData, CustomOAuth2User oAuth2User,
+                                  String accessToken) throws Exception{
+        try {
+            // 레디스에 저장된 인증객체 정보
+            OAuth2AuthenticationToken pastOAuth2AuthenticationToken =
+                    (OAuth2AuthenticationToken)pastMapData.get("authenticationToken");
+            // 새로운 인증 객체로 갱신
+            OAuth2AuthenticationToken newOAuth2AuthenticationToken =
+                    new OAuth2AuthenticationToken(
+                            oAuth2User,
+                            pastOAuth2AuthenticationToken.getAuthorities(),
+                            pastOAuth2AuthenticationToken.getAuthorizedClientRegistrationId()
+                    );
+            // 새로운 인증객체를 Security context에 반영
+            SecurityContextHolder.getContext()
+                    .setAuthentication(newOAuth2AuthenticationToken);
+
+            // 닉네임 변경 후 Redis에 회원 정보 반영
+            Map<String, Object> updateMapData = new HashMap<>();
+            updateMapData.put("authenticationToken", newOAuth2AuthenticationToken);
+            updateMapData.put("oauth2User", oAuth2User);
+            updateMapData.put("refreshToken", pastMapData.get("refreshToken"));
+            updateMapData.put("createAt", pastMapData.get("createAt"));
+            long time = redisService.getExpireTime(accessToken);
+            // 기존 토큰 지우기
+            redisService.deleteMapData(accessToken);
+            log.info("new Time : {}", time);
+            // 새로운 토큰 넣기
+            redisService.saveMapData(accessToken, updateMapData, time);
+        }
+        catch(Exception e){
+            throw new Exception();
+        }
+    }
+
 
     @Transactional
     public Boolean deleteDeviceToken(String userId) {

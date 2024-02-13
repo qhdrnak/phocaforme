@@ -3,6 +3,7 @@ package com.phofor.phocaforme.auth.controller;
 import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.wishcard.dto.WishCardInfoDto;
+import com.phofor.phocaforme.wishcard.dto.response.WishCardResponseDto;
 import com.phofor.phocaforme.wishcard.service.WishCardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,22 @@ public class WishCardController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<>(status);
+    }
+
+    // 최애 불러오기
+    @GetMapping("/user/wishCard")
+    public ResponseEntity<?> getWishCard(@AuthenticationPrincipal CustomOAuth2User oauth2User) {
+        String userId = oauth2User.getUserEntity().getUserId();
+        HttpStatus status;
+        WishCardResponseDto idolMemberResponseDto = wishCardSelectService.loadWishCardByUserId(userId);
+        if(idolMemberResponseDto != null) {
+            status = HttpStatus.ACCEPTED;
+            return new ResponseEntity<>(idolMemberResponseDto, status);
+        }
+        else {
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity<>(status);
+        }
     }
 
     // 갈망포카 제거

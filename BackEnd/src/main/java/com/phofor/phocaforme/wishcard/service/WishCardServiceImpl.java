@@ -3,10 +3,12 @@ package com.phofor.phocaforme.wishcard.service;
 import com.phofor.phocaforme.auth.entity.UserDeviceEntity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserRepository;
+import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import com.phofor.phocaforme.wishcard.dto.WishCardInfoDto;
 import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.response.WishCardResponseDto;
 import com.phofor.phocaforme.wishcard.entity.WishCard;
 import com.phofor.phocaforme.wishcard.repository.WishCardRepository;
 import lombok.RequiredArgsConstructor;
@@ -73,6 +75,31 @@ public class WishCardServiceImpl implements WishCardService {
             log.info("Idol Member with id {} not found", wishCardInfoDto.getMemberId());
             return false;
         }
+    }
+
+    // 갈망포카 불러오기
+    @Transactional
+    public WishCardResponseDto loadWishCardByUserId(String userId){
+        Optional<UserEntity> userEntityOptional = userRepository.findByUserId(userId);
+        // 갈망포카 가져오기
+        if (userEntityOptional.isPresent()) {
+            UserEntity userEntity = userEntityOptional.get();
+            // 갈망포카가 있다면 갈망포카, 아이돌 정보 가져오기
+            Optional<WishCard> wishCardEntityOptional =
+                    wishCardRepository.findByUserEntity_UserId(userEntity.getUserId());
+            if (wishCardEntityOptional.isPresent()) {
+                // 최애가 있다면 아이돌 정보 가져오기
+                WishCard wishCard = wishCardEntityOptional.get();
+                Optional<IdolMember> idolMemberOptional =
+                        idolMemberRepository.findById(wishCard.getIdolMember().getId());
+                if (idolMemberOptional.isPresent()) {
+                    IdolMemberResponseDto idolMember = IdolMemberResponseDto.of(idolMemberOptional.get());
+                    return WishCardResponseDto.of(wishCard, idolMember);
+                }
+            }
+            return null;
+        }
+        return null;
     }
 
     @Transactional
