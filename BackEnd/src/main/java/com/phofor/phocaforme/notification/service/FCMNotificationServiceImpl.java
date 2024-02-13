@@ -128,7 +128,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
             notificationDto.setTitle(receiverUserEntity.getNickname() + "님 채팅 도착하였습니다!");
             notificationDto.setContent(senderUserEntity.getNickname() + "으로부터 새로운 채팅이 왔어요!! 확인 해보세요!!");
-            notificationDto.setLink(domain + "/chatRoom"); // 채팅함으로 이동
+            notificationDto.setLink(domain + "/chat"); // 채팅함으로 이동
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
                     .userEntity(receiverUserEntity)
@@ -199,7 +199,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
             title = receiverNickname + "님 채팅 도착하였습니다!";
             content = senderNickname + "으로부터 새로운 채팅이 왔어요!! 확인 해보세요!!";
-            link = domain + "/chatRoom"; // 채팅함으로 이동
+            link = domain + "/chat"; // 채팅함으로 이동
 
             NotificationEntity notificationEntity = NotificationEntity.builder()
                     .userEntity(receiverUserEntity)
