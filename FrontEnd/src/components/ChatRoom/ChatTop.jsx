@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector,  } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
@@ -20,7 +20,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import PayModal from "../UI/Modal/PayRequestModal";
 
-const ChatMenu = ({ updateMessages, postId }) => {
+const ChatMenu = ({ otherNickname, updateMessages, postId }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,7 +32,6 @@ const ChatMenu = ({ updateMessages, postId }) => {
   const { roomId } = useParams();
 
   const chatroomInfo = location.state;
-  console.log(chatroomInfo);
 
   // 메뉴 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,10 +77,10 @@ const ChatMenu = ({ updateMessages, postId }) => {
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div" id="chatroom-title">
-            {chatroomInfo.ownerId}
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
             {chatroomInfo.boardTitle}
+          </Typography>
+          <Typography variant="h5" sx={{ mb: 1.5 }} color="text.secondary">
+            {otherNickname}
           </Typography>
         </div>
         <div id="chat-top-right">

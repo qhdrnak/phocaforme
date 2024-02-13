@@ -29,20 +29,23 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     const ws = Stomp.over(sock);
 
     ws.connect(
-      {'Authorization': document.cookie.match('(^|;) ?' + "token" + '=([^;]*)(;|$)')[2]},
+      {
+        Authorization: document.cookie.match(
+          "(^|;) ?" + "token" + "=([^;]*)(;|$)"
+        )[2],
+      },
       (frame) => {
         setWs(ws);
         ws.subscribe("/sub/chat/room" + roomId, (message) => {
           const receive = JSON.parse(message.body);
           // alert(receive.imgCode);
-          
+
           if (receive.imgCode !== null) {
             receiveImg(receive);
           } else {
             receiveMessage(receive);
           }
         });
-        
       },
       (error) => {
         alert("error" + error);
@@ -63,7 +66,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     return () => {
       ws.disconnect();
     };
-  }, []);
+  }, [receive]);
 
   const sendMessage = () => {
     if (ws && roomId && loginUser && value) {
@@ -72,7 +75,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         {},
         JSON.stringify({
           chatRoomId: roomId,
-          userEmail: loginUser.nickname,
+          userEmail: loginUser.userId,
           message: value,
         })
       );
@@ -97,7 +100,7 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           {},
           JSON.stringify({
             chatRoomId: roomId,
-            userEmail: loginUser.nickname,
+            userEmail: loginUser.userId,
             imgCode: e.target.result,
           })
         );
@@ -111,28 +114,13 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const handleSetImage = (receive) => {
-    const newMessage = {
-      chatRoomId: roomId,
-      createdAt: new Date().toISOString(),
-      imgCode: receive.imgCode,
-      message: "",
-      userEmail: loginUser.userId,
-      isPay: false,
-    };
-    updateMessages(newMessage);
+    updateMessages(receive);
     handleClose();
   };
 
-  const handleSendClick = () => {
-      const newMessage = {
-        chatRoomId: roomId,
-        createdAt: new Date().toISOString(),
-        imgCode: null,
-        message: value,
-        userEmail: loginUser.userId,
-      };
-      updateMessages(newMessage);
-      sendMessage();
+  const handleSendClick = (receive) => {
+    updateMessages(receive);
+    sendMessage();
   };
 
   // 엔터 키를 눌렀을 때도 send
@@ -201,7 +189,6 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         </div>
       </Popover>
       <TextField
-      
         fullWidth
         id="fullWidth"
         placeholder="메시지를 입력하세요"
@@ -213,13 +200,17 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
             ref: inputRef,
           },
           startAdornment: (
-            <InputAdornment>
+            <InputAdornment position="start">
               <Add onClick={handleClick} />
             </InputAdornment>
           ),
           endAdornment: (
-            <InputAdornment>
-              <ArrowCircleUp id="sendIcon" onClick={handleSendClick} fontSize="large" />
+            <InputAdornment position="end">
+              <ArrowCircleUp
+                id="sendIcon"
+                onClick={handleSendClick}
+                fontSize="large"
+              />
             </InputAdornment>
           ),
         }}
