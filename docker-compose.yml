@@ -18,8 +18,8 @@ services:
       - mariadb-data:/lib/var/mysql
     environment:
       MARIADB_DATABASE: ${DB_NAME}
-      MARIADB_USER: ${USER_NAME}
-      MARIADB_PASSWORD: ${USER_PASSWORD}
+      MARIADB_USER: ${DB_USER_NAME}
+      MARIADB_PASSWORD: ${DB_USER_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       TZ: Asia/Seoul
 

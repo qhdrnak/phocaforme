@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -46,9 +47,12 @@ public class IdolSelectServiceImpl implements IdolSelectService{
 
     @Override
     public IdolMemberResponseDto getIdolMemberByIdolMemberId(Long idolMemberId) {
-
-        IdolMember idolMember = idolMemberRepository.findIdolMemberById(idolMemberId);
-        IdolMemberResponseDto singleIdolMemberDto = IdolMemberResponseDto.of(idolMember);
+        IdolMemberResponseDto singleIdolMemberDto = null;
+        Optional<IdolMember> idolMemberOptional = idolMemberRepository.findIdolMemberById(idolMemberId);
+        if(idolMemberOptional.isPresent()){
+            IdolMember idolMember = idolMemberOptional.get();
+            singleIdolMemberDto = IdolMemberResponseDto.of(idolMember);
+        }
         return singleIdolMemberDto;
     }
 
