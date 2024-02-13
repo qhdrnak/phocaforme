@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useLocation } from "react-router-dom";
 
-import axios from 'axios'
+import axios from "axios";
 
 import { sendChat, initChat } from "../../store2/chat.js";
 
-import { timeFormat } from "../../utils/timeFormat.js"
+import { timeFormat } from "../../utils/timeFormat.js";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -24,7 +24,9 @@ const ChatRoom = () => {
 
   const dispatch = useDispatch();
 
-  const loginUser = useSelector((state) => (state.user ? state.user.user : null));
+  const loginUser = useSelector((state) =>
+    state.user ? state.user.user : null
+  );
 
   // 항상 맨 아래로 스크롤
   const sendMessageBoxRef = useRef(null);
@@ -36,30 +38,31 @@ const ChatRoom = () => {
     }
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await axios
-      .get(`http://localhost:8080/chats/${roomId}`, 
-      {
-        withCredentials: true,
-      })
-      .then(response => {
-        dispatch(initChat(response.data));
-      })
-      .catch(error => {
-        console.error('Error get chatting:', error);
-      });
-    }
-    fetchData();
-  }, [dispatch, roomId]);
-  
-  const chatList = useSelector((state) => state.chat.chat ? state.chat.chat : []);
-
   const updateMessages = (newMessage) => {
-    if (newMessage.message.trim() !== '' || newMessage.imgCode !== null) {
+    if (newMessage.message.trim() !== "" || newMessage.imgCode !== null) {
       dispatch(sendChat(newMessage));
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+        .get(`http://localhost:8080/chats/${roomId}`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          dispatch(initChat(response.data));
+        })
+        .catch((error) => {
+          console.error("Error get chatting:", error);
+        });
+    };
+    fetchData();
+  }, [dispatch, roomId, updateMessages]);
+
+  const chatList = useSelector((state) =>
+    state.chat.chat ? state.chat.chat : []
+  );
 
   const price = useSelector((state) =>
     state.pay ? state.pay.status.price : 0
@@ -74,7 +77,10 @@ const ChatRoom = () => {
   return (
     <Container>
       <div id="chat-container">
-        <ChatMenu updateMessages={updateMessages} chatroomInfo={location.state} />
+        <ChatMenu
+          updateMessages={updateMessages}
+          chatroomInfo={location.state}
+        />
         <div id="chat-content-container" ref={sendMessageBoxRef}>
           <div id="chat-message-area">
             <div id="notice-content">
@@ -111,7 +117,10 @@ const ChatRoom = () => {
                     {!messageData.imgCode ? (
                       <div>{messageData.message}</div>
                     ) : (
-                      <img className="chat-image" src={messageData.imgCode}></img>
+                      <img
+                        className="chat-image"
+                        src={messageData.imgCode}
+                      ></img>
                     )}
                     <div>
                       {messageData.isPay ? (

@@ -29,20 +29,23 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
     const ws = Stomp.over(sock);
 
     ws.connect(
-      {'Authorization': document.cookie.match('(^|;) ?' + "token" + '=([^;]*)(;|$)')[2]},
+      {
+        Authorization: document.cookie.match(
+          "(^|;) ?" + "token" + "=([^;]*)(;|$)"
+        )[2],
+      },
       (frame) => {
         setWs(ws);
         ws.subscribe("/sub/chat/room" + roomId, (message) => {
           const receive = JSON.parse(message.body);
           // alert(receive.imgCode);
-          
+
           if (receive.imgCode !== null) {
             receiveImg(receive);
           } else {
             receiveMessage(receive);
           }
         });
-        
       },
       (error) => {
         alert("error" + error);
@@ -124,15 +127,15 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   };
 
   const handleSendClick = () => {
-      const newMessage = {
-        chatRoomId: roomId,
-        createdAt: new Date().toISOString(),
-        imgCode: null,
-        message: value,
-        userEmail: loginUser.userId,
-      };
-      updateMessages(newMessage);
-      sendMessage();
+    const newMessage = {
+      chatRoomId: roomId,
+      createdAt: new Date().toISOString(),
+      imgCode: null,
+      message: value,
+      userEmail: loginUser.userId,
+    };
+    updateMessages(newMessage);
+    sendMessage();
   };
 
   // 엔터 키를 눌렀을 때도 send
@@ -201,7 +204,6 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
         </div>
       </Popover>
       <TextField
-      
         fullWidth
         id="fullWidth"
         placeholder="메시지를 입력하세요"
@@ -219,7 +221,11 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           ),
           endAdornment: (
             <InputAdornment>
-              <ArrowCircleUp id="sendIcon" onClick={handleSendClick} fontSize="large" />
+              <ArrowCircleUp
+                id="sendIcon"
+                onClick={handleSendClick}
+                fontSize="large"
+              />
             </InputAdornment>
           ),
         }}

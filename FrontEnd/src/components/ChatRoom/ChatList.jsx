@@ -89,18 +89,6 @@ const ChatList = () => {
                   </div>
                 }
               />
-              {/* <Badge
-                badgeContent={
-                  (chatroom.visiterId == loginUser &&
-                    chatroom.latestChat.id !== chatroom.visitorLatestChatId) ||
-                  (chatroom.ownerId == loginUser &&
-                    chatroom.latestChat.id !== chatroom.ownerLatestChatId)
-                    ? "chatlist-item"
-                    : "unread-chatlist-item"
-                }
-                color="primary"
-                sx={{ marginRight: 2 }}
-              ></Badge> */}
             </ListItem>
           ))}
         </List>
