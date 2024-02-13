@@ -32,7 +32,7 @@ const MemberDropdown2 = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-            `https://phocafor.me/api/idol/member/${selectedGroup.idolGroupId}`,
+              process.env.REACT_APP_API_URL + `idol/member/${selectedGroup.idolGroupId}`,
             {
               withCredentials: true,
             }

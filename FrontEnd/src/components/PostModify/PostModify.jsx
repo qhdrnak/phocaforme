@@ -55,7 +55,7 @@ const PostModify = () => {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await axios.get(`https://phocafor.me/api/barter/${id}`,
+        const response = await axios.get(process.env.REACT_APP_API_URL + `barter/${id}`,
         { withCredentials: true }
         );
         console.log(response.data)
@@ -133,7 +133,7 @@ const PostModify = () => {
         formData.append("images", image);
       });
 
-      await axios.put(`https://phocafor.me/api/barter/${id}`, formData, {
+      await axios.put(process.env.REACT_APP_API_URL + `barter/${id}`, formData, {
         withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",

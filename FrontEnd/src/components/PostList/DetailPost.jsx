@@ -24,7 +24,7 @@ const DetailPost = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`https://phocafor.me/api/barter/${id}`,
+      const response = await axios.get(process.env.REACT_APP_API_URL + `barter/${id}`,
         { withCredentials: true }
       );
       const detailData = response.data;
@@ -84,8 +84,7 @@ const DetailPost = () => {
   const handleChatClick = () => {
     // 채팅방 생성
     axios
-      .post(`https://phocafor.me/api/chatRoom/${id}`,
-      // .post(`https://phocafor.me/api/chatRoom/1`,
+      .post(process.env.REACT_APP_API_URL + `chatRoom/${id}`,
       null,
       {
         headers: {

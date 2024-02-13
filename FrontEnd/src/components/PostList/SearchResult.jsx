@@ -119,7 +119,7 @@ const observer = useRef();
           }
 
           const response = await axios.get(
-            "https://phocafor.me/api/barter/search",
+              process.env.REACT_APP_API_URL + "barter/search",
             { params }
           );
 

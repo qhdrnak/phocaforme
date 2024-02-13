@@ -92,7 +92,7 @@ const BasicTabs = ({ isPreview }) => {
           // params.own = 4;
 
           const response = await axios.get(
-            "https://phocafor.me/api/barter/search",
+              process.env.REACT_APP_API_URL + "barter/search",
             {
               withCredentials: true,
               params: params,

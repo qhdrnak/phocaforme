@@ -143,7 +143,7 @@ const PostWrite = () => {
     console.log(test);
     navigate("/post");    
       
-        axios.post('https://phocafor.me/api/barter', newPost, {
+        axios.post(process.env.REACT_APP_API_URL + 'barter', newPost, {
           withCredentials: true, // withCredentials 옵션 설정
           headers: {
             "Content-Type": "multipart/form-data",

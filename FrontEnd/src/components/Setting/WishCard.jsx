@@ -49,7 +49,7 @@ const WishCard = () => {
     }
     
     // db 에 반영하기
-    axios.put(`https://phocafor.me/api/user/wishCard`
+    axios.put(process.env.REACT_APP_API_URL + `user/wishCard`
     , data
     , {
       withCredentials: true,

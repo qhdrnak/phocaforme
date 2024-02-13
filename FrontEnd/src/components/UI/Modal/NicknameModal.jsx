@@ -46,7 +46,7 @@ const NicknameModal = ({
     // 닉네임 중복 체크
     // 중복 아니면 validFlag 수정
     axios
-      .post(`https://phocafor.me/api/users/${userId}/nickname`, inputValue)
+      .post(process.env.REACT_APP_API_URL + `users/${userId}/nickname`, inputValue)
       .then((response) => {
         setValidFlag(true);
       })
@@ -62,7 +62,7 @@ const NicknameModal = ({
 
   const handleChangeNickname = (userId) => {
     axios
-      .put(`https://phocafor.me/api/users/${userId}/nickname`, null, {
+      .put(process.env.REACT_APP_API_URL + `users/${userId}/nickname`, null, {
         params: {
           isDuplicated: !validFlag,
           nickname: inputValue,
