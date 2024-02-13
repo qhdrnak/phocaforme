@@ -31,8 +31,8 @@ const ChatMenu = ({ updateMessages, postId }) => {
 
   const { roomId } = useParams();
 
-  const chatRoomInfo = location.state;
-  console.log(chatRoomInfo);
+  const chatroomInfo = location.state;
+  console.log(chatroomInfo);
 
   // 메뉴 관련
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -78,10 +78,10 @@ const ChatMenu = ({ updateMessages, postId }) => {
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div" id="chatroom-title">
-            {chatRoomInfo.ownerId}
+            {chatroomInfo.ownerId}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {chatRoomInfo.boardTitle}
+            {chatroomInfo.boardTitle}
           </Typography>
         </div>
         <div id="chat-top-right">
@@ -126,9 +126,9 @@ const ChatMenu = ({ updateMessages, postId }) => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            {chatRoomInfo && (
+            {chatroomInfo && (
               <div>
-                {chatRoomInfo.writerNickname === loginUser && (
+                {chatroomInfo.writerNickname === loginUser && (
                   <MenuItem onClick={handleDone}>
                     <ListItemIcon>
                       <CheckCircleOutlineIcon />

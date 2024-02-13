@@ -1,25 +1,43 @@
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useSelector,  } from "react-redux";
+import { useNavigate,  } from "react-router-dom";
+
+import axios from 'axios';
+
+import { timeFormat } from "../../utils/timeFormat";
 
 import { List, ListItem, ListItemText, Typography, Badge } from "@mui/material";
 
 const ChatList = () => {
   const navigate = useNavigate();
 
-  const moveChatRoom = (roomId, articleId) => {
-    navigate(`/chatroom/${roomId}`, { state: articleId });
+  const moveChatRoom = (roomId, chatroom) => {
+    navigate(`/chatroom/${roomId}`, { state: chatroom });
   };
 
   const loginUser = useSelector((state) =>
-    state.loginUser ? state.loginUser.user.name : null
+    state.loginUser ? state.loginUser.user.userId : null
   );
 
-  // 추가할 부분
-  // 현재 유저가 들어간 리스트만 가져와야 함
-  const chatLists = useSelector((state) =>
-    state.chatList ? state.chatList.chatList : []
-  );
+  const [chatLists, setChatLists] = useState([]);
+
+  // 채팅 리스트 가져오기
+  useEffect(() => {
+    const fetchData = async () => {
+      await axios
+      .get(`http://localhost:8080/chatRoom`, 
+      {
+        withCredentials: true,
+      })
+      .then(response => {
+        setChatLists(response.data);
+      })
+      .catch(error => {
+        console.error('Error ChatList:', error);
+      });
+    }
+    fetchData();
+  }, []);
 
   return (
     <div>
@@ -30,31 +48,36 @@ const ChatList = () => {
             className="chatlist-item"
             key={index}
             onClick={() =>
-              moveChatRoom(chatroom.chatRoomId, chatroom.articleId)
+              moveChatRoom(chatroom.chatRoomId, chatroom)
             }
           >
             <ListItemText
               primary={
-                chatroom.visitor !== loginUser
-                  ? chatroom.visiter
-                  : chatroom.owner
+                chatroom.ownerId !== loginUser
+                  ? chatroom.visiterId
+                  : chatroom.ownerId
               }
               secondary={
+                <div id='chatlist-info'>
+
                 <React.Fragment>
                   <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
+                    // sx={{ display: "inline" }}
+                    component="div"
                     variant="body2"
                     color="text.primary"
                   >
-                    {chatroom.lastMessage}
+                    {chatroom.latestChat ? chatroom.latestChat.message : "(이미지)"}
                   </Typography>
-                  {` ${chatroom.lastMessageTime}`}
+                  <Typography>
+                    {chatroom.latestChat ? `${timeFormat(chatroom.latestChat.createdAt)}` : null}
+                  </Typography>
                 </React.Fragment>
+                </div>
               }
-            />
+              />
             <Badge
-              badgeContent={chatroom.uncheckedCount}
+              badgeContent={chatroom.ownerLatestChatId !== chatroom.visitorLatestChatId ? "T" : "F"}
               color="primary"
               sx={{ marginRight: 2 }}
             ></Badge>

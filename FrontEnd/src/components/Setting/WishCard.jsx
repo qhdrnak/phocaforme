@@ -8,7 +8,6 @@ import MemberDropdown from "../UI/Dropdown/MemberDropdown2";
 
 const WishCard = () => {
   const [selectedGroup, setSelectedGroup] = useState(0);
-
   const [selectedMember, setSelectedMember] = useState(null);
 
   // 키워드 관련
@@ -32,7 +31,6 @@ const WishCard = () => {
 
   // 갈망포카 객체 생성
   const labels = tags.map(tag => tag.label);
-
   
   const handleWishCard = () => {
     // 그룹, 멤버 설정 안하면 안됨
@@ -49,7 +47,7 @@ const WishCard = () => {
     }
     
     // db 에 반영하기
-    axios.put(`http://localhost:8080/api/user/wishCard`
+    axios.put(`http://localhost:8080/user/wishCard`
     , data
     , {
       withCredentials: true,
@@ -100,7 +98,13 @@ const WishCard = () => {
 
   return (
     <div className="profile-item-container">
-      <h2 className="profile-title">갈망포카 추가</h2>
+      <h2 className="profile-title">갈망포카 설정</h2>
+      <div id='wishcard-container'>
+        <h4 className="profile-title">현재 나의 갈망포카</h4>
+        <div>
+
+        </div>
+      </div>
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
           <div>그룹명</div>

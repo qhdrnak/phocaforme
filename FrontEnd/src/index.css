@@ -308,8 +308,17 @@
     font-size: 12px;
     color: gray;
 }
+/* 채팅리스트 */
+#chatlist-info {
+    display: flex;
+    justify-content: space-between;
+}
 
 /* 채팅페이지 */
+
+.chat-image {
+    width: 40vw;
+}
 
 #fileInput {
     display: none;
@@ -320,7 +329,6 @@
 }
 
 .chatlist-item {
-
     border: 1px solid grey;
     margin: 0.2rem;
     border-radius: 10px;
@@ -407,6 +415,7 @@
     display: flex;
     font-weight: bold;
     justify-content: flex-end;
+    text-align: end;
     padding: 0 1rem;
 }
 

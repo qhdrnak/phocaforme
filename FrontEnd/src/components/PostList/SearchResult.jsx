@@ -104,7 +104,7 @@ const observer = useRef();
 
           if (searchs.ownMembers.length > 0) {
             if (searchs.ownMembers.length == 1) {
-              params.own = searchs.ownMembers[0];
+              params.own = searchs.ownMembers[0].idolMemberId;
             } else {
               params.own = searchs.ownMembers.idolMemberId.join(',');
             }
@@ -118,8 +118,9 @@ const observer = useRef();
             params.query = searchs.query;
           }
 
+          console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/api/barter/search",
+            "http://localhost:8080/barter/search",
             { params }
           );
 
