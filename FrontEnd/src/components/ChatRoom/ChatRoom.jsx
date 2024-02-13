@@ -86,8 +86,6 @@ const ChatRoom = () => {
   // 채팅 상대방 이름 가져와
   const [otherNickname, setOtherNickname] = useState(null);
 
-  console.log(location.state);
-
   useEffect(() => {
     const fetchData = async () => {
       const you =
