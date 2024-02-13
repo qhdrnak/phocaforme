@@ -23,6 +23,7 @@ const PostModify = () => {
 
   const location = useLocation();
   const { state: post } = location;
+  console.log(post)
   const {
     id: postId,
     title: postTitle,
@@ -34,6 +35,7 @@ const PostModify = () => {
   } = location.state;
 
   console.log(postCardType)
+  
   useEffect(() => {
     if (post.photos && post.photos.length > 0) {
       const defaultImagePreviews = post.photos.map(photo => `https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`);
@@ -47,7 +49,7 @@ const PostModify = () => {
     setImages(postImages || []);
     // setOwnIdolMembers(postOwnIdolMembers || []);
     // setFindIdolMembers(findIdolMembers || []);
-    setCardType(postCardType || null);
+    setCardType(postCardType ? postCardType.label : null); // 여기를 수정
     setLoading(false);
   }, [postTitle, postContent, postImages, postCardType, postOwnIdolMembers, postFindIdolMembers]);
 
@@ -132,7 +134,7 @@ const PostModify = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
-      formData.append("cardType", cardType);
+      formData.append("cardType", cardType ? cardType.label : "");
       ownIdolMembers.forEach(member => {
         formData.append('ownIdolMembers', member.idolMemberId);
       });
@@ -176,7 +178,7 @@ const PostModify = () => {
       <h2 className="write-title">게시글 수정하기</h2>
       <div id="write-container">
         <div id="write-radio-container">
-          <RadioButton2 defaultType={cardType} />
+          <RadioButton2 defaultType={postCardType} />
         </div>
         <div id="title-container">
           <h3>제목</h3>
