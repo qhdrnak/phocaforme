@@ -20,7 +20,7 @@ const initialUserState = {
     token: getDecodedCookie('token') || null,
     location: null, // 현재 위치 정보
     // bias: null,
-    defaultGroup:null,
+    defaultGroup: null,
     defaultMember: null,
   },
 };
@@ -43,7 +43,7 @@ const loginUserSlice = createSlice({
     },
     setBias: (state, action) => {
       [state.user.defaultGroup, state.user.defaultMember] = action.payload;
-      console.log(state.user.defaultGroup)
+      console.log(state.defaultGroup);
     }
   },
 });

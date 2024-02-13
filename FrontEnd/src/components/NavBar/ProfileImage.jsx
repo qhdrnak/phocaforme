@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+
 import { useTheme } from "@mui/material/styles";
 
 import {
@@ -22,7 +24,7 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import { logoutUser } from "../../store2/loginUser.js";
 
 import GPS from "./GPS";
-import profile from "../../assets/images/no_bias.jpg";
+import noBiasImg from "../../assets/images/no_bias.jpg";
 import Cookies from "js-cookie";
 
 const ProfileImage = () => {
@@ -48,13 +50,26 @@ const ProfileImage = () => {
 
   const user = useSelector((state) => state.user.user);
 
-
   const handleLogout = () => {
     // dispatch(logoutUser());
     window.location.href = process.env.REACT_APP_LOGIN_API_URL + "auth/logout";
   };
 
-  // useEffect 해서 랜더링할 때 db 에 있는 최애 정보 들고와라
+  const [biasImg, setBiasImg] = useState(null);
+
+  // useEffect 해서 랜더링할 때 최애 정보 들고와라
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/user/bias`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setBiasImg(response.data.idolImage);
+      })
+      .catch((error) => {
+        console.error("Error get bias:", error);
+      });
+  }, [user]);
 
   return (
     <div className="profile-image-container">
@@ -63,8 +78,7 @@ const ProfileImage = () => {
           <img
             id="profile-image"
             className="profile-image gradient-border background-image"
-            src={user.defaultMember ? user.defaultMember.idolImage : profile}
-            
+            src={biasImg ? biasImg : noBiasImg}
           ></img>
         </IconButton>
         <Paper sx={{ backgroundColor: theme.palette.primary.main }}>
