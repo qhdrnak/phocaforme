@@ -20,7 +20,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import PayModal from "../UI/Modal/PayRequestModal";
 
-const ChatMenu = ({ updateMessages, postId }) => {
+const ChatMenu = ({ otherNickname, updateMessages, postId }) => {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -77,10 +77,10 @@ const ChatMenu = ({ updateMessages, postId }) => {
       <div id="chat-top">
         <div id="chat-top-left">
           <Typography variant="h5" component="div" id="chatroom-title">
-            {chatroomInfo.ownerId}
+            {chatroomInfo.boardTitle}
           </Typography>
           <Typography variant="h5" sx={{ mb: 1.5 }} color="text.secondary">
-            {chatroomInfo.boardTitle}
+            {otherNickname}
           </Typography>
         </div>
         <div id="chat-top-right">

@@ -84,15 +84,21 @@ const ChatRoom = () => {
   };
 
   // 채팅 상대방 이름 가져와
-  const [visiterNickname, setVisiterNickname] = useState(null);
+  const [otherNickname, setOtherNickname] = useState(null);
+
+  console.log(location.state);
 
   useEffect(() => {
     const fetchData = async () => {
+      const you =
+        loginUser.userId == location.state.visiterId
+          ? location.state.ownerId
+          : location.state.visiterId;
       await axios
         .post(
           `http://localhost:8080/users/nickname`,
           {
-            userId: location.state.visiterId,
+            userId: you,
           },
           {
             "Content-Type": "application/json",
@@ -100,7 +106,7 @@ const ChatRoom = () => {
           }
         )
         .then((response) => {
-          setVisiterNickname(response.data);
+          setOtherNickname(response.data);
         })
         .catch((error) => {
           console.error("Error get nickname:", error);
@@ -113,6 +119,7 @@ const ChatRoom = () => {
     <Container>
       <div id="chat-container">
         <ChatMenu
+          otherNickname={otherNickname}
           updateMessages={updateMessages}
           chatroomInfo={location.state}
         />
@@ -136,7 +143,7 @@ const ChatRoom = () => {
                 >
                   {messageData.userEmail == loginUser.userId
                     ? loginUser.nickname
-                    : visiterNickname}
+                    : otherNickname}
                 </div>
                 <div
                   className={
