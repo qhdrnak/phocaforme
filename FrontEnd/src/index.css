@@ -491,7 +491,7 @@ html, body, #root {
 #sendIcon {
     border-radius: 10px;
     color: var(--primary-color);
-    border: var(--primary-color) 1px solid;
+    border: var(--primary-color) 2px solid;
     
 }
 

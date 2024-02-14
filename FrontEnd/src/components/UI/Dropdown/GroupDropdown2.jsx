@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 
-const GroupDropdown2 = ({ isProfile, onChange }) => {
+const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const GroupDropdown2 = ({ isProfile, onChange }) => {
   }, []);
 
   const user = useSelector((state) => state.user.user);
-  const [value, setValue] = useState(user.defaultGroup);
+  const [value, setValue] = useState(defaultGroup);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
