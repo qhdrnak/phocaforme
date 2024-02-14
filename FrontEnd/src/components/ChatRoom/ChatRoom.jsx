@@ -33,7 +33,8 @@ const ChatRoom = () => {
   );
 
   const updateMessages = (receive) => {
-    if (receive) {
+    if (receive && !receive.type) {
+      console.log(receive);
       const newMessage = {
         chatRoomId: receive.chatRoomId,
         createdAt: new Date().toISOString(),
@@ -62,6 +63,7 @@ const ChatRoom = () => {
     };
     fetchData();
   }, [dispatch, roomId]);
+
   // 항상 맨 아래로 스크롤
   const sendMessageBoxRef = useRef(null);
 
@@ -115,11 +117,13 @@ const ChatRoom = () => {
   return (
     <Container>
       <div id="chat-container">
-        <ChatMenu
-          otherNickname={otherNickname}
-          updateMessages={updateMessages}
-          chatroomInfo={location.state}
-        />
+        <div id="chat-menu-container">
+          <ChatMenu
+            otherNickname={otherNickname}
+            updateMessages={updateMessages}
+            chatroomInfo={location.state}
+          />
+        </div>
         <div id="chat-content-container" ref={sendMessageBoxRef}>
           <div id="chat-message-area">
             <div id="notice-content">
@@ -185,7 +189,6 @@ const ChatRoom = () => {
           />
         </div>
       </div>
-      <div id="chat-list-container"></div>
     </Container>
   );
 };

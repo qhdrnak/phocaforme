@@ -5,9 +5,6 @@ import axios from "axios";
 
 import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 
-import logo1 from "../../../assets/images/logo_nct.png";
-import logo2 from "../../../assets/images/logo_shinee.jpg";
-
 const GroupDropdown2 = ({ isProfile, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
 
@@ -15,7 +12,7 @@ const GroupDropdown2 = ({ isProfile, onChange }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-            process.env.REACT_APP_API_URL + "idol/group",
+          process.env.REACT_APP_API_URL + "idol/group",
           {
             withCredentials: true,
           }

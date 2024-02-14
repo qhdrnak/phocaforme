@@ -8,8 +8,8 @@ import { useTheme } from "@mui/material/styles";
 import { sendChat } from "../../store2/chat.js";
 import getCurrentTime from "../../utils/currentTime";
 
-import { TextField, InputAdornment, Popover } from "@mui/material";
-import { ArrowCircleUp, Add, Image } from "@mui/icons-material";
+import { TextField, InputAdornment, Popover, Button } from "@mui/material";
+import { Add, Image } from "@mui/icons-material";
 
 const ChatSend = ({ roomId, loginUser, updateMessages }) => {
   const theme = useTheme();
@@ -206,11 +206,9 @@ const ChatSend = ({ roomId, loginUser, updateMessages }) => {
           ),
           endAdornment: (
             <InputAdornment position="end">
-              <ArrowCircleUp
-                id="sendIcon"
-                onClick={handleSendClick}
-                fontSize="large"
-              />
+              <Button id="sendIcon" onClick={handleSendClick}>
+                전송
+              </Button>
             </InputAdornment>
           ),
         }}

@@ -403,7 +403,15 @@ html, body, #root {
     margin-top: 1rem;
 }
 
+#chat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
+#chat-menu-container {
+    width: 100%;
+}
 
 #hamburger-icon {
     padding: 0 1rem;
@@ -478,6 +486,13 @@ html, body, #root {
 .chat-message {
     margin: 0.5rem;
     text-align: center;
+}
+
+#sendIcon {
+    border-radius: 10px;
+    color: var(--primary-color);
+    border: var(--primary-color) 1px solid;
+    
 }
 
 #chat-message-area {
