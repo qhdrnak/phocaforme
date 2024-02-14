@@ -116,6 +116,7 @@ const DetailPost = () => {
       const response = await axios.post(process.env.REACT_APP_API_URL+`barter/regen/${post.id}`, null, {
         withCredentials: true,
       });
+      
   
       // 성공적으로 업데이트되었을 때의 처리
       console.log('게시글이 성공적으로 끌어올려졌습니다.');
