@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-
-import { styled } from "@mui/material/styles";
+import {Box} from '@mui/material';
+import { styled, } from "@mui/material/styles";
 import TruncatedTitle from "../../styles/TruncatedTitle";
 
 import {
@@ -99,14 +99,19 @@ const CustomCard = (props) => {
           <p>판매완료</p>
         </div>
       )} */}
-      <CardMedia component="img" image={images} />
-      <CardHeader
-        sx={{
-          padding: "1rem 1rem 0",
-          width: "100%",
-        }}
-        title={<TruncatedTitle truncateWidth="30%">{title}</TruncatedTitle>}
-      />
+      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+        <CardMedia component="img" image={images} />
+        <div>
+
+        <CardHeader
+          sx={{
+            width: "100%",
+          }}
+          title={<TruncatedTitle truncateWidth="80%">{title}</TruncatedTitle>}
+        />
+        </div>
+
+      </Box>
       <CardContent className="card-content">
         <div>
           <div>

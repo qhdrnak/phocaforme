@@ -22,18 +22,11 @@ const theme = createTheme({
 
   components: {
     
-    MuiGrid: {
-      styleOverrides: {
-        root: {
-        }
-      }
-    },
-    
     MuiMenu: {
       styleOverrides: {
         paper: {
           backgroundColor: '#FD9DD1', 
-          width: '10rem'
+          padding: '0.5rem'
         },
       },
     },
@@ -55,7 +48,7 @@ const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          fontFamily: 'Pretendard'
+          fontFamily: 'Pretendard',
         }
       }
     }, 
@@ -70,25 +63,30 @@ const theme = createTheme({
     MuiCardHeader: {
       styleOverrides: {
         title: {
-          fontSize: '18px'
-        }
+          fontSize: '18px',
+        },
       }
     },
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          height: "10rem",
+          borderRadius: "10px",
+          height: "13rem",
+          width: "10rem",
+          
         }
       }
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          // minWidth: "8rem",
-          width: "calc(50vw-1rem)",
-          // marginRight: "16px",
-          marginBottom: "16px",
+          padding: '0.5rem 0 0 0',
+          width: "fit-content",
           cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: 'center'
         },
       
       }
