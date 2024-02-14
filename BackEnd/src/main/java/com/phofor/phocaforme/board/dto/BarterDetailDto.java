@@ -33,6 +33,8 @@ public class BarterDetailDto {
     private String title;
     // 내용
     private String content;
+    // 아이돌 그룹 id
+    private Long groupId;
     // 소유한 멤버(들)
     private List<IdolMemberDto> ownIdolMembers;
     // 찾는 멤버(들)
@@ -43,6 +45,7 @@ public class BarterDetailDto {
     private String cardType;
 
     private boolean isBartered;
+
     // 생성 일자
     private Instant registrationDate;
 
@@ -57,6 +60,8 @@ public class BarterDetailDto {
                 .nickName(barter.getNickname())
                 .title(barter.getTitle())
                 .content(barter.getContent())
+                //TODO
+//                .groupId(barter.getGroupId())
                 .ownIdolMembers(barter.getOwnIdols().stream()
                         .map(ownIdol -> new IdolMemberDto(ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()))
                         .collect(Collectors.toList()))
