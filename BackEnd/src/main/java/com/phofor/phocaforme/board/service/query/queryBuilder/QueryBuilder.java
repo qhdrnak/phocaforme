@@ -47,9 +47,9 @@ public class QueryBuilder implements QueryBuilderInterface{
          *  Group -> Query(앨범명 etc) -> CardType
          * */
 
-//        if (criteria.getGroup() != null) {
-//            boolQueryBuilder.must(GroupFilter.createFilter(criteria));
-//        }
+        if (criteria.getGroupId() != null) {
+            boolQueryBuilder.must(GroupFilter.createFilter(criteria));
+        }
 
         if (criteria.getQuery() != null) {
             boolQueryBuilder.must(QueryFilter.createFilter(criteria));
