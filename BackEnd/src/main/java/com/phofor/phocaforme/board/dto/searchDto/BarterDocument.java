@@ -28,6 +28,9 @@ public class BarterDocument {
     @Field(name = "writer_nickname", type = FieldType.Keyword)
     private String writerNickname;
 
+
+    @Field(name="group_id",type=FieldType.Long)
+    private Long groupId;
     @Field(name="title",type = FieldType.Text)
     private String title;
     @Field(name = "card_type", type = FieldType.Keyword)
