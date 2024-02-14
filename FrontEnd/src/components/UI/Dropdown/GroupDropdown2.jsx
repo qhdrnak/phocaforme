@@ -27,7 +27,7 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
   }, []);
 
   const user = useSelector((state) => state.user.user);
-  const [value, setValue] = useState(defaultGroup);
+  const [value, setValue] = useState(isProfile ? null : defaultGroup);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
