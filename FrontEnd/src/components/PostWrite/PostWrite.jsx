@@ -53,7 +53,8 @@ const PostWrite = () => {
   };
 
   const handleSelectedGroupChange = (group) => {
-    setSelectedGroup(group)
+    console.log(group);
+    setSelectedGroup(group);
   };
 
 
@@ -197,15 +198,13 @@ const PostWrite = () => {
         <div id="group-member-input">
           {isExchange ? (
             <BarterWrite
-              onChange={(ownIdolMembers, findIdolMembers) => {
+              onChange={(ownIdolMembers, findIdolMembers, selectedGroup) => {
                 handleOwnMemberSelection(ownIdolMembers);
                 handleTargetMemberSelection(findIdolMembers);
                 handleSelectedGroupChange(selectedGroup)
               }}
-              selectedGroup={selectedGroup}
               
             />
-            
           ) : (
             <SellWrite
               onChange={(ownIdolMembers) => {

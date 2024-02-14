@@ -38,7 +38,7 @@ const BarterWrite = ({ onChange }) => {
   const handleOwnMemberChange = (member) => {
     if (member) {
       setOwnMembers((prevOwnMembers) => [...prevOwnMembers, member]);
-      onChange([...ownMembers, member], targetMembers);
+      onChange(selectedGroup, [...ownMembers, member], targetMembers);
       setOwnMembersInput(member.value);
     } else {
       setOwnMembersInput(ownMembersInput);
@@ -65,7 +65,7 @@ const BarterWrite = ({ onChange }) => {
       targetMembers.filter((member) => member !== deletedMember)
     );
   };
-  console.log(ownMembers)
+  console.log(selectedGroup.idolGroupId)
   return (
     <div>
       <div id="group-input" className="search-box-group">
