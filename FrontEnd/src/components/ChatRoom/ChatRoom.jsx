@@ -28,16 +28,6 @@ const ChatRoom = () => {
     state.user ? state.user.user : null
   );
 
-  // 항상 맨 아래로 스크롤
-  const sendMessageBoxRef = useRef(null);
-
-  useEffect(() => {
-    if (sendMessageBoxRef.current) {
-      sendMessageBoxRef.current.scrollTop =
-        sendMessageBoxRef.current.scrollHeight;
-    }
-  });
-
   const chatList = useSelector((state) =>
     state.chat.chat ? state.chat.chat : []
   );
@@ -72,6 +62,15 @@ const ChatRoom = () => {
     };
     fetchData();
   }, [dispatch, roomId]);
+  // 항상 맨 아래로 스크롤
+  const sendMessageBoxRef = useRef(null);
+
+  useEffect(() => {
+    if (sendMessageBoxRef.current) {
+      sendMessageBoxRef.current.scrollTop =
+        sendMessageBoxRef.current.scrollHeight;
+    }
+  }, [chatList]);
 
   const price = useSelector((state) =>
     state.pay ? state.pay.status.price : 0
@@ -94,7 +93,7 @@ const ChatRoom = () => {
           : location.state.visiterId;
       await axios
         .post(
-            process.env.REACT_APP_API_URL + `users/nickname`,
+          process.env.REACT_APP_API_URL + `users/nickname`,
           {
             userId: you,
           },

@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import Cookies from "js-cookie";
 import axios from "axios";
 
 import { styled } from "@mui/material/styles";
 
 import { FormControlLabel, Switch } from "@mui/material";
 
-import { setLocation } from "../../store2/loginUser.js";
+import { setLocation, setLocationLongLat } from "../../store2/loginUser.js";
 
 import {
   ReplayCircleFilledOutlined,
@@ -72,10 +73,14 @@ export default function GPS() {
 
   const currentUser = useSelector((state) => state.user.user);
 
-  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  // GPS 켜짐 유지
+  const initialSwitchValue = Cookies.get("address");
+
+  const [isSwitchOn, setIsSwitchOn] = useState(initialSwitchValue);
+
   const handleSwitchChange = () => {
     setIsSwitchOn((prev) => !prev);
-    if (!isSwitchOn) {
+    if (isSwitchOn) {
       turnOffGps();
     }
   };
@@ -83,8 +88,12 @@ export default function GPS() {
   useEffect(() => {
     if (isSwitchOn) {
       navigator.geolocation.getCurrentPosition((position) => {
-        setLocation(
-          getAddress(position.coords.longitude, position.coords.latitude)
+        getAddress(position.coords.longitude, position.coords.latitude);
+        dispatch(
+          setLocationLongLat([
+            position.coords.longitude,
+            position.coords.latitude,
+          ])
         );
       });
     }
@@ -117,6 +126,7 @@ export default function GPS() {
       })
       .then((response) => {
         dispatch(setLocation(null));
+        dispatch(setLocationLongLat([]));
       })
       .catch((error) => {
         console.error("gps off error:", error);
@@ -130,6 +140,12 @@ export default function GPS() {
           setLocation(
             getAddress(position.coords.longitude, position.coords.latitude)
           )
+        );
+        dispatch(
+          setLocationLongLat([
+            position.coords.longitude,
+            position.coords.latitude,
+          ])
         );
       });
     }

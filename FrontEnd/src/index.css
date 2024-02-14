@@ -483,12 +483,11 @@ html, body, #root {
 #chat-message-area {
     display: flex;
     flex-direction: column;
+    height: 70vh;
 }
 
 #chat-content-container {
-    height: 70vh;
     overflow-x: hidden;
-
 }
 
 #pay-button {
@@ -499,6 +498,12 @@ html, body, #root {
 
 #send-message-container {
     width: 100%;
+    background-color: var(--info-color);
+    position: sticky;
+    bottom: 0;
+    padding: 1rem;
+    text-align: center;
+    z-index: 100;
 }
 
 /* 결제 전송 모달 */

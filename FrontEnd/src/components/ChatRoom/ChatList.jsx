@@ -79,7 +79,7 @@ const ChatList = () => {
       }
     };
     fetchData();
-  }, [loginUser.userId, chatLists]);
+  }, [loginUser.userId]);
 
   console.log(chatLists);
 
