@@ -37,6 +37,7 @@ const theme = createTheme({
       }
     },
     
+    
     MuiMenu: {
       styleOverrides: {
         paper: {
@@ -80,6 +81,9 @@ const theme = createTheme({
         title: {
           fontSize: '18px',
         },
+        root: {
+          padding:'0.5rem 0'
+        }
       }
     },
     MuiCardMedia: {
@@ -95,8 +99,8 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
+          width: 'fit-content',
           padding: '0.5rem 0 0 0',
-          width: "fit-content",
           cursor: "pointer",
           display: "flex",
           flexDirection: "column",

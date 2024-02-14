@@ -99,15 +99,12 @@ const CustomCard = (props) => {
           <p>판매완료</p>
         </div>
       )} */}
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", width: 'fit-content' }}>
         <CardMedia component="img" image={images} />
         <div>
 
         <CardHeader
-          sx={{
-            width: "100%",
-          }}
-          title={<TruncatedTitle truncateWidth="80%">{title}</TruncatedTitle>}
+          title={<TruncatedTitle truncateWidth="10rem">{title}</TruncatedTitle>}
         />
         </div>
 

@@ -151,6 +151,7 @@ html, body, #root {
     display: flex;
     justify-content: center;
 }
+
 #search-button {
     background-color: var(--primary-color);
     color: #F2F4F8;
