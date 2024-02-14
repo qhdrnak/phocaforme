@@ -46,12 +46,12 @@ const GroupDropdown = ({ isProfile, defaultGroup, onChange }) => {
         options={groupItems}
         getOptionLabel={(option) => option.idolGroupNameKr}
         // isOptionEqualToValue={(option) => option.idolGroupNameKr}
-        sx={{ width: "12rem" }}
+        
         // 검색이랑 모양 똑같이 할거면 스타일 밑에걸로 
-        // sx={{
-        //   width: isProfile ? "12rem" : "80vw",
-        //   "& .MuiInputBase-root": { borderRadius: "10px" },
-        // }}
+        sx={{
+          width: isProfile ? "12rem" : "80vw",
+          
+        }}
         noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (
           <Box

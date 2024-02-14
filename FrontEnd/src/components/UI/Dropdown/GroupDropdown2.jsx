@@ -35,7 +35,6 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
   };
 
   return (
-    <div>
       <Autocomplete
         value={value}
         onChange={handleChange}
@@ -49,8 +48,7 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
           option.idolGroupNameKr === value.idolGroupNameKr
         }
         sx={{
-          width: isProfile ? "12rem" : "80vw",
-          "& .MuiInputBase-root": { borderRadius: "10px" },
+          width: isProfile ? "12rem" : "100%",
         }}
         noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (
@@ -94,7 +92,6 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
           />
         )}
       />
-    </div>
   );
 };
 

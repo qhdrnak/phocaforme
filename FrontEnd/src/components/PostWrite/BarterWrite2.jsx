@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import GroupDropdown2 from "../UI/Dropdown/GroupDropdown2.jsx";
-import MemberDropdown2 from "../UI/Dropdown/MemberDropdown2.jsx";
+import GroupDropdown2 from "../UI/Dropdown/GroupDropdown.jsx";
+import MemberDropdown2 from "../UI/Dropdown/MemberDropdown.jsx";
 
 import Chip from "@mui/material/Chip";
 
@@ -96,7 +96,7 @@ const BarterWrite2 = ({
   };
 
   return (
-    <div>
+    <div id="group-member-input">
       <div id="group-input" className="search-box-group">
         <div className="searchbar-title">그룹명</div>
         <GroupDropdown2

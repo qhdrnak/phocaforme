@@ -29,6 +29,13 @@ const theme = createTheme({
         }
       }
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          borderRadius: "10px",
+        }
+      }
+    },
     
     MuiMenu: {
       styleOverrides: {
@@ -104,7 +111,6 @@ const theme = createTheme({
         root: {
           fontFamily: 'Cafe24SSurround',
         }
-        
       }
     },
     MuiTextField: {
