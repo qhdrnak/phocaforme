@@ -12,8 +12,9 @@ import com.phofor.phocaforme.board.repository.BarterSearchRepository;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaBuilder;
 import com.phofor.phocaforme.board.service.criteria.BarterCriteriaDirector;
 import com.phofor.phocaforme.board.service.query.queryBuilder.QueryBuilder;
-import com.phofor.phocaforme.gps.dto.GpsLocationDto;
-import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.WishDocument1;
+import com.phofor.phocaforme.wishcard.dto.WishDocument2;
+import com.phofor.phocaforme.wishcard.dto.WishDocument3;
 import com.phofor.phocaforme.wishcard.service.WishQueryBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,24 +47,59 @@ public class BarterSearchService {
     private final BarterSearchRepository barterSearchRepository;
     private final RedisService redisService;
     private final RabbitTemplate rabbitTemplate;
-    public List<String> wishPhoca(String title, List<IdolMemberDto> idols, int keywordNumber){
+    public List<String> wishPhoca1(String title, List<IdolMemberDto> idols, int keywordNumber){
         wishQueryBuilder.createQuery(title,idols,keywordNumber);
         NativeQuery query = wishQueryBuilder.getSearch();
         System.out.println(query.getQuery());
-        SearchHits<WishDocument> searchHits = barterSearchRepository.findByTitleAndIdols(query);
-        SearchPage<WishDocument> searchPage = SearchHitSupport.searchPageFor(
+        SearchHits<WishDocument1> searchHits = barterSearchRepository.findByTitleAndIdols1(query);
+        SearchPage<WishDocument1> searchPage = SearchHitSupport.searchPageFor(
                 searchHits,
                 null
         );
-        Iterator<SearchHit<WishDocument>> iterator = searchPage.iterator();
+        Iterator<SearchHit<WishDocument1>> iterator = searchPage.iterator();
         List<String> ids = new ArrayList<>();
         while(iterator.hasNext()) {
-            WishDocument document = iterator.next().getContent();
+            WishDocument1 document = iterator.next().getContent();
             ids.add(document.getUserId());
         }
         return ids;
     }
 
+    public List<String> wishPhoca2(String title, List<IdolMemberDto> idols, int keywordNumber){
+        wishQueryBuilder.createQuery(title,idols,keywordNumber);
+        NativeQuery query = wishQueryBuilder.getSearch();
+        System.out.println(query.getQuery());
+        SearchHits<WishDocument2> searchHits = barterSearchRepository.findByTitleAndIdols2(query);
+        SearchPage<WishDocument2> searchPage = SearchHitSupport.searchPageFor(
+                searchHits,
+                null
+        );
+        Iterator<SearchHit<WishDocument2>> iterator = searchPage.iterator();
+        List<String> ids = new ArrayList<>();
+        while(iterator.hasNext()) {
+            WishDocument2 document = iterator.next().getContent();
+            ids.add(document.getUserId());
+        }
+        return ids;
+    }
+
+    public List<String> wishPhoca3(String title, List<IdolMemberDto> idols, int keywordNumber){
+        wishQueryBuilder.createQuery(title,idols,keywordNumber);
+        NativeQuery query = wishQueryBuilder.getSearch();
+        System.out.println(query.getQuery());
+        SearchHits<WishDocument3> searchHits = barterSearchRepository.findByTitleAndIdols3(query);
+        SearchPage<WishDocument3> searchPage = SearchHitSupport.searchPageFor(
+                searchHits,
+                null
+        );
+        Iterator<SearchHit<WishDocument3>> iterator = searchPage.iterator();
+        List<String> ids = new ArrayList<>();
+        while(iterator.hasNext()) {
+            WishDocument3 document = iterator.next().getContent();
+            ids.add(document.getUserId());
+        }
+        return ids;
+    }
     public List<SearchResponse> searchAll(){
         Sort sort = Sort.by(Sort.Direction.DESC, "created_at");
         Iterable<BarterDocument> iterable = barterSearchRepository.findAll(sort);

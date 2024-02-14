@@ -76,11 +76,11 @@ public class BarterController {
                         ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()
                 )).toList();
         List<String> ids = new ArrayList<>();
-        ids.addAll(barterSearchService.wishPhoca(barter.getTitle(),idols,3));
-        ids.addAll(barterSearchService.wishPhoca(barter.getTitle(),idols,2));
-        ids.addAll(barterSearchService.wishPhoca(barter.getTitle(),idols,1));
+        ids.addAll(barterSearchService.wishPhoca3(barter.getTitle(),idols,3));
+        ids.addAll(barterSearchService.wishPhoca2(barter.getTitle(),idols,2));
+        ids.addAll(barterSearchService.wishPhoca1(barter.getTitle(),idols,1));
 //        //#주석 해제해서 사용
-        System.out.println(ids);
+//        System.out.println(ids);
         fcmNotificationService.sendBiasMessage(ids,barter.getId());
         return new ResponseEntity<Barter>(barter, HttpStatus.OK);
     }

@@ -8,6 +8,7 @@ import java.util.List;
 public class TitleKeyword1Filter {
 
     public static Query createFilter(String title, int keywordNumber){
+//        System.out.println(keywordNumber);
         BoolQuery.Builder boolQueryBuilder = new BoolQuery.Builder();
         String[] keywords = title.split("\\s+");
         List<Query> queryList = new ArrayList<>();
@@ -15,8 +16,8 @@ public class TitleKeyword1Filter {
             QueryVariant matchTitleQuery = new MultiMatchQuery.Builder()
                     .query(keyword)
 //                    .fuzziness("1")
-                    .fields("keyword1")
                     .type(TextQueryType.CrossFields)
+                    .fields("keyword1")
                     .build();
             queryList.add(new Query(matchTitleQuery));
         }

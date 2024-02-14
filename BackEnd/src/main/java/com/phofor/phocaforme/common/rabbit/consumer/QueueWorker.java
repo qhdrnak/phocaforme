@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.service.BarterService;
-import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.WishCardDto;
+import com.phofor.phocaforme.wishcard.dto.WishDocument1;
 import com.phofor.phocaforme.wishcard.service.WishCardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class QueueWorker {
         log.info("Worker searching for messages....");
         List<BarterDetailDto> barterMessages = new ArrayList<>();
         List<Integer> barterTypes = new ArrayList<>();
-        List<WishDocument> wishMessages = new ArrayList<>();
+        List<WishCardDto> wishMessages = new ArrayList<>();
         List<Integer> wishTypes = new ArrayList<>();
         List<Integer> wishKeywordNumbers = new ArrayList<>();
         for(int i=0; i<BATCH_SIZE; i++){
@@ -54,7 +55,7 @@ public class QueueWorker {
             }else if(type==3){ // 위시포카
                 String userId = rootNode.path("userId").asText();
                 Integer keywordNumber = rootNode.path("keywordNumber").asInt();
-                WishDocument wish = wishCardService.findWishCardByUserId(userId);
+                WishCardDto wish = wishCardService.findWishCardByUserId(userId);
                 wishTypes.add(type);
                 wishMessages.add(wish);
                 wishKeywordNumbers.add(keywordNumber);
@@ -66,7 +67,7 @@ public class QueueWorker {
                 String userId = rootNode.path("userId").asText();
                 Integer keywordNumber = rootNode.path("keywordNumber").asInt();
                 wishTypes.add(type);
-                wishMessages.add(new WishDocument(userId));
+                wishMessages.add(new WishCardDto(userId));
                 wishKeywordNumbers.add(keywordNumber);
             }
             // 날짜 데이터 포맷팅
