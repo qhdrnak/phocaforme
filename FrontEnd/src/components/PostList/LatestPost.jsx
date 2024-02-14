@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 import {
   Tabs,
@@ -57,7 +57,8 @@ const LatestPost = () => {
 
   useEffect(() => {
     // 로컬 스토리지에서 최근 본 게시물을 가져옵니다.
-    const storedRecentPosts = JSON.parse(localStorage.getItem("recentCard")) || [];
+    const storedRecentPosts =
+      JSON.parse(localStorage.getItem("recentCard")) || [];
     setRecentPosts(storedRecentPosts);
   }, []);
 
@@ -70,7 +71,7 @@ const LatestPost = () => {
     navigate(`/post/${id}`);
   };
 
-  console.log(recentPosts)
+  console.log(recentPosts);
   return (
     <Container>
       <h2 className="profile-title">최근 본 게시글</h2>
@@ -95,9 +96,8 @@ const LatestPost = () => {
             sx={{ display: "flex", width: "100%" }}
             rowHeight={200}
           >
-            {recentPosts && 
+            {recentPosts &&
               recentPosts
-              
                 .map((post, index) => (
                   <div
                     className="cards-container"
@@ -114,17 +114,26 @@ const LatestPost = () => {
                       id={post.id}
                       title={post.title}
                       //이미지 2장 이상일 때
-                      images={post.images.map(image => 'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + image)}
-                      ownMembers={post.ownMembers.map(member => ({ member_name: member.name }))} // 변경된 부분
-                      targetMembers={post.targetMembers.map(member => ({ member_name: member.name }))} // 변경된 부분
-                      // 이부분 
-                      // map(member => member) 로 했을 때는 안됐는데 위처럼  수정하면 되는 이유 알아보기 
+                      images={post.images.map(
+                        (image) =>
+                          "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
+                          image
+                      )}
+                      ownMembers={post.ownMembers.map((member) => ({
+                        member_name: member.name,
+                      }))} // 변경된 부분
+                      targetMembers={post.targetMembers.map((member) => ({
+                        member_name: member.name,
+                      }))} // 변경된 부분
+                      // 이부분
+                      // map(member => member) 로 했을 때는 안됐는데 위처럼  수정하면 되는 이유 알아보기
                       content={post.content}
                       type={post.cardType}
                       isBartered={post.isBartered}
                     ></Card>
                   </div>
-                )).reverse()}
+                ))
+                .reverse()}
           </ImageList>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
@@ -133,32 +142,33 @@ const LatestPost = () => {
             sx={{ display: "flex", width: "100%" }}
             rowHeight={200}
           >
-            {recentPosts && 
+            {recentPosts &&
               recentPosts
-              .filter((post) => post.type === "판매")
-              .map((post, index) => (
-              <div
-                className="cards-container"
-                key={index}
-                onClick={() => handleClick(post.id)}
-              >
-                <Card
-                  key={post.id}
-                  style={{
-                    objectFit: "contain",
-                    margin: "0 16px 16px 0",
-                    cursor: "pointer",
-                  }}
-                  id={post.id}
-                  title={post.title}
-                  images={post.photos}
-                  ownMembers={post.ownMembers}
-                  content={post.content}
-                  type={post.cardType}
-                  isSold={post.isSold}
-                ></Card>
-              </div>
-            )).reverse()}
+                .filter((post) => post.type === "판매")
+                .map((post, index) => (
+                  <div
+                    className="cards-container"
+                    key={index}
+                    onClick={() => handleClick(post.id)}
+                  >
+                    <Card
+                      key={post.id}
+                      style={{
+                        objectFit: "contain",
+                        margin: "0 16px 16px 0",
+                        cursor: "pointer",
+                      }}
+                      id={post.id}
+                      title={post.title}
+                      images={post.photos}
+                      ownMembers={post.ownMembers}
+                      content={post.content}
+                      type={post.cardType}
+                      isSold={post.isSold}
+                    ></Card>
+                  </div>
+                ))
+                .reverse()}
           </ImageList>
         </CustomTabPanel>
       </div>
