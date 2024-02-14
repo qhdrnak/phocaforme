@@ -113,7 +113,7 @@ const DetailPost = () => {
 // 끌올
   const handlePullupClick = async () => {
     try {
-      const response = await axios.put(process.env.REACT_APP_API_URL+`barter/regen/${post.id}`, null, {
+      const response = await axios.post(process.env.REACT_APP_API_URL+`barter/regen/${post.id}`, null, {
         withCredentials: true,
       });
   
