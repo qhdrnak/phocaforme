@@ -33,9 +33,6 @@ public class Barter {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
-    
-//    // 작성자 닉네임
-//    private String nickname;
 
     // 앨범명
     @Column(name = "barter_title")
@@ -49,6 +46,8 @@ public class Barter {
     @Column(name = "barter_card_type")
     private String cardType;
 
+    @Column(name = "barter_group_id")
+    private Long groupId;
 
     // 찾는 멤버(들)
     @JsonIgnore
@@ -84,40 +83,21 @@ public class Barter {
     @Column(name = "last_modified_date")
     private LocalDateTime lastModifiedDate;
 
-
-//    @Builder
-//    public Barter(UserEntity userEntity, String nickname, String title, String content, String cardType) {
-//        this.user = userEntity;
-//        this.nickname = userEntity.getNickname();
-//        this.title = title;
-//        this.content = content;
-//        this.cardType = cardType;
-//        //userEntity.getBarters().add(this);
-//    }
-
-//    public void update(UserEntity userEntity, String nickname, String title, String content, String cardType, LocalDateTime lastModifiedDate){
-//        this.user = userEntity;
-//        this.nickname = userEntity.getNickname();
-//        this.title = title;
-//        this.content = content;
-//        this.cardType = cardType;
-//        this.lastModifiedDate = lastModifiedDate;
-//        //userEntity.getBarters().add(this);
-//    }
-
     @Builder
-    public Barter(UserEntity userEntity, String title, String content, String cardType) {
+    public Barter(UserEntity userEntity, String title, String content, String cardType, Long groupId) {
         this.user = userEntity;
         this.title = title;
         this.content = content;
         this.cardType = cardType;
+        this.groupId = groupId;
     }
 
-    public void update(UserEntity userEntity, String title, String content, String cardType, LocalDateTime lastModifiedDate){
+    public void update(UserEntity userEntity, String title, String content, String cardType, Long groupId, LocalDateTime lastModifiedDate){
         this.user = userEntity;
         this.title = title;
         this.content = content;
         this.cardType = cardType;
+        this.groupId = groupId;
         this.lastModifiedDate = lastModifiedDate;
         //userEntity.getBarters().add(this);
     }
@@ -139,5 +119,4 @@ public class Barter {
                 ))
                 .collect(Collectors.toList());
     }
-
 }
