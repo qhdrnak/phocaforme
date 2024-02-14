@@ -11,10 +11,9 @@ const MemberDropdown2 = ({
   defaultMember,
   onChange,
 }) => {
-
   const user = useSelector((state) => state.user.user);
   const [value, setValue] = useState(user.defaultMember);
-  
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
     onChange(newValue);
@@ -23,8 +22,6 @@ const MemberDropdown2 = ({
   const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
-    console.log(selectedGroup);
-    console.log('change')
     setValue(null);
     onChange(null);
 
@@ -32,13 +29,12 @@ const MemberDropdown2 = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-            `http://localhost:8080/idol/member/${selectedGroup.idolGroupId}`,
+              process.env.REACT_APP_API_URL + `idol/member/${selectedGroup.idolGroupId}`,
             {
               withCredentials: true,
             }
           );
           setMemberItems(response.data);
-    
         } catch (error) {
           console.error("멤버 세팅 오류:", error);
         }
@@ -68,7 +64,9 @@ const MemberDropdown2 = ({
             borderRadius: "10px",
           },
         }}
-        noOptionsText={selectedGroup ? "해당 멤버가 없습니다" : '그룹을 선택해주세요'}
+        noOptionsText={
+          selectedGroup ? "해당 멤버가 없습니다" : "그룹을 선택해주세요"
+        }
         renderOption={(props, option) => (
           <Box
             component="li"

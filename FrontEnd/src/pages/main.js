@@ -58,7 +58,7 @@ const Main = () => {
         };
 
         const sendTokenToServerBackend = (currentToken) => {
-            fetch(`http://localhost:8080/user/device`, {
+            fetch(process.env.REACT_APP_API_URL + `user/device`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -148,7 +148,7 @@ const handleTypeChange = (cardType) => {
     console.log(test);
     navigate("/post");    
       
-        axios.post('http://localhost:8080/barter', newPost, {
+        axios.post(process.env.REACT_APP_API_URL + 'barter', newPost, {
           withCredentials: true, // withCredentials 옵션 설정
           headers: {
             "Content-Type": "multipart/form-data",

@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import axios from 'axios'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-import { Button, TextField, Chip } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+
+import { Card, Box, CardContent, CardMedia, Button, TextField, Chip } from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear';
 
 import GroupDropdown from "../UI/Dropdown/GroupDropdown2";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown2";
 
 const WishCard = () => {
+  const theme = useTheme();
+
   const [selectedGroup, setSelectedGroup] = useState(0);
   const [selectedMember, setSelectedMember] = useState(null);
 
@@ -22,7 +27,6 @@ const WishCard = () => {
       setSelectedGroup(null);
       setSelectedMember(null);
     }
-
   };
 
   const handleMemberChange = (member) => {
@@ -30,8 +34,8 @@ const WishCard = () => {
   };
 
   // 갈망포카 객체 생성
-  const labels = tags.map(tag => tag.label);
-  
+  const labels = tags.map((tag) => tag.label);
+
   const handleWishCard = () => {
     // 그룹, 멤버 설정 안하면 안됨
     if (selectedMember == null) {
@@ -40,28 +44,27 @@ const WishCard = () => {
     }
 
     const data = {
-      memberId: selectedMember ? selectedMember.idolMemberId : null, 
-      keyword1: labels.length > 0 ? labels[0] : null, 
-      keyword2: labels.length > 1 ? labels[1] : null, 
-      keyword3: labels.length > 2 ? labels[2] : null, 
-    }
-    
-    // db 에 반영하기
-    axios.put(`http://localhost:8080/user/wishCard`
-    , data
-    , {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      memberId: selectedMember ? selectedMember.idolMemberId : null,
+      keyword1: labels.length > 0 ? labels[0] : null,
+      keyword2: labels.length > 1 ? labels[1] : null,
+      keyword3: labels.length > 2 ? labels[2] : null,
+    };
 
-    })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error('Error setting bias:', error);
-    }); 
+    // db 에 반영하기
+    axios
+      .put(process.env.REACT_APP_API_URL + `user/wishCard`, data, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        setWishCard(data);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error("Error setting bias:", error);
+      });
   };
 
   // 키워드 관련
@@ -96,18 +99,72 @@ const WishCard = () => {
     setHelperText("");
   };
 
+  const [wishCard, setWishCard] = useState(null);
+
+  // 이미 갈망포카가 있다면 가져와라
+  useEffect(() => {
+      axios
+        .get(process.env.REACT_APP_API_URL + `user/wishCard`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          setWishCard(response.data);
+        })
+        .catch((error) => {
+          console.error("Error get wishcard:", error);
+        });
+    
+  }, [wishCard]);
+
+  // 갈망포카 삭제
+  const handleDelete = () => {
+    axios
+      .delete(process.env.REACT_APP_API_URL + `user/wishCard`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setWishCard(null);
+      })
+      .catch((error) => {
+        console.error("Error delete wishcard:", error);
+      });
+  }
+
   return (
     <div className="profile-item-container">
-      <h2 className="profile-title">갈망포카 설정</h2>
-      <div id='wishcard-container'>
-        <h4 className="profile-title">현재 나의 갈망포카</h4>
+      <h2 className="profile-title">나의 갈망포카</h2>
+      <div id="wishcard-container">
+        <div className="wishcard-content">
+          <div>
+            {wishCard !== null
+            ? 
+            <Card id='wishcard-card-container'>
+              <Box>
+                <CardContent id='wishcard-card-content' >
+                  <div id='wishcard-card-keyword'>
+                    {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
+                      .filter(Boolean)
+                      .map((keyword, index) => `#${keyword}`)
+                      .join(" ")}
+                  </div>
+                  <div id='wishcard-card-content-header'>
+                      <ClearIcon onClick={handleDelete} />
+                  </div>
+                </CardContent>
+                
+              </Box>
+            
+          </Card>
+                  : "아직 갈망포카가 없어요"}
+          </div>
+          </div>
         <div>
 
         </div>
       </div>
       <div className="profile-dropdown-container">
         <div className="profile-group-container">
-          <div>그룹명</div>
+          <div className="bias-title">그룹명</div>
           <div>
             <GroupDropdown
               isProfile={true}
@@ -118,7 +175,7 @@ const WishCard = () => {
           </div>
         </div>
         <div id="wishcard-member-container">
-          <div>멤버명</div>
+          <div className="bias-title">멤버명</div>
           <div>
             <MemberDropdown
               isProfile={true}
@@ -132,6 +189,9 @@ const WishCard = () => {
       </div>
       <div>
         <div id="wishcard-input-container">
+          <div className="bias-title" id="bias-keyword">
+            키워드를 입력해주세요
+          </div>
           <TextField
             size="small"
             placeholder="앨범명, 콘서트명, 버전명, 종류 등을 입력하세요."

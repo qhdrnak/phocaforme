@@ -30,17 +30,18 @@ const Search = function () {
 
   const theme = useTheme();
 
-  // 보류! (삭제 ㄴㄴ)
-  // useEffect(() => {
-  //   // 최근 검색 기록 가져와
-  //   const searchHistory = JSON.parse(localStorage.getItem("searchCondition"));
-  //   console.log(searchHistory);
-  //   setUserInput(searchHistory.query);
-  //   setOwnMembers(searchHistory.ownMembers);
-  //   setTargetMembers(searchHistory.targetMembers);
-  //   setCardType(searchHistory.cardType);
 
-  // }, []);
+  // 최근 검색 기록 가져와
+  useEffect(() => {
+    const searchHistory = JSON.parse(localStorage.getItem("searchCondition"));
+    
+    if (searchHistory) {
+      setUserInput(searchHistory.query);
+      setOwnMembers(searchHistory.ownMembers);
+      setTargetMembers(searchHistory.targetMembers);
+      setCardType(searchHistory.cardType);
+    }
+  }, [isClicked]);
 
   const handleTypeChange = (cardType) => {
     if (cardType == null) {
@@ -75,11 +76,11 @@ const Search = function () {
   function handleSearchClick() {
 
     const searchData = {
-      query: userInput ? userInput : "",
+      query: userInput ? userInput : null,
       ownMembers: ownMembers ? ownMembers : [],
       targetMembers: targetMembers
         ? targetMembers : [],
-      cardType: cardType ? cardType.value : "",
+      cardType: cardType ? cardType :null,
     };
 
     dispatch(addSearchData(searchData));
@@ -87,6 +88,12 @@ const Search = function () {
     // 최근 검색 기록 저장
     localStorage.setItem("searchCondition", JSON.stringify(searchData));
     
+    // 초기화
+    setUserInput(null);
+    setOwnMembers([]);
+    setTargetMembers([]);
+    setCardType(null);
+
     navigate("/post");
     onClick(); // 검색창 닫기
   }
@@ -139,8 +146,8 @@ const Search = function () {
             <div>
               {isExchange ? (
                 <BarterWrite2
-                  // defaultOwnMembers = {ownMembers}
-                  // defaultTargetMembers = {targetMembers}
+                  defaultOwnMembers = {ownMembers}
+                  defaultTargetMembers = {targetMembers}
                   onChange={(ownMembers, targetMembers) => {
                     handleOwnMemberSelection(ownMembers);
                     handleTargetMemberSelection(targetMembers);
@@ -154,7 +161,7 @@ const Search = function () {
               <div className="searchbar-title">포토카드 종류</div>
 
               <TypeDropdown2
-                // defaultCardType = {cardType}
+                defaultCardType = {cardType}
                 onChange={(type) => {
                   handleTypeChange(type);
                 }}

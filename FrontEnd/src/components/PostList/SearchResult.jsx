@@ -12,13 +12,11 @@ import { searchPosts } from "../../store2/post.js";
 
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../UI/Card.jsx";
-/////////////////////////////////////////////////////////
 import usePostSearch from "../../utils/infiScroll.js";
 
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
-  
   return (
     <div>
       <div
@@ -50,7 +48,6 @@ const a11yProps = (index) => {
   };
 };
 
-
 const BasicTabs = ({ isPreview }) => {
   const posts = useSelector((state) => (state.post ? state.post.posts : []));
   const user = useSelector((state) => (state.user ? state.user.user : null));
@@ -58,14 +55,9 @@ const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
 
-const {
-  // boards,
-  hasMore,
-  loading,
-  error
-} = usePostSearch(pageNumber)
+  const { hasMore, loading, error } = usePostSearch(pageNumber);
 
-const observer = useRef();
+  const observer = useRef();
   const lastBookElementRef = useCallback(
     (node) => {
       if (loading) return;
@@ -89,7 +81,10 @@ const observer = useRef();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isPreview && searchs) {
+    // if (!isPreview && !searchs.isCleared) {
+    if (!isPreview) {
+
+
       const fetchData = async () => {
         try {
           const params = {};
@@ -98,7 +93,7 @@ const observer = useRef();
             if (searchs.targetMembers.length == 1) {
               params.target = searchs.targetMembers[0].idolMemberId;
             } else {
-              params.target = searchs.targetMembers.idolMemberId.join(',');
+              params.target = searchs.targetMembers.idolMemberId.join(",");
             }
           }
 
@@ -106,35 +101,37 @@ const observer = useRef();
             if (searchs.ownMembers.length == 1) {
               params.own = searchs.ownMembers[0].idolMemberId;
             } else {
-              params.own = searchs.ownMembers.idolMemberId.join(',');
+              params.own = searchs.ownMembers.idolMemberId.join(",");
             }
           }
 
-          if (searchs.cardType) {
-            params.cardType = searchs.cardType;
+          if (searchs.cardType.value) {
+            params.cardType = searchs.cardType.value;
           }
 
           if (searchs.query) {
             params.query = searchs.query;
           }
 
-          console.log(params);
           const response = await axios.get(
-            "http://localhost:8080/barter/search",
-            { params }
+            process.env.REACT_APP_API_URL + "barter/search",
+            { params },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
 
           dispatch(searchPosts(response.data));
-          
+
         } catch (error) {
           console.error("검색 오류 :", error);
-        } 
+        }
       };
-      
-      // dispatch(clearSearchData());
-      // if (searchs) {
+
         fetchData();
-      // }
+      
     }
   }, [dispatch, searchs]);
 
@@ -174,18 +171,22 @@ const observer = useRef();
                 <Card
                   id={post.id}
                   title={post.title}
-                  images={'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + post.imageUrl}
+                  images={
+                    "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
+                    post.imageUrl
+                  }
                   ownMembers={post.ownMember}
                   targetMembers={post.targetMember}
                   isBartered={post.Bartered}
                   onClick={() => {
-                    setSelectedPostId(post.id)
+                    setSelectedPostId(post.id);
                     navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
                   }} // 클릭 이벤트 추가
-                  
                 />
                 {/* 마지막 요소일 때만 ref를 전달합니다 */}
-                {index === posts.length - 1 ? <div ref={lastBookElementRef} /> : null}
+                {index === posts.length - 1 ? (
+                  <div ref={lastBookElementRef} />
+                ) : null}
               </div>
             ))}
           </div>
@@ -214,11 +215,10 @@ const observer = useRef();
               ))
           )}
         </div>
-        <div>{loading && 'Loading...'}</div>
-        <div>{error && 'Error'}</div>
+        <div>{loading && "Loading..."}</div>
+        <div>{error && "Error"}</div>
       </CustomTabPanel>
     </div>
-    
   );
 };
 

@@ -174,6 +174,7 @@ html, body, #root {
 
 #profile-image {
     width: 10vw;
+    height: 10vw;
     padding: 0.2rem;
 }
 
@@ -312,9 +313,21 @@ html, body, #root {
     color: gray;
 }
 /* 채팅리스트 */
-#chatlist-info {
+.chatlist-nickname {
+    font-weight: bold;
+}
+
+.chatlist-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0;
+}
+
+.chatlist-content {
     display: flex;
     justify-content: space-between;
+
 }
 
 /* 채팅페이지 */
@@ -331,16 +344,18 @@ html, body, #root {
     font-weight: 700;
 }
 
-.chatlist-item {
-    border: 1px solid grey;
+.chatlist-item, .unread-chatlist-item{
     margin: 0.2rem;
     border-radius: 10px;
 }
 
+.chatlist-item {
+    border: 1px solid grey;
+    
+}
+
 .unread-chatlist-item {
     border: 0.5px solid grey;
-    margin: 0.2rem;
-    border-radius: 10px;
     background-color: #FD9DD1;
 
 }
@@ -359,7 +374,7 @@ html, body, #root {
 
 #notice-title {
     display: flex;
-    align-items: start;
+    align-items: flex-start;
     min-width: fit-content;
     padding: 1rem 1rem 0 0 ;
 }
@@ -419,7 +434,7 @@ html, body, #root {
 .chat-owner {
     display: flex;
     justify-content: flex-end;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .chat-owner-name {
@@ -504,7 +519,7 @@ html, body, #root {
 .unit-container {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
 
 }
 
@@ -538,6 +553,20 @@ html, body, #root {
 
 
 /* 마이페이지 */
+#bias-description {
+    margin: 0.5rem 0;
+    color: #FD9DD1;
+    font-size: small;
+}
+
+.bias-title {
+    margin: 0.5rem 0;
+}
+
+#bias-keyword {
+    text-align: center;
+}
+
 #nickname-title {
     width: 20vw;
 }
@@ -555,6 +584,22 @@ html, body, #root {
 
 #nickname-input {
     margin: 1rem;
+}
+
+#wishcard-card-container {
+    display: flex;
+    border-radius: 1rem;
+}
+
+
+#wishcard-card-content {
+    display: flex;
+    padding: 1rem;
+}
+
+
+#wishcard-card-media {
+    height: fit-content;
 }
 
 #wishcard-input-container {

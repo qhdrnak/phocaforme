@@ -24,7 +24,7 @@ const DetailPost = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/barter/${id}`,
+      const response = await axios.get(process.env.REACT_APP_API_URL + `barter/${id}`,
         { withCredentials: true }
       );
       const detailData = response.data;
@@ -84,8 +84,7 @@ const DetailPost = () => {
   const handleChatClick = () => {
     // 채팅방 생성
     axios
-      .post(`http://localhost:8080/chatRoom/${id}`, 
-      // .post(`http://localhost:8080/api/chatRoom/1`, 
+        .post(process.env.REACT_APP_API_URL + `chatRoom/${id}`,
       null,
       {
         headers: {

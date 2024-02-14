@@ -46,18 +46,22 @@ const NicknameModal = ({
     // 닉네임 중복 체크
     // 중복 아니면 validFlag 수정
     axios
-      .post(`http://localhost:8080/user/nickname`,
+      .post(
+        process.env.REACT_APP_API_URL + `user/nickname`,
         { nickname: inputValue },
         {
           withCredentials: true,
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
           },
-        })
+        }
+      )
       .then((response) => {
-        setValidFlag(true);
+        setValidFlag(!response.data.isDuplicated);
       })
       .catch((error) => {
+        setValidFlag(false);
+
         console.error("요청 실패:", error);
       });
   };
@@ -69,13 +73,13 @@ const NicknameModal = ({
 
   const handleChangeNickname = (userId) => {
     axios
-      .put(`http://localhost:8080/user/nickname`,
+      .put(process.env.REACT_APP_API_URL + `user/nickname`,
         {
           isDuplicated: !validFlag,
           nickname: inputValue,
         },
         {
-        withCredentials: true,
+          withCredentials: true,
         }
       )
       .then((response) => {
@@ -88,6 +92,12 @@ const NicknameModal = ({
       });
   };
 
+  const [errorMsg, setErrorMsg] = useState(null);
+  // 중복 에러메시지도 넣어야 함
+  // inputValue.length < minLength && inputValue.trim() != ""
+  // ? "2글자 이상 필수"
+  // : ""
+
   return (
     <Modal open={open} onClose={handleClose}>
       <Box id="nickname-modal-container" sx={style}>
@@ -97,11 +107,7 @@ const NicknameModal = ({
             id="new-nickname-input"
             value={inputValue}
             onChange={handleChange}
-            helperText={
-              inputValue.length < minLength && inputValue.trim() != ""
-                ? "2글자 이상 필수"
-                : ""
-            }
+            helperText={errorMsg}
             error={inputValue.length < minLength && inputValue.trim() != ""}
             size="small"
             placeholder=""

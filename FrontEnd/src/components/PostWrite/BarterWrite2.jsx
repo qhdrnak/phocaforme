@@ -58,13 +58,13 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
 
   // 멤버 삭제 관련
   const handleOwnMemberDelete = (deletedMember) => {
-    setOwnMembers(ownMembers.filter((member) => member !== deletedMember));
+    setOwnMembers(prevOwnMembers => prevOwnMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId));
+    onChange(prevOwnMembers => prevOwnMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId), targetMembers);
   };
-
+  
   const handleTargetMemberDelete = (deletedMember) => {
-    setTargetMembers(
-      targetMembers.filter((member) => member !== deletedMember)
-    );
+    setTargetMembers(prevTargetMembers => prevTargetMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId));
+    onChange(ownMembers, prevTargetMembers => prevTargetMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId));
   };
 
   return (

@@ -19,7 +19,7 @@ const PreviewPost = () => {
     // 데이터를 불러오는 비동기 함수를 정의합니다.
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/barter/search', {
+          const response = await axios.get(process.env.REACT_APP_API_URL + 'barter/search', {
           withCredentials: true,
         });
         // 받아온 데이터를 상태 변수에 저장합니다.

@@ -44,11 +44,10 @@ const theme = createTheme({
         },
       },
     },
-    MuiListItemText: {
+    MuiListItem: {
       styleOverrides: {
-        secondary: {
-          fontSize: '14px',
-          fontFamily: 'Pretendard'
+        root: {
+          padding: '0.5rem 1rem',
         }
 
       }
