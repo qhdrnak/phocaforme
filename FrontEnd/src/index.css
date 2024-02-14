@@ -701,6 +701,19 @@ html, body, #root {
     width: 100%;
 }
 
+#deleted-post-imoji {
+    text-align: center;
+    width: 100%;
+    font-size: 150px;
+    margin: 10vh 0 5vh;
+}
+
+/* 삭제된 게시글 */
+#deleted-post-title {
+    font-family:'PyeongChangPeace';
+    font-weight: bold;
+    text-align: center;
+}
 
   /* ? */
 #user-input {

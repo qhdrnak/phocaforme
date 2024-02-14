@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 
 import axios from "axios";
 
+import DeletedPost from "./DeletedPost";
+
 import {
   Container,
   ImageList,
@@ -73,8 +75,6 @@ const DetailPost = () => {
       saveToLocalStorage();
     }
   }, [post]);
-
- 
 
   console.log(post) // 현재 이 컴포넌트가 4번 렌더링됨 이유는 모르겠음 나중에 여유있으면 수정해야 할듯?
   // 내 게시글인지 판별
@@ -146,7 +146,7 @@ const DetailPost = () => {
   }
 
   if (post === null) {
-    return <div>이미삭제된게시글</div>; // 데이터가 로드되기 전에는 로딩 중을 표시
+    return <DeletedPost/>; // 데이터가 로드되기 전에는 로딩 중을 표시
   }
 
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정

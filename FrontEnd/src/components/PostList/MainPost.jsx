@@ -12,15 +12,13 @@ import { searchPosts } from "../../store2/post.js";
 
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../../components/UI/Card";
-/////////////////////////////////////////////////////////
 import usePostSearch from "../../utils/infiScroll.js";
-//////////
+
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
-  ////////
 
   return (
     <div>
