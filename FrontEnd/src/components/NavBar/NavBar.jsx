@@ -26,6 +26,7 @@ const NavBar = ({ children }) => {
 
   return (
     <div id="nav-bar">
+      
       <img
         id="logo"
         onClick={() => {
@@ -33,11 +34,11 @@ const NavBar = ({ children }) => {
         }}
         src={logo}
       />
-
       {user.userId ? (
         <div id="nav-menus">
           <ProfileImage />
           {/* <button onClick={handleLogout}>로그아웃</button> */}
+          
           <div
             id="bell"
             onClick={() => {

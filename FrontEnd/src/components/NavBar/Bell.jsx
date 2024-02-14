@@ -3,7 +3,13 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 const Bell = () => {
   return (
-    <Badge color="primary" variant="dot">
+    <Badge 
+      color="primary" 
+      // variant="invisible" 
+      variant="dot"
+      overlap="circular" 
+      anchorOrigin={{ vertical: 'top', horizontal: 'right'}}
+    >
       <NotificationsIcon id="bell-icon" />
     </Badge>
   );
