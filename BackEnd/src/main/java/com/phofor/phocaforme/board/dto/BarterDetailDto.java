@@ -60,8 +60,7 @@ public class BarterDetailDto {
                 .nickName(barter.getUser().getNickname())
                 .title(barter.getTitle())
                 .content(barter.getContent())
-                //TODO
-//                .groupId(barter.getGroupId())
+                .groupId(barter.getGroupId())
                 .ownIdolMembers(barter.getOwnIdols().stream()
                         .map(ownIdol -> new IdolMemberDto(ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()))
                         .collect(Collectors.toList()))
