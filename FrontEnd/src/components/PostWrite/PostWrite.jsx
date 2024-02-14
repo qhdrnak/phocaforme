@@ -46,16 +46,20 @@ const PostWrite = () => {
   const handleTargetMemberSelection = (members) => {
     setfindIdolMembers(members);
   };
+////// 0214 그냥 타입 넘겨줄 때 객체형식 말고 문자로 넘겨줌 
+const handleTypeChange = (cardType) => {
+  setCardType(cardType);
+};
 
-  const handleTypeChange = (cardType) => {
-    if (cardType == null) {
-      cardType = {
-        value: "",
-        label: "",
-      };
-    }
-    setCardType(cardType);
-  };
+  // const handleTypeChange = (cardType) => {
+  //   if (cardType == null) {
+  //     cardType = {
+  //       value: "",
+  //       label: "",
+  //     };
+  //   }
+  //   setCardType(cardType);
+  // };
 
   // 제목 변경 핸들러
   const handleTitleChange = (event) => {
@@ -123,7 +127,7 @@ const PostWrite = () => {
     findIdolMembers.forEach(member => {
       newPost.append('findIdolMembers', member.idolMemberId);
     });
-    newPost.append("cardType", isExchange ? "교환" : "판매");
+    newPost.append("cardType", cardType.value);
     images.forEach((image) => {
       newPost.append(`photos`, image);
     });
@@ -170,9 +174,9 @@ const PostWrite = () => {
       <h2 className="write-title">게시글 작성하기</h2>
 
       <div id="write-container">
-        <div id="write-radio-container">
+        {/* <div id="write-radio-container">
           <RadioButton2 onChange={onExchangeChange} />
-        </div>
+        </div> */}
         <div id="title-container">
           <h3>제목</h3>
           <input

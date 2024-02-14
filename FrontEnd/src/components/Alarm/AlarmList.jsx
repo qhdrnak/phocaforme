@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import {
   List,
@@ -16,39 +17,42 @@ import { TaskAlt, Close, RadioButtonUnchecked } from "@mui/icons-material";
 const InteractiveList = () => {
   const navigate = useNavigate();
 
-  const handleItemClick = (item) => {
-    if (item.notificationType === "갈망포카") {
-      navigate(`/post/${item.articleId}`);
-    } else if (item.notificationType === "채팅알람") {
-      navigate("/chat");
+  // 알림 데이터를 저장할 상태
+  const [notifications, setNotifications] = useState([]);
+
+  // 컴포넌트가 마운트될 때 알림 데이터를 가져오는 useEffect
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  // 알림 데이터를 서버에서 가져오는 함수
+  const fetchNotifications = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/notification",
+      { withCredentials: true, }
+      );
+      setNotifications(response.data);
+    } catch (error) {
+      console.error("Error fetching notifications:", error);
     }
   };
 
-  const [readList, setReadList] = useState([
-    {
-      notificationId: 1,
-      notificationType: "갈망포카",
-      content: "지금 당신의 갈망포카가 올라왔어요! 확인해보세요",
-      sendTime: new Date().toLocaleString(),
-      articleId: 1,
-      isRead: false,
-    },
-    {
-      notificationId: 2,
-      notificationType: "채팅알람",
-      content: "제노예요 님이 채팅을 보냈습니다.",
-      sendTime: new Date().toLocaleString(),
-      chatRoomId: 1,
-      isRead: false,
-    },
-  ]);
+  // 알림 클릭 핸들러
+  const handleItemClick = (item) => {
+    if (item.notificationType === "Article") {
+      console.log('click')
+      navigate(`/post/${item.articleId}`);
+    } else if (item.notificationType === "Chatting") {
+      console.log('click')
+      navigate(`/chat`);
+    }
+  };
 
-  const readAlarm = (index) => {
-    setReadList((preReadList) => {
-      const newReadList = [...preReadList];
-      newReadList[index].isRead = !newReadList[index].isRead;
-      return newReadList;
-    });
+  // 알림 읽음 처리 핸들러 // 여기서 delete 요청 보내면 될듯 
+  const handleReadAlarm = (index) => {
+    const updatedNotifications = [...notifications];
+    updatedNotifications[index].isRead = !updatedNotifications[index].isRead;
+    setNotifications(updatedNotifications);
   };
 
   return (
@@ -59,13 +63,13 @@ const InteractiveList = () => {
           id="alarm-check-all"
           control={
             <Checkbox
-              checked={readList.every((item) => item.isRead)}
+              checked={notifications.every((item) => item.isRead)}
               onChange={() =>
-                setReadList((preReadList) =>
-                  preReadList.map((item) => ({ ...item, isRead: true }))
+                setNotifications((prevNotifications) =>
+                  prevNotifications.map((item) => ({ ...item, isRead: true }))
                 )
               }
-              disabled={readList.every((item) => item.isRead)}
+              disabled={notifications.every((item) => item.isRead)}
             />
           }
           label="모두 읽음"
@@ -73,40 +77,43 @@ const InteractiveList = () => {
       </div>
 
       <div>
-        <List>
-          {readList.map((item, index) => (
-            <ListItem
-              key={index}
-              className={item.isRead ? "alarm-read-item" : "alarm-item"}
-              secondaryAction={
-                <>
-                  <IconButton edge="end" onClick={() => readAlarm(index)}>
-                    {item.isRead ? null : <Close />}
-                  </IconButton>
-                </>
-              }
-            >
-              <div
-                className="alarm-item-container"
-                onClick={(e) => {
-                  handleItemClick(item);
-                }}
+        {notifications.length === 0 ? (
+          <div>알림이 없습니다.</div>
+        ) : (
+          <List>
+            {notifications.map((item, index) => (
+              <ListItem
+                key={index}
+                onClick={() => handleItemClick(item)}
+                className={item.isRead ? "alarm-read-item" : "alarm-item"}
+                secondaryAction={
+                  <>
+                    <IconButton
+                      edge="end"
+                      onClick={() => handleReadAlarm(index)}
+                    >
+                      {item.isRead ? null : <Close />}
+                    </IconButton>
+                  </>
+                }
               >
-                <ListItemAvatar>
-                  {item.isRead ? <TaskAlt /> : <RadioButtonUnchecked />}
-                </ListItemAvatar>
-                <div className="alarm-text-container">
-                  <ListItemText
-                    className="alarm-content"
-                    primary={item.notificationType}
-                    secondary={item.content}
-                  />
-                  <span id="alarm-time">{item.sendTime}</span>
+                <div className="alarm-item-container">
+                  <ListItemAvatar>
+                    {item.isRead ? <TaskAlt /> : <RadioButtonUnchecked />}
+                  </ListItemAvatar>
+                  <div className="alarm-text-container">
+                    <ListItemText
+                      className="alarm-content"
+                      primary={item.notificationType}
+                      secondary={item.content}
+                    />
+                    <span id="alarm-time">{item.sendTime}</span>
+                  </div>
                 </div>
-              </div>
-            </ListItem>
-          ))}
-        </List>
+              </ListItem>
+            ))}
+          </List>
+        )}
       </div>
     </div>
   );

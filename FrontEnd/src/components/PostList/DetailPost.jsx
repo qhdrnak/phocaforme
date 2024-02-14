@@ -45,7 +45,7 @@ const DetailPost = () => {
         ownMembers: post.ownIdolMembers,
         targetMembers: post.findIdolMembers,
         isBartered: post.bartered,
-        type: post.cardType
+        // type: post.cardType.value
       };
   
       const isExisting = existingRecentCard.some((card) => card.id === post.id);
@@ -136,6 +136,9 @@ const DetailPost = () => {
       )
       .then(response => {
         console.log("게시물이 성공적으로 삭제되었습니다.");
+        const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
+        const updatedRecentCard = existingRecentCard.filter(card => card.id !== postId);
+        localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
       })
       .catch(error => {
         console.error("게시물 삭제 중 에러가 발생했습니다:", error);
@@ -151,6 +154,7 @@ const DetailPost = () => {
   const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
 
   console.log(post.cardType)
+
   return (
     <Container
       className={`card-style${
