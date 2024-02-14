@@ -84,7 +84,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
                     outputStream.write(imageBytes);
                     // OutputStream outputStream = new FileOutputStream(tempFile)을 통해 생성한 outputStream 객체에 imageBytes를 작성
                 }
-                String originalName = UUID.randomUUID().toString(); // uuid를 통해 파일명이 겹치지 않게 해줌
+                String originalName = "chat/" + UUID.randomUUID().toString(); // uuid를 통해 파일명이 겹치지 않게 해줌
 
                 amazonS3Client.putObject(new PutObjectRequest(S3Bucket, originalName, tempFile).withCannedAcl(CannedAccessControlList.PublicRead));
                 // s3에 tempFile 을 저장
