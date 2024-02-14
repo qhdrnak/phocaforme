@@ -41,17 +41,10 @@ public class BiasSelectController {
 
         String profileURL = userService.updateBias(userId, idolMemberId, tokenCookie.getValue());
         if (!profileURL.isEmpty()){
-            int time;
+            int time = (60*60*24*14) + (60*60*9); //14일 유지
             if(profileCookie != null) {
-                time = profileCookie.getMaxAge();
-                log.info("시간 :{}", profileCookie.getMaxAge());
-
                 // 기존 쿠키 지우기
                 profileCookie.setMaxAge(0);
-            }
-
-            else{
-                time = (60*60*3) + (60*60*9);
             }
 
             // 갱신
