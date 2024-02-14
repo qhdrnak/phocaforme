@@ -6,7 +6,7 @@ CREATE TABLE barter
     barter_title     VARCHAR(255) NULL,
     barter_content   VARCHAR(255) NULL,
     barter_card_type VARCHAR(255) NULL,
-    nickname         VARCHAR(255) NULL,
+--     nickname         VARCHAR(255) NULL,
     barterStatus     TINYINT(1) DEFAULT 0 NULL,
     bartered         TINYINT(1) DEFAULT 0 NULL,
     registration_date DATETIME(6) DEFAULT CURRENT_TIMESTAMP(6) NULL,

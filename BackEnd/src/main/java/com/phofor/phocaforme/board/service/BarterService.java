@@ -75,7 +75,7 @@ public class BarterService {
     public Barter registerBarter(BarterRegisterDto registerDto, UserEntity userEntity) throws IOException {
         Barter barter = Barter.builder()
                 .userEntity(userEntity)
-                .nickname(userEntity.getNickname())
+//                .nickname(userEntity.getNickname())
                 .title(registerDto.getTitle())
                 .content(registerDto.getContent())
                 .cardType((registerDto.getCardType()))
@@ -137,7 +137,7 @@ public class BarterService {
         // 일정 부분을 찾아 수정하는 것보다 전부 다 지워주고 다시 올려주는 방식을 선택
         deleteDB(barter);
         deleteS3(barter.getImages());
-        barter.update(user, user.getNickname(), updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType(), LocalDateTime.now());
+        barter.update(user, updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType(), LocalDateTime.now());
 
         // register 방법과 똑같음
         List<IdolMember> newOwnIdols = idolMemberRepository.findAllById(updateDto.getOwnIdolMembers());
@@ -232,7 +232,7 @@ public class BarterService {
 
         Barter newBarter = Barter.builder()
                 .userEntity(barter.getUser())
-                .nickname(barter.getNickname())
+//                .nickname(barter.getNickname())
                 .title(barter.getTitle())
                 .content(barter.getContent())
                 .cardType((barter.getCardType()))
