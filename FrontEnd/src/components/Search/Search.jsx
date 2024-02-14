@@ -19,6 +19,7 @@ const Search = function () {
   const [userInput, setUserInput] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [isExchange, setIsExchange] = useState(true);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [targetMembers, setTargetMembers] = useState([]);
   const [ownMembers, setOwnMembers] = useState([]);
   const [targetMembersInput, setTargetMembersInput] = useState(null);
@@ -30,12 +31,12 @@ const Search = function () {
 
   const theme = useTheme();
 
-
   // 최근 검색 기록 가져와
   useEffect(() => {
     const searchHistory = JSON.parse(localStorage.getItem("searchCondition"));
-    
+
     if (searchHistory) {
+      setSelectedGroup(searchHistory.group);
       setUserInput(searchHistory.query);
       setOwnMembers(searchHistory.ownMembers);
       setTargetMembers(searchHistory.targetMembers);
@@ -69,25 +70,29 @@ const Search = function () {
     setTargetMembers(members);
   };
 
+  const handleGroupSelection = (group) => {
+    setSelectedGroup(group);
+    console.log(selectedGroup);
+  };
+
   function onExchangeChange(value) {
     setIsExchange(value === "option1");
   }
 
   function handleSearchClick() {
-
     const searchData = {
+      group: selectedGroup ? selectedGroup : null,
       query: userInput ? userInput : null,
       ownMembers: ownMembers ? ownMembers : [],
-      targetMembers: targetMembers
-        ? targetMembers : [],
-      cardType: cardType ? cardType :null,
+      targetMembers: targetMembers ? targetMembers : [],
+      cardType: cardType ? cardType : null,
     };
 
     dispatch(addSearchData(searchData));
 
     // 최근 검색 기록 저장
     localStorage.setItem("searchCondition", JSON.stringify(searchData));
-    
+
     // 초기화
     setUserInput(null);
     setOwnMembers([]);
@@ -97,10 +102,6 @@ const Search = function () {
     navigate("/post");
     onClick(); // 검색창 닫기
   }
-
-  const handleUserInputClick = (event) => {
-    event.stopPropagation(); // 클릭 이벤트 버블링 중단
-  };
 
   // 엔터 키를 눌렀을 때도 send
   const handleEnter = (e) => {
@@ -146,9 +147,11 @@ const Search = function () {
             <div>
               {isExchange ? (
                 <BarterWrite2
-                  defaultOwnMembers = {ownMembers}
-                  defaultTargetMembers = {targetMembers}
-                  onChange={(ownMembers, targetMembers) => {
+                  defaultGroup={selectedGroup}
+                  defaultOwnMembers={ownMembers}
+                  defaultTargetMembers={targetMembers}
+                  onChange={(group, ownMembers, targetMembers) => {
+                    handleGroupSelection(group);
                     handleOwnMemberSelection(ownMembers);
                     handleTargetMemberSelection(targetMembers);
                   }}
@@ -161,7 +164,7 @@ const Search = function () {
               <div className="searchbar-title">포토카드 종류</div>
 
               <TypeDropdown2
-                defaultCardType = {cardType}
+                defaultCardType={cardType}
                 onChange={(type) => {
                   handleTypeChange(type);
                 }}

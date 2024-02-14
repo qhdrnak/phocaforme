@@ -28,22 +28,13 @@ const ChatRoom = () => {
     state.user ? state.user.user : null
   );
 
-  // 항상 맨 아래로 스크롤
-  const sendMessageBoxRef = useRef(null);
-
-  useEffect(() => {
-    if (sendMessageBoxRef.current) {
-      sendMessageBoxRef.current.scrollTop =
-        sendMessageBoxRef.current.scrollHeight;
-    }
-  });
-
   const chatList = useSelector((state) =>
     state.chat.chat ? state.chat.chat : []
   );
 
   const updateMessages = (receive) => {
-    if (receive) {
+    if (receive && !receive.type) {
+      console.log(receive);
       const newMessage = {
         chatRoomId: receive.chatRoomId,
         createdAt: new Date().toISOString(),
@@ -73,6 +64,16 @@ const ChatRoom = () => {
     fetchData();
   }, [dispatch, roomId]);
 
+  // 항상 맨 아래로 스크롤
+  const sendMessageBoxRef = useRef(null);
+
+  useEffect(() => {
+    if (sendMessageBoxRef.current) {
+      sendMessageBoxRef.current.scrollTop =
+        sendMessageBoxRef.current.scrollHeight;
+    }
+  }, [chatList]);
+
   const price = useSelector((state) =>
     state.pay ? state.pay.status.price : 0
   );
@@ -94,7 +95,7 @@ const ChatRoom = () => {
           : location.state.visiterId;
       await axios
         .post(
-            process.env.REACT_APP_API_URL + `users/nickname`,
+          process.env.REACT_APP_API_URL + `users/nickname`,
           {
             userId: you,
           },
@@ -116,11 +117,13 @@ const ChatRoom = () => {
   return (
     <Container>
       <div id="chat-container">
-        <ChatMenu
-          otherNickname={otherNickname}
-          updateMessages={updateMessages}
-          chatroomInfo={location.state}
-        />
+        <div id="chat-menu-container">
+          <ChatMenu
+            otherNickname={otherNickname}
+            updateMessages={updateMessages}
+            chatroomInfo={location.state}
+          />
+        </div>
         <div id="chat-content-container" ref={sendMessageBoxRef}>
           <div id="chat-message-area">
             <div id="notice-content">
@@ -186,7 +189,6 @@ const ChatRoom = () => {
           />
         </div>
       </div>
-      <div id="chat-list-container"></div>
     </Container>
   );
 };
