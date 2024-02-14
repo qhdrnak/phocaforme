@@ -3,16 +3,17 @@ package com.phofor.phocaforme.chat.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.phofor.phocaforme.auth.domain.CustomOAuth2User;
-import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.repository.BarterRepository;
 import com.phofor.phocaforme.chat.dto.request.ChatMessageRequestDto;
 import com.phofor.phocaforme.chat.dto.response.ChatMessageResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatMessage;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
+import com.phofor.phocaforme.chat.exception.BarterBoardNotFoundException;
+import com.phofor.phocaforme.chat.exception.ChatRoomNotFoundException;
 import com.phofor.phocaforme.chat.repository.ChatMessageRepository;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
-import com.phofor.phocaforme.notification.dto.NotificationDto;
 import com.phofor.phocaforme.notification.service.FCMNotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -35,6 +38,7 @@ public class ChatMessageServiceImpl implements ChatMessageService{
 
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final BarterRepository barterRepository;
 
     // RedisService 받아오짱
     private final RedisService redisService;
@@ -151,6 +155,22 @@ public class ChatMessageServiceImpl implements ChatMessageService{
     public List<ChatMessageResponseDto> getAllByChatRoomId(Long chatRoomId) {
         return chatMessageRepository.findAllByChatRoomId(chatRoomId);
     }
+
+
+    // 게시글 교환 완료 업데이트
+    @Override
+    public Boolean updateBarterStatus(Long chatRoomId) {
+        try {
+            ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow(ChatRoomNotFoundException::new);
+            Long boardId = chatRoom.getBoardId();
+            Barter barter = barterRepository.findById(boardId).orElseThrow(BarterBoardNotFoundException::new);
+            barter.updateBartered(boardId, true, LocalDateTime.now());
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
 //    @Override
 //    public ChatMessageResponseDto chatMessageResponseDto

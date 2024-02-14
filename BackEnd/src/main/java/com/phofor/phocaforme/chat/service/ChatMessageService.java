@@ -14,4 +14,7 @@ public interface ChatMessageService {
 
     // 채팅방의 마지막 메시지 내역 반환
     //ChatMessageResponseDto getLastChatId(Long chatId);
+
+    // 교환 완료 업데이트
+    Boolean updateBarterStatus(Long chatRoomId);
 }

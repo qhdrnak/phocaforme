@@ -1,6 +1,7 @@
 package com.phofor.phocaforme.chat.controller;
 
 import com.phofor.phocaforme.auth.util.CookieUtil;
+import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.chat.dto.request.ChatMessageRequestDto;
 import com.phofor.phocaforme.chat.dto.response.ChatMessageResponseDto;
 import com.phofor.phocaforme.chat.service.ChatMessageService;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.*;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.Map;
@@ -46,8 +49,15 @@ public class ChatMessageController {
         return chatMessageService.save(chatMessageRequestDto, chatRoomId, simpSessionAttributes);
     }
 
-    // 마지막 메시지 하나 들고오기
-//    @GetMapping("/chat/{chatId}")
+    // 교환 완료 버튼 클릭
+    @PutMapping("/chats/done/{chatRoomId}")
+    public ResponseEntity<?> completeBarter(@PathVariable Long chatRoomId){
+        chatMessageService.updateBarterStatus(chatRoomId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+//    @PutMapping("/chat/{chatId}")
 //    public ResponseEntity<ChatMessageResponseDto> (@PathVariable Long chatId){
 //        return ResponseEntity.ok().body(chatMessageService.get)
 //    }

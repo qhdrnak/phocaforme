@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
 import com.phofor.phocaforme.board.service.BarterEntityListener;
-import com.phofor.phocaforme.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -118,5 +117,11 @@ public class Barter {
                         idol.getIdolMember().getIdolGroup().getName_kr()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public void updateBartered(Long boardId, Boolean bartered, LocalDateTime lastModifiedDate){
+        this.id = boardId;
+        this.bartered = bartered;
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

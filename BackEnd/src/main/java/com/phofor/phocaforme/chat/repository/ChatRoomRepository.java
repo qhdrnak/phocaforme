@@ -28,4 +28,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
 //    """)
     // 채팅방 있니?
     ChatRoom findChatRoomByBoardIdAndVisiterId(@Param("boardId") Long boardId, @Param("userId") String visiterId);
+
+    // 교환 완료 할 채팅방 얻어오기
+    ChatRoom findChatRoomByChatRoomId(@Param("chatRoomId") Long chatRoomId);
 }

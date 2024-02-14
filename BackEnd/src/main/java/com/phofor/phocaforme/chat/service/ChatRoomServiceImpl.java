@@ -7,7 +7,7 @@ import com.phofor.phocaforme.board.repository.BarterRepository;
 import com.phofor.phocaforme.chat.dto.response.ChatRoomResponseDto;
 import com.phofor.phocaforme.chat.entity.ChatRoom;
 import com.phofor.phocaforme.chat.exception.BarterBoardNotFoundException;
-import com.phofor.phocaforme.chat.exception.ChatRoomNouFoundException;
+import com.phofor.phocaforme.chat.exception.ChatRoomNotFoundException;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -87,7 +86,7 @@ public class ChatRoomServiceImpl implements ChatRoomService{
     @Override
     public Boolean updateLatestChat(String userId, Long chatroomId) {
         try {
-            ChatRoom chatRoom = chatRoomRepository.findById(chatroomId).orElseThrow(ChatRoomNouFoundException::new);
+            ChatRoom chatRoom = chatRoomRepository.findById(chatroomId).orElseThrow(ChatRoomNotFoundException::new);
             if (chatRoom.getOwnerId().equals(userId)){
                 chatRoom.setOwnerLatestId(chatRoom.getChatLatest().getId());
             } else {
