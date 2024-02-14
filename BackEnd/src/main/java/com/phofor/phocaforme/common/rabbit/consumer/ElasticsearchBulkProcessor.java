@@ -3,7 +3,8 @@ package com.phofor.phocaforme.common.rabbit.consumer;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.IdolMemberDto;
 
-import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.WishCardDto;
+import com.phofor.phocaforme.wishcard.dto.WishDocument1;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.Instant;
 import java.util.Base64;
 import java.util.List;
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class ElasticsearchBulkProcessor {
     @Value("${elasticsearch.post-url}")
     private String postUrl;
     public void processToElasticsearch(List<BarterDetailDto> messages, List<Integer> barterTypes,
-                                       List<WishDocument> wishes,List<Integer> wishTypes){
+                                       List<WishCardDto> wishes, List<Integer> wishTypes, List<Integer> wishKeywordNumbers){
         String plainCreds = username+":"+password;
         String base64Creds = Base64.getEncoder().encodeToString(plainCreds.getBytes());
 
@@ -37,7 +37,7 @@ public class ElasticsearchBulkProcessor {
         headers.add("Authorization", "Basic " + base64Creds);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String bulkRequestBody = buildBulkRequestBody(messages,barterTypes,wishes,wishTypes);
+        String bulkRequestBody = buildBulkRequestBody(messages,barterTypes,wishes,wishTypes,wishKeywordNumbers);
         log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
 
@@ -45,7 +45,7 @@ public class ElasticsearchBulkProcessor {
     }
 
     private String buildBulkRequestBody(List<BarterDetailDto> messages, List<Integer> barterTypes,
-                                        List<WishDocument> wishes,List<Integer> wishTypes){
+                                        List<WishCardDto> wishes, List<Integer> wishTypes, List<Integer> wishKeywordNumbers){
         StringBuilder bulkBody = new StringBuilder();
 
         for(int i=0; i< messages.size() && i< barterTypes.size(); i++){
@@ -95,24 +95,44 @@ public class ElasticsearchBulkProcessor {
 
 
         }
-        for(int i=0; i< wishes.size() && i< wishTypes.size(); i++){
-            WishDocument wish = wishes.get(i);
-            if(wishTypes.get(i)==3){
-                bulkBody.append("{ \"").append("index")
-                        .append("\": { \"_id\": \"").append(wish.getUserId())
-                        .append("\", \"_index\": \"").append("wish_phoca")
-                        .append("\"}}\n");
-                bulkBody.append("{ ")
-                        .append("\"user_id\": \"").append(wish.getUserId()).append("\", ")
-                        .append("\"idol_member_id\": ").append(wish.getIdolMemberId()).append(", ")
-                        .append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
-                        .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\", ")
-                        .append("\"keyword3\": \"").append(wish.getKeyword3()).append("\" ")
-                        .append("}\n");
-            } else if (wishTypes.get(i)==4) {
+        for(int i=0; i< wishes.size() && i< wishTypes.size() && i<wishKeywordNumbers.size(); i++){
+            WishCardDto wish = wishes.get(i);
+            if(wishTypes.get(i)==3){ // wish_phoca insert & update
+                // 기존 인덱스 싹 다 삭제
+                int[] twoKeywordNumber = getRestTwoNumber(wishKeywordNumbers.get(i));
                 bulkBody.append("{ \"").append("delete")
                         .append("\": { \"_id\": \"").append(wish.getUserId())
-                        .append("\", \"_index\": \"").append("wish_phoca")
+                        .append("\", \"_index\": \"").append("wish_phoca_").append(twoKeywordNumber[0])
+                        .append("\"}}\n");
+                bulkBody.append("{ \"").append("delete")
+                        .append("\": { \"_id\": \"").append(wish.getUserId())
+                        .append("\", \"_index\": \"").append("wish_phoca_").append(twoKeywordNumber[1])
+                        .append("\"}}\n");
+                bulkBody.append("{ \"").append("index")
+                        .append("\": { \"_id\": \"").append(wish.getUserId())
+                        .append("\", \"_index\": \"").append("wish_phoca_").append(wishKeywordNumbers.get(i))
+                        .append("\"}}\n")
+                        .append("{ ")
+                        .append("\"user_id\": \"").append(wish.getUserId()).append("\", ")
+                        .append("\"idol_member_id\": ").append(wish.getIdolMemberId()).append(", ");
+                // 3개 2개 1개 인덱스에 맞게 필드 조정
+                if(wishKeywordNumbers.get(i) == 3){
+                    bulkBody.append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
+                            .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\", ")
+                            .append("\"keyword3\": \"").append(wish.getKeyword3()).append("\"")
+                            .append("}\n");
+                } else if (wishKeywordNumbers.get(i) == 2) {
+                    bulkBody.append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
+                            .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\"")
+                            .append("}\n");
+                } else {
+                    bulkBody.append("\"keyword1\": \"").append(wish.getKeyword1()).append("\"")
+                            .append("}\n");
+                }
+            } else if (wishTypes.get(i)==4) { // wish_phoca delete
+                bulkBody.append("{ \"").append("delete")
+                        .append("\": { \"_id\": \"").append(wish.getUserId())
+                        .append("\", \"_index\": \"").append("wish_phoca_").append(wishKeywordNumbers.get(i))
                         .append("\"}}\n");
             }
         }
@@ -130,5 +150,16 @@ public class ElasticsearchBulkProcessor {
         }
         json.append("]");
         return json.toString();
+    }
+
+    public int[] getRestTwoNumber(int keywordNumber){
+
+        if(keywordNumber==1){
+            return new int[]{2,3};
+        } else if (keywordNumber==2) {
+            return new int[]{1,3};
+        }else {
+            return new int[]{1,2};
+        }
     }
 }

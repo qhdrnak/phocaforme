@@ -1068,11 +1068,7 @@ create table user_wish_card
     user_wish_updated_at  TIMESTAMP not null default current_timestamp
 );
 
-
--- idol rank table
-
-CREATE TABLE idol_rank
-(
+CREATE TABLE idol_rank (
                            idol_rank_id BIGINT AUTO_INCREMENT PRIMARY KEY,
                            first_female_idol_id BIGINT,
                            second_female_idol_id BIGINT,

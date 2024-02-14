@@ -16,4 +16,5 @@ public class WishMessage implements Serializable {
     private String userId;
     private Instant createdAt;
     private Integer type;
+    private Integer keywordNumber;
 }

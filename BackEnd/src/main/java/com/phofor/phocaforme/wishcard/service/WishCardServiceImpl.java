@@ -1,13 +1,13 @@
 package com.phofor.phocaforme.wishcard.service;
 
-import com.phofor.phocaforme.auth.entity.UserDeviceEntity;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.auth.repository.UserRepository;
 import com.phofor.phocaforme.idol.dto.response.IdolMemberResponseDto;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
+import com.phofor.phocaforme.wishcard.dto.WishCardDto;
 import com.phofor.phocaforme.wishcard.dto.WishCardInfoDto;
-import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.WishDocument1;
 import com.phofor.phocaforme.wishcard.dto.response.WishCardResponseDto;
 import com.phofor.phocaforme.wishcard.entity.WishCard;
 import com.phofor.phocaforme.wishcard.repository.WishCardRepository;
@@ -119,9 +119,9 @@ public class WishCardServiceImpl implements WishCardService {
     }
 
     @Override
-    public WishDocument findWishCardByUserId(String userId) {
+    public WishCardDto findWishCardByUserId(String userId) {
         WishCard wishCardEntity = wishCardRepository.findByUserEntity_UserId(userId)
                 .orElseThrow(IllegalArgumentException::new);;
-        return WishDocument.of(wishCardEntity);
+        return WishCardDto.of(wishCardEntity);
     }
 }

@@ -51,4 +51,18 @@ public class WishCard {
     @UpdateTimestamp
     @Column(name = "user_wish_updated_at")
     private LocalDateTime updatedAt;
+
+    public int numberOfKeyword(){
+        int number = 0;
+        if(this.keyword1!=null){
+            number++;
+        }
+        if(this.keyword2!=null){
+            number++;
+        }
+        if(this.keyword3!=null){
+            number++;
+        }
+        return number;
+    }
 }

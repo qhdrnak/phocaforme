@@ -1,13 +1,13 @@
 package com.phofor.phocaforme.board.repository;
 
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
-import com.phofor.phocaforme.wishcard.dto.WishDocument;
+import com.phofor.phocaforme.wishcard.dto.WishDocument1;
+import com.phofor.phocaforme.wishcard.dto.WishDocument2;
+import com.phofor.phocaforme.wishcard.dto.WishDocument3;
 import lombok.AllArgsConstructor;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 
 
 @AllArgsConstructor
@@ -21,10 +21,19 @@ public class MyCustomRepositoryImpl implements MyCustomRepository {
     }
 
     @Override
-    public SearchHits<WishDocument> findByTitleAndIdols(NativeQuery query) {
-        return operations.search(query, WishDocument.class);
+    public SearchHits<WishDocument1> findByTitleAndIdols1(NativeQuery query) {
+        return operations.search(query, WishDocument1.class);
     }
 
+    @Override
+    public SearchHits<WishDocument2> findByTitleAndIdols2(NativeQuery query) {
+        return operations.search(query, WishDocument2.class);
+    }
+
+    @Override
+    public SearchHits<WishDocument3> findByTitleAndIdols3(NativeQuery query) {
+        return operations.search(query, WishDocument3.class);
+    }
 //    public void func(){
 //        IndexQuery indexQuery = new IndexQueryBuilder()
 //                .withIndex("barter_post")

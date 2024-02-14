@@ -25,6 +25,7 @@ public class QueryBuilder implements QueryBuilderInterface{
         this.queryBuilder = new NativeQueryBuilder();
     }
 
+
     @Override
     public void createQuery(BarterSearchCriteria criteria) {
         this.setPageOffset(criteria);
@@ -91,10 +92,9 @@ public class QueryBuilder implements QueryBuilderInterface{
     protected void setAggregation(BarterSearchCriteria criteria){
         // 집계 설정
     }
-
-
     @Override
-    public void createQuery(String title, List<IdolMemberDto> idols) {
+    public void createQuery(String title, List<IdolMemberDto> idols, int keywordNumber) {
 
     }
+
 }

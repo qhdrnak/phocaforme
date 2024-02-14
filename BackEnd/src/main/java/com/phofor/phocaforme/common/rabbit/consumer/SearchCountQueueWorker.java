@@ -81,7 +81,6 @@ public class SearchCountQueueWorker {
             member.updateTempCount(newCountTemp);
             idolMemberRepository.save(member);
         }
-
     }
 
 

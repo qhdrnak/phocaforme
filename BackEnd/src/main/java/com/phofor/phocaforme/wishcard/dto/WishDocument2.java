@@ -8,18 +8,14 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.time.Instant;
-
-import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toInstantFormat;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
-@Document(indexName = "wish_phoca")
-public class WishDocument {
+@Document(indexName = "wish_phoca_2")
+public class WishDocument2 {
 
 //    @Id
 //    @Field(name="wish_card_id")
@@ -37,23 +33,20 @@ public class WishDocument {
     @Field(name="keyword2",type = FieldType.Text)
     private String keyword2;
 
-    @Field(name="keyword3",type = FieldType.Text)
-    private String keyword3;
 
 
-    public static WishDocument of(WishCard wishCard) {
+    public static WishDocument2 of(WishCard wishCard) {
 //        Instant registInstant = toInstantFormat(wishCard.getCreatedAt());
 //        Instant modifyInstant = toInstantFormat(wishCard.getUpdatedAt());
-        return WishDocument.builder()
+        return WishDocument2.builder()
                 .userId(wishCard.getUserEntity().getUserId())
                 .idolMemberId(wishCard.getIdolMember().getId())
                 .keyword1(wishCard.getKeyword1())
                 .keyword2(wishCard.getKeyword2())
-                .keyword3(wishCard.getKeyword3())
                 .build();
     }
 
-    public WishDocument(String userId){
+    public WishDocument2(String userId){
         this.userId = userId;
     }
 }
