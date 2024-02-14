@@ -697,15 +697,24 @@ html, body, #root {
 }
 
 /* 마이페이지 게시글 관련 */
+#deleted-post-container {
+    text-align: center;
+}
+
 #card-list-container {
     width: 100%;
 }
 
 #deleted-post-imoji {
-    text-align: center;
     width: 100%;
     font-size: 150px;
     margin: 10vh 0 5vh;
+}
+
+#go-back-button {
+    background-color: var(--primary-color);
+    color: var(--info-color);
+    padding: 0.5rem 1rem;
 }
 
 /* 삭제된 게시글 */
