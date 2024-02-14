@@ -5,8 +5,6 @@ import MainPost from '../components/PostList/MainPost';
 import SearchResult from '../components/PostList/SearchResult';
 import Search from '../components/Search/Search.jsx';
 
-
-
 const Post = () => {
     
     const searchs = useSelector((state) =>
@@ -25,6 +23,3 @@ const Post = () => {
 };
 
 export default Post;
-
-// 여기경로 
-{/* <Route path="/post" element={<PostMain />} /> */}
