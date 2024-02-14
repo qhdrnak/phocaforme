@@ -59,7 +59,7 @@ const NonLoginIcon = () => {
         <Paper sx={{ backgroundColor: theme.palette.primary.main }}>
           <Menu
             className="profile-container"
-            sx={{ mt: "4rem" }}
+            sx={{ mt: "6vh" }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{
@@ -75,31 +75,33 @@ const NonLoginIcon = () => {
             onClose={handleCloseUserMenu}
             theme={theme}
           >
-            <Typography
-              sx={{
-                textAlign: "center",
-                color: theme.palette.primary.main,
-                p: 2,
-                fontSize: "1.2rem", // 글자 크기 조절
-                fontWeight: "bold", // 굵은 글자
-              }}
-            >
-              로그인이 필요한
-              <br />
-              서비스입니다.
-            </Typography>
-            <Divider variant="middle" component="li" />
+            
 
             <img
               id="kakao-button"
               src={kakao}
               onClick={GotoLogin}
               style={{
-                display: "block", // 이미지를 블록 요소로 설정하여 위아래 여백 추가
+                display: "block", 
                 width: "8rem",
                 margin: theme.spacing(2), // 상단 여백 추가
               }}
             />
+              <Divider variant="middle" component="li" />
+              <Typography
+              sx={{
+                textAlign: "center",
+                color: theme.palette.primary.main,
+                p: 2,
+                fontFamily: "PyeongChangPeace",
+                fontSize: "1rem",
+                fontWeight: "bold",
+              }}
+            >
+              로그인이 필요한
+              <br />
+              서비스입니다.
+            </Typography>
           </Menu>
         </Paper>
       </Box>
