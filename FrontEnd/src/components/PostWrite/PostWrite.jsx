@@ -27,6 +27,7 @@ const PostWrite = () => {
   const [isExchange, setIsExchange] = useState(true);
   const [ownIdolMembers, setownIdolMembers] = useState([]);
   const [findIdolMembers, setfindIdolMembers] = useState([]);
+  const [selectedGroup, setSelectedGroup] = useState(0);
  
   // 카드 타입 핸들러
   const [cardType, setCardType] = useState(null);
@@ -47,9 +48,14 @@ const PostWrite = () => {
     setfindIdolMembers(members);
   };
 ////// 0214 그냥 타입 넘겨줄 때 객체형식 말고 문자로 넘겨줌 
-const handleTypeChange = (cardType) => {
-  setCardType(cardType);
-};
+  const handleTypeChange = (cardType) => {
+    setCardType(cardType);
+  };
+
+  const handleSelectedGroupChange = (group) => {
+    setSelectedGroup(group)
+  };
+
 
   // const handleTypeChange = (cardType) => {
   //   if (cardType == null) {
@@ -131,9 +137,9 @@ const handleTypeChange = (cardType) => {
     images.forEach((image) => {
       newPost.append(`photos`, image);
     });
+    newPost.append('groupId', selectedGroup);
     
-    
-    // console.log(newPost)
+    console.log(newPost)
 
     // formdata값확인용 코드 //////
     const formDataToJson = (formData) => {
@@ -194,8 +200,12 @@ const handleTypeChange = (cardType) => {
               onChange={(ownIdolMembers, findIdolMembers) => {
                 handleOwnMemberSelection(ownIdolMembers);
                 handleTargetMemberSelection(findIdolMembers);
+                handleSelectedGroupChange(selectedGroup)
               }}
+              selectedGroup={selectedGroup}
+              
             />
+            
           ) : (
             <SellWrite
               onChange={(ownIdolMembers) => {

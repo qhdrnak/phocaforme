@@ -203,7 +203,7 @@ const PostModify = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
- 
+  console.log(ownMembers)
   return (
     <Container>
       <h2 className="write-title">게시글 수정하기</h2>

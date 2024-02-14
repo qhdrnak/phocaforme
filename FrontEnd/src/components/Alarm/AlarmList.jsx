@@ -25,40 +25,59 @@ const InteractiveList = () => {
     fetchNotifications();
   }, []);
 
-  // 알림 데이터를 서버에서 가져오는 함수
+  
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(process.env.REACT_APP_API_URL + "notification",
       { withCredentials: true, }
       );
+      
       setNotifications(response.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
-
+  
   // 알림 클릭 핸들러
-  const handleItemClick = (item) => {
-    if (item.notificationType === "Article") {
-      console.log('click')
-      navigate(`/post/${item.articleId}`);
-    } else if (item.notificationType === "Chatting") {
-      console.log('click')
-      navigate(`/chat`);
+  const handleItemClick = async (item) => {
+    try {
+      if (item.notificationType === "Article") {
+        console.log('click')
+        navigate(`/post/${item.articleId}`);
+      } else if (item.notificationType === "Chatting") {
+        console.log('click')
+        navigate(`/chat`);
+      }
+  
+      
+      // 서버에 알림을 읽은 상태로 변경 요청 보내기
+      await axios.post(process.env.REACT_APP_API_URL + `notification`, 
+        { notificationId: item.notificationId }, 
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.error("Error handling item click:", error);
     }
   };
+  
 
-  // 알림 읽음 처리 핸들러 // 여기서 delete 요청 보내면 될듯 
+  // 알림 읽음 처리 핸들러 (삭제버튼 누른거)
   const handleReadAlarm = async (index) => {
     try {
       const updatedNotifications = [...notifications];
-      const deletedNotification = updatedNotifications[index];
-      const notificationId = deletedNotification.id; // 알림 ID 추출
+      
+      const notification = updatedNotifications[index];
+      console.log(notification)
+      const notificationId = notification.notificationId; // 알림 ID 추출
         
       // 서버에 삭제 요청 보내기
-      await axios.delete(process.env.REACT_APP_API_URL + `notification/${notificationId}`, {
-        withCredentials: true,
-      });
+      await axios.delete(process.env.REACT_APP_API_URL + `notification`, 
+      { // 옵션 객체
+        data: { notificationId }, // 요청 body에 데이터 설정
+        withCredentials: true, // 인증 설정
+      }
+        
+      );
   
       // 클라이언트에서 상태 업데이트
       updatedNotifications.splice(index, 1);
@@ -67,27 +86,52 @@ const InteractiveList = () => {
       console.error("Error deleting notification:", error);
     }
   };
-  
 
+  // 모두읽음 처리 
+  const markAllAsRead = async () => {
+    try {
+      // 현재 알림 데이터의 모든 notificationId를 배열로 추출
+      const notificationIds = notifications.map(notification => notification.notificationId);
+      
+      // 서버에 모든 알림을 읽은 상태로 변경 요청 보내기
+      await axios.post(process.env.REACT_APP_API_URL + `notification`, 
+        {  notificationId: notificationIds,}, 
+        { withCredentials: true }
+      );
+      
+      // 클라이언트에서 상태 업데이트
+      const updatedNotifications = notifications.map(notification => ({
+        ...notification,
+        readStatus: true,
+      }));
+      setNotifications(updatedNotifications);
+    } catch (error) {
+      console.error("Error marking all as read:", error);
+    }
+  };
+  
   return (
     <div>
       <div>
         <h1 className="alarm-title">알림리스트</h1>
-        <FormControlLabel
+        {/* <FormControlLabel
           id="alarm-check-all"
           control={
+            // 여기주석처리하고 함수넣어보기
             <Checkbox
+              // checked={() => markAllAsRead()}
               checked={notifications.every((item) => item.isRead)}
-              onChange={() =>
-                setNotifications((prevNotifications) =>
-                  prevNotifications.map((item) => ({ ...item, isRead: true }))
-                )
-              }
-              disabled={notifications.every((item) => item.isRead)}
+              onChange={markAllAsRead}
+              // onChange={() =>
+              //   setNotifications((prevNotifications) =>
+              //     prevNotifications.map((item) => ({ ...item, readStatus: true }))
+              //   )
+              // }
+              // disabled={notifications.every((item) => item.isRead)}
             />
           }
           label="모두 읽음"
-        />
+        /> */}
       </div>
 
       <div>
@@ -99,21 +143,21 @@ const InteractiveList = () => {
               <ListItem
                 key={index}
                 
-                className={item.isRead ? "alarm-read-item" : "alarm-item"}
+                className={item.readStatus === true ? "alarm-read-item" : "alarm-item"}
                 secondaryAction={
                   <>
                     <IconButton
                       edge="end"
                       onClick={() => handleReadAlarm(index)}
                     >
-                      {item.isRead ? null : <Close />}
+                      {<Close />}
                     </IconButton>
                   </>
                 }
               >
                 <div className="alarm-item-container">
                   <ListItemAvatar>
-                    {item.isRead ? <TaskAlt /> : <RadioButtonUnchecked />}
+                    {item.readStatus === true ? <TaskAlt /> : <RadioButtonUnchecked />}
                   </ListItemAvatar>
                   <div className="alarm-text-container">
                     <ListItemText
