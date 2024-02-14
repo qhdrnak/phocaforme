@@ -47,13 +47,19 @@ public class BarterController {
     }
 
 
+    // 끌어올리기 기능
+    @PostMapping("/regen/{barterId}")
+    public ResponseEntity<?> regenBarter(@PathVariable Long barterId) throws IOException {
+        Long id = barterService.regen(barterId);
+        return new ResponseEntity<Long>(id, HttpStatus.OK);
+    }
 
     // 상세게시글 나타내기
     @GetMapping("/{barterId}")
     public ResponseEntity<?> detailBarter(@PathVariable Long barterId) throws IOException {
         return new ResponseEntity<BarterDetailDto>(barterService.findOne(barterId), HttpStatus.OK);
     }
-    
+
     // 게시글 등록
     @PostMapping
     public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {

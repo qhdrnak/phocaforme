@@ -687,14 +687,6 @@ VALUES (1, 1, NULL, '태연',
         'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2FprofileImg%2F6bf11ab7-ffd9-460b-bb89-5e6bad8ad574.jpg'),
        (56, 239, NULL, '찬희',
         'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2FprofileImg%2Fd614865b-b44e-41b7-b56d-9fa35d9a486e.jpg'),
-       (60, 240, NULL, '소연',
-        'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2FprofileImg%2Ft%2F10d650d2-8b68-4219-bc08-8447815c8a72.jpg'),
-       (60, 241, NULL, '진예',
-        'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2FprofileImg%2Ff838e55a-613a-442f-ac96-cf59381ce03c.jpg'),
-       (60, 242, NULL, '해인',
-        'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2Fportrait%2F202301%2F20230116161402142.jpg'),
-       (60, 243, NULL, '솔빈',
-        'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2Fportrait%2F202111%2F20211103100057328.jpg'),
        (63, 244, NULL, '차은우',
         'https://search.pstatic.net/common?type=n&size=150x168&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2Fportrait%2F202301%2F20230127132729112.jpg'),
        (63, 245, NULL, '문빈',
@@ -974,7 +966,9 @@ VALUES (1, 1, NULL, '태연',
        (29, 382, NULL, '은호',
         'https://search.pstatic.net/common?type=n&size=174x174&quality=75&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fkeypage%2Fimage%2Fdss%2F9002%2F23%2F11%2F06%2F9002_231106_image_4_1699250783112.jpg'),
        (29, 383, NULL, '하민',
-        'https://search.pstatic.net/common?type=n&size=174x174&quality=75&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fkeypage%2Fimage%2Fdss%2F9002%2F23%2F11%2F06%2F9002_231106_image_5_1699250783105.jpg');
+        'https://search.pstatic.net/common?type=n&size=174x174&quality=75&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fkeypage%2Fimage%2Fdss%2F9002%2F23%2F11%2F06%2F9002_231106_image_5_1699250783105.jpg'),
+       (72, 384, NULL, '아이유',
+        'https://search.pstatic.net/common?type=b&size=144&expire=1&refresh=true&quality=100&direct=true&src=http%3A%2F%2Fsstatic.naver.net%2Fpeople%2Fportrait%2F202304%2F20230428214640258.jpg');
 
 
 
