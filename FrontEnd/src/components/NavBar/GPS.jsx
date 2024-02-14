@@ -1,82 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import Cookies from "js-cookie";
 import axios from "axios";
-
-import { styled } from "@mui/material/styles";
-
-import { FormControlLabel, Switch } from "@mui/material";
-
+import IOSSwitch from '../../styles/IOSSwitch.js'
+import { FormControlLabel, Switch, CircularProgress } from "@mui/material";
+import { ReplayCircleFilledOutlined, LocationOnOutlined } from "@mui/icons-material";
 import { setLocation, setLocationLongLat } from "../../store2/loginUser.js";
-
-import {
-  ReplayCircleFilledOutlined,
-  LocationOnOutlined,
-} from "@mui/icons-material";
-
-const IOSSwitch = styled((props) => (
-  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
-))(({ theme }) => ({
-  width: 42,
-  height: 26,
-  padding: 0,
-  "& .MuiSwitch-switchBase": {
-    padding: 0,
-    margin: 2,
-    transitionDuration: "300ms",
-    "&.Mui-checked": {
-      transform: "translateX(16px)",
-      color: "#fff",
-      "& + .MuiSwitch-track": {
-        backgroundColor:
-          theme.palette.mode === "dark" ? "rgba(105, 112, 119, 1)" : "primary",
-        opacity: 1,
-        border: 0,
-      },
-      "&.Mui-disabled + .MuiSwitch-track": {
-        opacity: 0.5,
-      },
-    },
-    "&.Mui-focusVisible .MuiSwitch-thumb": {
-      color: "#33cf4d",
-      border: "6px solid #fff",
-    },
-    "&.Mui-disabled .MuiSwitch-thumb": {
-      color:
-        theme.palette.mode === "light"
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
-    },
-    "&.Mui-disabled + .MuiSwitch-track": {
-      opacity: theme.palette.mode === "light" ? 0.7 : 0.3,
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxSizing: "border-box",
-    width: 22,
-    height: 22,
-  },
-  "& .MuiSwitch-track": {
-    borderRadius: 26 / 2,
-    backgroundColor:
-      theme.palette.mode === "light" ? "rgba(105, 112, 119, 1)" : "primary",
-    opacity: 1,
-    transition: theme.transitions.create(["background-color"], {
-      duration: 500,
-    }),
-  },
-}));
 
 export default function GPS() {
   const dispatch = useDispatch();
-
   const currentUser = useSelector((state) => state.user.user);
 
-  // GPS 켜짐 유지
-  const initialSwitchValue = Cookies.get("address");
-
+  const initialSwitchValue = Cookies.get("address") ? true : false;
   const [isSwitchOn, setIsSwitchOn] = useState(initialSwitchValue);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSwitchChange = () => {
     setIsSwitchOn((prev) => !prev);
@@ -87,14 +24,11 @@ export default function GPS() {
 
   useEffect(() => {
     if (isSwitchOn) {
+      setIsLoading(true);
       navigator.geolocation.getCurrentPosition((position) => {
         getAddress(position.coords.longitude, position.coords.latitude);
-        dispatch(
-          setLocationLongLat([
-            position.coords.longitude,
-            position.coords.latitude,
-          ])
-        );
+        dispatch(setLocationLongLat([position.coords.longitude, position.coords.latitude]));
+        setIsLoading(false);
       });
     }
   }, [isSwitchOn, dispatch]);
@@ -135,6 +69,7 @@ export default function GPS() {
 
   const handleRefresh = () => {
     if (isSwitchOn) {
+      setIsLoading(true);
       navigator.geolocation.getCurrentPosition((position) => {
         dispatch(
           setLocation(
@@ -147,6 +82,7 @@ export default function GPS() {
             position.coords.latitude,
           ])
         );
+        setIsLoading(false);
       });
     }
   };
@@ -169,7 +105,8 @@ export default function GPS() {
           <ReplayCircleFilledOutlined onClick={handleRefresh} />
         </div>
       </div>
-      {isSwitchOn && (
+      {isLoading && <CircularProgress id='loading-text'/>}
+      {isSwitchOn && !isLoading && (
         <div id="gps-bottom">
           <LocationOnOutlined />
           <div>{currentUser.location}</div>

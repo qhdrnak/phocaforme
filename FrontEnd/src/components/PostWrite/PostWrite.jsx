@@ -7,7 +7,8 @@
  
  import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
  import AddIcon from "@mui/icons-material/Add";
- 
+ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+
  import RadioButton2 from "../../components/UI/RadioButton2.jsx";
  import BarterWrite from "./BarterWrite.jsx";
  import SellWrite from "./SellWrite.jsx";
@@ -177,21 +178,51 @@
    return (
      <Container>
        <h2 className="write-title">게시글 작성하기</h2>
- 
        <div id="write-container">
-         {/* <div id="write-radio-container">
-           <RadioButton2 onChange={onExchangeChange} />
-         </div> */}
+       <div id="image-input">
+           
+           <div id="image-list">
+             <input
+               type="file"
+               accept="image/*"
+               onChange={handleImageChange}
+               style={{ display: "none" }}
+               ref={fileInputRef}
+               multiple
+             />
+             <div id="image-add-button" onClick={handleImageAdd}>
+               <PhotoCameraIcon id="image-add-icon" />
+             </div>
+             {imagePreviews &&
+               imagePreviews.map((preview, index) => (
+                 <div
+                   className="image-container"
+                   key={index}
+                   onClick={() => handleImageDelete(index)}
+                 >
+                   <img
+                     className="image-preview"
+                     src={preview}
+                     alt={`Image Preview ${index + 1}`}
+                   />
+                 </div>
+               ))}
+           </div>
+             <p className="info-msg">
+               * 사진 클릭 시 삭제됩니다.
+             </p>
+         </div>
          <div id="title-container">
-           <h3>제목</h3>
+          
+           <h3 style={{margin: '0'}}>제목</h3>
            <input
              id="title-input"
              value={title}
              onChange={handleTitleChange}
              variant="outlined"
              placeholder="앨범명, 버전명을 입력하세요"
-           />
-         </div>
+             />
+        </div>
  
          <div id="group-member-input">
            {isExchange ? (
@@ -211,48 +242,14 @@
            )}
          </div>
          <div id="card-input">
-           <h3>포토카드 종류</h3>
+           <h3 >포토카드 종류</h3>
            <TypeDropdown
              onChange={(type) => {
                handleTypeChange(type);
              }}
            />
          </div>
-         <div id="image-input">
-           <div>
-             <h3>사진 (클릭시 삭제됩니다.)</h3>
-             <p className="info-msg">
-               * 사진 사이즈는 포토카드 사이즈가 좋아요!
-             </p>
-           </div>
-           <div id="image-list">
-             <input
-               type="file"
-               accept="image/*"
-               onChange={handleImageChange}
-               style={{ display: "none" }}
-               ref={fileInputRef}
-               multiple
-             />
-             <div id="image-add-button" onClick={handleImageAdd}>
-               <AddIcon id="image-add-icon" />
-             </div>
-             {imagePreviews &&
-               imagePreviews.map((preview, index) => (
-                 <div
-                   className="image-container"
-                   key={index}
-                   onClick={() => handleImageDelete(index)}
-                 >
-                   <img
-                     className="image-preview"
-                     src={preview}
-                     alt={`Image Preview ${index + 1}`}
-                   />
-                 </div>
-               ))}
-           </div>
-         </div>
+         
          <div id="content-input-container">
            <h3>상세 내용</h3>
            <input
@@ -269,7 +266,7 @@
              onClick={handlePostClick}
              style={{ marginRight: "10px" }}
            >
-             등록
+             게시글 등록
            </Button>
            <Button
              variant="contained"

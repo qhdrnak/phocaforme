@@ -12,11 +12,8 @@ const Post = () => {
     
     return (
         <Container>
-            <h1 className="post-page-title">게시글페이지</h1>
             <Search/>
             {searchs ? <SearchResult/> : <MainPost/>}
-
-            {/* <MainPost /> */}
 
         </Container>
     );

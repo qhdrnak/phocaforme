@@ -26,7 +26,6 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
   };
 
   return (
-    <div>
       <Autocomplete
         value={value}
         onChange={handleChange}
@@ -36,7 +35,6 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
         isOptionEqualToValue={(option, value) => option.value === value.value}
         sx={{
           width: "80vw",
-          "& .MuiInputBase-root": { borderRadius: "10px" },
         }}
         noOptionsText="해당 분류가 없습니다"
         renderOption={(props, option) => (
@@ -60,7 +58,6 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
           />
         )}
       />
-    </div>
   );
 };
 

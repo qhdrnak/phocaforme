@@ -144,7 +144,9 @@ const BasicTabs = ({ isPreview }) => {
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
-    <div sx={{ width: "100%" }}>
+    <Container>
+      <h1 className="post-page-title">검색 결과</h1>
+      
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -220,7 +222,7 @@ const BasicTabs = ({ isPreview }) => {
         <div>{loading && "Loading..."}</div>
         <div>{error && "Error"}</div>
       </CustomTabPanel>
-    </div>
+      </Container>
   );
 };
 

@@ -28,6 +28,11 @@ html, body, #root {
     font-weight: bold;
 }
 
+#login-title {
+    font-family:'PyeongChangPeace';
+    font-weight: light;
+}
+
 
 .main-big {
     font-weight: 700;
@@ -147,6 +152,18 @@ html, body, #root {
     justify-content: center;
 }
 
+#search-button {
+    background-color: var(--primary-color);
+    color: #F2F4F8;
+    margin: 0 0.5rem 0 0;
+}
+
+#search-close-button {
+    background-color: var(--warning-color);
+    color: #F2F4F8;
+
+}
+
 #search-buttons {
     margin: 1rem;
 }
@@ -221,6 +238,10 @@ html, body, #root {
     padding-right: 10px;
 }
 
+#loading-text{
+    margin: 1rem 0;
+}
+
 #gps-top {
     display: flex;
     justify-content: center;
@@ -240,9 +261,13 @@ html, body, #root {
 }
 
 /* 알림페이지 */
+#no-alarm-title {
+    font-family: 'PyeongchangPeace';
+    font-size: 25px;
+}
 
 .alarm-read-item {
-    border-top: #FB37A3 2px solid;
+    border-top: var(--primary-color) 2px solid;
     margin: 0.2rem;
     background-color: rgba(242, 244, 248, 1);
 }
@@ -322,20 +347,30 @@ html, body, #root {
     color: gray;
 }
 /* 채팅리스트 */
+#chat-list-container {
+    width: 100%; 
+    max-width: 500;
+    margin: 2rem 0;
+}
 .chatlist-nickname {
     font-weight: bold;
 }
 
+.chatlist-thumb-content {
+    display: flex;
+
+}
+
 .chatlist-info {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    margin: 0;
 }
 
 .chatlist-content {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 
 }
 
@@ -352,9 +387,21 @@ html, body, #root {
 #chatroom-title {
     font-weight: 700;
 }
+.chatlist-content {
+    display: flex;
+    justify-content: center;
+}
+.chatlist-thumbnail {
+    height: 6vh;
+    width: 6vh;
+    object-fit: cover;
+    border-radius: 10px;
+    margin: 0 1rem 0 0;
+}
 
 .chatlist-item, .unread-chatlist-item{
-    margin: 0.2rem;
+    margin: 0.5rem;
+    height: 8vh;
     border-radius: 10px;
 }
 
@@ -363,10 +410,17 @@ html, body, #root {
     
 }
 
+@keyframes rippleEffect {
+    from {background-size: 100% 100%;}
+    to {background-size: 120% 120%;}
+}
+
 .unread-chatlist-item {
     border: 0.5px solid grey;
-    background-color: #FD9DD1;
-
+    background-image: linear-gradient(to top right, rgba(251, 55, 163, 0.7), rgba(249, 209, 233, 0.7));
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    
 }
 
 #chat-alarm-icon {
@@ -486,7 +540,6 @@ html, body, #root {
 
 .chat-message {
     margin: 0.5rem;
-    text-align: center;
 }
 
 #sendIcon {
@@ -517,9 +570,8 @@ html, body, #root {
     background-color: var(--info-color);
     position: sticky;
     bottom: 0;
-    padding: 1rem;
-    text-align: center;
-    z-index: 100;
+    padding: 2rem;
+    z-index:100;
 }
 
 /* 결제 전송 모달 */
@@ -650,10 +702,10 @@ html, body, #root {
 
 .profile-dropdown-container {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-around;
-    width: 70vw;
-    /* max-width: 400px; */
+    align-items: center;
     
 }
 
@@ -680,10 +732,32 @@ html, body, #root {
 }
 
 /* 마이페이지 게시글 관련 */
+#deleted-post-container {
+    text-align: center;
+}
+
 #card-list-container {
     width: 100%;
 }
 
+#deleted-post-imoji {
+    width: 100%;
+    font-size: 150px;
+    margin: 10vh 0 5vh;
+}
+
+#go-back-button {
+    background-color: var(--primary-color);
+    color: var(--info-color);
+    padding: 0.5rem 1rem;
+}
+
+/* 삭제된 게시글 */
+#deleted-post-title {
+    font-family:'PyeongChangPeace';
+    font-weight: bold;
+    text-align: center;
+}
 
   /* ? */
 #user-input {
@@ -700,24 +774,25 @@ html, body, #root {
     display: flex;
     flex-direction: column;
 }
-
-#write-radio-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-}
-
-#title-input {
-    display: flex;
-    justify-content: center;
+#search-title-input {
     background-color: #F2F4F8;
     border: none;
     border-radius: 10px;
-    width: 70vw;
+    width:  70vw;
     height: 50px;
     box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.1);
+    margin: 1vh 0;
     padding: 0 0 0 10vw;
+}
+
+#title-input {
+    padding: 0 0 0 3vw;
+    background-color: #F2F4F8;
+    border: none;
+    border-radius: 10px;
+    width: calc(100% - 3vw);
+    height: 50px;
+    box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.1);
     margin: 1vh 0;
 }
 
@@ -732,23 +807,32 @@ html, body, #root {
     flex-direction: column;
 }
 
+input:focus { 
+    outline: none !important;
+    border-color: var(--primary-color);
+ }
+
 .content-input {
-    width: 85%;
-    height: 20vh;
-    padding: 1rem;
+    width: calc(100% - 6vw);
+    height: 10vh;
+    padding: 3vw;
     border-radius: 10px;
+    border: 1px black solid;
 }
 
 
 #button-container {
     display: flex;
-    flex-direction: row;
     justify-content: center;
     margin: 1rem 0;
 }
 
 #member-input {
     display: flex;
+}
+
+#own-member-dropdown, #target-member-dropdown {
+    width: 100%;
 }
 
 #own-member-dropdown {
@@ -766,9 +850,9 @@ html, body, #root {
     border-radius: 10px;
     background-color: var(--secondary-color);
     position: relative;
-    width: 20%;
+    width: 15%;
     height: 0;
-    padding-bottom: 31.6%;
+    padding-bottom: calc(15% * 1.58);
     margin: 0.1rem;
 }
 
@@ -786,13 +870,14 @@ html, body, #root {
 }
 
 .image-container {
-    width: 20%;
+    background-image: url('assets/images/image-blank.jpg');
+    width: 15%;
     height: 0;
     border-radius: 10px;
     border: var(--primary-color) 2px solid;
-    margin: 0.1rem;
+    margin: 0.5rem;
     position: relative;
-    padding-bottom: 31.6%;
+    padding-bottom: calc(15% * 1.58);
 }
 
 #image-add-icon {
@@ -812,11 +897,34 @@ html, body, #root {
 /* 메인페이지 */
 
 
+#preview-card {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px black solid;
+    border-radius: 20px;
+    padding: 1rem;
+    width: fit-content;
+}
+
+#expand-button {
+    margin: 2rem 0 1rem 0;
+}
+
+#preview-margin {
+    height: 5vh;
+}
+
 #search-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-       
 }
 
 /* 판매, 교환완료 게시글 스타일 */
@@ -850,11 +958,16 @@ html, body, #root {
     width: 10rem;
 }
 
+#card-divider {
+    margin: 1rem 0;
+    background-color: black
+}
+
 #post-icon {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    width: 5rem;
+    width: 7rem;
     padding: 1rem 1rem;
 }
 
@@ -904,6 +1017,7 @@ html, body, #root {
     width: 10rem;
     height: 10rem;
     object-fit: contain;
+    padding: 10vh 0 5vh;
 }
 
 #kakao-button {

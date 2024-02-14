@@ -10,6 +10,7 @@ import {
   IconButton,
   FormControlLabel,
   Checkbox,
+  Container,
 } from "@mui/material";
 
 import { TaskAlt, Close, RadioButtonUnchecked } from "@mui/icons-material";
@@ -111,7 +112,7 @@ const InteractiveList = () => {
   };
   
   return (
-    <div>
+    <Container>
       <div>
         <h1 className="alarm-title">알림리스트</h1>
         {/* <FormControlLabel
@@ -136,7 +137,7 @@ const InteractiveList = () => {
 
       <div>
         {notifications.length === 0 ? (
-          <div>알림이 없습니다.</div>
+          <div id='no-alarm-title'>현재 알림이 없습니다.</div>
         ) : (
           <List>
             {notifications.map((item, index) => (
@@ -174,7 +175,7 @@ const InteractiveList = () => {
           </List>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 

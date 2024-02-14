@@ -21,18 +21,28 @@ const theme = createTheme({
   },
 
   components: {
-    
-    MuiGrid: {
+    MuiFab: {
       styleOverrides: {
-        root: {
+        root:{
+          width: '15vw',
+          height: '15vw'
         }
       }
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        inputRoot: {
+          borderRadius: "10px",
+        }
+      }
+    },
+    
     
     MuiMenu: {
       styleOverrides: {
         paper: {
           backgroundColor: '#FD9DD1', 
+          padding: '0.5rem',
           width: '10rem'
         },
       },
@@ -55,7 +65,7 @@ const theme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          fontFamily: 'Pretendard'
+          fontFamily: 'Pretendard',
         }
       }
     }, 
@@ -70,25 +80,33 @@ const theme = createTheme({
     MuiCardHeader: {
       styleOverrides: {
         title: {
-          fontSize: '18px'
+          fontSize: '18px',
+        },
+        root: {
+          padding:'0.5rem 0'
         }
       }
     },
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          height: "10rem",
+          borderRadius: "10px",
+          height: "13rem",
+          width: "10rem",
+          
         }
       }
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          // minWidth: "8rem",
-          width: "calc(50vw-1rem)",
-          // marginRight: "16px",
-          marginBottom: "16px",
+          width: 'fit-content',
+          padding: '0.5rem 0 0 0',
           cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: 'center'
         },
       
       }
@@ -98,7 +116,6 @@ const theme = createTheme({
         root: {
           fontFamily: 'Cafe24SSurround',
         }
-        
       }
     },
     MuiTextField: {

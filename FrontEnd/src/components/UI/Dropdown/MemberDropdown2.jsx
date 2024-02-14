@@ -47,7 +47,6 @@ const MemberDropdown2 = ({
   }, [selectedGroup]);
 
   return (
-    <div>
       <Autocomplete
         value={value}
         onChange={handleChange}
@@ -58,11 +57,7 @@ const MemberDropdown2 = ({
         isOptionEqualToValue={(option, value) => option.value === value.value}
         getOptionLabel={(option) => option.idolName}
         sx={{
-          width: isProfile ? "12rem" : "38vw",
-
-          "& .MuiInputBase-root": {
-            borderRadius: "10px",
-          },
+          width: isProfile ? "12rem" : "100%",
         }}
         noOptionsText={
           selectedGroup ? "해당 멤버가 없습니다" : "그룹을 선택해주세요"
@@ -80,7 +75,6 @@ const MemberDropdown2 = ({
           <TextField {...params} variant="outlined" placeholder="선택하세요" />
         )}
       />
-    </div>
   );
 };
 

@@ -10,7 +10,7 @@ import { IoIosArrowUp } from "react-icons/io";
 
 import { useTheme } from "@mui/material/styles";
 
-import { Button } from "../UI/Button.jsx";
+import { Button } from "@mui/material";
 import BarterWrite2 from "../../components/PostWrite/BarterWrite2.jsx";
 import SellWrite2 from "../../components/PostWrite/SellWrite2.jsx";
 import TypeDropdown2 from "../UI/Dropdown/TypeDropdown2.jsx";
@@ -120,7 +120,7 @@ const Search = function () {
             <input
               onClick={onClick}
               onKeyDown={handleEnter}
-              id="title-input"
+              id="search-title-input"
               value={userInput}
               onChange={handleUserInputChange}
               variant="outlined"
@@ -133,7 +133,7 @@ const Search = function () {
           <div id="search-container">
             <div style={{ position: "relative" }}>
               <input
-                id="title-input"
+                id="search-title-input"
                 value={userInput}
                 onKeyDown={handleEnter}
                 onChange={handleUserInputChange}
@@ -160,7 +160,6 @@ const Search = function () {
                 <SellWrite2 />
               )}
             </div>
-            <div>
               <div className="searchbar-title">포토카드 종류</div>
 
               <TypeDropdown2
@@ -169,24 +168,20 @@ const Search = function () {
                   handleTypeChange(type);
                 }}
               />
+            <div>
             </div>
             <div id="search-buttons">
               <Button
-                // id="search-button"
+                id="search-button"
                 onClick={handleSearchClick}
-                sx={{
-                  width: "20vw",
-                }}
+                
               >
                 검색
               </Button>
               <Button
-                // id="search-close-button"
+                id="search-close-button"
                 onClick={onClick}
-                sx={{
-                  width: "20vw",
-                  backgroundColor: theme.palette.warning.main,
-                }}
+                
               >
                 닫기
               </Button>
