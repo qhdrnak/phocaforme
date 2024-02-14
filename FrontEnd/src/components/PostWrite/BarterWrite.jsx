@@ -11,15 +11,13 @@ const BarterWrite = ({ onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState(0);
+  const [selectedGroup, setSelectedGroup] = useState(null);
 
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
-      
     } else {
       setSelectedGroup(null);
-
     }
     // 그룹이 변경되었을 때 멤버와 입력값 초기화
     setOwnMembers([]);
@@ -38,7 +36,7 @@ const BarterWrite = ({ onChange }) => {
   const handleOwnMemberChange = (member) => {
     if (member) {
       setOwnMembers((prevOwnMembers) => [...prevOwnMembers, member]);
-      onChange(selectedGroup, [...ownMembers, member], targetMembers);
+      onChange([...ownMembers, member], targetMembers, selectedGroup);
       setOwnMembersInput(member.value);
     } else {
       setOwnMembersInput(ownMembersInput);
@@ -48,7 +46,7 @@ const BarterWrite = ({ onChange }) => {
   const handleTargetMemberChange = (member) => {
     if (member) {
       setTargetMembers((prevTargetMembers) => [...prevTargetMembers, member]);
-      onChange(ownMembers, [...targetMembers, member]);
+      onChange(ownMembers, [...targetMembers, member], selectedGroup);
       setTargetMembersInput(member.value);
     } else {
       setTargetMembersInput(targetMembersInput);
@@ -65,7 +63,7 @@ const BarterWrite = ({ onChange }) => {
       targetMembers.filter((member) => member !== deletedMember)
     );
   };
-  console.log(selectedGroup.idolGroupId)
+
   return (
     <div>
       <div id="group-input" className="search-box-group">
