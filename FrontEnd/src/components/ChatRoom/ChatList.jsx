@@ -84,14 +84,16 @@ const ChatList = () => {
         <List sx={{ width: "100%", maxWidth: 500 }}>
           {chatLists.map((chatroom, index) => (
             <ListItem
-              className={
-                (chatroom.visiterId === loginUser.userId &&
-                  chatroom.latestChat.id !== chatroom.visitorLatestChatId) ||
-                (chatroom.ownerId === loginUser.userId &&
-                  chatroom.latestChat.id !== chatroom.ownerLatestChatId)
-                  ? "unread-chatlist-item"
-                  : "chatlist-item"
-              }
+            className={
+              (chatroom.visiterId === loginUser &&
+                chatroom.latestChat &&
+                chatroom.latestChat.id !== chatroom.visitorLatestChatId) ||
+              (chatroom.ownerId === loginUser &&
+                chatroom.latestChat &&
+                chatroom.latestChat.id !== chatroom.ownerLatestChatId)
+                ? "unread-chatlist-item"
+                : "chatlist-item"
+            }
               key={index}
               onClick={() => moveChatRoom(chatroom.chatRoomId, chatroom)}
               >

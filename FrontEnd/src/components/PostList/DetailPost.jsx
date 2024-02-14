@@ -45,7 +45,7 @@ const DetailPost = () => {
         ownMembers: post.ownIdolMembers,
         targetMembers: post.findIdolMembers,
         isBartered: post.bartered,
-        type: post.cardType
+        // type: post.cardType.value
       };
   
       const isExisting = existingRecentCard.some((card) => card.id === post.id);
@@ -105,13 +105,45 @@ const DetailPost = () => {
     )
   
   };
-
+//수정
   const handleModifyClick = (id) => {
     console.log(id);
     navigate(`/modify/${id}`, { state: post });
   };
+// 끌올
+  const handlePullupClick = async () => {
+    try {
+      const response = await axios.put(`http://localhost:8080/barter/regen/${post.id}`, null, {
+        withCredentials: true,
+      });
+  
+      // 성공적으로 업데이트되었을 때의 처리
+      console.log('게시글이 성공적으로 끌어올려졌습니다.');
+    } catch (error) {
+      // 오류 처리
+      console.error('게시글 끌어올리기에 실패했습니다:', error);
+    }
+  };
 
-  const handlePullupClick = () => {};
+  //삭제
+  const handleDeleteClick = () => {
+    const postId = post.id;
+
+    axios.delete(`http://localhost:8080/barter/${postId}`,
+      { withCredentials: true, }
+      
+      )
+      .then(response => {
+        console.log("게시물이 성공적으로 삭제되었습니다.");
+        const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
+        const updatedRecentCard = existingRecentCard.filter(card => card.id !== postId);
+        localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
+      })
+      .catch(error => {
+        console.error("게시물 삭제 중 에러가 발생했습니다:", error);
+      });
+    navigate('/post')
+  }
 
   if (post === null) {
     return <div>Loading...</div>; // 데이터가 로드되기 전에는 로딩 중을 표시
@@ -121,6 +153,7 @@ const DetailPost = () => {
   const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
 
   console.log(post.cardType)
+
   return (
     <Container
       className={`card-style${
@@ -233,6 +266,14 @@ const DetailPost = () => {
               onClick={handlePullupClick}
             >
               끌어올리기
+            </Button>
+            <Button
+              id="pullup-button"
+              variant="contained"
+              size="large"
+              onClick={handleDeleteClick}
+            >
+              삭제
             </Button>
           </div>
         ) : (

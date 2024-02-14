@@ -14,28 +14,42 @@ const PostModify = () => {
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [images, setImages] = useState([]);
+  
   const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [cardType, setCardType] = useState(null);
   const [ownIdolMembers, setOwnIdolMembers] = useState([]);
   const [findIdolMembers, setFindIdolMembers] = useState([]);
+  const [imagesChanged, setImagesChanged] = useState(false); // 이미지 변경 여부 추적
 
   const location = useLocation();
   const { state: post } = location;
+
   const {
     id: postId,
     title: postTitle,
     content: postContent,
-    images: postImages,
+    photos: postImages,
     cardType: postCardType,
     ownMembers: postOwnIdolMembers,
     targetMembers: postFindIdolMembers,
   } = location.state;
 
-  console.log(postCardType)
+  const [images, setImages] = useState(postImages || []);
+  // useEffect(() => {
+  //   if (postImages) {
+  //     setImages([...postImages]);
+  //   } else {
+  //     setImages([]);
+  //   }
+  // }, [postImages]);
+  
+  
+  console.log(postImages)
+  console.log(images)
   useEffect(() => {
     if (post.photos && post.photos.length > 0) {
+      
       const defaultImagePreviews = post.photos.map(photo => `https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`);
       setImagePreviews(defaultImagePreviews);
     }
@@ -47,15 +61,23 @@ const PostModify = () => {
     setImages(postImages || []);
     // setOwnIdolMembers(postOwnIdolMembers || []);
     // setFindIdolMembers(findIdolMembers || []);
-    setCardType(postCardType || null);
+    setCardType(postCardType ? postCardType.label : null); // 여기를 수정
     setLoading(false);
   }, [postTitle, postContent, postImages, postCardType, postOwnIdolMembers, postFindIdolMembers]);
 
+  
 
   const [ownMembers, setOwnMembers] = useState(null);
   const [targetMembers, setTargetMembers] = useState(null);
 
-  const fileInputRef = useRef(null); // useRef를 사용하여 fileInputRef 정의
+  const fileInputRef = useRef(images); // useRef를 사용하여 fileInputRef 정의
+
+  useEffect(() => {
+    if (fileInputRef.current && !fileInputRef.current.value) {
+      // 파일을 선택하지 않았을 때, file input의 value를 postImages로 설정
+      fileInputRef.current.value = ''; // 빈 문자열로 설정
+    }
+  }, [fileInputRef, postImages]);
 
   const handleOwnMemberSelection = (members) => {
     setOwnIdolMembers(members);
@@ -66,14 +88,19 @@ const PostModify = () => {
   };
 
   const handleTypeChange = (cardType) => {
-    if (cardType == null) {
-      cardType = {
-        value: "",
-        label: "",
-      };
-    }
     setCardType(cardType);
   };
+  //아래꺼 필요 없을 듯? 0214 수정 
+
+  // const handleTypeChange = (cardType) => {
+  //   if (cardType == null) {
+  //     cardType = {
+  //       value: "",
+  //       label: "",
+  //     };
+  //   }
+  //   setCardType(cardType);
+  // };
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -95,6 +122,8 @@ const PostModify = () => {
       newImagePreviews.splice(index, 1);
       return newImagePreviews;
     });
+
+    setImagesChanged(true);
   };
 
   const handleImageAdd = () => {
@@ -105,13 +134,6 @@ const PostModify = () => {
 
   const handleImageChange = (event) => {
     const files = event.target.files;
-  
-    // 이미지를 추가할 때 이전 상태를 기반으로 새로운 배열을 생성합니다.
-    setImages((prevImages) => {
-      const newImages = prevImages ? [...prevImages, ...Array.from(files)] : Array.from(files);
-      return newImages;
-    });
-  
     const newImages = Array.from(files);
     const newImagePreviews = [];
   
@@ -125,14 +147,25 @@ const PostModify = () => {
       };
       reader.readAsDataURL(file);
     });
+  
+    // 이미지를 추가할 때 이전 상태를 기반으로 새로운 배열을 생성합니다.
+    setImages((prevImages) => {
+      if (prevImages) {
+        // handleImageChange 함수가 실행되었을 때
+        return [...prevImages, ...newImages];
+      } else {
+        // handleImageChange 함수가 실행되지 않았을 때
+        return [...postImages];
+      }
+    });
   };
-
+  console.log(images)
   const handleModifyClick = async () => {
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
-      formData.append("cardType", cardType);
+      formData.append("cardType", cardType ? cardType.label : ""); // 이제 문자로 줘서 cardType만 써도 될 거 같음
       ownIdolMembers.forEach(member => {
         formData.append('ownIdolMembers', member.idolMemberId);
       });
@@ -175,9 +208,9 @@ const PostModify = () => {
     <Container>
       <h2 className="write-title">게시글 수정하기</h2>
       <div id="write-container">
-        <div id="write-radio-container">
-          <RadioButton2 defaultType={cardType} />
-        </div>
+        {/* <div id="write-radio-container">
+          <RadioButton2 defaultType={postCardType} />
+        </div> */}
         <div id="title-container">
           <h3>제목</h3>
           <input
@@ -188,7 +221,21 @@ const PostModify = () => {
             placeholder="앨범명, 버전명을 입력하세요"
           />
         </div>
+{/* 수정 */}{/* 수정 */}{/* 수정 */}{/* 수정 */}{/* 수정 */}
+        <div id="group-member-input">
+          <BarterModify
+            defaultGroup={post.group || []} // defaultGroup 수정 필요
+            defaultOwnMember={ownMembers || []}
+            defaultTargetMember={targetMembers || []}
+            onChange={(ownMembers, targetMembers) => {
+              handleOwnMemberSelection(ownMembers);
+              handleTargetMemberSelection(targetMembers);
+            }}
+          />
+        </div>
 
+
+{/* 
         <div id="group-member-input">
           {postCardType === "교환" ? (
             <BarterModify
@@ -209,7 +256,9 @@ const PostModify = () => {
               }}
             />
           )}
-        </div>
+        </div> */}
+
+        {/* 수정 */}{/* 수정 */}{/* 수정 */}{/* 수정 */}
         <div id="card-input">
           <h3>포토카드 종류</h3>
           <TypeDropdown

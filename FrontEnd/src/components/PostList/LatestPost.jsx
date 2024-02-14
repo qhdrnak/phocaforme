@@ -97,7 +97,7 @@ const LatestPost = () => {
           >
             {recentPosts && 
               recentPosts
-              .filter((post) => post.type === "교환")
+              
                 .map((post, index) => (
                   <div
                     className="cards-container"
@@ -113,9 +113,12 @@ const LatestPost = () => {
                       }}
                       id={post.id}
                       title={post.title}
-                      images={'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + post.images}
+                      //이미지 2장 이상일 때
+                      images={post.images.map(image => 'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + image)}
                       ownMembers={post.ownMembers.map(member => ({ member_name: member.name }))} // 변경된 부분
                       targetMembers={post.targetMembers.map(member => ({ member_name: member.name }))} // 변경된 부분
+                      // 이부분 
+                      // map(member => member) 로 했을 때는 안됐는데 위처럼  수정하면 되는 이유 알아보기 
                       content={post.content}
                       type={post.cardType}
                       isBartered={post.isBartered}
@@ -148,10 +151,10 @@ const LatestPost = () => {
                   }}
                   id={post.id}
                   title={post.title}
-                  images={post.images}
+                  images={post.photos}
                   ownMembers={post.ownMembers}
                   content={post.content}
-                  type={post.type}
+                  type={post.cardType}
                   isSold={post.isSold}
                 ></Card>
               </div>
