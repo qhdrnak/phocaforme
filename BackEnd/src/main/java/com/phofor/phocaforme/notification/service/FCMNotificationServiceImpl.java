@@ -45,7 +45,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
     private final UserRepository userRepository;
     private final UserDeviceRepository userDeviceRepository;
 
-    @Value("${project.url}")
+    @Value("${project.front-url}")
     String domain;
 
     @Value("${project.API-URL}")
@@ -246,7 +246,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
         String title = "갈망포카 출현!";
         String content = "새로운 갈망포카가 올라 왔어요!! 확인해보세요!!";
-        String link = domain + "/barter/" + articleId;
+        String link = domain + "/post/" + articleId;
 
         List<String> deviceTokens = new ArrayList<>();
         List<String> sendFail = new ArrayList<>();
