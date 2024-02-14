@@ -1,10 +1,10 @@
 CREATE TABLE `idol_member`
 (
-    `idol_group_id`  bigint(20)   DEFAULT 0,
-    `idol_member_id` bigint(20) NOT 0 AUTO_INCREMENT,
+    `idol_group_id`  bigint(20)   DEFAULT NULL,
+    `idol_member_id` bigint(20) NOT NULL AUTO_INCREMENT,
     `search_count`    bigint(20)   DEFAULT 0,
-    `idol_name`      varchar(255) DEFAULT 0,
-    `image`          varchar(255) DEFAULT 0,
+    `idol_name`      varchar(255) DEFAULT NULL,
+    `image`          varchar(255) DEFAULT NULL,
     `search_count_temp`    bigint(20)   DEFAULT 0,
     PRIMARY KEY (`idol_member_id`),
     KEY `FKljl431411kyr11f7lkp0a0wse` (`idol_group_id`),
