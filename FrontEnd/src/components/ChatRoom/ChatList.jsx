@@ -22,7 +22,6 @@ const ChatList = () => {
   // 닉네임 가져오는 메서드
   const [nicknames, setNicknames] = useState({});
 
-
   const getNickname = async (id) => {
     try {
       const response = await axios.post(
@@ -49,17 +48,24 @@ const ChatList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(process.env.REACT_APP_API_URL + `chatRoom`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_API_URL + `chatRoom`,
+          {
+            withCredentials: true,
+          }
+        );
         const chatData = response.data;
-  
+
         // 닉네임 가져오기
         const nicknamePromises = chatData.map((chatroom) =>
-          getNickname(chatroom.ownerId !== loginUser.userId ? chatroom.ownerId : chatroom.visiterId)
+          getNickname(
+            chatroom.ownerId !== loginUser.userId
+              ? chatroom.ownerId
+              : chatroom.visiterId
+          )
         );
         const nicknameResults = await Promise.all(nicknamePromises);
-  
+
         // 닉네임을 객체로 매핑하여 상태에 저장
         const nicknameMap = {};
         chatData.forEach((chatroom, index) => {
@@ -75,6 +81,8 @@ const ChatList = () => {
     fetchData();
   }, [loginUser.userId]);
 
+  console.log(chatLists);
+
   return (
     <div>
       <h1 className="chat-title">채팅목록</h1>
@@ -84,39 +92,38 @@ const ChatList = () => {
         <List sx={{ width: "100%", maxWidth: 500 }}>
           {chatLists.map((chatroom, index) => (
             <ListItem
-            className={
-              (chatroom.visiterId === loginUser &&
-                chatroom.latestChat &&
-                chatroom.latestChat.id !== chatroom.visitorLatestChatId) ||
-              (chatroom.ownerId === loginUser &&
-                chatroom.latestChat &&
-                chatroom.latestChat.id !== chatroom.ownerLatestChatId)
-                ? "unread-chatlist-item"
-                : "chatlist-item"
-            }
+              className={
+                (chatroom.visiterId === loginUser.userId &&
+                  chatroom.latestChat &&
+                  chatroom.latestChat.id != chatroom.visitorLatestChatId) ||
+                (chatroom.ownerId === loginUser.userId &&
+                  chatroom.latestChat &&
+                  chatroom.latestChat.id != chatroom.ownerLatestChatId)
+                  ? "unread-chatlist-item"
+                  : "chatlist-item"
+              }
               key={index}
               onClick={() => moveChatRoom(chatroom.chatRoomId, chatroom)}
-              >
-                <div className="chatlist-info">
-                  <div className="chatlist-content">
-                    <div className="chatlist-nickname">{nicknames[chatroom.chatRoomId]}</div>
-                    <Typography>
-                      {chatroom.latestChat
-                        ? `${timeFormat(chatroom.latestChat.createdAt)}`
-                        : null}
-                    </Typography>
+            >
+              <div className="chatlist-info">
+                <div className="chatlist-content">
+                  <div className="chatlist-nickname">
+                    {nicknames[chatroom.chatRoomId]}
                   </div>
-                  <div >
-                    <Typography
-                      color="text.primary"
-                    >
-                      {chatroom.latestChat
-                        ? chatroom.latestChat.message
-                        : "(사진)"}
-                    </Typography>
-                    
-                  </div>
+                  <Typography>
+                    {chatroom.latestChat
+                      ? `${timeFormat(chatroom.latestChat.createdAt)}`
+                      : null}
+                  </Typography>
                 </div>
+                <div>
+                  <Typography color="text.primary">
+                    {chatroom.latestChat
+                      ? chatroom.latestChat.message
+                      : "(사진)"}
+                  </Typography>
+                </div>
+              </div>
             </ListItem>
           ))}
         </List>
