@@ -29,7 +29,7 @@ public class ElasticsearchBulkProcessor {
     @Value("${elasticsearch.post-url}")
     private String postUrl;
     public void processToElasticsearch(List<BarterDetailDto> messages, List<Integer> barterTypes,
-                                       List<WishDocument> wishes,List<Integer> wishTypes){
+                                       List<WishDocument> wishes,List<Integer> wishTypes, List<Integer> wishKeywordNumbers){
         String plainCreds = username+":"+password;
         String base64Creds = Base64.getEncoder().encodeToString(plainCreds.getBytes());
 
@@ -37,7 +37,7 @@ public class ElasticsearchBulkProcessor {
         headers.add("Authorization", "Basic " + base64Creds);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String bulkRequestBody = buildBulkRequestBody(messages,barterTypes,wishes,wishTypes);
+        String bulkRequestBody = buildBulkRequestBody(messages,barterTypes,wishes,wishTypes,wishKeywordNumbers);
         log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
 
@@ -45,7 +45,7 @@ public class ElasticsearchBulkProcessor {
     }
 
     private String buildBulkRequestBody(List<BarterDetailDto> messages, List<Integer> barterTypes,
-                                        List<WishDocument> wishes,List<Integer> wishTypes){
+                                        List<WishDocument> wishes,List<Integer> wishTypes, List<Integer> wishKeywordNumbers){
         StringBuilder bulkBody = new StringBuilder();
 
         for(int i=0; i< messages.size() && i< barterTypes.size(); i++){
@@ -95,24 +95,34 @@ public class ElasticsearchBulkProcessor {
 
 
         }
-        for(int i=0; i< wishes.size() && i< wishTypes.size(); i++){
+        for(int i=0; i< wishes.size() && i< wishTypes.size() && i<wishKeywordNumbers.size(); i++){
             WishDocument wish = wishes.get(i);
-            if(wishTypes.get(i)==3){
+            if(wishTypes.get(i)==3){ // wish_phoca insert
                 bulkBody.append("{ \"").append("index")
                         .append("\": { \"_id\": \"").append(wish.getUserId())
-                        .append("\", \"_index\": \"").append("wish_phoca")
-                        .append("\"}}\n");
-                bulkBody.append("{ ")
+                        .append("\", \"_index\": \"").append("wish_phoca_").append(wishKeywordNumbers.get(i))
+                        .append("\"}}\n")
+                        .append("{ ")
                         .append("\"user_id\": \"").append(wish.getUserId()).append("\", ")
-                        .append("\"idol_member_id\": ").append(wish.getIdolMemberId()).append(", ")
-                        .append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
-                        .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\", ")
-                        .append("\"keyword3\": \"").append(wish.getKeyword3()).append("\" ")
-                        .append("}\n");
-            } else if (wishTypes.get(i)==4) {
+                        .append("\"idol_member_id\": ").append(wish.getIdolMemberId()).append(", ");
+                // 3개 2개 1개 인덱스에 맞게 필드 조정
+                if(wishKeywordNumbers.get(i) == 3){
+                    bulkBody.append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
+                            .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\", ")
+                            .append("\"keyword3\": \"").append(wish.getKeyword3()).append("\"")
+                            .append("}\n");
+                } else if (wishKeywordNumbers.get(i) == 2) {
+                    bulkBody.append("\"keyword1\": \"").append(wish.getKeyword1()).append("\", ")
+                            .append("\"keyword2\": \"").append(wish.getKeyword2()).append("\"")
+                            .append("}\n");
+                } else {
+                    bulkBody.append("\"keyword1\": \"").append(wish.getKeyword1()).append("\"")
+                            .append("}\n");
+                }
+            } else if (wishTypes.get(i)==4) { // wish_phoca delete
                 bulkBody.append("{ \"").append("delete")
                         .append("\": { \"_id\": \"").append(wish.getUserId())
-                        .append("\", \"_index\": \"").append("wish_phoca")
+                        .append("\", \"_index\": \"").append("wish_phoca_").append(wishKeywordNumbers.get(i))
                         .append("\"}}\n");
             }
         }

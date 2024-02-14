@@ -20,6 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -74,8 +75,12 @@ public class BarterController {
                 ownIdol -> new IdolMemberDto(
                         ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()
                 )).toList();
-        List<String> ids = barterSearchService.wishPhoca(barter.getTitle(),idols);
+        List<String> ids = new ArrayList<>();
+        ids.addAll(barterSearchService.wishPhoca(barter.getTitle(),idols,3));
+        ids.addAll(barterSearchService.wishPhoca(barter.getTitle(),idols,2));
+        ids.addAll(barterSearchService.wishPhoca(barter.getTitle(),idols,1));
 //        //#주석 해제해서 사용
+        System.out.println(ids);
         fcmNotificationService.sendBiasMessage(ids,barter.getId());
         return new ResponseEntity<Barter>(barter, HttpStatus.OK);
     }

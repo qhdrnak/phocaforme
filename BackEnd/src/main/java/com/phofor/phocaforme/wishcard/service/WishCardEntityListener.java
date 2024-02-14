@@ -25,7 +25,8 @@ public class WishCardEntityListener {
             WishCardPersistEvent event = new WishCardPersistEvent(new WishMessage(
                     wishCard.getUserEntity().getUserId(),
                     toInstantFormat(wishCard.getCreatedAt()),
-                    3
+                    3,
+                    wishCard.numberOfKeyword()
             ));
             publisher.publishEvent(event);
         }
@@ -38,7 +39,8 @@ public class WishCardEntityListener {
             WishCardDeleteEvent event = new WishCardDeleteEvent(new WishMessage(
                     wishCard.getUserEntity().getUserId(),
                     toInstantFormat(wishCard.getCreatedAt()),
-                    4
+                    4,
+                    wishCard.numberOfKeyword()
             ));
             publisher.publishEvent(event);
         }

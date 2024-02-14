@@ -46,8 +46,8 @@ public class BarterSearchService {
     private final BarterSearchRepository barterSearchRepository;
     private final RedisService redisService;
     private final RabbitTemplate rabbitTemplate;
-    public List<String> wishPhoca(String title, List<IdolMemberDto> idols){
-        wishQueryBuilder.createQuery(title,idols);
+    public List<String> wishPhoca(String title, List<IdolMemberDto> idols, int keywordNumber){
+        wishQueryBuilder.createQuery(title,idols,keywordNumber);
         NativeQuery query = wishQueryBuilder.getSearch();
         System.out.println(query.getQuery());
         SearchHits<WishDocument> searchHits = barterSearchRepository.findByTitleAndIdols(query);
