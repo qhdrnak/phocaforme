@@ -113,7 +113,7 @@ const DetailPost = () => {
 // 끌올
   const handlePullupClick = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/barter/regen/${post.id}`, null, {
+      const response = await axios.put(process.env.REACT_APP_API_URL+`barter/regen/${post.id}`, null, {
         withCredentials: true,
       });
   
@@ -129,7 +129,7 @@ const DetailPost = () => {
   const handleDeleteClick = () => {
     const postId = post.id;
 
-    axios.delete(`http://localhost:8080/barter/${postId}`,
+    axios.delete(process.env.REACT_APP_API_URL+`${postId}`,
       { withCredentials: true, }
       
       )
@@ -146,7 +146,7 @@ const DetailPost = () => {
   }
 
   if (post === null) {
-    return <div>Loading...</div>; // 데이터가 로드되기 전에는 로딩 중을 표시
+    return <div>이미삭제된게시글</div>; // 데이터가 로드되기 전에는 로딩 중을 표시
   }
 
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
