@@ -11,7 +11,7 @@ export default function GPS() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.user);
 
-  const initialSwitchValue = Cookies.get("address");
+  const initialSwitchValue = Cookies.get("address") ? true : false;
   const [isSwitchOn, setIsSwitchOn] = useState(initialSwitchValue);
   const [isLoading, setIsLoading] = useState(false);
 

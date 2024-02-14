@@ -6,21 +6,21 @@ import axios from "axios";
 
 import { timeFormat } from "../../utils/timeFormat";
 
-import { List, ListItem, Typography } from "@mui/material";
+import { Container, List, ListItem, Typography } from "@mui/material";
 
 const ChatList = () => {
   const navigate = useNavigate();
+  const loginUser = useSelector((state) =>
+    state.user ? state.user.user : null
+  );
 
   const moveChatRoom = (roomId, chatroom) => {
     navigate(`/chatroom/${roomId}`, { state: chatroom });
   };
 
-  const loginUser = useSelector((state) =>
-    state.user ? state.user.user : null
-  );
-
-  // 닉네임 가져오는 메서드
   const [nicknames, setNicknames] = useState({});
+  const [thumbnails, setThumbnails] = useState({});
+  const [chatLists, setChatLists] = useState([]);
 
   const getNickname = async (id) => {
     try {
@@ -42,9 +42,23 @@ const ChatList = () => {
     }
   };
 
-  const [chatLists, setChatLists] = useState([]);
+  const getImages = async (boardId) => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + `barter/${boardId}`,
+        { withCredentials: true }
+      );
+      if (response.data.photos.length > 0) {
+        return response.data.photos[0];
+      } else {
+        return null; // If no photos, return null or handle accordingly
+      }
+    } catch (error) {
+      console.error("Error get image:", error);
+      return null; // Handle error, e.g., return default thumbnail or handle accordingly
+    }
+  };
 
-  // 채팅 리스트 가져오기 + 닉네임 매핑
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,7 +70,6 @@ const ChatList = () => {
         );
         const chatData = response.data;
 
-        // 닉네임 가져오기
         const nicknamePromises = chatData.map((chatroom) =>
           getNickname(
             chatroom.ownerId !== loginUser.userId
@@ -66,13 +79,25 @@ const ChatList = () => {
         );
         const nicknameResults = await Promise.all(nicknamePromises);
 
-        // 닉네임을 객체로 매핑하여 상태에 저장
+        const imagePromises = chatData.map((chatroom) =>
+          getImages(chatroom.boardId)
+        );
+        const imageResults = await Promise.all(imagePromises);
+
         const nicknameMap = {};
         chatData.forEach((chatroom, index) => {
           const nickname = nicknameResults[index];
           nicknameMap[chatroom.chatRoomId] = nickname;
         });
+
+        const thumbnailMap = {};
+        chatData.forEach((chatroom, index) => {
+          const thumbnail = imageResults[index];
+          thumbnailMap[chatroom.chatRoomId] = thumbnail;
+        });
+
         setNicknames(nicknameMap);
+        setThumbnails(thumbnailMap);
         setChatLists(chatData);
       } catch (error) {
         console.error("Error ChatList:", error);
@@ -81,15 +106,13 @@ const ChatList = () => {
     fetchData();
   }, [loginUser.userId]);
 
-  console.log(chatLists);
-
   return (
-    <div>
+    <Container>
       <h1 className="chat-title">채팅목록</h1>
       {chatLists.length === 0 ? (
         <div className="chat-title">현재 진행중인 채팅이 없습니다!</div>
       ) : (
-        <List sx={{ width: "100%", maxWidth: 500 }}>
+        <List id='chat-list-container'>
           {chatLists.map((chatroom, index) => (
             <ListItem
               className={
@@ -106,21 +129,25 @@ const ChatList = () => {
               onClick={() => moveChatRoom(chatroom.chatRoomId, chatroom)}
             >
               <div className="chatlist-info">
+                <div className='chatlist-thumb-content'>
+                <img className="chatlist-thumbnail" src={`https://photocardforme.s3.ap-northeast-2.amazonaws.com/${thumbnails[chatroom.chatRoomId]}`} alt="Thumbnail" />
                 <div className="chatlist-content">
                   <div className="chatlist-nickname">
                     {nicknames[chatroom.chatRoomId]}
                   </div>
-                  <Typography>
-                    {chatroom.latestChat
-                      ? `${timeFormat(chatroom.latestChat.createdAt)}`
-                      : null}
-                  </Typography>
-                </div>
-                <div>
                   <Typography color="text.primary">
                     {chatroom.latestChat
                       ? chatroom.latestChat.message
                       : "(사진)"}
+                  </Typography>
+                </div>
+                </div>
+                
+                <div>
+                  <Typography>
+                    {chatroom.latestChat
+                      ? `${timeFormat(chatroom.latestChat.createdAt)}`
+                      : null}
                   </Typography>
                 </div>
               </div>
@@ -128,7 +155,7 @@ const ChatList = () => {
           ))}
         </List>
       )}
-    </div>
+    </Container>
   );
 };
 export default ChatList;
