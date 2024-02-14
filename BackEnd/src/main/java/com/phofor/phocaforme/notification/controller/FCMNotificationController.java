@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,10 +42,11 @@ public class FCMNotificationController {
     }
 
     // 알림 읽기
-    @GetMapping("/notification/{notificationId}")
-    public ResponseEntity<?> readMessage(@PathVariable Long notificationId) {
+    @PostMapping("/notification")
+    public ResponseEntity<?> readMessage(@RequestBody Map<String, Long> notification) {
         HttpStatus httpStatus;
 
+        Long notificationId = notification.get("notificationId");
         String URL = fcmNotificationService.readMessage(notificationId);
         if(!URL.isEmpty())  {
             log.info("성공");
@@ -58,9 +60,11 @@ public class FCMNotificationController {
     }
 
     // 알림 제거
-    @DeleteMapping("/notification/{notificationId}")
-    public ResponseEntity<?> deleteMessage(@PathVariable Long notificationId) {
+    @DeleteMapping("/notification")
+    public ResponseEntity<?> deleteMessage(@RequestBody Map<String, Long> notification) {
         HttpStatus httpStatus;
+
+        Long notificationId = notification.get("notificationId");
         if(fcmNotificationService.deleteMessage(notificationId))  {
             log.info("성공");
             httpStatus = HttpStatus.OK;
