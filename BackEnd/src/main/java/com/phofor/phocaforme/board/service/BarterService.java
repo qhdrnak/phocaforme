@@ -75,10 +75,10 @@ public class BarterService {
     public Barter registerBarter(BarterRegisterDto registerDto, UserEntity userEntity) throws IOException {
         Barter barter = Barter.builder()
                 .userEntity(userEntity)
-                .nickname(userEntity.getNickname())
                 .title(registerDto.getTitle())
                 .content(registerDto.getContent())
                 .cardType((registerDto.getCardType()))
+                .groupId((registerDto.getGroupId()))
                 .build();
         Barter savedBarter = barterRepository.save(barter);
         
@@ -103,27 +103,29 @@ public class BarterService {
         }
 
         // 다중사진들 저장하기
-        List<MultipartFile> photos = registerDto.getPhotos();
-        for(MultipartFile photo : photos){
-            // AW3 S3에 사진 올리기
-            String fileName = "barter/" + UUID.randomUUID() + photo.getOriginalFilename();
-            String fileUrl = baseUrl + fileName;
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(photo.getContentType());
-            metadata.setContentLength(photo.getSize());
+        if(registerDto.getPhotos()!=null){
+            List<MultipartFile> photos = registerDto.getPhotos();
+            for(MultipartFile photo : photos){
+                // AW3 S3에 사진 올리기
+                String fileName = "barter/" + UUID.randomUUID() + photo.getOriginalFilename();
+                String fileUrl = baseUrl + fileName;
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentType(photo.getContentType());
+                metadata.setContentLength(photo.getSize());
 
-            PutObjectRequest putObjectRequest = new PutObjectRequest(
-                    bucket, fileName, photo.getInputStream(), metadata
-            );
-            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
-            amazonS3Client.putObject(putObjectRequest);
+                PutObjectRequest putObjectRequest = new PutObjectRequest(
+                        bucket, fileName, photo.getInputStream(), metadata
+                );
+                putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
+                amazonS3Client.putObject(putObjectRequest);
 
-            // 교환게시글 사진테이블에 사진 저장하기
-            BarterImage barterImage = BarterImage.builder()
-                    .imgCode(fileName)
-                    .barter(savedBarter)
-                    .build();
-            barterImageRepository.save(barterImage);
+                // 교환게시글 사진테이블에 사진 저장하기
+                BarterImage barterImage = BarterImage.builder()
+                        .imgCode(fileName)
+                        .barter(savedBarter)
+                        .build();
+                barterImageRepository.save(barterImage);
+            }
         }
 
         return savedBarter;
@@ -136,8 +138,11 @@ public class BarterService {
 
         // 일정 부분을 찾아 수정하는 것보다 전부 다 지워주고 다시 올려주는 방식을 선택
         deleteDB(barter);
-        deleteS3(barter.getImages());
-        barter.update(user, user.getNickname(), updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType(), LocalDateTime.now());
+
+        if(barter.getImages()!=null)
+            deleteS3(barter.getImages());
+
+        barter.update(user, updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType(), updateDto.getGroupId(), LocalDateTime.now());
 
         // register 방법과 똑같음
         List<IdolMember> newOwnIdols = idolMemberRepository.findAllById(updateDto.getOwnIdolMembers());
@@ -159,25 +164,27 @@ public class BarterService {
             barterFindIdolRepository.save(barterFindIdol);
         }
 
-        List<MultipartFile> photos = updateDto.getPhotos();
-        for(MultipartFile photo : photos){
-            String fileName = "barter/" + UUID.randomUUID() + photo.getOriginalFilename();
-            String fileUrl = baseUrl + fileName;
-            ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentType(photo.getContentType());
-            metadata.setContentLength(photo.getSize());
+        if(updateDto.getPhotos()!=null) {
+            List<MultipartFile> photos = updateDto.getPhotos();
+            for (MultipartFile photo : photos) {
+                String fileName = "barter/" + UUID.randomUUID() + photo.getOriginalFilename();
+                String fileUrl = baseUrl + fileName;
+                ObjectMetadata metadata = new ObjectMetadata();
+                metadata.setContentType(photo.getContentType());
+                metadata.setContentLength(photo.getSize());
 
-            PutObjectRequest putObjectRequest = new PutObjectRequest(
-                    bucket, fileName, photo.getInputStream(), metadata
-            );
-            putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
-            amazonS3Client.putObject(putObjectRequest);
+                PutObjectRequest putObjectRequest = new PutObjectRequest(
+                        bucket, fileName, photo.getInputStream(), metadata
+                );
+                putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead);
+                amazonS3Client.putObject(putObjectRequest);
 
-            BarterImage barterImage = BarterImage.builder()
-                    .imgCode(fileName)
-                    .barter(barter)
-                    .build();
-            barterImageRepository.save(barterImage);
+                BarterImage barterImage = BarterImage.builder()
+                        .imgCode(fileName)
+                        .barter(barter)
+                        .build();
+                barterImageRepository.save(barterImage);
+            }
         }
     }
 
@@ -186,7 +193,8 @@ public class BarterService {
         Barter barter = barterRepository.findById(barterId)
                 .orElseThrow(IllegalArgumentException::new);
         deleteDB(barter);
-        deleteS3(barter.getImages());
+        if(barter.getImages()!=null)
+            deleteS3(barter.getImages());
         barterRepository.deleteById(barterId);
     }
 
@@ -211,12 +219,14 @@ public class BarterService {
                 .map(BarterOwnIdol::getId)
                 .collect(Collectors.toList()));
 
-        List<BarterImage> images = barter.getImages();
-        barterImageRepository.deleteAllById(barter
-                .getImages()
-                .stream()
-                .map(BarterImage::getId)
-                .collect(Collectors.toList()));
+        if(barter.getImages()!=null) {
+            List<BarterImage> images = barter.getImages();
+            barterImageRepository.deleteAllById(barter
+                    .getImages()
+                    .stream()
+                    .map(BarterImage::getId)
+                    .collect(Collectors.toList()));
+        }
     }
 
     private void deleteS3(List<BarterImage> images){
@@ -232,10 +242,10 @@ public class BarterService {
 
         Barter newBarter = Barter.builder()
                 .userEntity(barter.getUser())
-                .nickname(barter.getNickname())
                 .title(barter.getTitle())
                 .content(barter.getContent())
                 .cardType((barter.getCardType()))
+                .groupId(barter.getGroupId())
                 .build();
         barterRepository.save(newBarter);
 

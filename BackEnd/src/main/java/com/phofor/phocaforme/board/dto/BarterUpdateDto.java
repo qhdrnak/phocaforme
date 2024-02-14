@@ -11,6 +11,8 @@ public class BarterUpdateDto {
     private String title;
     // 내용
     private String content;
+    // 그룹 아이디
+    private Long groupId;
     // 소유한 멤버(들)
     private List<Long> ownIdolMembers;
     // 찾는 멤버(들)

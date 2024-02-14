@@ -54,7 +54,7 @@ public class BarterDetailDto {
         return BarterDetailDto.builder()
                 .id(barter.getId())
                 .userId(barter.getUser().getUserId())
-                .nickName(barter.getNickname())
+                .nickName(barter.getUser().getNickname())
                 .title(barter.getTitle())
                 .content(barter.getContent())
                 .ownIdolMembers(barter.getOwnIdols().stream()
