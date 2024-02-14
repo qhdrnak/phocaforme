@@ -40,7 +40,7 @@ const FloatingActionButtons = () => {
       }}
     >
       <Fab color="warning" aria-label="add">
-        <AddIcon onClick={handleClick} />
+        <AddIcon fontSize='large' onClick={handleClick} />
         <Popover
           id={id}
           open={open}
@@ -48,9 +48,10 @@ const FloatingActionButtons = () => {
           onClose={handleClose}
           disableScrollLock
           anchorOrigin={{
-            horizontal: -90,
-            vertical: -90,
+            horizontal: -120,
+            vertical: -100,
           }}
+
         >
           <div
             id="post-icon"

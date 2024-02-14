@@ -815,6 +815,8 @@ html, body, #root {
 }
 
 /* 메인페이지 */
+
+
 #preview-card {
     display: flex;
     flex-wrap: wrap;
@@ -885,7 +887,7 @@ html, body, #root {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    width: 5rem;
+    width: 7rem;
     padding: 1rem 1rem;
 }
 

@@ -21,12 +21,20 @@ const theme = createTheme({
   },
 
   components: {
+    MuiFab: {
+      styleOverrides: {
+        root:{
+          width: '15vw',
+          height: '15vw'
+        }
+      }
+    },
     
     MuiMenu: {
       styleOverrides: {
         paper: {
           backgroundColor: '#FD9DD1', 
-          padding: '0.5rem'
+          padding: '0.5rem',
         },
       },
     },
