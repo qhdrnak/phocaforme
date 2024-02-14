@@ -4,6 +4,7 @@ package com.phofor.phocaforme.board.service;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
 import com.phofor.phocaforme.board.dto.IdolMemberDto;
 import com.phofor.phocaforme.board.dto.searchDto.BarterDocument;
+import com.phofor.phocaforme.board.dto.searchDto.SearchCountMessage;
 import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
 import com.phofor.phocaforme.board.dto.searchDto.request.SearchRequest;
 import com.phofor.phocaforme.board.dto.searchDto.response.SearchResponse;
@@ -16,6 +17,7 @@ import com.phofor.phocaforme.wishcard.dto.WishDocument;
 import com.phofor.phocaforme.wishcard.service.WishQueryBuilder;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.SearchHit;
@@ -24,12 +26,15 @@ import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static com.phofor.phocaforme.board.config.ElasticsearchClientConfig.toInstantFormat;
 
 @Service
 @AllArgsConstructor
@@ -40,7 +45,7 @@ public class BarterSearchService {
     private final WishQueryBuilder wishQueryBuilder;
     private final BarterSearchRepository barterSearchRepository;
     private final RedisService redisService;
-
+    private final RabbitTemplate rabbitTemplate;
     public List<String> wishPhoca(String title, List<IdolMemberDto> idols){
         wishQueryBuilder.createQuery(title,idols);
         NativeQuery query = wishQueryBuilder.getSearch();
@@ -71,6 +76,13 @@ public class BarterSearchService {
     }
 
     public List<SearchResponse> search(SearchRequest searchRequest){
+        /* Send message:{Target_idol's searchCount++;}  in RabbitMQ */
+        if (searchRequest.getTarget() != null) {
+            for(Long id : searchRequest.getTarget()){
+                SearchCountMessage msg = new SearchCountMessage(id, toInstantFormat(LocalDateTime.now()));
+                rabbitTemplate.convertAndSend("rank.exchange","rank.key",msg);
+            }
+        }
 
         /* A's target is B's own. So exchange them for search. */
         List<Long> temp = searchRequest.getOwn();

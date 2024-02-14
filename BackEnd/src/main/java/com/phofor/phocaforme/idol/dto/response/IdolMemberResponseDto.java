@@ -15,6 +15,7 @@ public class IdolMemberResponseDto {
     private String idolName;    // 멤버 이름
     private String idolImage;   // 멤버 이미지
     private Long idolSearchCount;   // 멤버 조회 횟수
+    private Long idolSearchCountTemp; // 멤버 조회 횟수 임시값
 
     public static IdolMemberResponseDto of(IdolMember idolMember) {
         return IdolMemberResponseDto.builder()
@@ -24,6 +25,7 @@ public class IdolMemberResponseDto {
                 .idolName(idolMember.getName())
                 .idolImage(idolMember.getImage())
                 .idolSearchCount(idolMember.getSearchCount())
+                .idolSearchCountTemp(idolMember.getSearchCountTemp())
                 .build();
     }
 }

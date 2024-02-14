@@ -29,13 +29,24 @@ public class IdolMember {
     @Column(name = "search_count")
     private Long searchCount;
 
+    @Column(name = "search_count_temp")
+    private Long searchCountTemp;
 
     @Builder
-    public IdolMember(Long id, IdolGroup idolGroup, String name, String image, Long searchCount) {
+    public IdolMember(Long id, IdolGroup idolGroup, String name, String image, Long searchCount, Long searchCountTemp) {
         this.id = id;
         this.idolGroup = idolGroup;
         this.name = name;
         this.image = image;
         this.searchCount = searchCount;
+        this.searchCountTemp = searchCountTemp;
+    }
+
+    public void updateTempCount(Long count){
+        this.searchCountTemp = count;
+    }
+
+    public void updateTotalCount(Long count){
+        this.searchCount = count;
     }
 }
