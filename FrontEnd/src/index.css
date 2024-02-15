@@ -30,7 +30,7 @@ html, body, #root {
 
 #login-title {
     font-family:'PyeongChangPeace';
-    font-weight: light;
+    font-size: large;
 }
 
 
@@ -533,12 +533,12 @@ html, body, #root {
     justify-content: flex-end;
     text-align: end;
     padding: 0 1rem;
-    font-size: small;
+    font-size: medium;
 }
 
 .chat-visiter-name {
     padding: 0 1rem;
-    font-size: small;
+    font-size: medium;
 
 }
 
@@ -592,6 +592,10 @@ html, body, #root {
     bottom: 0;
     padding: 2rem;
     z-index:100;
+}
+
+.chat-time-container {
+    font-size: 8px;
 }
 
 /* 결제 전송 모달 */
@@ -819,6 +823,10 @@ html, body, #root {
     font-family:'PyeongChangPeace';
     font-weight: bold;
     text-align: center;
+}
+
+#caution-image {
+    margin: 3rem 0 1rem;
 }
 
   /* ? */

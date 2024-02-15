@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import axios from "axios";
 
-import DeletedPost from "./DeletedPost";
+import PostCaution from "./PostCaution";
 
 import {
   Container,
@@ -158,7 +158,7 @@ const DetailPost = () => {
   console.log(post);
 
   if (post === null) {
-    return <DeletedPost />; // 데이터가 로드되기 전에는 로딩 중을 표시
+    return <PostCaution message={'이미 삭제된 게시글입니다.'} />; // 데이터가 로드되기 전에는 로딩 중을 표시
   }
 
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정

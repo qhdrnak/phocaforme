@@ -11,6 +11,7 @@ import Search from '../Search/Search.jsx';
 import { Container, Box, Typography, Tabs, Tab, CircularProgress } from "@mui/material";
 import Card from "../../components/UI/Card";
 import usePostSearch from "../../utils/infiScroll.js";
+import PostCaution from "./PostCaution.jsx";
 
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -108,7 +109,7 @@ const BasicTabs = ({ isPreview }) => {
 
       <CustomTabPanel value={value} index={0}>
         {boards.length === 0 ? (
-          <div className="no-content">게시글이 없습니다.</div>
+          <PostCaution message={'게시글이 없습니다.'}/>
         ) : (
           <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}

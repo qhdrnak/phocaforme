@@ -1,11 +1,14 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import cautionImg from '../../assets/images/caution.png';
+
 import {
     Button,
     Container,
   } from "@mui/material";
 
-const DeletedPost = () => {
+const PostCaution = ({message}) => {
     const navigate = useNavigate();
 
     const goBack = () => {
@@ -13,11 +16,11 @@ const DeletedPost = () => {
     };
   return (
     <Container id='deleted-post-container'>
-      <div id='deleted-post-imoji'>😢</div>
-      <h2 id='deleted-post-title'>이미 삭제된 게시글 입니다.</h2>
+      <img id='caution-image' src={cautionImg} width={'100vw'}></img>
+      <h2 id='deleted-post-title'>{message}</h2>
       <Button id='go-back-button' onClick={goBack}>뒤로가기</Button>
     </Container>
   );
 };
 
-export default DeletedPost;
+export default PostCaution;
