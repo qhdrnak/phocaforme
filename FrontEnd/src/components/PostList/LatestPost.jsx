@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import Card from "../../components/UI/Card";
+import PostCaution from "./PostCaution";
 
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -52,6 +53,8 @@ const a11yProps = (index) => {
 const LatestPost = () => {
   const navigate = useNavigate();
   const [recentPosts, setRecentPosts] = useState([]);
+  const [sellPosts, setSellPosts] = useState([]);
+
 
   const [value, setValue] = React.useState(0);
 
@@ -71,7 +74,6 @@ const LatestPost = () => {
     navigate(`/post/${id}`);
   };
 
-  console.log(recentPosts);
   return (
     <div id="latestpost-container">
       <h2 className="profile-title">최근 본 게시글</h2>
@@ -91,7 +93,8 @@ const LatestPost = () => {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <ImageList
+          {recentPosts.length == 0 ? <div>최근 조회한 게시글이 없어요!</div> : (
+            <ImageList
             id="card-list"
             sx={{ display: "flex", width: "100%" }}
             rowHeight={200}
@@ -135,8 +138,12 @@ const LatestPost = () => {
                 ))
                 .reverse()}
           </ImageList>
+          )}
+          
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
+        {sellPosts.length == 0 ? <div>최근 조회한 게시글이 없어요!</div> : (
+
           <ImageList
             id="card-list"
             sx={{ display: "flex", width: "100%" }}
@@ -170,6 +177,7 @@ const LatestPost = () => {
                 ))
                 .reverse()}
           </ImageList>
+        )}
         </CustomTabPanel>
       </div>
     </div>

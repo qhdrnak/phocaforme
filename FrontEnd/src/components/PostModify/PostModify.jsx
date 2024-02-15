@@ -44,9 +44,7 @@ const PostModify = () => {
   //   }
   // }, [postImages]);
   
-  
-  console.log(postImages)
-  console.log(images)
+
   useEffect(() => {
     if (post.photos && post.photos.length > 0) {
       
@@ -159,7 +157,6 @@ const PostModify = () => {
       }
     });
   };
-  console.log(images)
   const handleModifyClick = async () => {
     try {
       const formData = new FormData();
@@ -177,7 +174,6 @@ const PostModify = () => {
       images.forEach((image) => {
         formData.append("photos", image);
       });
-      console.log(images)
 
       for (var pair of formData.entries()) {
         console.log(pair[0]+ ', ' + pair[1]); 
@@ -206,11 +202,36 @@ const PostModify = () => {
   console.log(ownMembers)
   return (
     <Container>
-      <h2 className="write-title">게시글 수정하기</h2>
       <div id="write-container">
         {/* <div id="write-radio-container">
           <RadioButton2 defaultType={postCardType} />
         </div> */}
+        <div id="image-input">
+          <div>
+            <h3>사진 (클릭시 삭제됩니다.)</h3>
+            <p className="info-msg">* 사진 사이즈는 포토카드 사이즈가 좋아요!</p>
+          </div>
+          <div id="image-list">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              multiple
+            />
+            <div id="image-add-button" onClick={handleImageAdd}>
+              <AddIcon id="image-add-icon" />
+            </div>
+      
+            {imagePreviews &&
+              imagePreviews.map((preview, index) => (
+                <div className="image-container" key={index} onClick={() => handleImageDelete(index)}>
+                  <img className="image-preview" src={preview} alt={`Image Preview ${index + 1}`} />
+                </div>
+              ))}
+          </div>
+        </div>
         <div id="title-container">
           <h3>제목</h3>
           <input
@@ -268,32 +289,7 @@ const PostModify = () => {
             }}
           />
         </div>
-        <div id="image-input">
-          <div>
-            <h3>사진 (클릭시 삭제됩니다.)</h3>
-            <p className="info-msg">* 사진 사이즈는 포토카드 사이즈가 좋아요!</p>
-          </div>
-          <div id="image-list">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-              ref={fileInputRef}
-              multiple
-            />
-            <div id="image-add-button" onClick={handleImageAdd}>
-              <AddIcon id="image-add-icon" />
-            </div>
-      
-            {imagePreviews &&
-              imagePreviews.map((preview, index) => (
-                <div className="image-container" key={index} onClick={() => handleImageDelete(index)}>
-                  <img className="image-preview" src={preview} alt={`Image Preview ${index + 1}`} />
-                </div>
-              ))}
-          </div>
-        </div>
+        
         <div id="content-input-container">
           <h3>상세 내용</h3>
           <textarea
