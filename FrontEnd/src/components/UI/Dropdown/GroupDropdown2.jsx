@@ -35,63 +35,63 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
   };
 
   return (
-      <Autocomplete
-        value={value}
-        onChange={handleChange}
-        size="small"
-        id="group-dropdown"
-        options={groupItems}
-        getOptionLabel={(option) =>
-          `${option.idolGroupNameKr} (${option.idolGroupNameEng})`
-        }
-        isOptionEqualToValue={(option, value) =>
-          option.idolGroupNameKr === value.idolGroupNameKr
-        }
-        sx={{
-          width: isProfile ? "12rem" : "100%",
-        }}
-        noOptionsText="해당 그룹이 없습니다"
-        renderOption={(props, option) => (
-          <Box
-            component="li"
-            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-            {...props}
-          >
-            <Avatar
-              src={option.avatarSrc}
-              sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
-            />
-            {`${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
-          </Box>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            fullWidth
-            placeholder="선택하세요"
-            InputProps={{
-              ...params.InputProps,
-              startAdornment: (
-                <React.Fragment>
-                  {value && (
-                    <Avatar
-                      sx={{ ml: 1, width: "1.5rem", height: "1.5rem" }}
-                      src={
-                        groupItems.find(
-                          (option) =>
-                            option.idolGroupNameKr === value.idolGroupNameKr
-                        )?.avatarSrc
-                      }
-                    />
-                  )}
-                  {params.InputProps.startAdornment}
-                </React.Fragment>
-              ),
-            }}
+    <Autocomplete
+      value={value}
+      onChange={handleChange}
+      size="small"
+      id="group-dropdown"
+      options={groupItems}
+      getOptionLabel={(option) =>
+        `${option.idolGroupNameKr} (${option.idolGroupNameEng})`
+      }
+      isOptionEqualToValue={(option, value) =>
+        option.idolGroupNameKr === value.idolGroupNameKr
+      }
+      sx={{
+        width: isProfile ? "50vw" : "100%",
+      }}
+      noOptionsText="해당 그룹이 없습니다"
+      renderOption={(props, option) => (
+        <Box
+          component="li"
+          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          {...props}
+        >
+          <Avatar
+            src={option.avatarSrc}
+            sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
           />
-        )}
-      />
+          {`${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
+        </Box>
+      )}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          fullWidth
+          placeholder="선택하세요"
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+              <React.Fragment>
+                {value && (
+                  <Avatar
+                    sx={{ ml: 1, width: "1.5rem", height: "1.5rem" }}
+                    src={
+                      groupItems.find(
+                        (option) =>
+                          option.idolGroupNameKr === value.idolGroupNameKr
+                      )?.avatarSrc
+                    }
+                  />
+                )}
+                {params.InputProps.startAdornment}
+              </React.Fragment>
+            ),
+          }}
+        />
+      )}
+    />
   );
 };
 

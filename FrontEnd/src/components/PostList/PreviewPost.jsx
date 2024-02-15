@@ -48,40 +48,40 @@ const PreviewPost = () => {
     <Container>
       <h2 className="main-title">둘러보기 🔍</h2>
       {/* <MainPost isPreview={true} /> */}
-      <div id="preview-card">
-        {previewPost.map((post, index) => (
-          <div key={index}>
-            <Card
-              id={post.id}
-              title={post.title}
-              images={
-                "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
-                post.imageUrl
-              }
-              ownMembers={post.ownMember}
-              targetMembers={post.targetMember}
-              isBartered={post.Bartered}
-              onClick={() => {
-                // setSelectedPostId(post.id)  // <= 근데 이거 기능이 뭐임?
-                navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
-              }} // 클릭 이벤트 추가
-            />
-          </div>
-        ))}
-      </div>
       <div>
-        <Button
-          id="expand-button"
-          variant="contained"
-          size="large"
-          color="primary"
-          onClick={handleButtonClick}
-        >
-          + 더보기
-        </Button>
-      </div>
+        <div id="preview-card">
+          {previewPost.map((post, index) => (
+            <div key={index}>
+              <Card
+                id={post.id}
+                title={post.title}
+                images={
+                  "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
+                  post.imageUrl
+                }
+                ownMembers={post.ownMember}
+                targetMembers={post.targetMember}
+                isBartered={post.Bartered}
+                onClick={() => {
+                  // setSelectedPostId(post.id)  // <= 근데 이거 기능이 뭐임?
+                  navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
+                }} // 클릭 이벤트 추가
+              />
+            </div>
+          ))}
+          <Button
+            id="expand-button"
+            variant="contained"
+            size="large"
+            color="primary"
+            onClick={handleButtonClick}
+          >
+            + 더보기
+          </Button>
+        </div>
 
-      <div id="preview-margin" />
+        <div id="preview-margin" />
+      </div>
     </Container>
   );
 };
