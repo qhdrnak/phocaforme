@@ -250,7 +250,7 @@ const DetailPost = () => {
           </div>
         </div>
         <hr style={{ margin: "1rem 0" }} />
-        <div id="post-content-container" style={{ whiteSpace: "pre-line" }}>
+        <div id="post-content-container" style={{  }}>
           <div>{post.content}</div>
         </div>
       </div>
@@ -288,6 +288,8 @@ const DetailPost = () => {
             </Button>
           </div>
         ) : (
+          <div id="post-button-container">
+
           <Button
             id="chat-button"
             variant="contained"
@@ -296,6 +298,7 @@ const DetailPost = () => {
           >
             1:1 채팅하기
           </Button>
+          </div>
         )}
       </div>
     </Container>
