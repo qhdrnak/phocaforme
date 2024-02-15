@@ -4,28 +4,31 @@ import { useNavigate } from "react-router-dom";
 import { Container, Button, TextareaAutosize } from "@mui/material";
 import Card from "../../components/UI/Card";
 import MainPost from "../../components/PostList/MainPost.jsx";
-import axios from 'axios';
+import axios from "axios";
 
 const PreviewPost = () => {
   const navigate = useNavigate();
   const handleButtonClick = () => {
     navigate("/post");
   };
-  // 이전이랑 다르게 store에 전부다 저장해놓지 않으니까 
-  // db에 있는 첫번째 애들 ( 여기에 적은 url )을 불러옴 
+  // 이전이랑 다르게 store에 전부다 저장해놓지 않으니까
+  // db에 있는 첫번째 애들 ( 여기에 적은 url )을 불러옴
   const [postData, setPostData] = useState([]);
 
   useEffect(() => {
     // 데이터를 불러오는 비동기 함수를 정의합니다.
     const fetchData = async () => {
       try {
-          const response = await axios.get(process.env.REACT_APP_API_URL + 'barter/search', {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          process.env.REACT_APP_API_URL + "barter/search",
+          {
+            withCredentials: true,
+          }
+        );
         // 받아온 데이터를 상태 변수에 저장합니다.
         setPostData(response.data);
       } catch (error) {
-        console.error('Error fetching preview data:', error);
+        console.error("Error fetching preview data:", error);
       }
     };
 
@@ -38,23 +41,23 @@ const PreviewPost = () => {
     };
   }, []); // pageNumber를 의존성 배열에서 제거합니다
 
-
   // 맨처음 4개만 보여줄거니까 짤라서 previewPost에 담아서 얘를 화면에 렌더링
-  const previewPost = postData.slice(0,4)
- 
+  const previewPost = postData.slice(0, 4);
+
   return (
     <Container>
       <h2 className="main-title">둘러보기 🔍</h2>
       {/* <MainPost isPreview={true} /> */}
-      <div id="preview-container">
-        <div id='preview-card'>
-
+      <div id="preview-card">
         {previewPost.map((post, index) => (
           <div key={index}>
             <Card
               id={post.id}
               title={post.title}
-              images={'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + post.imageUrl}
+              images={
+                "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
+                post.imageUrl
+              }
               ownMembers={post.ownMember}
               targetMembers={post.targetMember}
               isBartered={post.Bartered}
@@ -62,13 +65,11 @@ const PreviewPost = () => {
                 // setSelectedPostId(post.id)  // <= 근데 이거 기능이 뭐임?
                 navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
               }} // 클릭 이벤트 추가
-              
             />
           </div>
         ))}
-        </div>
-        <div>
-
+      </div>
+      <div>
         <Button
           id="expand-button"
           variant="contained"
@@ -78,9 +79,9 @@ const PreviewPost = () => {
         >
           + 더보기
         </Button>
-        </div>
       </div>
-      <div id='preview-margin'/>
+
+      <div id="preview-margin" />
     </Container>
   );
 };

@@ -90,9 +90,10 @@ const theme = createTheme({
     MuiCardMedia: {
       styleOverrides: {
         root: {
+          objectFit: 'contain',
           borderRadius: "10px",
-          height: "13rem",
-          width: "10rem",
+          height: "10rem",
+          width: "7rem",
           
         }
       }
@@ -101,7 +102,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           width: 'fit-content',
-          padding: '0.5rem 0 0 0',
+          padding: '0.1rem 0 0 0',
           cursor: "pointer",
           display: "flex",
           flexDirection: "column",
