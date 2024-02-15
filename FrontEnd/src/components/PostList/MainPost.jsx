@@ -6,9 +6,16 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 
-import Search from '../Search/Search.jsx';
+import Search from "../Search/Search.jsx";
 
-import { Container, Box, Typography, Tabs, Tab, CircularProgress } from "@mui/material";
+import {
+  Container,
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+  CircularProgress,
+} from "@mui/material";
 import Card from "../../components/UI/Card";
 import usePostSearch from "../../utils/infiScroll.js";
 import PostCaution from "./PostCaution.jsx";
@@ -16,10 +23,8 @@ import PostCaution from "./PostCaution.jsx";
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
-
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
-
 
   return (
     <div>
@@ -55,7 +60,6 @@ const a11yProps = (index) => {
 const BasicTabs = ({ isPreview }) => {
   const location = useLocation();
 
-
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(2);
 
@@ -89,10 +93,10 @@ const BasicTabs = ({ isPreview }) => {
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
-    <Container id='mainpost-container'>
-      {location.state ? <Search/> : null}
+    <Container id="mainpost-container">
+      {location.state ? <Search /> : null}
 
-      <Box sx={{ width:'100%', borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
             label="교환"
@@ -109,14 +113,14 @@ const BasicTabs = ({ isPreview }) => {
 
       <CustomTabPanel value={value} index={0}>
         {boards.length === 0 ? (
-          <PostCaution message={'게시글이 없습니다.'}/>
+          <PostCaution message={"게시글이 없습니다."} />
         ) : (
           <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
           >
             {boards.map((post, index) => (
               <div key={index}>
-                 {post.distance ? `${post.distance}km `: ""}
+                {post.distance == -1 ? `${post.distance}km ` : ""}
                 <Card
                   className={post.bartered ? "done-post" : ""}
                   id={post.id}
@@ -143,13 +147,12 @@ const BasicTabs = ({ isPreview }) => {
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        
-          {boards.filter((post) => post.type === "판매").length === 0 ? (
-            <div className="no-content">게시글이 없습니다.</div>
-          ) : (
-            <div
-              style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
-            >
+        {boards.filter((post) => post.type === "판매").length === 0 ? (
+          <div className="no-content">게시글이 없습니다.</div>
+        ) : (
+          <div
+            style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+          >
             {boards
               .filter((post) => post.type === "판매")
               .map((post, index) => (
@@ -163,11 +166,11 @@ const BasicTabs = ({ isPreview }) => {
                   type={post.type}
                   isSold={post.isSold}
                 ></Card>
-                ))}
-                <div>{loading && <CircularProgress />}</div>
-                <div>{error && "Error"}</div>
-                </div>
-              )}
+              ))}
+            <div>{loading && <CircularProgress />}</div>
+            <div>{error && "Error"}</div>
+          </div>
+        )}
       </CustomTabPanel>
       <div id="post-blank" />
     </Container>
