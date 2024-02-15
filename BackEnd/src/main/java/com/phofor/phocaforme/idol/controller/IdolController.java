@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -45,7 +46,7 @@ public class IdolController {
 
     // 어제 날짜(연월일 형식) 전달 시 아이돌 랭킹 남녀 각 3위까지 반환
     @GetMapping("/idol/rank")
-    public ResponseEntity<IdolRankResponseDto> getIdolRank(LocalDate date){
+    public ResponseEntity<IdolRankResponseDto> getIdolRank(LocalDateTime date){
         return ResponseEntity.ok().body(idolRankService.findByDate(date));
     }
 }

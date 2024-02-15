@@ -114,6 +114,7 @@ public class BarterSearchService {
     public List<SearchResponse> search(SearchRequest searchRequest){
         /* Send message:{Target_idol's searchCount++;}  in RabbitMQ */
         if (searchRequest.getTarget() != null) {
+            System.out.println(searchRequest.getTarget());
             for(Long id : searchRequest.getTarget()){
                 SearchCountMessage msg = new SearchCountMessage(id, toInstantFormat(LocalDateTime.now()));
                 rabbitTemplate.convertAndSend("rank.exchange","rank.key",msg);

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,7 +18,7 @@ public class IdolRankServiceImpl implements IdolRankService {
 
 
     @Override
-    public IdolRankResponseDto findByDate(LocalDate date) {
+    public IdolRankResponseDto findByDate(LocalDateTime date) {
         IdolRank idolRank = idolRankRepository.findByCreatedDate(date);
         IdolRankResponseDto responseDto = IdolRankResponseDto.builder()
                 .id(idolRank.getId())
@@ -31,4 +32,6 @@ public class IdolRankServiceImpl implements IdolRankService {
                 .build();
         return responseDto;
     }
+
+
 }

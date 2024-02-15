@@ -25,29 +25,47 @@ import java.util.List;
 public class QueueWorker {
 
     private final int BATCH_SIZE = 100; // TODO: application 파일로 이동
-    private final String QUEUE_NAME = "barter.queue"; // TODO: application 파일로 이동
+//    private final String QUEUE_NAME = ; // TODO: application 파일로 이동
     private final RabbitTemplate rabbitTemplate;
     private final ElasticsearchBulkProcessor elasticsearchBulkProcessor;
     private final ObjectMapper objectMapper;
     private final BarterService barterService;
     private final WishCardService wishCardService;
+
+    @Scheduled(fixedDelay = 100)
+    public void insertWork() throws JsonProcessingException{
+        List<BarterDetailDto> barterMessages = new ArrayList<>();
+        for(int i=0; i<BATCH_SIZE; i++){
+            Message message = rabbitTemplate.receive("insert.queue");
+            if(message==null){break;}
+            String messageContent = new String(message.getBody(), StandardCharsets.UTF_8);
+            JsonNode rootNode = objectMapper.readTree(messageContent);
+            Long articleId = rootNode.path("articleId").asLong();
+            BarterDetailDto barter = barterService.findOne(articleId);
+            barterMessages.add(barter);
+        }
+        if(!(barterMessages.isEmpty())){
+            elasticsearchBulkProcessor.processInsertToElasticsearch(barterMessages);
+        }
+    }
+
     @Scheduled(fixedDelay = 1000) // 5초 TODO: application 파일에 schedule delay값 두고 쓰기
     public void work() throws JsonProcessingException {
-        log.info("Another 1sec...");
-        log.info("Worker searching for messages....");
+//        log.info("Another 1sec...");
+//        log.info("Worker searching for messages....");
         List<BarterDetailDto> barterMessages = new ArrayList<>();
         List<Integer> barterTypes = new ArrayList<>();
         List<WishCardDto> wishMessages = new ArrayList<>();
         List<Integer> wishTypes = new ArrayList<>();
         List<Integer> wishKeywordNumbers = new ArrayList<>();
         for(int i=0; i<BATCH_SIZE; i++){
-            Message message = rabbitTemplate.receive(QUEUE_NAME);
+            Message message = rabbitTemplate.receive("barter.queue");
             if(message==null){break;}
             String messageContent = new String(message.getBody(), StandardCharsets.UTF_8);
             JsonNode rootNode = objectMapper.readTree(messageContent);
             int type = rootNode.path("type").asInt();
 //            Boolean isBartered = rootNode.path("isBartered").asBoolean();
-            if(type==0 ||type==1){ // 교환 게시글
+            if(type==1){ // 교환 게시글
                 Long articleId = rootNode.path("articleId").asLong();
                 BarterDetailDto barter = barterService.findOne(articleId);
                 barterTypes.add(type);

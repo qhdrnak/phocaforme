@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -36,10 +37,10 @@ public class IdolRank {
 
     @CreatedDate
     @Column(name = "created_date")
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
     @Builder
     public IdolRank(Long id, Long firstFemaleIdolId, Long secondFemaleIdolId, Long thirdFemaleIdolId,
-                    Long firstMaleIdolId, Long secondMaleIdolId, Long thirdMaleIdolId, LocalDate createdDate) {
+                    Long firstMaleIdolId, Long secondMaleIdolId, Long thirdMaleIdolId, LocalDateTime createdDate) {
         this.id = id;
         this.firstFemaleIdolId = firstFemaleIdolId;
         this.secondFemaleIdolId = secondFemaleIdolId;

@@ -44,6 +44,47 @@ public class ElasticsearchBulkProcessor {
         restTemplate.postForObject(postUrl,entity,String.class);
     }
 
+    public void processInsertToElasticsearch(List<BarterDetailDto> messages){
+        String plainCreds = username+":"+password;
+        String base64Creds = Base64.getEncoder().encodeToString(plainCreds.getBytes());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + base64Creds);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String bulkRequestBody = buildBulkInsertRequestBody(messages);
+        log.info("\n"+bulkRequestBody);
+        HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
+
+        restTemplate.postForObject(postUrl,entity,String.class);
+    }
+
+    private String buildBulkInsertRequestBody(List<BarterDetailDto> messages){
+        StringBuilder bulkBody = new StringBuilder();
+        for(int i=0; i< messages.size(); i++) {
+            BarterDetailDto barter = messages.get(i);
+            System.out.println(barter.getId());
+            bulkBody.append("{ \"").append("index")
+                    .append("\": { \"_id\": \"").append(barter.getId())
+                    .append("\", \"_index\": \"").append("barter_post")
+                    .append("\"}}\n");
+            bulkBody.append("{ ")
+                    .append("\"article_id\": ").append(barter.getId()).append(", ")
+                    .append("\"writer_id\": \"").append(barter.getUserId()).append("\", ")
+                    .append("\"writer_nickname\": \"").append(barter.getNickName()).append("\", ")
+                    .append("\"title\": \"").append(barter.getTitle()).append("\", ")
+                    .append("\"card_type\": \"").append(barter.getCardType()).append("\", ")
+                    .append("\"image_url\": \"").append(barter.getPhotos().get(0)).append("\", ")
+                    .append("\"content\": \"").append(barter.getContent()).append("\", ")
+                    .append("\"group_id\": \"").append(barter.getGroupId()).append("\", ")
+                    .append("\"own_member\": ").append(convertIdolSearchMembersToJson(barter.getOwnIdolMembers())).append(", ")
+                    .append("\"target_member\": ").append(convertIdolSearchMembersToJson(barter.getFindIdolMembers())).append(", ")
+                    .append("\"is_bartered\": ").append(barter.isBartered()).append(", ")
+                    .append("\"created_at\": \"").append(barter.getRegistrationDate()).append("\",")
+                    .append("\"updated_at\": \"").append(barter.getModifiedDate()).append("\" }\n");
+        }
+        return bulkBody.toString();
+    }
     private String buildBulkRequestBody(List<BarterDetailDto> messages, List<Integer> barterTypes,
                                         List<WishCardDto> wishes, List<Integer> wishTypes, List<Integer> wishKeywordNumbers){
         StringBuilder bulkBody = new StringBuilder();
@@ -51,27 +92,7 @@ public class ElasticsearchBulkProcessor {
         for(int i=0; i< messages.size() && i< barterTypes.size(); i++){
             BarterDetailDto barter = messages.get(i);
             System.out.println(barter.getId());
-            if(barterTypes.get(i)==0){
-                bulkBody.append("{ \"").append("index")
-                        .append("\": { \"_id\": \"").append(barter.getId())
-                        .append("\", \"_index\": \"").append("barter_post")
-                        .append("\"}}\n");
-                bulkBody.append("{ ")
-                        .append("\"article_id\": ").append(barter.getId()).append(", ")
-                        .append("\"writer_id\": \"").append(barter.getUserId()).append("\", ")
-                        .append("\"writer_nickname\": \"").append(barter.getNickName()).append("\", ")
-                        .append("\"title\": \"").append(barter.getTitle()).append("\", ")
-                        .append("\"card_type\": \"").append(barter.getCardType()).append("\", ")
-                        .append("\"image_url\": \"").append(barter.getPhotos().get(0)).append("\", ")
-                        .append("\"content\": \"").append(barter.getContent()).append("\", ")
-                        .append("\"group_id\": \"").append(barter.getGroupId()).append("\", ")
-                        .append("\"own_member\": ").append(convertIdolSearchMembersToJson(barter.getOwnIdolMembers())).append(", ")
-                        .append("\"target_member\": ").append(convertIdolSearchMembersToJson(barter.getFindIdolMembers())).append(", ")
-                        .append("\"is_bartered\": ").append(barter.isBartered()).append(", ")
-                        .append("\"created_at\": \"").append(barter.getRegistrationDate()).append("\",")
-                        .append("\"updated_at\": \"").append(barter.getModifiedDate()).append("\" }\n");
-            }
-            else if(barterTypes.get(i)==1) {
+            if(barterTypes.get(i)==1) {
                 bulkBody.append("{ \"").append("update")
                         .append("\": { \"_id\": \"").append(barter.getId())
                         .append("\", \"_index\": \"").append("barter_post")
