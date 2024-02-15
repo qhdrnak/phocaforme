@@ -46,8 +46,6 @@ const MemberDropdown2 = ({
     fetchData();
   }, [selectedGroup]);
 
-console.log(memberItems);
-
   return (
     <Autocomplete
       value={value}

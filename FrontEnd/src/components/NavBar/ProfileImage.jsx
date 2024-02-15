@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 
+import getCookie from "../../utils/getCookie";
+
 import { useTheme } from "@mui/material/styles";
 
 import {
@@ -54,15 +56,18 @@ const ProfileImage = () => {
 
   const [biasImg, setBiasImg] = useState(null);
 
+  
+
   // useEffect 해서 랜더링할 때 최애 정보 들고와라
   useEffect(() => {
-    if (user.defaultMember) {
+    if (getCookie('profile')) {
       axios
         .get(process.env.REACT_APP_API_URL + `user/bias`, {
           withCredentials: true,
         })
         .then((response) => {
           setBiasImg(response.data.idolImage);
+          console.log(biasImg);
         })
         .catch((error) => {
           console.error("Error get bias:", error);
