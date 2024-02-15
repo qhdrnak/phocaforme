@@ -10,7 +10,7 @@ import { fetchTitle, fetchUserTitle } from "../../http.js";
 import { loginUser, logoutUser, getLocation } from "../../store2/loginUser.js";
 import { searchPosts } from "../../store2/post.js";
 
-import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
+import { CircularProgress, Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../UI/Card.jsx";
 import usePostSearch from "../../utils/infiScroll.js";
 import PostCaution from "./PostCaution.jsx";
@@ -82,7 +82,6 @@ const BasicTabs = ({ isPreview }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(searchs)
     if (!isPreview) {
       const fetchData = async () => {
       
@@ -221,7 +220,7 @@ const BasicTabs = ({ isPreview }) => {
               ))
           )}
         </div>
-        <div>{loading && "Loading..."}</div>
+        <div>{loading && <CircularProgress />}</div>
         <div>{error && "Error"}</div>
       </CustomTabPanel>
     </Container>

@@ -6,7 +6,6 @@ import axios from "axios";
 import { setNickname } from "../../../store2/loginUser.js";
 
 import { Box, TextField, Button, Modal } from "@mui/material";
-import { combineSlices } from "@reduxjs/toolkit";
 
 const NicknameModal = ({
   open,
@@ -43,7 +42,7 @@ const NicknameModal = ({
     setValidFlag(false);
     setInputValue(e.target.value);
 
-    if (e.target.value.length < minLength && e.target.value.trim() !== "") {
+    if (e.target.value.length < minLength && e.target.value.trim() == "") {
       setErrorMsg("2글자 이상 입력해주세요.");
     } else {
       setErrorMsg("");
@@ -52,29 +51,33 @@ const NicknameModal = ({
 
   const handleSubmit = (userId) => {
     // 닉네임 중복 체크
-    axios
-      .post(
-        process.env.REACT_APP_API_URL + `user/nickname`,
-        { nickname: inputValue },
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        setValidFlag(!response.data.isDuplicated);
-        if (response.data.isDuplicated) {
-          setErrorMsg("중복된 닉네임입니다.");
-        } else {
-          setErrorMsg("사용 가능한 닉네임입니다.");
-        }
-      })
-      .catch((error) => {
-        setValidFlag(false);
-        console.error("요청 실패:", error);
-      });
+    if (inputValue.trim() !== "") {
+      axios
+        .post(
+          process.env.REACT_APP_API_URL + `user/nickname`,
+          { nickname: inputValue },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          setValidFlag(!response.data.isDuplicated);
+          if (response.data.isDuplicated) {
+            setErrorMsg("중복된 닉네임입니다.");
+          } else {
+            setErrorMsg("사용 가능한 닉네임입니다.");
+          }
+        })
+        .catch((error) => {
+          setValidFlag(false);
+          console.error("요청 실패:", error);
+        });
+    } else {
+      setErrorMsg("2글자 이상 입력해주세요.");
+    }
   };
 
   // 닉네임 업데이트

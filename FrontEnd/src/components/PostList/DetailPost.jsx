@@ -152,10 +152,9 @@ const DetailPost = () => {
       .catch((error) => {
         console.error("게시물 삭제 중 에러가 발생했습니다:", error);
       });
-    navigate("/post");
+    navigate(-1);
   };
 
-  console.log(post);
 
   if (post === null) {
     return <PostCaution message={'이미 삭제된 게시글입니다.'} />; // 데이터가 로드되기 전에는 로딩 중을 표시

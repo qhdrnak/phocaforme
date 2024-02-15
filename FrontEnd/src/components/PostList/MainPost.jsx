@@ -89,10 +89,10 @@ const BasicTabs = ({ isPreview }) => {
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
-    <Container>
+    <Container id='mainpost-container'>
       {location.state ? <Search/> : null}
 
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ width:'100%', borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
             label="교환"
