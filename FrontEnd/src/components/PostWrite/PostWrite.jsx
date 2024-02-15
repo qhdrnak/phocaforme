@@ -121,6 +121,7 @@
    // 게시물 생성 버튼 클릭 핸들러
    const handlePostClick = () => {
      console.log(selectedGroup);
+     
      // 새로운 게시물 객체 생성
      const newPost = new FormData();
      newPost.append("title", title);
@@ -133,11 +134,16 @@
        newPost.append("findIdolMembers", member.idolMemberId);
      });
      newPost.append("cardType", cardType.value);
-     images.forEach((image) => {
-       newPost.append(`photos`, image);
-     });
+     if (images.length > 0) {
+      images.forEach((image) => {
+        newPost.append(`photos`, image);
+      });
+    } else {
+      // 이미지가 없는 경우 빈 배열을 전송
+      newPost.append(`photos`, []);
+    }
      newPost.append("groupId", selectedGroup.idolGroupId);
- 
+    
      console.log(newPost);
  
      // formdata값확인용 코드 //////

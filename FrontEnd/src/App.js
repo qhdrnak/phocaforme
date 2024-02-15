@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes, useLocation  } from 'react-router-dom';
 
@@ -22,7 +22,7 @@ import { ThemeProvider } from '@mui/material/styles';
 
 import store from './store2/index.js';
 // import './firebase-messaging.js';
-
+import NotificationModal from './components/UI/Modal/NotificationModal.jsx';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -35,7 +35,15 @@ const ScrollToTop = () => {
 };
 
 const App = () => {
-  // const store = createStore(rootReducer);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Provider store={store}>
@@ -60,7 +68,7 @@ const App = () => {
            
 
           </Routes>
-         
+          <NotificationModal isOpen={isModalOpen} onClose={closeModal} onNotificationSelect={(value) => console.log('Notification selected: ', value)} />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
