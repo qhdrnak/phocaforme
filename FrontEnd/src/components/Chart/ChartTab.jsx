@@ -58,41 +58,63 @@ const ChartTab = () => {
     setValue(newValue);
   };
 
-  // 아이돌 search_count 로 정렬해서 상위 3개 가져오기
-  // 하루에 한 번만
-  const [currentDate, setCurrentDate] = useState(new Date());
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const newDate = new Date();
-
-      // 날짜가 변경되었을 때 API 호출
-      if (newDate.getDate() !== currentDate.getDate()) {
-        setCurrentDate(newDate);
-
-        // API 호출 로직
-        axios
-          .get("https://api.example.com/data")
-          .then((response) => {
-            console.log("API called successfully:", response.data);
-            // 남돌 반영
-            setRankBoy();
-
-            // 여돌 반영
-            setRankGirl();
-          })
-          .catch((error) => {
-            console.error("Error calling API:", error);
-          });
-      }
-    }, 60000); // 1분마다 날짜 체크 및 API 호출
-
-    // 컴포넌트가 언마운트될 때 clearInterval을 사용하여 interval 해제
-    return () => clearInterval(intervalId);
-  }, [currentDate]);
-
   const [rankBoy, setRankBoy] = useState([]);
   const [rankGirl, setRankGirl] = useState([]);
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const getIdol = async (idolMemberId) => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + `idol/${idolMemberId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error get idol:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          process.env.REACT_APP_API_URL + `idol/rank`,
+          {
+            withCredentials: true,
+          }
+        );
+
+        const order = ["first", "second", "third"];
+        const newRankGirl = [];
+        const newRankBoy = [];
+
+        for (const key in response.data) {
+          for (const prefix of order) {
+            if (key.includes(`${prefix}FemaleIdolId`)) {
+              const idolData = await getIdol(response.data[key]);
+              newRankGirl.push(idolData);
+            } else if (key.includes(`${prefix}MaleIdolId`)) {
+              const idolData = await getIdol(response.data[key]);
+              newRankBoy.push(idolData);
+            }
+          }
+        }
+
+        if (newRankGirl.length > 0) {
+          setRankGirl(newRankGirl);
+        }
+        if (newRankBoy.length > 0) {
+          setRankBoy(newRankBoy);
+        }
+      } catch (error) {
+        console.error("Error get rank:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container sx={{ width: "100%" }}>
@@ -112,10 +134,10 @@ const ChartTab = () => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ChartBoy data={rankBoy} />
+        <ChartBoy rankBoy={rankBoy} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ChartGirl data={rankGirl} />
+        <ChartGirl rankGirl={rankGirl} />
       </CustomTabPanel>
     </Container>
   );

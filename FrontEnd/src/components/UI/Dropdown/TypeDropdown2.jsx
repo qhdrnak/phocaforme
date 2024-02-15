@@ -11,7 +11,7 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
     { value: "기타", label: "기타" },
   ];
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     if (defaultCardType) {
@@ -26,38 +26,38 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
   };
 
   return (
-      <Autocomplete
-        value={value}
-        onChange={handleChange}
-        size="small"
-        id="card-type-dropdown"
-        options={TypeItems}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
-        sx={{
-          width: "80vw",
-        }}
-        noOptionsText="해당 분류가 없습니다"
-        renderOption={(props, option) => (
-          <Box
-            component="li"
-            sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-            {...props}
-          >
-            {option.label}
-          </Box>
-        )}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="outlined"
-            fullWidth
-            placeholder="선택하세요"
-            InputProps={{
-              ...params.InputProps,
-            }}
-          />
-        )}
-      />
+    <Autocomplete
+      value={value}
+      onChange={handleChange}
+      size="small"
+      id="card-type-dropdown"
+      options={TypeItems}
+      isOptionEqualToValue={(option, value) => option.value === value.value}
+      sx={{
+        width: "80vw",
+      }}
+      noOptionsText="해당 분류가 없습니다"
+      renderOption={(props, option) => (
+        <Box
+          component="li"
+          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+          {...props}
+        >
+          {option.label}
+        </Box>
+      )}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="outlined"
+          fullWidth
+          placeholder="선택하세요"
+          InputProps={{
+            ...params.InputProps,
+          }}
+        />
+      )}
+    />
   );
 };
 

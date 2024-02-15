@@ -4,9 +4,6 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 
-import logo1 from "../../../assets/images/logo_nct.png";
-import logo2 from "../../../assets/images/logo_shinee.jpg";
-
 const GroupDropdown = ({ isProfile, defaultGroup, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
 
