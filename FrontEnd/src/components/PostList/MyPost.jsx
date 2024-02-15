@@ -90,7 +90,7 @@ const MyPost = () => {
     <div id="mypost-container">
       <h2 className="profile-title">나의 게시글</h2>
       <div>
-        <Box sx={{ width: "70vw", borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value}>
             <Tab
               label="교환"

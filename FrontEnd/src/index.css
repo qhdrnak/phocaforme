@@ -691,6 +691,7 @@ html, body, #root {
     margin: 0.5rem 0;
     color: #FD9DD1;
     font-size: small;
+    text-align: center;
 }
 
 #wishcard-clear-icon {
@@ -727,11 +728,16 @@ html, body, #root {
 
 #wishcard-card-container {
     display: flex;
-    flex-direction: row;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    background-color: #FD9DD1;
-    border: 1px solid black;
+    justify-content: center;
+    text-align: center;
+    width: 50vw;
+    padding: 3rem 0.5rem 3rem 1.5rem;
+    background-image: url(assets/images/wishcard.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* background-color: #FD9DD1; */
+    /* border: 1px solid black; */
 }
 
 
@@ -740,10 +746,7 @@ html, body, #root {
     padding: 1rem;
 }
 
-#wishcard-card-keyword {
-    font-family: 'PyeongChangPeace';
 
-}
 
 
 #wishcard-card-media {

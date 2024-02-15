@@ -78,7 +78,7 @@ const LatestPost = () => {
     <div id="latestpost-container">
       <h2 className="profile-title">최근 본 게시글</h2>
       <div>
-        <Box sx={{ width: "70vw", borderBottom: 1, borderColor: "divider" }}>
+        <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
           <Tabs value={value} onChange={handleChange}>
             <Tab
               label="교환"

@@ -144,7 +144,7 @@ const WishCard = () => {
         <div className="wishcard-content">
           <div>
             {wishCard !== null ? (
-              <Card id="wishcard-card-container">
+              <div id="wishcard-card-container">
                 <div id="wishcard-card-keyword">
                   {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
                     .filter(Boolean)
@@ -154,7 +154,7 @@ const WishCard = () => {
                 <div id="wishcard-card-content-header">
                   <ClearIcon id="wishcard-clear-icon" onClick={handleDelete} />
                 </div>
-              </Card>
+              </div>
             ) : (
               "아직 갈망포카가 없어요"
             )}
