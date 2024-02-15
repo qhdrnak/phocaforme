@@ -11,7 +11,6 @@ const MemberDropdown2 = ({
   defaultMember,
   onChange,
 }) => {
-  const user = useSelector((state) => state.user.user);
   const [value, setValue] = useState(defaultMember);
 
   const handleChange = (event, newValue) => {
@@ -47,16 +46,16 @@ const MemberDropdown2 = ({
     fetchData();
   }, [selectedGroup]);
 
+console.log(memberItems);
+
   return (
     <Autocomplete
       value={value}
       onChange={handleChange}
       size="small"
-      disablePortal
-      id="group-dropdown"
-      placeholder="선택하세요"
+      id="member-dropdown"
       options={memberItems}
-      isOptionEqualToValue={(option, value) => option.value === value.value}
+      // isOptionEqualToValue={(option, value) => option.idolMemberId === value.idolMemberId}
       getOptionLabel={(option) => option.idolName}
       sx={{
         width: isProfile ? "50vw" : "100%",
@@ -74,7 +73,20 @@ const MemberDropdown2 = ({
         </Box>
       )}
       renderInput={(params) => (
-        <TextField {...params} variant="outlined" placeholder="선택하세요" />
+        <TextField
+          {...params}
+          variant="outlined"
+          fullWidth
+          placeholder="선택하세요"
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: (
+              <React.Fragment>
+                {params.InputProps.startAdornment}
+              </React.Fragment>
+            ),
+          }}
+        />
       )}
     />
   );

@@ -15,15 +15,12 @@ import BarterWrite2 from "../../components/PostWrite/BarterWrite2.jsx";
 import SellWrite2 from "../../components/PostWrite/SellWrite2.jsx";
 import TypeDropdown2 from "../UI/Dropdown/TypeDropdown2.jsx";
 
-const Search = function () {
+const Search = () => {
   const [userInput, setUserInput] = useState("");
   const [isClicked, setIsClicked] = useState(false);
-  const [isExchange, setIsExchange] = useState(true);
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [targetMembers, setTargetMembers] = useState([]);
   const [ownMembers, setOwnMembers] = useState([]);
-  const [targetMembersInput, setTargetMembersInput] = useState(null);
-  const [ownMembersInput, setOwnMembersInput] = useState(null);
   const [cardType, setCardType] = useState(null);
 
   const navigate = useNavigate();
@@ -73,12 +70,7 @@ const Search = function () {
 
   const handleGroupSelection = (group) => {
     setSelectedGroup(group);
-    console.log(group);
   };
-
-  // function onExchangeChange(value) {
-  //   setIsExchange(value === "option1");
-  // }
 
   function handleSearchClick() {
     const searchData = {
@@ -96,6 +88,7 @@ const Search = function () {
 
     // 초기화
     setUserInput(null);
+    setSelectedGroup(null);
     setOwnMembers([]);
     setTargetMembers([]);
     setCardType(null);
@@ -146,7 +139,7 @@ const Search = function () {
             </div>
 
             <div>
-              {isExchange ? (
+              {/* {isExchange ? ( */}
                 <BarterWrite2
                   defaultGroup={selectedGroup}
                   defaultOwnMembers={ownMembers}
@@ -157,12 +150,11 @@ const Search = function () {
                     handleTargetMemberSelection(targetMembers);
                   }}
                 />
-              ) : (
+              {/* ) : (
                 <SellWrite2 />
-              )}
+              )} */}
             </div>
             <div className="searchbar-title">포토카드 종류</div>
-
             <TypeDropdown2
               defaultCardType={cardType}
               onChange={(type) => {

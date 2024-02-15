@@ -7,11 +7,11 @@ import MemberDropdown from "../UI/Dropdown/MemberDropdown2.jsx";
 
 import Chip from "@mui/material/Chip";
 
-const BarterWrite = ({ onChange }) => {
+const BarterWrite = ({ defaultGroup, onChange }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState(defaultGroup);
 
   const handleGroupChange = (group) => {
     if (group) {

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
+import { Box, TextField, Autocomplete } from "@mui/material";
 
 const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
   const [groupItems, setGroupItems] = useState([]);
@@ -57,10 +57,6 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
           sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
           {...props}
         >
-          <Avatar
-            src={option.avatarSrc}
-            sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
-          />
           {`${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
         </Box>
       )}
@@ -74,17 +70,6 @@ const GroupDropdown2 = ({ defaultGroup, isProfile, onChange }) => {
             ...params.InputProps,
             startAdornment: (
               <React.Fragment>
-                {value && (
-                  <Avatar
-                    sx={{ ml: 1, width: "1.5rem", height: "1.5rem" }}
-                    src={
-                      groupItems.find(
-                        (option) =>
-                          option.idolGroupNameKr === value.idolGroupNameKr
-                      )?.avatarSrc
-                    }
-                  />
-                )}
                 {params.InputProps.startAdornment}
               </React.Fragment>
             ),
