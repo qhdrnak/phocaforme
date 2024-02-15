@@ -56,9 +56,7 @@ const ProfileImage = () => {
 
   const [biasImg, setBiasImg] = useState(null);
 
-  
-
-  // useEffect 해서 랜더링할 때 최애 정보 들고와라
+  // 렌더링 시 최애 정보 가져오기
   useEffect(() => {
     if (getCookie('profile')) {
       axios
@@ -67,7 +65,6 @@ const ProfileImage = () => {
         })
         .then((response) => {
           setBiasImg(response.data.idolImage);
-          console.log(biasImg);
         })
         .catch((error) => {
           console.error("Error get bias:", error);
