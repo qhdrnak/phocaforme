@@ -15,27 +15,27 @@ const LoginPage = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
-  const [loginPersistChecked, setLoginPersistChecked] = useState(false);
+  // const [loginPersistChecked, setLoginPersistChecked] = useState(false);
 
-  const toggleLoginPersist = () => {
-    setLoginPersistChecked(prevState => !prevState);
+  // const toggleLoginPersist = () => {
+  //   setLoginPersistChecked(prevState => !prevState);
 
-    if (!loginPersistChecked) {
-      tokenExtension();
+  //   if (!loginPersistChecked) {
+  //     tokenExtension();
 
-    };
-  }
+  //   };
+  // }
 
-  const tokenExtension = () => {
-    axios.post(process.env.REACT_APP_API_URL + "auth/login-status",
-        { loginStatus: loginPersistChecked },
-        { withCredentials: true,}
-    ).then(res => {
-      console.log('연장성공') 
-    }).catch(e => {
-     console.log('에러')
-    })
-  }
+  // const tokenExtension = () => {
+  //   axios.post(process.env.REACT_APP_API_URL + "auth/login-status",
+  //       { loginStatus: loginPersistChecked },
+  //       { withCredentials: true,}
+  //   ).then(res => {
+  //     console.log('연장성공') 
+  //   }).catch(e => {
+  //    console.log('에러')
+  //   })
+  // }
 
   return (
     <div>
@@ -48,12 +48,12 @@ const LoginPage = () => {
           카카오톡으로 로그인 해보세요.
         </div>
         <img id="kakao-button" src={kakao} onClick={() => loginHandler()} />
-        <input
+        {/* <input
           type="checkbox"
           checked={loginPersistChecked}
           onChange={toggleLoginPersist}
-        />
-        <label>로그인유지여부</label>
+        /> */}
+        {/* <label>로그인유지여부</label> */}
       </div>
     </div>
   );
