@@ -738,18 +738,13 @@ html, body, #root {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* background-color: #FD9DD1; */
-    /* border: 1px solid black; */
+    white-space: pre-line;
 }
-
 
 #wishcard-card-content {
     display: flex;
     padding: 1rem;
 }
-
-
-
 
 #wishcard-card-media {
     height: fit-content;
@@ -768,8 +763,6 @@ html, body, #root {
     padding: 0 3rem 1rem 3rem;
     margin-bottom: 1rem;
     width: 90%;
-
-    /* max-width: 400; */
 }
 
 .profile-dropdown-container {
@@ -981,14 +974,14 @@ input:focus {
 .preview-card {
     display: flex;
     flex-wrap: wrap;
-    width: 100%;
-    justify-content: center;
+    width: 100vw;
+    /* justify-content: space-around; */
 }
 
 #preview-odd {
     justify-content: start;
     padding: 0 1rem;
-    width: calc(100% - 2rem);
+    width: calc(100vw - 2rem);
 }
 
 
@@ -1116,7 +1109,7 @@ input:focus {
     flex-direction: column;
     align-items: center;
     position: fixed;
-    bottom: 2rem;
+    bottom: 50px;
 }
 
 #writer-type-container {
