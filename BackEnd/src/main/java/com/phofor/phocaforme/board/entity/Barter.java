@@ -3,7 +3,6 @@ package com.phofor.phocaforme.board.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phofor.phocaforme.auth.entity.UserEntity;
 import com.phofor.phocaforme.board.dto.searchDto.IdolSearchMember;
-import com.phofor.phocaforme.board.service.BarterEntityListener;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@EntityListeners({AuditingEntityListener.class, BarterEntityListener.class})
+@EntityListeners({AuditingEntityListener.class})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "barter")
 public class Barter {

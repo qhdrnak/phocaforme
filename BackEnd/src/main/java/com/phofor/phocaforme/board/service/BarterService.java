@@ -16,7 +16,9 @@ import com.phofor.phocaforme.board.entity.BarterFindIdol;
 import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.entity.BarterOwnIdol;
 import com.phofor.phocaforme.board.repository.*;
+import com.phofor.phocaforme.common.rabbit.producer.events.PostDeleteEvent;
 import com.phofor.phocaforme.common.rabbit.producer.events.PostPersistEvent;
+import com.phofor.phocaforme.common.rabbit.producer.events.PostUpdateEvent;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import jakarta.transaction.Transactional;
@@ -135,7 +137,7 @@ public class BarterService {
             barterImageRepository.save(barterImage);
         }
         // 기존 @PostPersist의 문제로 이쪽으로 이동
-        publishPersistEvent(savedBarter);
+        publishPersistEvent(savedBarter, 0);
         return savedBarter;
     }
 
@@ -200,6 +202,7 @@ public class BarterService {
                     .build();
             barterImageRepository.save(barterImage);
         }
+        publishUpdateEvent(barter,1);
     }
 
     // 교환게시글 삭제하기
@@ -210,6 +213,7 @@ public class BarterService {
         if(!barter.getImages().get(0).getImgCode().equals("icon.PNG"))
             deleteS3(barter.getImages());
         barterRepository.deleteById(barterId);
+        publishDeleteEvent(barter,2);
     }
 
     // 교환게시글 관련 테이블 정보 다 삭제하기
@@ -293,11 +297,11 @@ public class BarterService {
 
         deleteDB(barter);
         barterRepository.deleteById(barterId);
-
+        publishPersistEvent(newBarter,0);
         return newBarter.getId();
     }
 
-    public void publishPersistEvent(Barter barter){
+    public void publishPersistEvent(Barter barter, int type){
         ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
         if (publisher != null) {
             System.out.println(barter.getId());
@@ -307,7 +311,39 @@ public class BarterService {
             PostPersistEvent event = new PostPersistEvent(new BarterMessage(
                     barter.getId(),
                     barter.isBartered(),
-                    0,
+                    type,
+                    instant)
+            );
+            publisher.publishEvent(event);
+        }
+    }
+
+    public void publishUpdateEvent(Barter barter, int type){
+        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
+        if (publisher != null) {
+            LocalDateTime localDateTime = barter.getRegistrationDate();
+            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+            Instant instant = zonedDateTime.toInstant();
+            PostUpdateEvent event = new PostUpdateEvent(new BarterMessage(
+                    barter.getId(),
+                    barter.isBartered(),
+                    type,
+                    instant)
+            );
+            publisher.publishEvent(event);
+        }
+    }
+
+    public void publishDeleteEvent(Barter barter, int type){
+        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
+        if (publisher != null) {
+            LocalDateTime localDateTime = barter.getRegistrationDate();
+            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+            Instant instant = zonedDateTime.toInstant();
+            PostDeleteEvent event = new PostDeleteEvent(new BarterMessage(
+                    barter.getId(),
+                    barter.isBartered(),
+                    type,
                     instant)
             );
             publisher.publishEvent(event);
