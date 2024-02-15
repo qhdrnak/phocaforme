@@ -320,10 +320,15 @@ html, body, #root {
 #rank-1-idol {
     display: flex;
     align-items: center;
-    background-image: url('assets/images/yellowStar.png'); 
-    background-size: contain;
+    justify-content: center;
+    background-image: url('assets/images/spark.png'); 
+    background-size: 110% 90%; 
     background-repeat: no-repeat;
     background-position: bottom;
+}
+
+#rank-1-title {
+    width: 2rem;
 }
 
 #rank-23-idol {
@@ -349,7 +354,7 @@ html, body, #root {
 }
 
 #rank-1-image {
-    margin: 1rem;
+    margin: 0.5rem;
 }
 
 .rank-23-image {
