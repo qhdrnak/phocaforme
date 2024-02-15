@@ -13,8 +13,6 @@ const BarterWrite2 = ({
   defaultTargetMembers,
   onChange,
 }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [selectedGroup, setSelectedGroup] = useState(defaultGroup);
 

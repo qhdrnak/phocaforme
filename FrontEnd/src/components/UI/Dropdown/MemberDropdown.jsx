@@ -22,7 +22,6 @@ const MemberDropdown = ({
   const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
-    console.log("change");
     setValue(null);
     onChange(null);
 
@@ -52,17 +51,16 @@ const MemberDropdown = ({
         value={value}
         onChange={handleChange}
         size="small"
-        disablePortal
         id="group-dropdown"
         options={memberItems}
-        isOptionEqualToValue={(option, value) => option.value === value.value}
+        // isOptionEqualToValue={(option, value) => option.idolMemberId === value.idolMemberId}
         getOptionLabel={(option) => option.idolName}
         // sx={{ width: "12rem" }}
         // 검색이랑 스타일 맞추려면 이거
         sx={{
           width: isProfile ? "12rem" : "38vw",
         }}
-        noOptionsText="해당 멤버가 없습니다"
+        noOptionsText="그룹을 선택하세요"
         renderOption={(props, option) => (
           <Box
             component="li"
@@ -73,7 +71,20 @@ const MemberDropdown = ({
           </Box>
         )}
         renderInput={(params) => (
-          <TextField {...params} variant="outlined" fullWidth />
+          <TextField
+            {...params}
+            variant="outlined"
+            fullWidth
+            placeholder="선택하세요"
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <React.Fragment>
+                  {params.InputProps.startAdornment}
+                </React.Fragment>
+              ),
+            }}
+          />
         )}
       />
     </div>

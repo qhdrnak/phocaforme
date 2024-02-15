@@ -54,14 +54,14 @@ const a11yProps = (index) => {
 const ChartTab = () => {
   const [value, setValue] = React.useState(0);
 
+  const [isNull, setIsNull] = useState(false);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   const [rankBoy, setRankBoy] = useState([]);
   const [rankGirl, setRankGirl] = useState([]);
-
-  const [currentDate, setCurrentDate] = useState(new Date());
 
   const getIdol = async (idolMemberId) => {
     try {
@@ -73,6 +73,7 @@ const ChartTab = () => {
       );
       return response.data;
     } catch (error) {
+      
       console.error("Error get idol:", error);
     }
   };
@@ -110,11 +111,14 @@ const ChartTab = () => {
           setRankBoy(newRankBoy);
         }
       } catch (error) {
-        console.error("Error get rank:", error);
+        // 데이터 없을 때 그냥 에러 떠버림
+        setIsNull(true);
+
+        // console.error("Error get rank:", error);
       }
     };
     fetchData();
-  }, []);
+  }, [value]);
 
   return (
     <Container sx={{ width: "100%" }}>
@@ -134,10 +138,10 @@ const ChartTab = () => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <ChartBoy rankBoy={rankBoy} />
+        <ChartBoy isNull={isNull} rankBoy={rankBoy} />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <ChartGirl rankGirl={rankGirl} />
+        <ChartGirl isNull={isNull} rankGirl={rankGirl} />
       </CustomTabPanel>
     </Container>
   );

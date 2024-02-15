@@ -81,10 +81,15 @@ const BasicTabs = ({ isPreview }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(searchs)
     if (!isPreview) {
       const fetchData = async () => {
+      
         try {
           const params = {};
+          if (searchs.group) {
+            params.group = searchs.group.idolGroupId;
+          }
 
           if (searchs.targetMembers.length > 0) {
             if (searchs.targetMembers.length == 1) {
@@ -112,7 +117,6 @@ const BasicTabs = ({ isPreview }) => {
 
           // gps 켜져있을 때 위도 경도 넣기
           if (user.location_longlat) {
-            console.log(user.location_longlat[0]);
             params.longitude = user.location_longlat[0];
             params.latitude = user.location_longlat[1];
           }
