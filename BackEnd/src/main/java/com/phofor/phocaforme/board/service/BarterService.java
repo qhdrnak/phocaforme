@@ -61,13 +61,7 @@ public class BarterService {
     public BarterDetailDto findOne(Long barterId){
         Barter barter = barterRepository.findById(barterId)
                 .orElseThrow(IllegalArgumentException::new);
-//        List<IdolMemberDto> ownIdolMembers = barter.getOwnIdols().stream()
-//                .map(ownIdol -> new IdolMemberDto(ownIdol.getIdolMember().getId(), ownIdol.getIdolMember().getName()))
-//                .toList();
-////        System.out.println(ownIdolMembers.get(0).getName());
-//        List<IdolMemberDto> findIdolMembers = barter.getFindIdols().stream()
-//                .map(findIdol -> new IdolMemberDto(findIdol.getIdolMember().getId(), findIdol.getIdolMember().getName()))
-//                .toList();
+
         return BarterDetailDto.of(barter);
     }
 

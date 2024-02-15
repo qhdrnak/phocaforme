@@ -32,7 +32,7 @@ public class QueueWorker {
     private final BarterService barterService;
     private final WishCardService wishCardService;
 
-    @Scheduled(fixedDelay = 1500)
+    @Scheduled(fixedDelay = 1000)
     public void insertWork() throws JsonProcessingException{
         List<BarterDetailDto> barterMessages = new ArrayList<>();
         for(int i=0; i<BATCH_SIZE; i++){
