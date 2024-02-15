@@ -16,7 +16,7 @@ const BarterWrite2 = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState(defaultGroup);
 
   const loginUser = useSelector((state) => state.user.user);
 
@@ -49,7 +49,7 @@ const BarterWrite2 = ({
     if (member) {
       setOwnMembers((prevOwnMembers) => [...prevOwnMembers, member]);
       onChange(selectedGroup, [...ownMembers, member], targetMembers);
-      setOwnMembersInput(member.value);
+      setOwnMembersInput(member);
     } else {
       setOwnMembersInput(ownMembersInput);
     }
@@ -59,7 +59,7 @@ const BarterWrite2 = ({
     if (member) {
       setTargetMembers((prevTargetMembers) => [...prevTargetMembers, member]);
       onChange(selectedGroup, ownMembers, [...targetMembers, member]);
-      setTargetMembersInput(member.value);
+      setTargetMembersInput(member);
     } else {
       setTargetMembersInput(targetMembersInput);
     }
@@ -128,8 +128,6 @@ const BarterWrite2 = ({
                   style={{
                     margin: "4px",
                     border: 0,
-                    // backgroundColor: tag.color,
-                    // color: "white",
                   }}
                 />
               ))}
@@ -156,8 +154,6 @@ const BarterWrite2 = ({
                   style={{
                     margin: "4px",
                     border: 0,
-                    // backgroundColor: tag.color,
-                    // color: "white",
                   }}
                 />
               ))}
