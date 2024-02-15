@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 
+import getCookie from "../../utils/getCookie";
+
 import { setBias } from "../../store2/loginUser.js";
 
 import { Avatar, Button } from "@mui/material";
@@ -20,7 +22,7 @@ const Bias = () => {
 
   // useEffect 해서 렌더링할 때 최애 정보 들고와라
   useEffect(() => {
-    if (user.defaultMember) {
+    if (getCookie('profile')) {
       axios
         .get(process.env.REACT_APP_API_URL + `user/bias`, {
           withCredentials: true,
