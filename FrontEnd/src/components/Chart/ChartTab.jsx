@@ -58,7 +58,6 @@ const ChartTab = () => {
     setValue(newValue);
   };
 
-  // 6시간에 한 번 랭킹 가져오기
   const [rankBoy, setRankBoy] = useState([]);
   const [rankGirl, setRankGirl] = useState([]);
 
@@ -103,7 +102,7 @@ const ChartTab = () => {
             }
           }
         }
-        // 데이터가 하나라도 있을 때만 업데이트
+
         if (newRankGirl.length > 0) {
           setRankGirl(newRankGirl);
         }

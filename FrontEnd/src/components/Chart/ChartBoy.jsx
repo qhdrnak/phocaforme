@@ -2,23 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Avatar, Grid, CircularProgress } from "@mui/material";
 
 const ChartBoy = ({ rankBoy }) => {
-  // 로딩 상태를 관리하는 state 추가
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // rankBoy 값이 도착할 때 로딩 상태 변경
     if (rankBoy && rankBoy.length > 0) {
       setLoading(false);
     }
   }, [rankBoy]);
 
   return (
-    <>
+    <div className="chart-align">
       {loading ? (
-        // 로딩 중일 때의 UI
         <CircularProgress />
       ) : (
-        // 로딩이 완료된 경우의 UI
         <Grid container spacing={2} direction="row" id="chart-container">
           <Grid item xs={6} id="rank-1-idol">
             <div className="main-big">1. </div>
@@ -39,7 +35,7 @@ const ChartBoy = ({ rankBoy }) => {
           </Grid>
         </Grid>
       )}
-    </>
+    </div>
   );
 };
 

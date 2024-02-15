@@ -305,12 +305,18 @@ html, body, #root {
 
 /* 랭킹 컴포넌트 */
 
+.chart-align {
+    text-align: center;
+}
+
 #rank-1-idol {
     display: flex;
     align-items: center;
-    /* width: 15rem; */
+    background-image: url('assets/images/yellowStar.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
 }
-
 
 #rank-23-idol {
     display: flex;
