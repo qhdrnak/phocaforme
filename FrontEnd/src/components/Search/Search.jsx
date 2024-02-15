@@ -64,6 +64,7 @@ const Search = function () {
 
   const handleOwnMemberSelection = (members) => {
     setOwnMembers(members);
+    console.log(members);
   };
 
   const handleTargetMemberSelection = (members) => {
@@ -160,29 +161,20 @@ const Search = function () {
                 <SellWrite2 />
               )}
             </div>
-              <div className="searchbar-title">포토카드 종류</div>
+            <div className="searchbar-title">포토카드 종류</div>
 
-              <TypeDropdown2
-                defaultCardType={cardType}
-                onChange={(type) => {
-                  handleTypeChange(type);
-                }}
-              />
-            <div>
-            </div>
+            <TypeDropdown2
+              defaultCardType={cardType}
+              onChange={(type) => {
+                handleTypeChange(type);
+              }}
+            />
+            <div></div>
             <div id="search-buttons">
-              <Button
-                id="search-button"
-                onClick={handleSearchClick}
-                
-              >
+              <Button id="search-button" onClick={handleSearchClick}>
                 검색
               </Button>
-              <Button
-                id="search-close-button"
-                onClick={onClick}
-                
-              >
+              <Button id="search-close-button" onClick={onClick}>
                 닫기
               </Button>
             </div>

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
-import {Box} from '@mui/material';
-import { styled, } from "@mui/material/styles";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import TruncatedTitle from "../../styles/TruncatedTitle";
 
 import {
@@ -68,8 +68,8 @@ const CustomCard = (props) => {
   //   navigate(`/post/${id}`);
   // };
   const goToDetail = (id) => {
-    navigate(`/post/${id}`)
-  }
+    navigate(`/post/${id}`);
+  };
 
   const {
     id,
@@ -99,15 +99,15 @@ const CustomCard = (props) => {
           <p>판매완료</p>
         </div>
       )} */}
-      <Box sx={{ borderBottom: 1, borderColor: "divider", width: 'fit-content' }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", width: "7rem" }}>
         <CardMedia component="img" image={images} />
         <div>
-
-        <CardHeader
-          title={<TruncatedTitle truncateWidth="10rem">{title}</TruncatedTitle>}
-        />
+          <CardHeader
+            title={
+              <TruncatedTitle truncateWidth="10rem">{title}</TruncatedTitle>
+            }
+          />
         </div>
-
       </Box>
       <CardContent className="card-content">
         <div>

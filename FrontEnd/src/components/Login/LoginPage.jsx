@@ -19,9 +19,9 @@ const LoginPage = () => {
     <div>
       <div id="login-container">
         <img id="icon-container" src={icon} />
-        <h2 id='login-title'>안녕하세요 포카포미입니다 👋</h2>
+        <h2 id="login-title">안녕하세요 포카포미입니다 👋</h2>
         <div id="text-container">
-          번거로운 가입 절차 없이
+          계정과 비밀번호 입력없이
           <br />
           카카오톡으로 로그인 해보세요.
         </div>

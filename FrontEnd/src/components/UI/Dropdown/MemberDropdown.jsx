@@ -14,15 +14,15 @@ const MemberDropdown = ({
   const [value, setValue] = useState(defaultMember);
 
   const handleChange = (event, newValue) => {
-    const selectedMemberName = newValue ? newValue.idolMemberId : null;
+    const selectedMember = newValue ? newValue : null;
     setValue(newValue);
-    onChange(selectedMemberName);
+    onChange(selectedMember);
   };
 
   const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
-    console.log('change')
+    console.log("change");
     setValue(null);
     onChange(null);
 
@@ -30,13 +30,13 @@ const MemberDropdown = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-              process.env.REACT_APP_API_URL + `idol/member/${selectedGroup.idolGroupId}`,
+            process.env.REACT_APP_API_URL +
+              `idol/member/${selectedGroup.idolGroupId}`,
             {
               withCredentials: true,
             }
           );
           setMemberItems(response.data);
-    
         } catch (error) {
           console.error("멤버 세팅 오류:", error);
         }

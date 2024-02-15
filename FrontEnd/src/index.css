@@ -263,7 +263,7 @@ html, body, #root {
 /* 알림페이지 */
 #no-alarm-title {
     font-family: 'PyeongchangPeace';
-    font-size: 25px;
+    font-size: 20px;
 }
 
 .alarm-read-item {
@@ -294,7 +294,7 @@ html, body, #root {
 
 .alarm-item-container {
     width: 100%;
-
+    padding: 0 3rem 0 0;
     display: flex;
     align-items: center;
 }
@@ -616,6 +616,15 @@ html, body, #root {
 
 /* 닉네임 수정 모달 */
 
+#dup-check {
+    margin: 0 0 0 1rem;
+    display: flex;
+    text-wrap: nowrap;
+    text-decoration: underline;
+    /* color: var(--primary-color); */
+
+}
+
 #nickname-modal-container {
     display: flex;
     flex-direction: column;
@@ -623,18 +632,39 @@ html, body, #root {
 }
 
 #new-nickname-input {
-    width: 30vw;
 }
 
 #nickname-setting-container{
     margin: 0 0 1rem 0;
     display: flex;
     align-items: center;
+    width: 100%;
+    justify-content: space-around;
 }
 
 
 /* 마이페이지 */
+#help-blank {
+    height: 3vh;
+}
+
+#mypost-container {
+    width: 100%;
+    padding: 0;
+}
+
+#latestpost-container {
+    width: 100%;
+    padding: 0;
+}
+
 #bias-description {
+    margin: 0.5rem 0;
+    color: #FD9DD1;
+    font-size: small;
+}
+
+#wishcard-description {
     margin: 0.5rem 0;
     color: #FD9DD1;
     font-size: small;
@@ -655,6 +685,7 @@ html, body, #root {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 80%;
 }
 
 #nickname-container {
@@ -670,6 +701,7 @@ html, body, #root {
 #wishcard-card-container {
     display: flex;
     border-radius: 1rem;
+    
 }
 
 
@@ -685,7 +717,6 @@ html, body, #root {
 
 #wishcard-input-container {
     margin: 1rem;
-    width: 20rem;
 }
 
 .profile-item-container {
@@ -696,7 +727,8 @@ html, body, #root {
     border-radius: 10px;
     padding: 0 3rem 1rem 3rem;
     margin-bottom: 1rem;
-    width: 70vw;
+    width: 90%;
+
     /* max-width: 400; */
 }
 
@@ -724,7 +756,7 @@ html, body, #root {
 #help-container {
     display: flex;
     align-items: center;
-    margin: 3rem 0 1rem 0;
+    /* margin: 3rem 0 1rem 0; */
 }
 
 #help-icon {
@@ -742,7 +774,7 @@ html, body, #root {
 
 #deleted-post-imoji {
     width: 100%;
-    font-size: 150px;
+    font-size: 100px;
     margin: 10vh 0 5vh;
 }
 
@@ -820,6 +852,11 @@ input:focus {
     border: 1px black solid;
 }
 
+::placeholder {
+    font-family: 'Pretendard';
+    font-size: 15px;
+}
+
 
 #button-container {
     display: flex;
@@ -850,10 +887,10 @@ input:focus {
     border-radius: 10px;
     background-color: var(--secondary-color);
     position: relative;
-    width: 15%;
+    width: 20%;
     height: 0;
-    padding-bottom: calc(15% * 1.58);
-    margin: 0.1rem;
+    padding-bottom: calc(20% * 1.58);
+    margin: 0 0.5rem;
 }
 
 #image-list {
@@ -892,6 +929,8 @@ input:focus {
 
 .info-msg {
     color: var(--secondary-color);
+    font-family: 'Pretendard';
+    font-size: 12px;
 }
 
 /* 메인페이지 */
@@ -907,10 +946,8 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px black solid;
-    border-radius: 20px;
     padding: 1rem;
-    width: fit-content;
+    width: 100%;
 }
 
 #expand-button {
@@ -955,7 +992,7 @@ input:focus {
 }
 
 .card-content {
-    width: 10rem;
+    width: 8rem;
 }
 
 #card-divider {
@@ -967,8 +1004,9 @@ input:focus {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    width: 7rem;
+    width: 20vw;
     padding: 1rem 1rem;
+    z-index: 2000;
 }
 
 .card-style {
