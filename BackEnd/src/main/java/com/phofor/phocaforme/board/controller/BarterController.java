@@ -71,7 +71,7 @@ public class BarterController {
         // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
         // UserEntity userEntity = customOAuth2User.getUserEntity();
 //        System.out.println(registerDto);
-        System.out.println("<><><><>><>><>"+registerDto.getPhotos().size());
+        // System.out.println("<><><><>><>><>"+registerDto.getPhotos().size());
         UserEntity userEntity = oauth2User.getUserEntity();
         Barter barter = barterService.registerBarter(registerDto, userEntity);
         List<IdolMemberDto> idols = barter.getOwnIdols().stream().map(
