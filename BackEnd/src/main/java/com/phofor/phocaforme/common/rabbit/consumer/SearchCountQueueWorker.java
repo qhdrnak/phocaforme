@@ -20,6 +20,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 @Slf4j
@@ -35,7 +36,7 @@ public class SearchCountQueueWorker {
 
     @Transactional
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 5000))
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 * * * *")
 //    @Scheduled(fixedDelay = 10000)
     public void dailyTask() {
         List<IdolMember> members = idolMemberRepository.findAll();
@@ -60,19 +61,23 @@ public class SearchCountQueueWorker {
     }
 
 
-    @Scheduled(cron = "0 0 */6 * * *") // At second :00, at minute :00, every 6 hours starting at midnight, of every day
+    @Scheduled(cron = "0 */6 * * * *")
     public void work() throws JsonProcessingException {
+//        System.out.println(">>>>work()");
         Map<Long, Integer> searchCount = new HashMap<>();
         Message msg;
         int batchCount = 0;
-        while(( msg = rabbitTemplate.receive(QUEUE_NAME))!=null && batchCount < BATCH_SIZE){
-            SearchCountMessage message = convertMessageToObject(msg);
+        ObjectMapper mapper = new ObjectMapper();
+        while(batchCount < BATCH_SIZE){
+            msg = rabbitTemplate.receive(QUEUE_NAME);
+            if(msg==null){break;}
+            String messageContent = new String(msg.getBody(), StandardCharsets.UTF_8);
+            SearchCountMessage message = mapper.readValue(messageContent, SearchCountMessage.class);
             if (message != null) {
-                searchCount.compute(message.getId(),(id, count) -> (count == null) ? 1 : count + 1);
+                searchCount.merge(message.getId(), 1, Integer::sum);
             }
             batchCount++;
         }
-
         Set<Long> countTableIds = searchCount.keySet();
         for(Long id : countTableIds){
             IdolMember member = idolMemberRepository.findById(id)
@@ -90,6 +95,17 @@ public class SearchCountQueueWorker {
             return new ObjectMapper().readValue(message.getBody(), SearchCountMessage.class);
         } catch (IOException e) {
             // Handle the exception appropriately - log it, etc.
+            return null;
+        }
+    }
+
+    private SearchCountMessage convertMessageToObject(String messageContent) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(messageContent, SearchCountMessage.class);
+        } catch (IOException e) {
+            e.printStackTrace(); // Or use a logger to log the exception
+            // Consider throwing an exception or handling this case appropriately
             return null;
         }
     }

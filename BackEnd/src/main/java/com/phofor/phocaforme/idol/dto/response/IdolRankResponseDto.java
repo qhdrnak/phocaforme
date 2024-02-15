@@ -20,5 +20,5 @@ public class IdolRankResponseDto {
     private Long firstMaleIdolId;
     private Long secondMaleIdolId;
     private Long thirdMaleIdolId;
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
 }

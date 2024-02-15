@@ -21,7 +21,7 @@ public class RabbitMQMessageSender {
     public void handlePostPersistedEvent(PostPersistEvent event){
         BarterMessage postMessage = (BarterMessage) event.getSource();
         System.out.println(postMessage);
-        rabbitTemplate.convertAndSend("barter.exchange","barter.key",postMessage);
+        rabbitTemplate.convertAndSend("insert.exchange","insert.key",postMessage);
         // rabbit에 직접 보내줌 -> 소비는 QueueWorker 클래스에서.
     }
 

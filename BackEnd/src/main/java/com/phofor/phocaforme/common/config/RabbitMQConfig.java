@@ -54,6 +54,11 @@ public class RabbitMQConfig {
         return new Queue("rank.queue",false);
     }
 
+    @Bean
+    public Queue insertQueue() {
+        return new Queue("insert.queue",false);
+    }
+
 
     @Bean
     public DirectExchange barterExchange() {
@@ -62,6 +67,10 @@ public class RabbitMQConfig {
     @Bean
     public DirectExchange rankExchange() {
         return new DirectExchange("rank.exchange");
+    }
+    @Bean
+    public DirectExchange insertExchange() {
+        return new DirectExchange("insert.exchange");
     }
 
 
@@ -72,6 +81,11 @@ public class RabbitMQConfig {
     @Bean
     public Binding rankBinding(Queue rankQueue, DirectExchange rankExchange) {
         return BindingBuilder.bind(rankQueue).to(rankExchange).with("rank.key");
+    }
+
+    @Bean
+    public Binding insertBinding(Queue insertQueue, DirectExchange insertExchange) {
+        return BindingBuilder.bind(insertQueue).to(insertExchange).with("insert.key");
     }
     /**
      * RabbitMQ 연결을 위한 ConnectionFactory 빈을 생성하여 반환
