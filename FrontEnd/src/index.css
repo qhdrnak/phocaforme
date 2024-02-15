@@ -644,6 +644,10 @@ html, body, #root {
 
 
 /* 마이페이지 */
+#help-blank {
+    height: 3vh;
+}
+
 #mypost-container {
     width: 100%;
     padding: 0;
@@ -752,7 +756,7 @@ html, body, #root {
 #help-container {
     display: flex;
     align-items: center;
-    margin: 3rem 0 1rem 0;
+    /* margin: 3rem 0 1rem 0; */
 }
 
 #help-icon {
