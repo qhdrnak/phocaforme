@@ -185,7 +185,7 @@ public class BarterService {
                         .build();
                 barterImageRepository.save(barterImage);
             }
-        } else {
+        } else { // 사진을 업로드하지 않을 시 기본 이미지가 들어감
             BarterImage barterImage = BarterImage.builder()
                     .imgCode("icon.PNG")
                     .barter(barter)
