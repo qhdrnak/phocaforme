@@ -139,7 +139,7 @@ public class BarterService {
         // 일정 부분을 찾아 수정하는 것보다 전부 다 지워주고 다시 올려주는 방식을 선택
         deleteDB(barter);
 
-        if(barter.getImages()!=null)
+        if(!barter.getImages().get(0).getImgCode().equals("icon.PNG"))
             deleteS3(barter.getImages());
 
         barter.update(user, updateDto.getTitle(), updateDto.getContent(), updateDto.getCardType(), updateDto.getGroupId(), LocalDateTime.now());
@@ -185,6 +185,12 @@ public class BarterService {
                         .build();
                 barterImageRepository.save(barterImage);
             }
+        } else {
+            BarterImage barterImage = BarterImage.builder()
+                    .imgCode("icon.PNG")
+                    .barter(barter)
+                    .build();
+            barterImageRepository.save(barterImage);
         }
     }
 
@@ -193,7 +199,7 @@ public class BarterService {
         Barter barter = barterRepository.findById(barterId)
                 .orElseThrow(IllegalArgumentException::new);
         deleteDB(barter);
-        if(barter.getImages()!=null)
+        if(!barter.getImages().get(0).getImgCode().equals("icon.PNG"))
             deleteS3(barter.getImages());
         barterRepository.deleteById(barterId);
     }
