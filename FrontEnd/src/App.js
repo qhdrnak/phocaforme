@@ -1,3 +1,4 @@
+ 
 import React, { useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes, useLocation  } from 'react-router-dom';
@@ -15,6 +16,7 @@ import FloatingActionButtons from './components/UI/FloatingActionButtons.jsx';
 import Guide from './pages/guide.js';
 import Modify from './pages/postModify.js';
 import DetailPost from './components/PostList/DetailPost.jsx';
+import MainPost from './components/PostList/MainPost.jsx'
 
 import {Grid, Container} from '@mui/material';
 import theme from './styles/theme'; 
@@ -61,6 +63,7 @@ const App = () => {
             <Route path="/chatroom/:roomId" element={<ChatRoom />} />
             <Route path="/write" element={<PostWrite />}/>
             <Route path="/post" element={<Post />} />
+            <Route path="/mainpost" element={<MainPost />}/>
             <Route path="/post/:id" element={<DetailPost />} />
             <Route path="/login" element={<Login /> } />
             <Route path="/help" element={<Guide /> } />

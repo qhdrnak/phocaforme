@@ -9,7 +9,7 @@ import axios from "axios";
 const PreviewPost = () => {
   const navigate = useNavigate();
   const handleButtonClick = () => {
-    navigate("/post");
+    navigate("/mainpost");
   };
   // 이전이랑 다르게 store에 전부다 저장해놓지 않으니까
   // db에 있는 첫번째 애들 ( 여기에 적은 url )을 불러옴
