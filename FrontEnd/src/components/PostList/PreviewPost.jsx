@@ -46,10 +46,10 @@ const PreviewPost = () => {
 
   return (
     <Container>
-      <h2 className="main-title">둘러보기 🔍</h2>
-      {/* <MainPost isPreview={true} /> */}
-      <div>
-        <div id="preview-card">
+      <div id='preview-container'>
+        <h2 className="main-title">둘러보기 🔍</h2>
+        {/* <MainPost isPreview={true} /> */}
+        <div className="preview-card" id={previewPost.length % 2 == 1 ? 'preview-odd' : ""}>
           {previewPost.map((post, index) => (
             <div key={index}>
               <Card
@@ -69,19 +69,21 @@ const PreviewPost = () => {
               />
             </div>
           ))}
-          <Button
-            id="expand-button"
-            variant="contained"
-            size="large"
-            color="primary"
-            onClick={handleButtonClick}
-          >
-            + 더보기
-          </Button>
         </div>
-
-        <div id="preview-margin" />
       </div>
+      <div id='expand-button-container'>
+
+      <Button
+        id="expand-button"
+        variant="contained"
+        size="large"
+        color="primary"
+        onClick={handleButtonClick}
+      >
+        + 더보기
+      </Button>
+      </div>
+      <div id="preview-margin" />
     </Container>
   );
 };
