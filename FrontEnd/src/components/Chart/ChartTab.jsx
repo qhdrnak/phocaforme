@@ -58,23 +58,43 @@ const ChartTab = () => {
     setValue(newValue);
   };
 
-  // 아이돌 search_count 로 정렬해서 상위 3개 가져오기
-  // 하루에 한 번만
+  // 6시간에 한 번 랭킹 가져오기
   const [currentDate, setCurrentDate] = useState(new Date());
+
+  // const isoDateFormat = (date) => {
+  //   const options = {
+  //     year: "numeric",
+  //     month: "2-digit",
+  //     day: "2-digit",
+  //     hour: "2-digit",
+  //     minute: "2-digit",
+  //     second: "2-digit",
+  //     timeZoneName: "short",
+  //   };
+
+  //   return new Intl.DateTimeFormat("en-US", options).format(date);
+  // };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       const newDate = new Date();
 
-      // 날짜가 변경되었을 때 API 호출
-      if (newDate.getDate() !== currentDate.getDate()) {
+      // 1분마다 API 호출 (테스트용)
+      if (newDate.getMinutes() !== currentDate.getMinutes()) {
         setCurrentDate(newDate);
+        // const formattedDate = newDate.toISOString();
+        const formattedDate = newDate.toISOString().slice(0, -1);
 
-        // API 호출 로직
         axios
-          .get("https://api.example.com/data")
+          .get(
+            process.env.REACT_APP_API_URL + `idol/rank?date=${formattedDate}`,
+            {
+              withCredentials: true,
+            }
+          )
           .then((response) => {
-            console.log("API called successfully:", response.data);
+            console.log("rank loaded:", response.data);
+
             // 남돌 반영
             setRankBoy();
 
@@ -82,12 +102,10 @@ const ChartTab = () => {
             setRankGirl();
           })
           .catch((error) => {
-            console.error("Error calling API:", error);
+            console.error("Error get rank:", error);
           });
       }
-    }, 60000); // 1분마다 날짜 체크 및 API 호출
-
-    // 컴포넌트가 언마운트될 때 clearInterval을 사용하여 interval 해제
+    }, 1000); // 1분마다 시간 체크 및 API 호출
     return () => clearInterval(intervalId);
   }, [currentDate]);
 
