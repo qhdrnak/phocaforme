@@ -25,12 +25,16 @@ const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
   }, [user.token, notificationPermission]);
 
   const checkNotificationPermission = () => {
-    if (Notification.permission === 'default') {
-      setNotificationPermission(null); // 권한 요청 전
+    if ('Notification' in window ) {
+      if (Notification.permission === 'default') {
+        setNotificationPermission(null); // 권한 요청 전
+      } else {
+        setNotificationPermission(Notification.permission); // 권한 요청 후
+      }
     } else {
-      setNotificationPermission(Notification.permission); // 권한 요청 후
+      console.log('This broswer does not support desktop notification')
     }
-  };
+  }
 
   const handleNotificationSelect = value => {
     onNotificationSelect(value);
