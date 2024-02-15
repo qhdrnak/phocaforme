@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Cookies from "js-cookie";
 import axios from "axios";
-import IOSSwitch from '../../styles/IOSSwitch.js'
+import IOSSwitch from "../../styles/IOSSwitch.js";
 import { FormControlLabel, Switch, CircularProgress } from "@mui/material";
-import { ReplayCircleFilledOutlined, LocationOnOutlined } from "@mui/icons-material";
+import {
+  ReplayCircleFilledOutlined,
+  LocationOnOutlined,
+} from "@mui/icons-material";
 import { setLocation, setLocationLongLat } from "../../store2/loginUser.js";
 
 export default function GPS() {
@@ -27,7 +30,12 @@ export default function GPS() {
       setIsLoading(true);
       navigator.geolocation.getCurrentPosition((position) => {
         getAddress(position.coords.longitude, position.coords.latitude);
-        dispatch(setLocationLongLat([position.coords.longitude, position.coords.latitude]));
+        dispatch(
+          setLocationLongLat([
+            position.coords.longitude,
+            position.coords.latitude,
+          ])
+        );
         setIsLoading(false);
       });
     }
@@ -46,7 +54,9 @@ export default function GPS() {
         }
       )
       .then((response) => {
-        dispatch(setLocation(response.data));
+        const [, ...restArray] = response.data.split(" ");
+        const formattedLocation = restArray.join(" ");
+        dispatch(setLocation(formattedLocation));
       })
       .catch((error) => {
         console.error("주소변환 실패:", error);
@@ -105,7 +115,7 @@ export default function GPS() {
           <ReplayCircleFilledOutlined onClick={handleRefresh} />
         </div>
       </div>
-      {isLoading && <CircularProgress id='loading-text'/>}
+      {isLoading && <CircularProgress id="loading-text" />}
       {isSwitchOn && !isLoading && (
         <div id="gps-bottom">
           <LocationOnOutlined />

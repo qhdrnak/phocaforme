@@ -1,4 +1,4 @@
- import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -51,23 +51,17 @@ const a11yProps = (index) => {
   };
 };
 
-
 const BasicTabs = ({ isPreview }) => {
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(2);
- 
- const dispatch = useDispatch();
- 
- // search 부분 삭제
 
-const {
-  boards,
-  hasMore,
-  loading,
-  error
-} = usePostSearch(pageNumber)
+  const dispatch = useDispatch();
 
-const observer = useRef();
+  // search 부분 삭제
+
+  const { boards, hasMore, loading, error } = usePostSearch(pageNumber);
+
+  const observer = useRef();
   const lastBookElementRef = useCallback(
     (node) => {
       if (loading) return;
@@ -83,11 +77,7 @@ const observer = useRef();
     [loading, hasMore]
   );
 
-
-  
-
   const navigate = useNavigate();
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -95,10 +85,9 @@ const observer = useRef();
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
-    
     <Container>
-      <h1 className="post-page-title">전체 게시글</h1>
-      
+      <h2 className="post-page-title">전체 게시글</h2>
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -113,7 +102,7 @@ const observer = useRef();
           />
         </Tabs>
       </Box>
-            
+
       <CustomTabPanel value={value} index={0}>
         {boards.length === 0 ? (
           <div className="no-content">게시글이 없습니다.</div>
@@ -126,18 +115,22 @@ const observer = useRef();
                 <Card
                   id={post.id}
                   title={post.title}
-                  images={'https://photocardforme.s3.ap-northeast-2.amazonaws.com/' + post.imageUrl}
+                  images={
+                    "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
+                    post.imageUrl
+                  }
                   ownMembers={post.ownMember}
                   targetMembers={post.targetMember}
                   isBartered={post.Bartered}
                   onClick={() => {
-                    setSelectedPostId(post.id)
+                    setSelectedPostId(post.id);
                     navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
                   }} // 클릭 이벤트 추가
-                  
                 />
                 {/* 마지막 요소일 때만 ref를 전달합니다 */}
-                {index === boards.length - 1 ? <div ref={lastBookElementRef} /> : null}
+                {index === boards.length - 1 ? (
+                  <div ref={lastBookElementRef} />
+                ) : null}
               </div>
             ))}
           </div>
@@ -166,11 +159,10 @@ const observer = useRef();
               ))
           )}
         </div>
-        <div>{loading && 'Loading...'}</div>
-        <div>{error && 'Error'}</div>
+        <div>{loading && "Loading..."}</div>
+        <div>{error && "Error"}</div>
       </CustomTabPanel>
     </Container>
-    
   );
 };
 

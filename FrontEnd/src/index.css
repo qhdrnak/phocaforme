@@ -895,7 +895,7 @@ input:focus {
     position: relative;
     width: 20%;
     height: 0;
-    padding-bottom: calc(20% * 1.58);
+    padding-bottom: calc(20% * 1.5);
     margin: 0 0.5rem;
 }
 
@@ -913,14 +913,14 @@ input:focus {
 }
 
 .image-container {
-    background-image: url('assets/images/image-blank.jpg');
-    width: 15%;
+    /* background-color: var(--info-color); */
+    width: 20%;
     height: 0;
     border-radius: 10px;
     border: var(--primary-color) 2px solid;
-    margin: 0.5rem;
+    margin: 0.2rem;
     position: relative;
-    padding-bottom: calc(15% * 1.58);
+    padding-bottom: calc(20% * 1.5);
 }
 
 #image-add-icon {

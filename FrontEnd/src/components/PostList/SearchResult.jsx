@@ -145,8 +145,8 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <Container>
-      <h1 className="post-page-title">검색 결과</h1>
-      
+      <div className="post-page-title">검색 결과</div>
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -222,7 +222,7 @@ const BasicTabs = ({ isPreview }) => {
         <div>{loading && "Loading..."}</div>
         <div>{error && "Error"}</div>
       </CustomTabPanel>
-      </Container>
+    </Container>
   );
 };
 

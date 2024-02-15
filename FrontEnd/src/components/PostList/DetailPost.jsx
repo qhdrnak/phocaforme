@@ -19,27 +19,28 @@ const DetailPost = () => {
   const navigate = useNavigate();
 
   const { id } = useParams();
-  // 일단 주석 
+  // 일단 주석
   // const posts = useSelector((state) => (state.post ? state.post.posts : [])); //이건 필요 없을 듯?
   // const post = posts.find((p) => p.id === id); // 얘도 필요 없을 거 같은데
   const [post, setPost] = useState(null);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(process.env.REACT_APP_API_URL + `barter/${id}`,
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + `barter/${id}`,
         { withCredentials: true }
       );
       const detailData = response.data;
       setPost(detailData);
-    
     } catch (error) {
-      console.error('Error fetching post:', error);
+      console.error("Error fetching post:", error);
     }
   };
   // 디테일 페이지에 진입했을 떄 로컬스토리지에 저장
   const saveToLocalStorage = () => {
     if (post && post.id) {
-      const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
+      const existingRecentCard =
+        JSON.parse(localStorage.getItem("recentCard")) || [];
       const cardInfo = {
         id: post.id,
         title: post.title,
@@ -49,11 +50,13 @@ const DetailPost = () => {
         isBartered: post.bartered,
         // type: post.cardType.value
       };
-  
+
       const isExisting = existingRecentCard.some((card) => card.id === post.id);
-  
+
       if (isExisting) {
-        const updatedRecentCard = existingRecentCard.filter((card) => card.id !== post.id);
+        const updatedRecentCard = existingRecentCard.filter(
+          (card) => card.id !== post.id
+        );
         updatedRecentCard.push(cardInfo);
         localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
       } else {
@@ -69,59 +72,63 @@ const DetailPost = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
-  
+
   useEffect(() => {
     if (post) {
       saveToLocalStorage();
     }
   }, [post]);
 
-  console.log(post) // 현재 이 컴포넌트가 4번 렌더링됨 이유는 모르겠음 나중에 여유있으면 수정해야 할듯?
+  console.log(post); // 현재 이 컴포넌트가 4번 렌더링됨 이유는 모르겠음 나중에 여유있으면 수정해야 할듯?
   // 내 게시글인지 판별
   const currentUser = useSelector((state) => state.user.user);
-  const isCurrentUserWriter = post && currentUser && currentUser.userId === post.userId;
+  const isCurrentUserWriter =
+    post && currentUser && currentUser.userId === post.userId;
 
   const handleChatClick = () => {
     // 채팅방 생성
     axios
-        .post(process.env.REACT_APP_API_URL + `chatRoom/${id}`,
-      null,
-      {
+      .post(process.env.REACT_APP_API_URL + `chatRoom/${id}`, null, {
         headers: {
-          Authorization: `${document.cookie.match('(^|;) ?' + "token" + '=([^;]*)(;|$)')[2]}`,
+          Authorization: `${
+            document.cookie.match("(^|;) ?" + "token" + "=([^;]*)(;|$)")[2]
+          }`,
         },
         withCredentials: true,
       })
       .then((response) => {
         const chatRoomInfo = response.data;
         console.log(response.data);
-        navigate(`/chatroom/${chatRoomInfo.chatRoomId}`, {state: chatRoomInfo});
-
+        navigate(`/chatroom/${chatRoomInfo.chatRoomId}`, {
+          state: chatRoomInfo,
+        });
       })
       .catch((error) => {
         // 요청 실패 시 에러 처리
         console.error("Error fetching posts:", error);
-      }
-    )
-  
+      });
   };
-//수정
+  //수정
   const handleModifyClick = (id) => {
     console.log(id);
     navigate(`/modify/${id}`, { state: post });
   };
-// 끌올
+  // 끌올
   const handlePullupClick = async () => {
     try {
-      const response = await axios.post(process.env.REACT_APP_API_URL+`barter/regen/${post.id}`, null, {
-        withCredentials: true,
-      });
-  
+      const response = await axios.post(
+        process.env.REACT_APP_API_URL + `barter/regen/${post.id}`,
+        null,
+        {
+          withCredentials: true,
+        }
+      );
+
       // 성공적으로 업데이트되었을 때의 처리
-      console.log('게시글이 성공적으로 끌어올려졌습니다.');
+      console.log("게시글이 성공적으로 끌어올려졌습니다.");
     } catch (error) {
       // 오류 처리
-      console.error('게시글 끌어올리기에 실패했습니다:', error);
+      console.error("게시글 끌어올리기에 실패했습니다:", error);
     }
   };
 
@@ -129,38 +136,39 @@ const DetailPost = () => {
   const handleDeleteClick = () => {
     const postId = post.id;
 
-    axios.delete(process.env.REACT_APP_API_URL+`${postId}`,
-      { withCredentials: true, }
-      
-      )
-      .then(response => {
+    axios
+      .delete(process.env.REACT_APP_API_URL + `${postId}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
         console.log("게시물이 성공적으로 삭제되었습니다.");
-        const existingRecentCard = JSON.parse(localStorage.getItem("recentCard")) || [];
-        const updatedRecentCard = existingRecentCard.filter(card => card.id !== postId);
+        const existingRecentCard =
+          JSON.parse(localStorage.getItem("recentCard")) || [];
+        const updatedRecentCard = existingRecentCard.filter(
+          (card) => card.id !== postId
+        );
         localStorage.setItem("recentCard", JSON.stringify(updatedRecentCard));
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("게시물 삭제 중 에러가 발생했습니다:", error);
       });
-    navigate('/post')
-  }
+    navigate("/post");
+  };
 
   if (post === null) {
-    return <DeletedPost/>; // 데이터가 로드되기 전에는 로딩 중을 표시
+    return <DeletedPost />; // 데이터가 로드되기 전에는 로딩 중을 표시
   }
 
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
   const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
 
-  console.log(post.cardType)
+  console.log(post.cardType);
 
   return (
     <Container
-      className={`card-style${
-        post.isBartered || post.isSold ? " done-post" : ""
-      }`}
+      className={`card-style${post.isBartered == 1 ? " done-post" : ""}`}
     >
-      {post.isBartered && (
+      {post.isBartered == 1 && (
         <div className="overlay">
           <p>교환완료</p>
         </div>
@@ -214,9 +222,8 @@ const DetailPost = () => {
         <div id="post-info-container">
           <div>
             {/* {post.type == "교환" ? ( */}
+            <div>
               <div>
-                <div>
-                  
                 <div id="post-member-container">
                   {`있어요: ${ownMembers
                     .map((member) => member.name)
@@ -226,13 +233,13 @@ const DetailPost = () => {
                     .map((member) => member.name)
                     .join(", ")}`}
                 </div>
-                </div>
-                <div>
-                  <div></div>
-                </div>
               </div>
+              <div>
+                <div></div>
+              </div>
+            </div>
             {/* ) : ( */}
-              {/* <div>
+            {/* <div>
                 <div>
                   {`멤버: ${post.ownMembers
                     .map((member) => member.value)
