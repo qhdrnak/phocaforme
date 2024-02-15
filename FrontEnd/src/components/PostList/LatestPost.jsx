@@ -73,7 +73,7 @@ const LatestPost = () => {
 
   console.log(recentPosts);
   return (
-    <Container>
+    <div id="latestpost-container">
       <h2 className="profile-title">최근 본 게시글</h2>
       <div>
         <Box sx={{ width: "70vw", borderBottom: 1, borderColor: "divider" }}>
@@ -172,7 +172,7 @@ const LatestPost = () => {
           </ImageList>
         </CustomTabPanel>
       </div>
-    </Container>
+    </div>
   );
 };
 

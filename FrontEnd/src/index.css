@@ -644,6 +644,16 @@ html, body, #root {
 
 
 /* 마이페이지 */
+#mypost-container {
+    width: 100%;
+    padding: 0;
+}
+
+#latestpost-container {
+    width: 100%;
+    padding: 0;
+}
+
 #bias-description {
     margin: 0.5rem 0;
     color: #FD9DD1;
