@@ -88,7 +88,7 @@ const BasicTabs = ({ isPreview }) => {
         try {
           const params = {};
           if (searchs.group) {
-            params.group = searchs.group.idolGroupId;
+            params.groupId = searchs.group.idolGroupId;
           }
 
           if (searchs.targetMembers.length > 0) {
