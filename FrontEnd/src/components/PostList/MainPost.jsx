@@ -111,6 +111,7 @@ const BasicTabs = ({ isPreview }) => {
             {boards.map((post, index) => (
               <div key={index}>
                 <Card
+                  className={post.bartered ? "done-post" : ""}
                   id={post.id}
                   title={post.title}
                   images={
@@ -119,7 +120,7 @@ const BasicTabs = ({ isPreview }) => {
                   }
                   ownMembers={post.ownMember}
                   targetMembers={post.targetMember}
-                  isBartered={post.Bartered}
+                  isBartered={post.bartered}
                   onClick={() => {
                     setSelectedPostId(post.id);
                     navigate(`/barter/${post.id}`); // 디테일 페이지로 이동
