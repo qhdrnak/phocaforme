@@ -40,7 +40,7 @@ const FloatingActionButtons = () => {
       }}
     >
       <Fab color="warning" aria-label="add">
-        <AddIcon fontSize="large" onClick={handleClick} />
+        <AddIcon onClick={handleClick} />
         <Popover
           id={id}
           open={open}

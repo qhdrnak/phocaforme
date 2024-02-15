@@ -145,19 +145,15 @@ const WishCard = () => {
           <div>
             {wishCard !== null ? (
               <Card id="wishcard-card-container">
-                <Box>
-                  <CardContent id="wishcard-card-content">
-                    <div id="wishcard-card-keyword">
-                      {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
-                        .filter(Boolean)
-                        .map((keyword, index) => `#${keyword}`)
-                        .join(" ")}
-                    </div>
-                    <div id="wishcard-card-content-header">
-                      <ClearIcon onClick={handleDelete} />
-                    </div>
-                  </CardContent>
-                </Box>
+                <div id="wishcard-card-keyword">
+                  {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
+                    .filter(Boolean)
+                    .map((keyword, index) => `#${keyword}`)
+                    .join(" ")}
+                </div>
+                <div id="wishcard-card-content-header">
+                  <ClearIcon id="wishcard-clear-icon" onClick={handleDelete} />
+                </div>
               </Card>
             ) : (
               "아직 갈망포카가 없어요"

@@ -63,6 +63,7 @@ const ChatMenu = ({ otherNickname, updateMessages, postId }) => {
 
   const handleDone = () => {
     // 게시글 상태 수정하기 (교환/판매 완료로)
+
     setAnchorEl(null);
     navigate("/chat");
   };
@@ -76,10 +77,10 @@ const ChatMenu = ({ otherNickname, updateMessages, postId }) => {
       />
       <div id="chat-top">
         <div id="chat-top-left">
-          <Typography variant="h5" component="div" id="chatroom-title">
+          <Typography variant="h6" component="div" id="chatroom-title">
             {chatroomInfo.boardTitle}
           </Typography>
-          <Typography variant="h5" sx={{ mb: 1.5 }} color="text.secondary">
+          <Typography sx={{ mb: 1.5 }} color="text.secondary">
             {otherNickname}
           </Typography>
         </div>
