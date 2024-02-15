@@ -20,7 +20,7 @@ public class RabbitMQMessageSender {
     @EventListener
     public void handlePostPersistedEvent(PostPersistEvent event){
         BarterMessage postMessage = (BarterMessage) event.getSource();
-        System.out.println(postMessage);
+//        System.out.println(postMessage);
         rabbitTemplate.convertAndSend("insert.exchange","insert.key",postMessage);
         // rabbit에 직접 보내줌 -> 소비는 QueueWorker 클래스에서.
     }
@@ -28,7 +28,7 @@ public class RabbitMQMessageSender {
     @EventListener
     public void handlePostUpdatedEvent(PostUpdateEvent event){
         BarterMessage postMessage = (BarterMessage) event.getSource();
-        System.out.println(postMessage);
+//        System.out.println(postMessage);
         rabbitTemplate.convertAndSend("barter.exchange","barter.key",postMessage);
         // rabbit에 직접 보내줌 -> 소비는 QueueWorker 클래스에서.
     }
@@ -36,7 +36,7 @@ public class RabbitMQMessageSender {
     @EventListener
     public void handlePostDeletedEvent(PostDeleteEvent event){
         BarterMessage postMessage = (BarterMessage) event.getSource();
-        System.out.println(postMessage);
+//        System.out.println(postMessage);
         rabbitTemplate.convertAndSend("barter.exchange","barter.key",postMessage);
         // rabbit에 직접 보내줌 -> 소비는 QueueWorker 클래스에서.
     }
@@ -44,14 +44,14 @@ public class RabbitMQMessageSender {
     @EventListener
     public void handleWishPersistedEvent(WishCardPersistEvent event){
         WishMessage wishMessage = (WishMessage) event.getSource();
-        System.out.println(wishMessage);
+//        System.out.println(wishMessage);
         rabbitTemplate.convertAndSend("barter.exchange","barter.key",wishMessage);
     }
 
     @EventListener
     public void handleWishRemovedEvent(WishCardDeleteEvent event){
         WishMessage wishMessage = (WishMessage) event.getSource();
-        System.out.println(wishMessage);
+//        System.out.println(wishMessage);
         rabbitTemplate.convertAndSend("barter.exchange","barter.key",wishMessage);
     }
 }

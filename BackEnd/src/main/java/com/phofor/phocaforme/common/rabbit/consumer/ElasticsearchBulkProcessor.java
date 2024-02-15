@@ -91,7 +91,6 @@ public class ElasticsearchBulkProcessor {
 
         for(int i=0; i< messages.size() && i< barterTypes.size(); i++){
             BarterDetailDto barter = messages.get(i);
-            System.out.println(barter.getId());
             if(barterTypes.get(i)==1) {
                 bulkBody.append("{ \"").append("update")
                         .append("\": { \"_id\": \"").append(barter.getId())

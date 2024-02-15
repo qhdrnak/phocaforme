@@ -101,23 +101,6 @@ public class Barter {
         //userEntity.getBarters().add(this);
     }
 
-    public List<IdolSearchMember> getOwnMember(){
-        return this.ownIdols.stream()
-                .map(idol -> new IdolSearchMember(
-                        idol.getIdolMember().getId(),
-                        idol.getIdolMember().getIdolGroup().getName_kr()
-                ))
-                .collect(Collectors.toList());
-    }
-
-    public List<IdolSearchMember> getTargetMember(){
-        return this.findIdols.stream()
-                .map(idol -> new IdolSearchMember(
-                        idol.getIdolMember().getId(),
-                        idol.getIdolMember().getIdolGroup().getName_kr()
-                ))
-                .collect(Collectors.toList());
-    }
 
     public void updateBartered(Long boardId, Boolean bartered, LocalDateTime lastModifiedDate){
         this.id = boardId;

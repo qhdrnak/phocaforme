@@ -20,7 +20,7 @@ public class BarterImage {
     @Column(name = "barter_img_code")
     private String imgCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "barter_board_id")
     private Barter barter;
 

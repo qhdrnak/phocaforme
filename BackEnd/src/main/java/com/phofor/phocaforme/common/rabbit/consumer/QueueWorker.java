@@ -37,15 +37,11 @@ public class QueueWorker {
         List<BarterDetailDto> barterMessages = new ArrayList<>();
         for(int i=0; i<BATCH_SIZE; i++){
             Message message = rabbitTemplate.receive("insert.queue");
-            System.out.println("Msg:"+message);
             if(message==null){break;}
-            System.out.println("message null 아니다.");
             String messageContent = new String(message.getBody(), StandardCharsets.UTF_8);
-            System.out.println(">>>"+messageContent);
             JsonNode rootNode = objectMapper.readTree(messageContent);
             Long articleId = rootNode.path("articleId").asLong();
             BarterDetailDto barter = barterService.findOne(articleId);
-            System.out.println(">>>>>"+barter);
             barterMessages.add(barter);
         }
         if(!(barterMessages.isEmpty())){

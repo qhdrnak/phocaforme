@@ -3,6 +3,9 @@ package com.phofor.phocaforme.board.service;
 import com.phofor.phocaforme.board.config.ApplicationEventPublisherHolder;
 import com.phofor.phocaforme.board.dto.queueDTO.BarterMessage;
 import com.phofor.phocaforme.board.entity.Barter;
+import com.phofor.phocaforme.board.entity.BarterFindIdol;
+import com.phofor.phocaforme.board.entity.BarterImage;
+import com.phofor.phocaforme.board.entity.BarterOwnIdol;
 import com.phofor.phocaforme.common.rabbit.producer.events.PostDeleteEvent;
 import com.phofor.phocaforme.common.rabbit.producer.events.PostPersistEvent;
 import com.phofor.phocaforme.common.rabbit.producer.events.PostUpdateEvent;
@@ -20,24 +23,23 @@ import java.time.ZonedDateTime;
 @Component
 public class BarterEntityListener {
 
-    @PostPersist
-    public void afterSave(Barter barter) {
-        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
-        if (publisher != null) {
-            System.out.println(barter.getId());
-            LocalDateTime localDateTime = barter.getRegistrationDate();
-            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-            Instant instant = zonedDateTime.toInstant();
-            PostPersistEvent event = new PostPersistEvent(new BarterMessage(
-                    barter.getId(),
-                    barter.isBartered(),
-                    0,
-                    instant)
-            );
-
-            publisher.publishEvent(event);
-        }
-    }
+//    @PostPersist
+//    public void afterSave(Barter barter) {
+//        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
+//        if (publisher != null) {
+//            System.out.println(barter.getId());
+//            LocalDateTime localDateTime = barter.getRegistrationDate();
+//            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+//            Instant instant = zonedDateTime.toInstant();
+//            PostPersistEvent event = new PostPersistEvent(new BarterMessage(
+//                    barter.getId(),
+//                    barter.isBartered(),
+//                    0,
+//                    instant)
+//            );
+//            publisher.publishEvent(event);
+//        }
+//    }
 
 
     @PostUpdate

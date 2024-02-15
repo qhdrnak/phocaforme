@@ -6,24 +6,31 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.phofor.phocaforme.auth.entity.UserEntity;
+import com.phofor.phocaforme.board.config.ApplicationEventPublisherHolder;
 import com.phofor.phocaforme.board.dto.BarterDetailDto;
 import com.phofor.phocaforme.board.dto.BarterRegisterDto;
 import com.phofor.phocaforme.board.dto.BarterUpdateDto;
+import com.phofor.phocaforme.board.dto.queueDTO.BarterMessage;
 import com.phofor.phocaforme.board.entity.Barter;
 import com.phofor.phocaforme.board.entity.BarterFindIdol;
 import com.phofor.phocaforme.board.entity.BarterImage;
 import com.phofor.phocaforme.board.entity.BarterOwnIdol;
 import com.phofor.phocaforme.board.repository.*;
+import com.phofor.phocaforme.common.rabbit.producer.events.PostPersistEvent;
 import com.phofor.phocaforme.idol.entity.IdolMember;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -127,7 +134,8 @@ public class BarterService {
                     .build();
             barterImageRepository.save(barterImage);
         }
-
+        // 기존 @PostPersist의 문제로 이쪽으로 이동
+        publishPersistEvent(savedBarter);
         return savedBarter;
     }
 
@@ -287,5 +295,22 @@ public class BarterService {
         barterRepository.deleteById(barterId);
 
         return newBarter.getId();
+    }
+
+    public void publishPersistEvent(Barter barter){
+        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
+        if (publisher != null) {
+            System.out.println(barter.getId());
+            LocalDateTime localDateTime = barter.getRegistrationDate();
+            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+            Instant instant = zonedDateTime.toInstant();
+            PostPersistEvent event = new PostPersistEvent(new BarterMessage(
+                    barter.getId(),
+                    barter.isBartered(),
+                    0,
+                    instant)
+            );
+            publisher.publishEvent(event);
+        }
     }
 }

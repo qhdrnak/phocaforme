@@ -42,8 +42,6 @@ public class BarterController {
     @GetMapping("/search")
     public ResponseEntity<List<SearchResponse>> search(@Validated @ModelAttribute SearchRequest searchRequest)
     {
-        System.out.println(searchRequest.getQuery());
-
         List<SearchResponse> results = barterSearchService.search(searchRequest);
         System.out.println(results);
         return ResponseEntity.ok(results);
@@ -66,12 +64,7 @@ public class BarterController {
     // 게시글 등록
     @PostMapping
     public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
-        // (HttpServletRequest request,)
-        // String accessToken = CookieUtil.resolveToken(request).getValue();
-        // CustomOAuth2User customOAuth2User = (CustomOAuth2User) redisService.getMapData(accessToken).get("oauth2User");
-        // UserEntity userEntity = customOAuth2User.getUserEntity();
-//        System.out.println(registerDto);
-        // System.out.println("<><><><>><>><>"+registerDto.getPhotos().size());
+
         UserEntity userEntity = oauth2User.getUserEntity();
         Barter barter = barterService.registerBarter(registerDto, userEntity);
         List<IdolMemberDto> idols = barter.getOwnIdols().stream().map(
@@ -82,8 +75,7 @@ public class BarterController {
         ids.addAll(barterSearchService.wishPhoca3(barter.getTitle(),idols,3));
         ids.addAll(barterSearchService.wishPhoca2(barter.getTitle(),idols,2));
         ids.addAll(barterSearchService.wishPhoca1(barter.getTitle(),idols,1));
-//        //#주석 해제해서 사용
-//        System.out.println(ids);
+
         fcmNotificationService.sendBiasMessage(ids,barter.getId());
         return new ResponseEntity<Barter>(barter, HttpStatus.OK);
     }
