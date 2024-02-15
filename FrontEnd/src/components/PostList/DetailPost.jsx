@@ -191,16 +191,18 @@ const DetailPost = () => {
           ></Chip>
         </div>
         <div id="image-list-container">
-          <ImageList sx={{ display: "flex", width: "100%" }} rowHeight={200}>
+          <ImageList sx={{ display: "flex", width: "100%" }}>
             {post.photos.map((photo, index) => (
               <ImageListItem key={index}>
                 <img
                   src={`https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`}
                   loading="lazy"
                   style={{
-                    width: "20vw",
-                    height: "100%",
+                    width: '15vh',
+                    height: '23.7vh',
                     objectFit: "contain",
+                    borderRadius: '10px',
+                    backgroundColor: 'lightgray'
                   }}
                 />
               </ImageListItem>
@@ -253,32 +255,36 @@ const DetailPost = () => {
         </div>
       </div>
 
-      <div id="chat-button-container">
+      <div id='post-bottom'>
         {isCurrentUserWriter ? (
-          <div>
+          <div id="post-button-container">
+            
+            <div id='modify-delete'>
             <Button
               id="modify-button"
               variant="contained"
               size="large"
               onClick={() => handleModifyClick(post.id)}
             >
-              수정하기
+              수정
             </Button>
+            
             <Button
-              id="pullup-button"
-              variant="contained"
-              size="large"
-              onClick={handlePullupClick}
-            >
-              끌어올리기
-            </Button>
-            <Button
-              id="pullup-button"
+              id="delete-button"
               variant="contained"
               size="large"
               onClick={handleDeleteClick}
             >
               삭제
+            </Button>
+              </div>
+              <Button
+              id="pullup-button"
+              variant="text"
+              size="large"
+              onClick={handlePullupClick}
+            >
+              끌어올리기
             </Button>
           </div>
         ) : (

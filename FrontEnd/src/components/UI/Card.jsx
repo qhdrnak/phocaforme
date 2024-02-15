@@ -104,7 +104,7 @@ const CustomCard = (props) => {
         <div>
           <CardHeader
             title={
-              <TruncatedTitle truncateWidth="10rem">{title}</TruncatedTitle>
+              <TruncatedTitle truncateWidth="8rem">{title}</TruncatedTitle>
             }
           />
         </div>

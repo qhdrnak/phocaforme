@@ -21,6 +21,13 @@ const theme = createTheme({
   },
 
   components: {
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          maxWidth: '100%',
+        }
+      }
+    },
     MuiFab: {
       styleOverrides: {
         root:{
@@ -81,6 +88,7 @@ const theme = createTheme({
       styleOverrides: {
         title: {
           fontSize: '18px',
+          fontWeight: 'bold'
         },
         root: {
           padding:'0.5rem 0'
@@ -90,10 +98,10 @@ const theme = createTheme({
     MuiCardMedia: {
       styleOverrides: {
         root: {
-          objectFit: 'contain',
+          objectFit: 'cover',
           borderRadius: "10px",
-          height: "9rem",
-          width: "6rem",
+          height: "8rem",
+          width: "7rem",
           
         }
       }
@@ -101,13 +109,13 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          // width: '7rem',
-          padding: '0.1rem 0 0 0',
+          padding: '0.2rem 0 0 0',
           cursor: "pointer",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: 'center'
+          justifyContent: 'center',
+          borderRadius: '10px',
         },
       
       }

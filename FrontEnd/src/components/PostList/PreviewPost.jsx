@@ -47,7 +47,7 @@ const PreviewPost = () => {
   return (
     <Container>
       <div id='preview-container'>
-        <h2 className="main-title">둘러보기 🔍</h2>
+        <h2 className="main-title" id='preview-title'>둘러보기 🔍</h2>
         {/* <MainPost isPreview={true} /> */}
         <div className="preview-card" id={previewPost.length % 2 == 1 ? 'preview-odd' : ""}>
           {previewPost.map((post, index) => (

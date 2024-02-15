@@ -964,13 +964,11 @@ input:focus {
 }
 
 /* 메인페이지 */
-
 .preview-card {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
     justify-content: center;
-    background-color: #FB37A3;
 }
 
 #preview-odd {
@@ -1027,6 +1025,9 @@ input:focus {
 
 
 /* 게시글페이지 */
+#post-title-container {
+    margin: 2rem 0;
+}
 
 #post-blank {
     height: 3rem;
@@ -1039,11 +1040,6 @@ input:focus {
 
 .card-content {
     width: 7rem;
-}
-
-#card-divider {
-    margin: 1rem 0;
-    background-color: black
 }
 
 #post-icon {
@@ -1063,12 +1059,29 @@ input:focus {
 
 /* 게시글 상세 */
 #pullup-button {
-    background-color: var(--warning-color);
-    margin: 0 0 0 0.2rem;
+    margin: 0.2rem 0;
+    width: fit-content;
 }
 
-#chat-button-container {
-    /* display: flex; */
+#delete-button {
+    margin: 0 0.2rem;
+    background-color: var(--warning-color);
+
+}
+
+#modify-delete {
+    display: flex;
+}
+
+#post-bottom {
+    display: flex;
+    justify-content: center;
+}
+
+#post-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
     bottom: 1rem;
 }
