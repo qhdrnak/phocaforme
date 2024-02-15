@@ -44,6 +44,7 @@ public class BarterController {
     {
         System.out.println(searchRequest.getQuery());
         List<SearchResponse> results = barterSearchService.search(searchRequest);
+        System.out.println(results);
         return ResponseEntity.ok(results);
     }
 

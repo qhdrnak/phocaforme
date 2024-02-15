@@ -180,6 +180,7 @@ public class BarterSearchService {
                     barter.getTitle(),
                     barter.getOwnMember(),
                     barter.getTargetMember(),
+                    barter.getWriterId(),
                     barter.isBartered(),
                     distance
             ));
@@ -197,6 +198,7 @@ public class BarterSearchService {
                 document.getTitle(),
                 document.getOwnMember(), // 이 필드는 BarterDocument에 적절히 정의되어 있어야 함
                 document.getTargetMember(), // 마찬가지로 BarterDocument에 정의되어 있어야 함
+                document.getWriterId(),
                 document.isBartered(),
                 null
         );

@@ -21,7 +21,7 @@ public class SearchResponse implements Serializable {
     private List<IdolSearchMember> targetMember;
 //    private String cardType;
 //    private String createdAt; // 게시물 생성 일자
-
+    private String writerId;
     private boolean isBartered;
 
     private Double distance;
