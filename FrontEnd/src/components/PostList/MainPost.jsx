@@ -1,24 +1,24 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import axios from "axios";
 
-import { fetchTitle, fetchUserTitle } from "../../http.js";
-import { loginUser, logoutUser, getLocation } from "../../store2/loginUser.js";
-import { searchPosts } from "../../store2/post.js";
+import Search from '../Search/Search.jsx';
 
-import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
+import { Container, Box, Typography, Tabs, Tab, CircularProgress } from "@mui/material";
 import Card from "../../components/UI/Card";
 import usePostSearch from "../../utils/infiScroll.js";
 
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
+
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
+
 
   return (
     <div>
@@ -52,6 +52,9 @@ const a11yProps = (index) => {
 };
 
 const BasicTabs = ({ isPreview }) => {
+  const location = useLocation();
+
+
   const [value, setValue] = useState(0);
   const [pageNumber, setPageNumber] = useState(2);
 
@@ -86,6 +89,8 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <Container>
+      {location.state ? <Search/> : null}
+
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -136,13 +141,14 @@ const BasicTabs = ({ isPreview }) => {
         )}
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <div
-          style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
-        >
+        
           {boards.filter((post) => post.type === "판매").length === 0 ? (
             <div className="no-content">게시글이 없습니다.</div>
           ) : (
-            boards
+            <div
+              style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
+            >
+            {boards
               .filter((post) => post.type === "판매")
               .map((post, index) => (
                 <Card
@@ -155,11 +161,11 @@ const BasicTabs = ({ isPreview }) => {
                   type={post.type}
                   isSold={post.isSold}
                 ></Card>
-              ))
-          )}
-        </div>
-        <div>{loading && "Loading..."}</div>
-        <div>{error && "Error"}</div>
+                ))}
+                <div>{loading && <CircularProgress />}</div>
+                <div>{error && "Error"}</div>
+                </div>
+              )}
       </CustomTabPanel>
       <div id="post-blank" />
     </Container>
