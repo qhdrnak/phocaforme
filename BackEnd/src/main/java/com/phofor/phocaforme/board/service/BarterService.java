@@ -294,10 +294,11 @@ public class BarterService {
                     .build();
             barterImageRepository.save(newPhoto);
         }
+        publishPersistEvent(newBarter,0);
 
         deleteDB(barter);
         barterRepository.deleteById(barterId);
-        publishPersistEvent(newBarter,0);
+        publishDeleteEvent(barter,2);
         return newBarter.getId();
     }
 
