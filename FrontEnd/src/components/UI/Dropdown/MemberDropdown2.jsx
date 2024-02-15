@@ -12,7 +12,7 @@ const MemberDropdown2 = ({
   onChange,
 }) => {
   const user = useSelector((state) => state.user.user);
-  const [value, setValue] = useState(user.defaultMember);
+  const [value, setValue] = useState(defaultMember);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -54,6 +54,7 @@ const MemberDropdown2 = ({
       size="small"
       disablePortal
       id="group-dropdown"
+      placeholder="선택하세요"
       options={memberItems}
       isOptionEqualToValue={(option, value) => option.value === value.value}
       getOptionLabel={(option) => option.idolName}

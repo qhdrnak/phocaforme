@@ -11,7 +11,7 @@ const TypeDropdown2 = ({ defaultCardType, onChange }) => {
     { value: "기타", label: "기타" },
   ];
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(defaultCardType);
 
   useEffect(() => {
     if (defaultCardType) {

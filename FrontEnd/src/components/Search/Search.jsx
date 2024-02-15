@@ -73,12 +73,12 @@ const Search = function () {
 
   const handleGroupSelection = (group) => {
     setSelectedGroup(group);
-    console.log(selectedGroup);
+    console.log(group);
   };
 
-  function onExchangeChange(value) {
-    setIsExchange(value === "option1");
-  }
+  // function onExchangeChange(value) {
+  //   setIsExchange(value === "option1");
+  // }
 
   function handleSearchClick() {
     const searchData = {

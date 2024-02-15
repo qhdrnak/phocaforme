@@ -22,7 +22,6 @@ const MemberDropdown = ({
   const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
-    console.log("change");
     setValue(null);
     onChange(null);
 
@@ -54,6 +53,7 @@ const MemberDropdown = ({
         size="small"
         disablePortal
         id="group-dropdown"
+        placeholder="선택하세요"
         options={memberItems}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         getOptionLabel={(option) => option.idolName}
