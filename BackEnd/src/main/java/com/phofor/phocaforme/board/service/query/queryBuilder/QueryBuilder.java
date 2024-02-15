@@ -41,7 +41,6 @@ public class QueryBuilder implements QueryBuilderInterface{
     protected void setFilters(BarterSearchCriteria criteria){
         // 각 criteria 항목에 대해 filter 적용
         // if문 내의 must
-        System.out.println(criteria);
         BoolQuery.Builder boolQueryBuilder = QueryBuilders.bool();
 
         /* 가장 제한적인(좁힐 수 있는) 검색어를 앞에 배치
@@ -49,7 +48,6 @@ public class QueryBuilder implements QueryBuilderInterface{
          * */
 
         if (criteria.getGroupId() != null) {
-            System.out.println("야야아아ㅏ!!");
             boolQueryBuilder.must(GroupFilter.createFilter(criteria));
         }
 
