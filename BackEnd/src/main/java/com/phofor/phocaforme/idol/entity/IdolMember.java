@@ -47,6 +47,6 @@ public class IdolMember {
     }
 
     public void updateTotalCount(Long count){
-        this.searchCount = count;
+        this.searchCount = this.searchCount+count;
     }
 }

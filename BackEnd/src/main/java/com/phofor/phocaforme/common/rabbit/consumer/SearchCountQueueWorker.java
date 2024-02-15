@@ -33,12 +33,21 @@ public class SearchCountQueueWorker {
     private final RabbitTemplate rabbitTemplate;
     private final IdolRankRepository idolRankRepository;
 
+    @Scheduled(cron = "50 59 23 * * *")
+    public void dailyTask(){
+        List<IdolMember> members = idolMemberRepository.findAll();
+        for (IdolMember member : members) {
+            member.updateTotalCount(0L);
+            member.updateTempCount(0L);
+        }
+        idolMemberRepository.saveAll(members);
+    }
 
     @Transactional
     @Retryable(maxAttempts = 3, backoff = @Backoff(delay = 5000))
     @Scheduled(cron = "0 0 * * * *")
 //    @Scheduled(fixedDelay = 10000)
-    public void dailyTask() {
+    public void hourlyTask() {
         List<IdolMember> members = idolMemberRepository.findAll();
         for (IdolMember member : members) {
             member.updateTotalCount(member.getSearchCountTemp());
@@ -48,6 +57,7 @@ public class SearchCountQueueWorker {
         Pageable topThree = PageRequest.of(0, 3);
         List<Long> femaleTop3 = idolMemberRepository.findFemaleTop3(topThree);
         List<Long> maleTop3 = idolMemberRepository.findMaleTop3(topThree);
+
 
         IdolRank idolRank = IdolRank.builder()
                 .firstFemaleIdolId(femaleTop3.get(0))
