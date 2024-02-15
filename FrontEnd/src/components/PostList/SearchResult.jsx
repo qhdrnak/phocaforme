@@ -10,7 +10,14 @@ import { fetchTitle, fetchUserTitle } from "../../http.js";
 import { loginUser, logoutUser, getLocation } from "../../store2/loginUser.js";
 import { searchPosts } from "../../store2/post.js";
 
-import { CircularProgress, Container, Box, Typography, Tabs, Tab } from "@mui/material";
+import {
+  CircularProgress,
+  Container,
+  Box,
+  Typography,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import Card from "../UI/Card.jsx";
 import usePostSearch from "../../utils/infiScroll.js";
 import PostCaution from "./PostCaution.jsx";
@@ -84,7 +91,6 @@ const BasicTabs = ({ isPreview }) => {
   useEffect(() => {
     if (!isPreview) {
       const fetchData = async () => {
-      
         try {
           const params = {};
           if (searchs.group) {
@@ -149,7 +155,6 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <Container>
-
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -166,15 +171,14 @@ const BasicTabs = ({ isPreview }) => {
       </Box>
       <CustomTabPanel value={value} index={0}>
         {posts.length === 0 ? (
-          <PostCaution message={'일치하는 게시글이 없습니다.'} />
+          <PostCaution message={"일치하는 게시글이 없습니다."} />
         ) : (
           <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
           >
             {posts.map((post, index) => (
               <div key={index}>
-                 
-              {post.distance ? `${post.distance}km `: ""}
+                {post.distance == -1 ? `${post.distance}km ` : ""}
                 <Card
                   id={post.id}
                   title={post.title}
