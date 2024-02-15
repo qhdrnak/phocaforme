@@ -8,7 +8,7 @@ import { getMessaging, getToken } from 'firebase/messaging'; // Firebase Messagi
 const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
   const user = useSelector(state => state.user.user);
   const [notificationPermission, setNotificationPermission] = useState(null);
-
+  const [notificationSupported, setNotificationSupported] = useState(false);
 
   useEffect(() => {
     // 페이지 로드 시 알림 권한 상태 확인
@@ -26,6 +26,7 @@ const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
 
   const checkNotificationPermission = () => {
     if ('Notification' in window ) {
+      setNotificationSupported(true)
       if (Notification.permission === 'default') {
         setNotificationPermission(null); // 권한 요청 전
       } else {
@@ -33,6 +34,7 @@ const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
       }
     } else {
       console.log('This broswer does not support desktop notification')
+      setNotificationSupported(false)
     }
   }
 
