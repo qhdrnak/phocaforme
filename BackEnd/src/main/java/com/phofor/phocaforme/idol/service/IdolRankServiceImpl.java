@@ -18,8 +18,8 @@ public class IdolRankServiceImpl implements IdolRankService {
 
 
     @Override
-    public IdolRankResponseDto findByDate(LocalDateTime date) {
-        IdolRank idolRank = idolRankRepository.findByCreatedDate(date);
+    public IdolRankResponseDto find() {
+        IdolRank idolRank = idolRankRepository.findTop();
         IdolRankResponseDto responseDto = IdolRankResponseDto.builder()
                 .id(idolRank.getId())
                 .firstFemaleIdolId(idolRank.getFirstFemaleIdolId())
