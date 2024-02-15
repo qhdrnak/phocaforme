@@ -81,10 +81,7 @@ const BasicTabs = ({ isPreview }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // if (!isPreview && !searchs.isCleared) {
     if (!isPreview) {
-
-
       const fetchData = async () => {
         try {
           const params = {};
@@ -105,12 +102,19 @@ const BasicTabs = ({ isPreview }) => {
             }
           }
 
-          if (searchs.cardType.value) {
+          if (searchs.cardType) {
             params.cardType = searchs.cardType.value;
           }
 
           if (searchs.query) {
             params.query = searchs.query;
+          }
+
+          // gps 켜져있을 때 위도 경도 넣기
+          if (user.location_longlat) {
+            console.log(user.location_longlat[0]);
+            params.longitude = user.location_longlat[0];
+            params.latitude = user.location_longlat[1];
           }
 
           const response = await axios.get(
@@ -124,14 +128,12 @@ const BasicTabs = ({ isPreview }) => {
           );
 
           dispatch(searchPosts(response.data));
-
         } catch (error) {
           console.error("검색 오류 :", error);
         }
       };
 
-        fetchData();
-      
+      fetchData();
     }
   }, [dispatch, searchs]);
 
@@ -142,7 +144,9 @@ const BasicTabs = ({ isPreview }) => {
   const [selectedPostId, setSelectedPostId] = useState(null);
 
   return (
-    <div sx={{ width: "100%" }}>
+    <Container>
+      <h1 className="post-page-title">검색 결과</h1>
+      
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -218,7 +222,7 @@ const BasicTabs = ({ isPreview }) => {
         <div>{loading && "Loading..."}</div>
         <div>{error && "Error"}</div>
       </CustomTabPanel>
-    </div>
+      </Container>
   );
 };
 

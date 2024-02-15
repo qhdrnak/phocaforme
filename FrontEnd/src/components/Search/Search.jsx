@@ -10,7 +10,7 @@ import { IoIosArrowUp } from "react-icons/io";
 
 import { useTheme } from "@mui/material/styles";
 
-import { Button } from "../UI/Button.jsx";
+import { Button } from "@mui/material";
 import BarterWrite2 from "../../components/PostWrite/BarterWrite2.jsx";
 import SellWrite2 from "../../components/PostWrite/SellWrite2.jsx";
 import TypeDropdown2 from "../UI/Dropdown/TypeDropdown2.jsx";
@@ -19,6 +19,7 @@ const Search = function () {
   const [userInput, setUserInput] = useState("");
   const [isClicked, setIsClicked] = useState(false);
   const [isExchange, setIsExchange] = useState(true);
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const [targetMembers, setTargetMembers] = useState([]);
   const [ownMembers, setOwnMembers] = useState([]);
   const [targetMembersInput, setTargetMembersInput] = useState(null);
@@ -30,12 +31,12 @@ const Search = function () {
 
   const theme = useTheme();
 
-
   // 최근 검색 기록 가져와
   useEffect(() => {
     const searchHistory = JSON.parse(localStorage.getItem("searchCondition"));
-    
+
     if (searchHistory) {
+      setSelectedGroup(searchHistory.group);
       setUserInput(searchHistory.query);
       setOwnMembers(searchHistory.ownMembers);
       setTargetMembers(searchHistory.targetMembers);
@@ -63,10 +64,16 @@ const Search = function () {
 
   const handleOwnMemberSelection = (members) => {
     setOwnMembers(members);
+    console.log(members);
   };
 
   const handleTargetMemberSelection = (members) => {
     setTargetMembers(members);
+  };
+
+  const handleGroupSelection = (group) => {
+    setSelectedGroup(group);
+    console.log(selectedGroup);
   };
 
   function onExchangeChange(value) {
@@ -74,20 +81,19 @@ const Search = function () {
   }
 
   function handleSearchClick() {
-
     const searchData = {
+      group: selectedGroup ? selectedGroup : null,
       query: userInput ? userInput : null,
       ownMembers: ownMembers ? ownMembers : [],
-      targetMembers: targetMembers
-        ? targetMembers : [],
-      cardType: cardType ? cardType :null,
+      targetMembers: targetMembers ? targetMembers : [],
+      cardType: cardType ? cardType : null,
     };
 
     dispatch(addSearchData(searchData));
 
     // 최근 검색 기록 저장
     localStorage.setItem("searchCondition", JSON.stringify(searchData));
-    
+
     // 초기화
     setUserInput(null);
     setOwnMembers([]);
@@ -97,10 +103,6 @@ const Search = function () {
     navigate("/post");
     onClick(); // 검색창 닫기
   }
-
-  const handleUserInputClick = (event) => {
-    event.stopPropagation(); // 클릭 이벤트 버블링 중단
-  };
 
   // 엔터 키를 눌렀을 때도 send
   const handleEnter = (e) => {
@@ -119,7 +121,7 @@ const Search = function () {
             <input
               onClick={onClick}
               onKeyDown={handleEnter}
-              id="title-input"
+              id="search-title-input"
               value={userInput}
               onChange={handleUserInputChange}
               variant="outlined"
@@ -132,7 +134,7 @@ const Search = function () {
           <div id="search-container">
             <div style={{ position: "relative" }}>
               <input
-                id="title-input"
+                id="search-title-input"
                 value={userInput}
                 onKeyDown={handleEnter}
                 onChange={handleUserInputChange}
@@ -146,9 +148,11 @@ const Search = function () {
             <div>
               {isExchange ? (
                 <BarterWrite2
-                  defaultOwnMembers = {ownMembers}
-                  defaultTargetMembers = {targetMembers}
-                  onChange={(ownMembers, targetMembers) => {
+                  defaultGroup={selectedGroup}
+                  defaultOwnMembers={ownMembers}
+                  defaultTargetMembers={targetMembers}
+                  onChange={(group, ownMembers, targetMembers) => {
+                    handleGroupSelection(group);
                     handleOwnMemberSelection(ownMembers);
                     handleTargetMemberSelection(targetMembers);
                   }}
@@ -157,34 +161,20 @@ const Search = function () {
                 <SellWrite2 />
               )}
             </div>
-            <div>
-              <div className="searchbar-title">포토카드 종류</div>
+            <div className="searchbar-title">포토카드 종류</div>
 
-              <TypeDropdown2
-                defaultCardType = {cardType}
-                onChange={(type) => {
-                  handleTypeChange(type);
-                }}
-              />
-            </div>
+            <TypeDropdown2
+              defaultCardType={cardType}
+              onChange={(type) => {
+                handleTypeChange(type);
+              }}
+            />
+            <div></div>
             <div id="search-buttons">
-              <Button
-                // id="search-button"
-                onClick={handleSearchClick}
-                sx={{
-                  width: "20vw",
-                }}
-              >
+              <Button id="search-button" onClick={handleSearchClick}>
                 검색
               </Button>
-              <Button
-                // id="search-close-button"
-                onClick={onClick}
-                sx={{
-                  width: "20vw",
-                  backgroundColor: theme.palette.warning.main,
-                }}
-              >
+              <Button id="search-close-button" onClick={onClick}>
                 닫기
               </Button>
             </div>

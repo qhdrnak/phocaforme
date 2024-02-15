@@ -10,7 +10,6 @@ import MyCarousel from '../components/Carousel/Carousel.jsx';
 const Main = () => {
     // Redux 스토어에서 유저 정보 가져오기
     const user = useSelector((state) => (state.user ? state.user.user : [])); 
-    const token = user.token; // 토큰 추출
 
     
 

@@ -65,8 +65,6 @@ const App = () => {
             <Route path="/login" element={<Login /> } />
             <Route path="/help" element={<Guide /> } />
             <Route path="/modify/:id" element={<Modify /> } />
-           
-
           </Routes>
           <NotificationModal isOpen={isModalOpen} onClose={closeModal} onNotificationSelect={(value) => console.log('Notification selected: ', value)} />
         </BrowserRouter>

@@ -12,15 +12,13 @@ import { searchPosts } from "../../store2/post.js";
 
 import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../../components/UI/Card";
-/////////////////////////////////////////////////////////
 import usePostSearch from "../../utils/infiScroll.js";
-//////////
+
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   const [posts, setPosts] = useState([]);
   const user = useSelector((state) => (state.user ? state.user.user : null));
-  ////////
 
   return (
     <div>
@@ -98,7 +96,9 @@ const observer = useRef();
 
   return (
     
-    <div sx={{ width: "100%" }}>
+    <Container>
+      <h1 className="post-page-title">전체 게시글</h1>
+      
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -113,7 +113,7 @@ const observer = useRef();
           />
         </Tabs>
       </Box>
-      <div>전체 게시글</div>
+            
       <CustomTabPanel value={value} index={0}>
         {boards.length === 0 ? (
           <div className="no-content">게시글이 없습니다.</div>
@@ -169,7 +169,7 @@ const observer = useRef();
         <div>{loading && 'Loading...'}</div>
         <div>{error && 'Error'}</div>
       </CustomTabPanel>
-    </div>
+    </Container>
     
   );
 };

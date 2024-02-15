@@ -81,7 +81,7 @@ const ProfileImage = () => {
         <Paper sx={{ backgroundColor: theme.palette.primary.main }}>
           <Menu
             className="profile-container"
-            sx={{ mt: "4rem" }}
+            sx={{ mt: "6vh" }}
             id="menu-appbar"
             anchorEl={anchorElUser}
             anchorOrigin={{

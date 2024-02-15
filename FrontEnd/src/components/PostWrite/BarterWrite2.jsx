@@ -2,25 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import GroupDropdown2 from "../UI/Dropdown/GroupDropdown2.jsx";
-import MemberDropdown2 from "../UI/Dropdown/MemberDropdown2.jsx";
+import GroupDropdown2 from "../UI/Dropdown/GroupDropdown.jsx";
+import MemberDropdown2 from "../UI/Dropdown/MemberDropdown.jsx";
 
 import Chip from "@mui/material/Chip";
 
-const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => {
+const BarterWrite2 = ({
+  defaultGroup,
+  defaultOwnMembers,
+  defaultTargetMembers,
+  onChange,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [selectedGroup, setSelectedGroup] = useState(defaultGroup);
 
   const loginUser = useSelector((state) => state.user.user);
 
   const handleGroupChange = (group) => {
     if (group) {
       setSelectedGroup(group);
+      onChange(selectedGroup, ownMembers, targetMembers);
     } else {
       setSelectedGroup(null);
-
     }
     // 그룹이 변경되었을 때 멤버와 입력값 초기화
     setOwnMembers([]);
@@ -29,8 +34,12 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
     setTargetMembersInput("");
   };
 
-  const [ownMembers, setOwnMembers] = useState(defaultOwnMembers ? defaultOwnMembers : []);
-  const [targetMembers, setTargetMembers] = useState(defaultTargetMembers ? defaultTargetMembers : []);
+  const [ownMembers, setOwnMembers] = useState(
+    defaultOwnMembers ? defaultOwnMembers : []
+  );
+  const [targetMembers, setTargetMembers] = useState(
+    defaultTargetMembers ? defaultTargetMembers : []
+  );
 
   const [ownMembersInput, setOwnMembersInput] = useState("");
   const [targetMembersInput, setTargetMembersInput] = useState("");
@@ -39,8 +48,8 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
   const handleOwnMemberChange = (member) => {
     if (member) {
       setOwnMembers((prevOwnMembers) => [...prevOwnMembers, member]);
-      onChange([...ownMembers, member], targetMembers);
-      setOwnMembersInput(member.value);
+      onChange(selectedGroup, [...ownMembers, member], targetMembers);
+      setOwnMembersInput(member);
     } else {
       setOwnMembersInput(ownMembersInput);
     }
@@ -49,8 +58,8 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
   const handleTargetMemberChange = (member) => {
     if (member) {
       setTargetMembers((prevTargetMembers) => [...prevTargetMembers, member]);
-      onChange(ownMembers, [...targetMembers, member]);
-      setTargetMembersInput(member.value);
+      onChange(selectedGroup, ownMembers, [...targetMembers, member]);
+      setTargetMembersInput(member);
     } else {
       setTargetMembersInput(targetMembersInput);
     }
@@ -58,21 +67,40 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
 
   // 멤버 삭제 관련
   const handleOwnMemberDelete = (deletedMember) => {
-    setOwnMembers(prevOwnMembers => prevOwnMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId));
-    onChange(prevOwnMembers => prevOwnMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId), targetMembers);
+    setOwnMembers((prevOwnMembers) =>
+      prevOwnMembers.filter(
+        (member) => member.idolMemberId !== deletedMember.idolMemberId
+      )
+    );
+    onChange(
+      selectedGroup,
+      (prevOwnMembers) =>
+        prevOwnMembers.filter(
+          (member) => member.idolMemberId !== deletedMember.idolMemberId
+        ),
+      targetMembers
+    );
   };
-  
+
   const handleTargetMemberDelete = (deletedMember) => {
-    setTargetMembers(prevTargetMembers => prevTargetMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId));
-    onChange(ownMembers, prevTargetMembers => prevTargetMembers.filter((member) => member.idolMemberId !== deletedMember.idolMemberId));
+    setTargetMembers((prevTargetMembers) =>
+      prevTargetMembers.filter(
+        (member) => member.idolMemberId !== deletedMember.idolMemberId
+      )
+    );
+    onChange(selectedGroup, ownMembers, (prevTargetMembers) =>
+      prevTargetMembers.filter(
+        (member) => member.idolMemberId !== deletedMember.idolMemberId
+      )
+    );
   };
 
   return (
-    <div>
+    <div id="group-member-input">
       <div id="group-input" className="search-box-group">
         <div className="searchbar-title">그룹명</div>
         <GroupDropdown2
-          defaultGroup = {selectedGroup}
+          defaultGroup={defaultGroup}
           onChange={(group) => {
             handleGroupChange(group);
           }}
@@ -100,8 +128,6 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
                   style={{
                     margin: "4px",
                     border: 0,
-                    // backgroundColor: tag.color,
-                    // color: "white",
                   }}
                 />
               ))}
@@ -128,8 +154,6 @@ const BarterWrite2 = ({ defaultOwnMembers, defaultTargetMembers, onChange }) => 
                   style={{
                     margin: "4px",
                     border: 0,
-                    // backgroundColor: tag.color,
-                    // color: "white",
                   }}
                 />
               ))}

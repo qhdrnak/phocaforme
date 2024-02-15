@@ -16,6 +16,7 @@ const initialUserState = {
     location: null, // 현재 위치 정보
     defaultGroup: null, // bias
     defaultMember: null,
+    location_longlat: [],
   },
 };
 
@@ -32,8 +33,12 @@ const loginUserSlice = createSlice({
     setLocation: (state, action) => {
       state.user.location = action.payload;
     },
+    setLocationLongLat: (state, action) => {
+      state.user.location_longlat = [...action.payload];
+    },
     setNickname: (state, action) => {
       state.user.nickname = action.payload;
+      
     },
     setBias: (state, action) => {
       [state.user.defaultGroup, state.user.defaultMember] = action.payload;
@@ -42,5 +47,5 @@ const loginUserSlice = createSlice({
   },
 });
 
-export const { loginUser, logoutUser, setLocation, setNickname, setBias } = loginUserSlice.actions;
+export const { loginUser, logoutUser, setLocation, setNickname, setBias, setLocationLongLat } = loginUserSlice.actions;
 export default loginUserSlice.reducer;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import axios from 'axios';
+import axios from "axios";
 
 import {
   Tabs,
@@ -62,7 +62,9 @@ const MyPost = () => {
 
   const fetchMyPosts = async () => {
     try {
-      const response = await axios.get(process.env.REACT_APP_API_URL + "barter");
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + "barter"
+      );
       const data = response.data;
 
       // 현재 사용자의 ID와 일치하는 게시글만 필터링
@@ -85,12 +87,11 @@ const MyPost = () => {
   };
 
   return (
-   
-    <Container>
+    <div id="mypost-container">
       <h2 className="profile-title">나의 게시글</h2>
       <div>
         <Box sx={{ width: "70vw", borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={value} >
+          <Tabs value={value}>
             <Tab
               label="교환"
               {...a11yProps(0)}
@@ -110,31 +111,33 @@ const MyPost = () => {
             rowHeight={200}
           >
             {myPostList &&
-              myPostList
-                .map((post, index) => (
-                  <div
-                    className="cards-container"
-                    key={index}
-                    onClick={() => handleClick(post.id)}
-                  >
-                    <Card
-                      key={post.id}
-                      style={{
-                        objectFit: "contain",
-                        margin: "0 16px 16px 0",
-                        cursor: "pointer",
-                      }}
-                      id={post.id}
-                      title={post.title}
-                      images={"https://photocardforme.s3.ap-northeast-2.amazonaws.com/"+post.imageUrl || ''}
-                      ownMembers={post.ownMember || []}
-                      targetMembers={post.targetMember || []}
-                      content={post.content || ''}
-                      type={post.type || ''}
-                      isBartered={post.isBartered || false}
-                    ></Card>
-                  </div>
-                ))}
+              myPostList.map((post, index) => (
+                <div
+                  className="cards-container"
+                  key={index}
+                  onClick={() => handleClick(post.id)}
+                >
+                  <Card
+                    key={post.id}
+                    style={{
+                      objectFit: "contain",
+                      margin: "0 16px 16px 0",
+                      cursor: "pointer",
+                    }}
+                    id={post.id}
+                    title={post.title}
+                    images={
+                      "https://photocardforme.s3.ap-northeast-2.amazonaws.com/" +
+                        post.imageUrl || ""
+                    }
+                    ownMembers={post.ownMember || []}
+                    targetMembers={post.targetMember || []}
+                    content={post.content || ""}
+                    type={post.type || ""}
+                    isBartered={post.isBartered || false}
+                  ></Card>
+                </div>
+              ))}
           </ImageList>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
@@ -172,7 +175,7 @@ const MyPost = () => {
           </ImageList>
         </CustomTabPanel>
       </div>
-    </Container>
+    </div>
   );
 };
 

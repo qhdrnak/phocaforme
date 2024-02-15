@@ -10,6 +10,7 @@ import {
   IconButton,
   FormControlLabel,
   Checkbox,
+  Container,
 } from "@mui/material";
 
 import { TaskAlt, Close, RadioButtonUnchecked } from "@mui/icons-material";
@@ -25,60 +26,57 @@ const InteractiveList = () => {
     fetchNotifications();
   }, []);
 
-  
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(process.env.REACT_APP_API_URL + "notification",
-      { withCredentials: true, }
+      const response = await axios.get(
+        process.env.REACT_APP_API_URL + "notification",
+        { withCredentials: true }
       );
-      
+
       setNotifications(response.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
     }
   };
-  
+
   // 알림 클릭 핸들러
   const handleItemClick = async (item) => {
     try {
       if (item.notificationType === "Article") {
-        console.log('click')
+        console.log("click");
         navigate(`/post/${item.articleId}`);
       } else if (item.notificationType === "Chatting") {
-        console.log('click')
+        console.log("click");
         navigate(`/chat`);
       }
-  
-      
+
       // 서버에 알림을 읽은 상태로 변경 요청 보내기
-      await axios.post(process.env.REACT_APP_API_URL + `notification`, 
-        { notificationId: item.notificationId }, 
+      await axios.post(
+        process.env.REACT_APP_API_URL + `notification`,
+        { notificationId: item.notificationId },
         { withCredentials: true }
       );
     } catch (error) {
       console.error("Error handling item click:", error);
     }
   };
-  
 
   // 알림 읽음 처리 핸들러 (삭제버튼 누른거)
   const handleReadAlarm = async (index) => {
     try {
       const updatedNotifications = [...notifications];
-      
+
       const notification = updatedNotifications[index];
-      console.log(notification)
+      console.log(notification);
       const notificationId = notification.notificationId; // 알림 ID 추출
-        
+
       // 서버에 삭제 요청 보내기
-      await axios.delete(process.env.REACT_APP_API_URL + `notification`, 
-      { // 옵션 객체
+      await axios.delete(process.env.REACT_APP_API_URL + `notification`, {
+        // 옵션 객체
         data: { notificationId }, // 요청 body에 데이터 설정
         withCredentials: true, // 인증 설정
-      }
-        
-      );
-  
+      });
+
       // 클라이언트에서 상태 업데이트
       updatedNotifications.splice(index, 1);
       setNotifications(updatedNotifications);
@@ -87,20 +85,23 @@ const InteractiveList = () => {
     }
   };
 
-  // 모두읽음 처리 
+  // 모두읽음 처리
   const markAllAsRead = async () => {
     try {
       // 현재 알림 데이터의 모든 notificationId를 배열로 추출
-      const notificationIds = notifications.map(notification => notification.notificationId);
-      
+      const notificationIds = notifications.map(
+        (notification) => notification.notificationId
+      );
+
       // 서버에 모든 알림을 읽은 상태로 변경 요청 보내기
-      await axios.post(process.env.REACT_APP_API_URL + `notification`, 
-        {  notificationId: notificationIds,}, 
+      await axios.post(
+        process.env.REACT_APP_API_URL + `notification`,
+        { notificationId: notificationIds },
         { withCredentials: true }
       );
-      
+
       // 클라이언트에서 상태 업데이트
-      const updatedNotifications = notifications.map(notification => ({
+      const updatedNotifications = notifications.map((notification) => ({
         ...notification,
         readStatus: true,
       }));
@@ -109,11 +110,11 @@ const InteractiveList = () => {
       console.error("Error marking all as read:", error);
     }
   };
-  
+
   return (
-    <div>
+    <Container>
       <div>
-        <h1 className="alarm-title">알림리스트</h1>
+        <h2 className="alarm-title">알림리스트</h2>
         {/* <FormControlLabel
           id="alarm-check-all"
           control={
@@ -136,28 +137,28 @@ const InteractiveList = () => {
 
       <div>
         {notifications.length === 0 ? (
-          <div>알림이 없습니다.</div>
+          <div id="no-alarm-title">현재 알림이 없습니다.</div>
         ) : (
           <List>
             {notifications.map((item, index) => (
               <ListItem
                 key={index}
-                
-                className={item.readStatus === true ? "alarm-read-item" : "alarm-item"}
+                className={
+                  item.readStatus === true ? "alarm-read-item" : "alarm-item"
+                }
                 secondaryAction={
-                  <>
-                    <IconButton
-                      edge="end"
-                      onClick={() => handleReadAlarm(index)}
-                    >
-                      {<Close />}
-                    </IconButton>
-                  </>
+                  <IconButton edge="end" onClick={() => handleReadAlarm(index)}>
+                    {<Close />}
+                  </IconButton>
                 }
               >
                 <div className="alarm-item-container">
                   <ListItemAvatar>
-                    {item.readStatus === true ? <TaskAlt /> : <RadioButtonUnchecked />}
+                    {item.readStatus === true ? (
+                      <TaskAlt />
+                    ) : (
+                      <RadioButtonUnchecked />
+                    )}
                   </ListItemAvatar>
                   <div className="alarm-text-container">
                     <ListItemText
@@ -174,7 +175,7 @@ const InteractiveList = () => {
           </List>
         )}
       </div>
-    </div>
+    </Container>
   );
 };
 

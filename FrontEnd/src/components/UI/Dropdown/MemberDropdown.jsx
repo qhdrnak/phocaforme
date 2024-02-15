@@ -14,15 +14,15 @@ const MemberDropdown = ({
   const [value, setValue] = useState(defaultMember);
 
   const handleChange = (event, newValue) => {
-    const selectedMemberName = newValue ? newValue.idolMemberId : null;
+    const selectedMember = newValue ? newValue : null;
     setValue(newValue);
-    onChange(selectedMemberName);
+    onChange(selectedMember);
   };
 
   const [memberItems, setMemberItems] = useState([]);
 
   useEffect(() => {
-    console.log('change')
+    console.log("change");
     setValue(null);
     onChange(null);
 
@@ -30,13 +30,13 @@ const MemberDropdown = ({
       if (selectedGroup) {
         try {
           const response = await axios.get(
-              process.env.REACT_APP_API_URL + `idol/member/${selectedGroup.idolGroupId}`,
+            process.env.REACT_APP_API_URL +
+              `idol/member/${selectedGroup.idolGroupId}`,
             {
               withCredentials: true,
             }
           );
           setMemberItems(response.data);
-    
         } catch (error) {
           console.error("멤버 세팅 오류:", error);
         }
@@ -57,15 +57,11 @@ const MemberDropdown = ({
         options={memberItems}
         isOptionEqualToValue={(option, value) => option.value === value.value}
         getOptionLabel={(option) => option.idolName}
-        sx={{ width: "12rem" }}
+        // sx={{ width: "12rem" }}
         // 검색이랑 스타일 맞추려면 이거
-        // sx={{
-        //   width: isProfile ? "12rem" : "38vw",
-
-        //   "& .MuiInputBase-root": {
-        //     borderRadius: "10px",
-        //   },
-        // }}
+        sx={{
+          width: isProfile ? "12rem" : "38vw",
+        }}
         noOptionsText="해당 멤버가 없습니다"
         renderOption={(props, option) => (
           <Box

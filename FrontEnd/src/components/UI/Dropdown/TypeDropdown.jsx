@@ -20,7 +20,6 @@ const TypeDropdown = ({ defaultCardType, onChange }) => {
   };
 
   return (
-    <div>
       <Autocomplete
         value={value}
         onChange={handleChange}
@@ -28,7 +27,7 @@ const TypeDropdown = ({ defaultCardType, onChange }) => {
         id="card-type-dropdown"
         options={TypeItems}
         isOptionEqualToValue={(option, value) => option.value === value.value}
-        sx={{ width: "12rem" }}
+        sx={{ width: "100%"}}
         noOptionsText="해당 분류가 없습니다"
         renderOption={(props, option) => (
           <Box
@@ -50,7 +49,6 @@ const TypeDropdown = ({ defaultCardType, onChange }) => {
           />
         )}
       />
-    </div>
   );
 };
 

@@ -1,6 +1,4 @@
-import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
-import getCurrentTime from "../utils/currentTime";
 
 const initialChatState = {
   chat: [],

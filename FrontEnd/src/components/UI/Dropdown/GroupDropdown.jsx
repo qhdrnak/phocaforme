@@ -1,21 +1,20 @@
 // 게시물 생성용
 import * as React from "react";
 import { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { Box, Avatar, TextField, Autocomplete } from "@mui/material";
 
 import logo1 from "../../../assets/images/logo_nct.png";
 import logo2 from "../../../assets/images/logo_shinee.jpg";
 
 const GroupDropdown = ({ isProfile, defaultGroup, onChange }) => {
-  
   const [groupItems, setGroupItems] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-            process.env.REACT_APP_API_URL + "idol/group",
+          process.env.REACT_APP_API_URL + "idol/group",
           {
             withCredentials: true,
           }
@@ -44,14 +43,15 @@ const GroupDropdown = ({ isProfile, defaultGroup, onChange }) => {
         size="small"
         id="group-dropdown"
         options={groupItems}
-        getOptionLabel={(option) => option.idolGroupNameKr}
+        getOptionLabel={(option) =>
+          `${option.idolGroupNameKr} (${option.idolGroupNameEng})`
+        }
         // isOptionEqualToValue={(option) => option.idolGroupNameKr}
-        sx={{ width: "12rem" }}
-        // 검색이랑 모양 똑같이 할거면 스타일 밑에걸로 
-        // sx={{
-        //   width: isProfile ? "12rem" : "80vw",
-        //   "& .MuiInputBase-root": { borderRadius: "10px" },
-        // }}
+
+        // 검색이랑 모양 똑같이 할거면 스타일 밑에걸로
+        sx={{
+          width: isProfile ? "12rem" : "80vw",
+        }}
         noOptionsText="해당 그룹이 없습니다"
         renderOption={(props, option) => (
           <Box
@@ -63,7 +63,7 @@ const GroupDropdown = ({ isProfile, defaultGroup, onChange }) => {
               src={option.avatarSrc}
               sx={{ mr: 1, width: "1.5rem", height: "1.5rem" }}
             />
-            {option.idolGroupNameKr}
+            {`${option.idolGroupNameKr} (${option.idolGroupNameEng})`}
           </Box>
         )}
         renderInput={(params) => (
@@ -81,7 +81,7 @@ const GroupDropdown = ({ isProfile, defaultGroup, onChange }) => {
                       sx={{ ml: 1, width: "1.5rem", height: "1.5rem" }}
                       src={
                         groupItems.find(
-                          (option) => 
+                          (option) =>
                             option.idolGroupNameKr === value.idolGroupNameKr
                         )?.avatarSrc
                       }

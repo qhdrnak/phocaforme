@@ -3,8 +3,16 @@ import axios from "axios";
 
 import { useTheme } from "@mui/material/styles";
 
-import { Card, Box, CardContent, CardMedia, Button, TextField, Chip } from "@mui/material";
-import ClearIcon from '@mui/icons-material/Clear';
+import {
+  Card,
+  Box,
+  CardContent,
+  CardMedia,
+  Button,
+  TextField,
+  Chip,
+} from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear";
 
 import GroupDropdown from "../UI/Dropdown/GroupDropdown2";
 import MemberDropdown from "../UI/Dropdown/MemberDropdown2";
@@ -103,17 +111,16 @@ const WishCard = () => {
 
   // 이미 갈망포카가 있다면 가져와라
   useEffect(() => {
-      axios
-        .get(process.env.REACT_APP_API_URL + `user/wishCard`, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          setWishCard(response.data);
-        })
-        .catch((error) => {
-          console.error("Error get wishcard:", error);
-        });
-    
+    axios
+      .get(process.env.REACT_APP_API_URL + `user/wishCard`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setWishCard(response.data);
+      })
+      .catch((error) => {
+        console.error("Error get wishcard:", error);
+      });
   }, [wishCard]);
 
   // 갈망포카 삭제
@@ -128,7 +135,7 @@ const WishCard = () => {
       .catch((error) => {
         console.error("Error delete wishcard:", error);
       });
-  }
+  };
 
   return (
     <div className="profile-item-container">
@@ -136,30 +143,27 @@ const WishCard = () => {
       <div id="wishcard-container">
         <div className="wishcard-content">
           <div>
-            {wishCard !== null
-            ? 
-            <Card id='wishcard-card-container'>
-              <Box>
-                <CardContent id='wishcard-card-content' >
-                  <div id='wishcard-card-keyword'>
-                    {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
-                      .filter(Boolean)
-                      .map((keyword, index) => `#${keyword}`)
-                      .join(" ")}
-                  </div>
-                  <div id='wishcard-card-content-header'>
+            {wishCard !== null ? (
+              <Card id="wishcard-card-container">
+                <Box>
+                  <CardContent id="wishcard-card-content">
+                    <div id="wishcard-card-keyword">
+                      {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
+                        .filter(Boolean)
+                        .map((keyword, index) => `#${keyword}`)
+                        .join(" ")}
+                    </div>
+                    <div id="wishcard-card-content-header">
                       <ClearIcon onClick={handleDelete} />
-                  </div>
-                </CardContent>
-                
-              </Box>
-            
-          </Card>
-                  : "아직 갈망포카가 없어요"}
+                    </div>
+                  </CardContent>
+                </Box>
+              </Card>
+            ) : (
+              "아직 갈망포카가 없어요"
+            )}
           </div>
-          </div>
-        <div>
-
+          <div id="wishcard-description">*설정 시 매물 알림이 가요!</div>
         </div>
       </div>
       <div className="profile-dropdown-container">
@@ -198,7 +202,7 @@ const WishCard = () => {
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleInputKeyDown}
-            sx={{ width: "100%" }}
+            sx={{ width: "70vw" }}
             helperText={helperText}
           />
 

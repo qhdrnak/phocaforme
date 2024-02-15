@@ -33,14 +33,14 @@ const FloatingActionButtons = () => {
     <Box
       sx={{
         position: "fixed",
-        bottom: "10vh",
-        right: "10vw",
+        bottom: "2vh",
+        right: "3vw",
         "& > :not(style)": { m: 1 },
         zIndex: 2000,
       }}
     >
       <Fab color="warning" aria-label="add">
-        <AddIcon onClick={handleClick} />
+        <AddIcon fontSize="large" onClick={handleClick} />
         <Popover
           id={id}
           open={open}
@@ -48,7 +48,7 @@ const FloatingActionButtons = () => {
           onClose={handleClose}
           disableScrollLock
           anchorOrigin={{
-            horizontal: -90,
+            horizontal: -100,
             vertical: -90,
           }}
         >
