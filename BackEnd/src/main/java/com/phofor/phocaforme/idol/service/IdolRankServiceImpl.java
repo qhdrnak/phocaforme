@@ -5,6 +5,8 @@ import com.phofor.phocaforme.idol.entity.IdolRank;
 import com.phofor.phocaforme.idol.repository.IdolMemberRepository;
 import com.phofor.phocaforme.idol.repository.IdolRankRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -19,7 +21,9 @@ public class IdolRankServiceImpl implements IdolRankService {
 
     @Override
     public IdolRankResponseDto find() {
-        IdolRank idolRank = idolRankRepository.findTop();
+        Pageable topOne = PageRequest.of(0, 1);
+        List<IdolRank> idolRankList = idolRankRepository.findTop(topOne);
+        IdolRank idolRank = idolRankList.get(0);
         IdolRankResponseDto responseDto = IdolRankResponseDto.builder()
                 .id(idolRank.getId())
                 .firstFemaleIdolId(idolRank.getFirstFemaleIdolId())
