@@ -149,7 +149,7 @@ const WishCard = () => {
                   {[wishCard.keyword1, wishCard.keyword2, wishCard.keyword3]
                     .filter(Boolean)
                     .map((keyword, index) => `#${keyword}`)
-                    .join(" ")}
+                    .join("\n")}
                 </div>
                 <div id="wishcard-card-content-header">
                   <ClearIcon id="wishcard-clear-icon" onClick={handleDelete} />

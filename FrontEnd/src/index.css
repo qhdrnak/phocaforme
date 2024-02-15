@@ -738,18 +738,13 @@ html, body, #root {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* background-color: #FD9DD1; */
-    /* border: 1px solid black; */
+    white-space: pre-line;
 }
-
 
 #wishcard-card-content {
     display: flex;
     padding: 1rem;
 }
-
-
-
 
 #wishcard-card-media {
     height: fit-content;
@@ -768,8 +763,6 @@ html, body, #root {
     padding: 0 3rem 1rem 3rem;
     margin-bottom: 1rem;
     width: 90%;
-
-    /* max-width: 400; */
 }
 
 .profile-dropdown-container {
@@ -980,9 +973,9 @@ input:focus {
 /* 메인페이지 */
 .preview-card {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     width: 100%;
-    justify-content: center;
+    /* justify-content: space-around; */
 }
 
 #preview-odd {
@@ -1116,7 +1109,7 @@ input:focus {
     flex-direction: column;
     align-items: center;
     position: fixed;
-    bottom: 2rem;
+    bottom: 50px;
 }
 
 #writer-type-container {
