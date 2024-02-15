@@ -137,7 +137,7 @@ const DetailPost = () => {
     const postId = post.id;
 
     axios
-      .delete(process.env.REACT_APP_API_URL + `${postId}`, {
+      .delete(process.env.REACT_APP_API_URL + `barter/${postId}`, {
         withCredentials: true,
       })
       .then((response) => {

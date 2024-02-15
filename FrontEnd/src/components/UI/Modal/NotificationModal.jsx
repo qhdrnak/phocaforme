@@ -115,11 +115,9 @@ const NotificationModal = ({ isOpen, onClose, onNotificationSelect }) => {
   };
 
   // Notification 객체가 지원되지 않으면, 모달을 렌더링하지 않습니다.
-  // Notification 객체가 지원되지 않거나, 사용자가 이미 알림 권한을 부여하거나 거부한 경우 모달을 렌더링하지 않습니다.
-if (!user.token || !isOpen || !notificationSupported || notificationPermission !== 'default') {
-  return null;
-}
-
+  if (!user.token || !isOpen || !notificationSupported || notificationPermission === 'granted' || notificationPermission === 'denied') {
+    return null;
+  }
 
   return (
     <>
