@@ -1041,7 +1041,14 @@ input:focus {
     width: 35vw;
     margin: 0.2rem;
     position: relative;
+    transition: transform 0.1s;
 }
+
+.card-style:hover {
+    /* 호버 시 변화할 스타일 */
+    transform: scale(1.05); /* 크기를 키웁니다 */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과를 추가합니다 */
+  }
 
 /* 게시글 상세 */
 #pullup-button {
