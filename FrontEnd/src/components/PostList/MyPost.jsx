@@ -68,18 +68,18 @@ const MyPost = () => {
       const data = response.data;
 
       // 현재 사용자의 ID와 일치하는 게시글만 필터링
-      const userPosts = data.filter((post) => post.writerId === currentUser.id);
+      const userPosts = data.filter((post) => post.writerId === currentUser.userId);
 
       // 최신순으로 정렬
       const sortedPosts = userPosts.sort((a, b) => b.createdAt - a.createdAt);
 
       // 상태 업데이트
-      setMyPostList(sortedPosts.slice(0, 5));
+      setMyPostList(sortedPosts.slice(0, 20));
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   };
-  console.log(myPostList);
+
 
   // 게시물로 이동 핸들러
   const handleClick = (id) => {
