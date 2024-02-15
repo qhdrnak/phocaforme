@@ -8,7 +8,7 @@ import com.phofor.phocaforme.board.dto.searchDto.criteria.BarterSearchCriteria;
 public class GroupFilter {
     public static Query createFilter(BarterSearchCriteria criteria) {
         QueryVariant termGroupQuery = new TermQuery.Builder()
-                .field("group")
+                .field("group_id")
                 .value(criteria.getGroupId())
                 .build();
         return new Query(termGroupQuery);

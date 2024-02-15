@@ -24,7 +24,7 @@ public class BarterCriteriaBuilder extends AbstractCriteriaBuilder{
             System.out.println("Page:"+searchRequest.getPage());
             this.barterSearchCriteria.setPage(searchRequest.getPage()-1);
         }
-
+        this.barterSearchCriteria.setGroupId(searchRequest.getGroupId());
         this.barterSearchCriteria.setQuery(searchRequest.getQuery());
         this.barterSearchCriteria.setTarget(searchRequest.getTarget());
         this.barterSearchCriteria.setOwn(searchRequest.getOwn());

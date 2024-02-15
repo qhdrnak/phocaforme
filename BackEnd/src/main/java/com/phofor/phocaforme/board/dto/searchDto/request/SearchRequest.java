@@ -16,6 +16,7 @@ public class SearchRequest {
     private String cardType;
     private List<Long> target;
     private List<Long> own;
+    private Long groupId;
     private Double longitude;
     private Double latitude;
 }
