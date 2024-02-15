@@ -154,6 +154,7 @@ const Search = () => {
                 <SellWrite2 />
               )} */}
             </div>
+            <div>
             <div className="searchbar-title">포토카드 종류</div>
             <TypeDropdown2
               defaultCardType={cardType}
@@ -161,7 +162,8 @@ const Search = () => {
                 handleTypeChange(type);
               }}
             />
-            <div></div>
+
+            </div>
             <div id="search-buttons">
               <Button id="search-button" onClick={handleSearchClick}>
                 검색

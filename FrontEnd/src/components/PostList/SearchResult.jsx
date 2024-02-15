@@ -10,9 +10,10 @@ import { fetchTitle, fetchUserTitle } from "../../http.js";
 import { loginUser, logoutUser, getLocation } from "../../store2/loginUser.js";
 import { searchPosts } from "../../store2/post.js";
 
-import { Container, Box, Typography, Tabs, Tab } from "@mui/material";
+import { CircularProgress, Container, Box, Typography, Tabs, Tab } from "@mui/material";
 import Card from "../UI/Card.jsx";
 import usePostSearch from "../../utils/infiScroll.js";
+import PostCaution from "./PostCaution.jsx";
 
 const CustomTabPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -81,7 +82,6 @@ const BasicTabs = ({ isPreview }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(searchs)
     if (!isPreview) {
       const fetchData = async () => {
       
@@ -149,7 +149,6 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <Container>
-      <div className="post-page-title">검색 결과</div>
 
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
@@ -167,13 +166,15 @@ const BasicTabs = ({ isPreview }) => {
       </Box>
       <CustomTabPanel value={value} index={0}>
         {posts.length === 0 ? (
-          <div className="no-content">게시글이 없습니다.</div>
+          <PostCaution message={'일치하는 게시글이 없습니다.'} />
         ) : (
           <div
             style={{ display: "flex", flexWrap: "wrap", flexDirection: "row" }}
           >
             {posts.map((post, index) => (
               <div key={index}>
+                 
+              {post.distance ? `${post.distance}km `: ""}
                 <Card
                   id={post.id}
                   title={post.title}
@@ -221,7 +222,7 @@ const BasicTabs = ({ isPreview }) => {
               ))
           )}
         </div>
-        <div>{loading && "Loading..."}</div>
+        <div>{loading && <CircularProgress />}</div>
         <div>{error && "Error"}</div>
       </CustomTabPanel>
     </Container>

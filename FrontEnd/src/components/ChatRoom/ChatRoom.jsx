@@ -174,7 +174,7 @@ const ChatRoom = () => {
                     </div>
                   </div>
                   {messageData.userEmail != loginUser.userId ? (
-                    <p>{timeFormat(messageData.createdAt)}</p>
+                    <div className="chat-time-container">{timeFormat(messageData.createdAt)}</div>
                   ) : null}
                 </div>
               </div>

@@ -30,7 +30,7 @@ html, body, #root {
 
 #login-title {
     font-family:'PyeongChangPeace';
-    font-weight: light;
+    font-size: large;
 }
 
 
@@ -320,10 +320,15 @@ html, body, #root {
 #rank-1-idol {
     display: flex;
     align-items: center;
-    background-image: url('assets/images/yellowStar.png'); 
-    background-size: contain;
+    justify-content: center;
+    background-image: url('assets/images/spark.png'); 
+    background-size: 110% 90%; 
     background-repeat: no-repeat;
     background-position: bottom;
+}
+
+#rank-1-title {
+    width: 2rem;
 }
 
 #rank-23-idol {
@@ -349,7 +354,7 @@ html, body, #root {
 }
 
 #rank-1-image {
-    margin: 1rem;
+    margin: 0.5rem;
 }
 
 .rank-23-image {
@@ -528,12 +533,12 @@ html, body, #root {
     justify-content: flex-end;
     text-align: end;
     padding: 0 1rem;
-    font-size: small;
+    font-size: medium;
 }
 
 .chat-visiter-name {
     padding: 0 1rem;
-    font-size: small;
+    font-size: medium;
 
 }
 
@@ -559,7 +564,9 @@ html, body, #root {
 
 #sendIcon {
     border-radius: 10px;
-    background-color: var(--primary-color);
+    background-image:linear-gradient(to right bottom, rgba(251, 55, 163, 1), rgba(249, 209, 233, 1));
+    background-origin:border-box; 
+    background-clip:padding-box, border-box;
     color: white;
     
 }
@@ -587,6 +594,10 @@ html, body, #root {
     bottom: 0;
     padding: 2rem;
     z-index:100;
+}
+
+.chat-time-container {
+    font-size: 8px;
 }
 
 /* 결제 전송 모달 */
@@ -646,8 +657,6 @@ html, body, #root {
     align-items: center;
 }
 
-#new-nickname-input {
-}
 
 #nickname-setting-container{
     margin: 0 0 1rem 0;
@@ -670,6 +679,7 @@ html, body, #root {
 
 #latestpost-container {
     width: 100%;
+
     padding: 0;
 }
 
@@ -683,6 +693,7 @@ html, body, #root {
     margin: 0.5rem 0;
     color: #FD9DD1;
     font-size: small;
+    text-align: center;
 }
 
 #wishcard-clear-icon {
@@ -719,11 +730,16 @@ html, body, #root {
 
 #wishcard-card-container {
     display: flex;
-    flex-direction: row;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    background-color: #FD9DD1;
-    border: 1px solid black;
+    justify-content: center;
+    text-align: center;
+    width: 50vw;
+    padding: 3rem 0.5rem 3rem 1.5rem;
+    background-image: url(assets/images/wishcard.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* background-color: #FD9DD1; */
+    /* border: 1px solid black; */
 }
 
 
@@ -732,10 +748,7 @@ html, body, #root {
     padding: 1rem;
 }
 
-#wishcard-card-keyword {
-    font-family: 'PyeongChangPeace';
 
-}
 
 
 #wishcard-card-media {
@@ -816,6 +829,10 @@ html, body, #root {
     font-family:'PyeongChangPeace';
     font-weight: bold;
     text-align: center;
+}
+
+#caution-image {
+    margin: 3rem 0 1rem;
 }
 
   /* ? */
@@ -961,21 +978,31 @@ input:focus {
 }
 
 /* 메인페이지 */
-
-
-#preview-card {
+.preview-card {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     justify-content: center;
 }
 
-#preview-container {
+#preview-odd {
+    justify-content: start;
+    padding: 0 1rem;
+    width: calc(100% - 2rem);
+}
+
+
+#expand-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+/* #preview-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+    align-items: start;
     width: 100%;
-}
+} */
 
 #expand-button {
     margin: 2rem 0 1rem 0;
@@ -1012,6 +1039,21 @@ input:focus {
 
 
 /* 게시글페이지 */
+#mainpost-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#post-content-container {
+    white-space: pre-line;
+    font-size: 24px;
+    padding: 1rem;
+}
+
+#post-title-container {
+    margin: 2rem 0;
+}
 
 #post-blank {
     height: 3rem;
@@ -1024,11 +1066,6 @@ input:focus {
 
 .card-content {
     width: 7rem;
-}
-
-#card-divider {
-    margin: 1rem 0;
-    background-color: black
 }
 
 #post-icon {
@@ -1055,14 +1092,31 @@ input:focus {
 
 /* 게시글 상세 */
 #pullup-button {
-    background-color: var(--warning-color);
-    margin: 0 0 0 0.2rem;
+    margin: 0.2rem 0;
+    width: fit-content;
 }
 
-#chat-button-container {
-    /* display: flex; */
+#delete-button {
+    margin: 0 0.2rem;
+    background-color: var(--warning-color);
+
+}
+
+#modify-delete {
+    display: flex;
+}
+
+#post-bottom {
+    display: flex;
+    justify-content: center;
+}
+
+#post-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: fixed;
-    bottom: 1rem;
+    bottom: 2rem;
 }
 
 #writer-type-container {
@@ -1104,4 +1158,32 @@ input:focus {
     white-space: pre-line;
     text-align: center;
     margin: 0 0 2rem;
+}
+
+/* 가이드 페이지 */
+#guide-container {
+    border: 1px solid gray;
+    border-radius: 10px;
+    box-shadow: 0px 3px 2px rgba(0, 0, 0, 0.1);
+    width: calc(100% - 2rem);
+    text-wrap: wrap;
+    padding: 1rem 2rem 1rem 0;
+    margin: 1rem 0;
+    white-space: pre-line;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.guide-content-title {
+    font-weight: bold;
+}
+
+.guide-content-text {
+    white-space: pre-line;
+}
+
+.guide-title {
+    color: var(--primary-color);
+
 }

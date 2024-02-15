@@ -18,12 +18,12 @@ const ChartBoy = ({ isNull, rankBoy }) => {
           <CircularProgress />
         ) : (
           <Grid container spacing={2} direction="row" id="chart-container">
-            <Grid item xs={6} id="rank-1-idol">
-              <div className="main-big">1위</div>
+            <Grid item xs={7} id="rank-1-idol">
+              <div className="main-big" id='rank-1-title'>1위</div>
               <Avatar id="rank-1-image" src={rankBoy[0].idolImage} />
               <div className="main-big">{rankBoy[0].idolName}</div>
             </Grid>
-            <Grid item id="rank-23-idol" xs={6}>
+            <Grid item id="rank-23-idol" xs={5}>
               <div id="rank-2-idol">
                 <div>2위</div>
                 <Avatar className="rank-23-image" src={rankBoy[1].idolImage} />

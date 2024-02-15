@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import axios from "axios";
 
-import DeletedPost from "./DeletedPost";
+import PostCaution from "./PostCaution";
 
 import {
   Container,
@@ -152,13 +152,12 @@ const DetailPost = () => {
       .catch((error) => {
         console.error("게시물 삭제 중 에러가 발생했습니다:", error);
       });
-    navigate("/post");
+    navigate(-1);
   };
 
-  console.log(post);
 
   if (post === null) {
-    return <DeletedPost />; // 데이터가 로드되기 전에는 로딩 중을 표시
+    return <PostCaution message={'이미 삭제된 게시글입니다.'} />; // 데이터가 로드되기 전에는 로딩 중을 표시
   }
 
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
@@ -191,16 +190,18 @@ const DetailPost = () => {
           ></Chip>
         </div>
         <div id="image-list-container">
-          <ImageList sx={{ display: "flex", width: "100%" }} rowHeight={200}>
+          <ImageList sx={{ display: "flex", width: "100%" }}>
             {post.photos.map((photo, index) => (
               <ImageListItem key={index}>
                 <img
                   src={`https://photocardforme.s3.ap-northeast-2.amazonaws.com/${photo}`}
                   loading="lazy"
                   style={{
-                    width: "20vw",
-                    height: "100%",
+                    width: '15vh',
+                    height: '23.7vh',
                     objectFit: "contain",
+                    borderRadius: '10px',
+                    backgroundColor: 'lightgray'
                   }}
                 />
               </ImageListItem>
@@ -248,40 +249,46 @@ const DetailPost = () => {
           </div>
         </div>
         <hr style={{ margin: "1rem 0" }} />
-        <div id="post-content-container" style={{ whiteSpace: "pre-line" }}>
+        <div id="post-content-container" style={{  }}>
           <div>{post.content}</div>
         </div>
       </div>
 
-      <div id="chat-button-container">
+      <div id='post-bottom'>
         {isCurrentUserWriter ? (
-          <div>
+          <div id="post-button-container">
+            
+            <div id='modify-delete'>
             <Button
               id="modify-button"
               variant="contained"
               size="large"
               onClick={() => handleModifyClick(post.id)}
             >
-              수정하기
+              수정
             </Button>
+            
             <Button
-              id="pullup-button"
-              variant="contained"
-              size="large"
-              onClick={handlePullupClick}
-            >
-              끌어올리기
-            </Button>
-            <Button
-              id="pullup-button"
+              id="delete-button"
               variant="contained"
               size="large"
               onClick={handleDeleteClick}
             >
               삭제
             </Button>
+              </div>
+              <Button
+              id="pullup-button"
+              variant="text"
+              size="large"
+              onClick={handlePullupClick}
+            >
+              끌어올리기
+            </Button>
           </div>
         ) : (
+          <div id="post-button-container">
+
           <Button
             id="chat-button"
             variant="contained"
@@ -290,6 +297,7 @@ const DetailPost = () => {
           >
             1:1 채팅하기
           </Button>
+          </div>
         )}
       </div>
     </Container>

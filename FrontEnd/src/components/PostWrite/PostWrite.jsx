@@ -121,7 +121,6 @@ const PostWrite = () => {
 
   // 게시물 생성 버튼 클릭 핸들러
   const handlePostClick = () => {
-    console.log(selectedGroup);
 
     // 새로운 게시물 객체 생성
     const newPost = new FormData();
@@ -142,8 +141,6 @@ const PostWrite = () => {
 
     newPost.append("groupId", selectedGroup.idolGroupId);
 
-    console.log(newPost);
-
     // formdata값확인용 코드 //////
     const formDataToJson = (formData) => {
       const jsonObject = {};
@@ -155,7 +152,7 @@ const PostWrite = () => {
 
     const test = formDataToJson(newPost);
     console.log(test);
-    navigate("/post");
+    // navigate("/post", {state: });
 
     axios
       .post(process.env.REACT_APP_API_URL + "barter", newPost, {
@@ -165,8 +162,7 @@ const PostWrite = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
-        // navigate("/post");
+        navigate("/post");
       })
       .catch((error) => {
         console.error("Error creating post:", error);
