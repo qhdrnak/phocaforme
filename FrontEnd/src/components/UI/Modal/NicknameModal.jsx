@@ -67,6 +67,8 @@ const NicknameModal = ({
         setValidFlag(!response.data.isDuplicated);
         if (response.data.isDuplicated) {
           setErrorMsg("중복된 닉네임입니다.");
+        } else {
+          setErrorMsg("사용 가능한 닉네임입니다.");
         }
       })
       .catch((error) => {
@@ -116,14 +118,9 @@ const NicknameModal = ({
             size="small"
             placeholder=""
           />
-          <Button
-            size="small"
-            sx={{ ml: 0.5 }}
-            onClick={() => handleSubmit(loginUser.userId)}
-            variant="contained"
-          >
+          <div id="dup-check" onClick={() => handleSubmit(loginUser.userId)}>
             중복확인
-          </Button>
+          </div>
         </div>
         <div id="nickname-setting-button">
           <Button
