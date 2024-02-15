@@ -118,7 +118,7 @@ export default function GPS() {
       {isLoading && <CircularProgress id="loading-text" />}
       {isSwitchOn && !isLoading && (
         <div id="gps-bottom">
-          <LocationOnOutlined />
+          <LocationOnOutlined id="location-icon" />
           <div>{currentUser.location}</div>
         </div>
       )}

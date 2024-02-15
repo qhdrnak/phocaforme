@@ -20,16 +20,18 @@ const Bias = () => {
 
   // useEffect 해서 렌더링할 때 최애 정보 들고와라
   useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_API_URL + `user/bias`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setImageUrl(response.data.idolImage);
-      })
-      .catch((error) => {
-        console.error("Error get bias:", error);
-      });
+    if (user.defaultMember) {
+      axios
+        .get(process.env.REACT_APP_API_URL + `user/bias`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          setImageUrl(response.data.idolImage);
+        })
+        .catch((error) => {
+          console.error("Error get bias:", error);
+        });
+    }
   }, [user]);
 
   const handleGroupChange = (group) => {
@@ -52,28 +54,27 @@ const Bias = () => {
   };
 
   const handleApplyClick = () => {
-
-    
     // db 에 반영하기
-    axios.put(process.env.REACT_APP_API_URL + `user/bias`
-    , {
-      idolMemberId: selectedMember.idolMemberId
-    }
-    , {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      
-    })
-    .then(response => {
-      setImageUrl(response.data);
-      dispatch(setBias([selectedGroup, selectedMember]));
-    })
-    .catch(error => {
-      console.error('Error setting bias:', error);
-    }); 
-
+    axios
+      .put(
+        process.env.REACT_APP_API_URL + `user/bias`,
+        {
+          idolMemberId: selectedMember.idolMemberId,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        setImageUrl(response.data);
+        dispatch(setBias([selectedGroup, selectedMember]));
+      })
+      .catch((error) => {
+        console.error("Error setting bias:", error);
+      });
   };
 
   return (
@@ -104,8 +105,7 @@ const Bias = () => {
             />
           </div>
         </div>
-      <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
-
+        <div id="bias-description">*설정 시 프로필이 바뀌어요!</div>
       </div>
       <div>
         <Avatar id="bias-avatar" src={imageUrl} />

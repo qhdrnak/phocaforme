@@ -155,6 +155,8 @@ const DetailPost = () => {
     navigate("/post");
   };
 
+  console.log(post);
+
   if (post === null) {
     return <DeletedPost />; // 데이터가 로드되기 전에는 로딩 중을 표시
   }
@@ -162,13 +164,9 @@ const DetailPost = () => {
   const ownMembers = post?.ownIdolMembers || []; // post가 정의되지 않았거나 ownMembers가 없을 때 빈 배열로 설정
   const targetMembers = post?.findIdolMembers || []; // post가 정의되지 않았거나 targetMembers가 없을 때 빈 배열로 설정
 
-  console.log(post.cardType);
-
   return (
-    <Container
-      className={`card-style${post.isBartered == 1 ? " done-post" : ""}`}
-    >
-      {post.isBartered == 1 && (
+    <Container className={`card-style${post.bartered ? " done-post" : ""}`}>
+      {post.bartered && (
         <div className="overlay">
           <p>교환완료</p>
         </div>

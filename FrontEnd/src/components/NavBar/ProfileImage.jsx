@@ -56,16 +56,18 @@ const ProfileImage = () => {
 
   // useEffect 해서 랜더링할 때 최애 정보 들고와라
   useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_API_URL + `user/bias`, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        setBiasImg(response.data.idolImage);
-      })
-      .catch((error) => {
-        console.error("Error get bias:", error);
-      });
+    if (user.defaultMember) {
+      axios
+        .get(process.env.REACT_APP_API_URL + `user/bias`, {
+          withCredentials: true,
+        })
+        .then((response) => {
+          setBiasImg(response.data.idolImage);
+        })
+        .catch((error) => {
+          console.error("Error get bias:", error);
+        });
+    }
   }, [user]);
 
   return (

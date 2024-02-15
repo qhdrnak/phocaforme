@@ -162,8 +162,6 @@ const BasicTabs = ({ isPreview }) => {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <div>검색 결과</div>
-
         {posts.length === 0 ? (
           <div className="no-content">게시글이 없습니다.</div>
         ) : (

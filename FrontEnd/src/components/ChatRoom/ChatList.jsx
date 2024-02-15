@@ -106,13 +106,15 @@ const ChatList = () => {
     fetchData();
   }, [loginUser.userId]);
 
+  console.log(chatLists);
+
   return (
     <Container>
-      <h1 className="chat-title">채팅목록</h1>
+      <h2 className="chat-title">채팅목록</h2>
       {chatLists.length === 0 ? (
         <div className="chat-title">현재 진행중인 채팅이 없습니다!</div>
       ) : (
-        <List id='chat-list-container'>
+        <List id="chat-list-container">
           {chatLists.map((chatroom, index) => (
             <ListItem
               className={
@@ -129,20 +131,26 @@ const ChatList = () => {
               onClick={() => moveChatRoom(chatroom.chatRoomId, chatroom)}
             >
               <div className="chatlist-info">
-                <div className='chatlist-thumb-content'>
-                <img className="chatlist-thumbnail" src={`https://photocardforme.s3.ap-northeast-2.amazonaws.com/${thumbnails[chatroom.chatRoomId]}`} alt="Thumbnail" />
-                <div className="chatlist-content">
-                  <div className="chatlist-nickname">
-                    {nicknames[chatroom.chatRoomId]}
+                <div className="chatlist-thumb-content">
+                  <img
+                    className="chatlist-thumbnail"
+                    src={`https://photocardforme.s3.ap-northeast-2.amazonaws.com/${
+                      thumbnails[chatroom.chatRoomId]
+                    }`}
+                    alt="Thumbnail"
+                  />
+                  <div className="chatlist-content">
+                    <div className="chatlist-nickname">
+                      {nicknames[chatroom.chatRoomId]}
+                    </div>
+                    <Typography color="text.primary">
+                      {chatroom.latestChat
+                        ? chatroom.latestChat.message
+                        : "(사진)"}
+                    </Typography>
                   </div>
-                  <Typography color="text.primary">
-                    {chatroom.latestChat
-                      ? chatroom.latestChat.message
-                      : "(사진)"}
-                  </Typography>
                 </div>
-                </div>
-                
+
                 <div>
                   <Typography>
                     {chatroom.latestChat

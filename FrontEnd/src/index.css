@@ -242,6 +242,10 @@ html, body, #root {
     margin: 1rem 0;
 }
 
+#location-icon {
+    margin: 0 0.5rem 0 0 ;
+}
+
 #gps-top {
     display: flex;
     justify-content: center;
@@ -252,6 +256,7 @@ html, body, #root {
     justify-content: space-evenly;
     align-items: center;
     margin: 1rem;
+    text-align: start;
 }
 
 #refresh-container {
@@ -438,7 +443,7 @@ html, body, #root {
     border: var(--primary-color) solid 2px;
     border-radius: 10px;
     margin: 1rem;
-    padding: 0 1rem;
+    padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
 #notice-title {
@@ -453,8 +458,9 @@ html, body, #root {
 }
 
 #notice-icon {
-    font-size: 18px;
+    font-size: 12px;
     color: var(--primary-color);
+    margin: 0.5rem 0 0 0;
 }
 
 #chat-top {
@@ -516,15 +522,15 @@ html, body, #root {
 
 .chat-owner-name {
     display: flex;
-    font-weight: bold;
     justify-content: flex-end;
     text-align: end;
     padding: 0 1rem;
+    font-size: small;
 }
 
 .chat-visiter-name {
-    font-weight: bold;
     padding: 0 1rem;
+    font-size: small;
 
 }
 
@@ -550,8 +556,8 @@ html, body, #root {
 
 #sendIcon {
     border-radius: 10px;
-    color: var(--primary-color);
-    border: var(--primary-color) 2px solid;
+    background-color: var(--primary-color);
+    color: white;
     
 }
 
@@ -676,6 +682,10 @@ html, body, #root {
     font-size: small;
 }
 
+#wishcard-clear-icon {
+    margin: 0 0 0 0.5rem;
+}
+
 .bias-title {
     margin: 0.5rem 0;
 }
@@ -706,14 +716,22 @@ html, body, #root {
 
 #wishcard-card-container {
     display: flex;
-    border-radius: 1rem;
-    
+    flex-direction: row;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background-color: #FD9DD1;
+    border: 1px solid black;
 }
 
 
 #wishcard-card-content {
     display: flex;
     padding: 1rem;
+}
+
+#wishcard-card-keyword {
+    font-family: 'PyeongChangPeace';
+
 }
 
 
@@ -991,6 +1009,10 @@ input:focus {
 
 
 /* 게시글페이지 */
+
+#post-blank {
+    height: 3rem;
+}
 
 .no-content {
     text-align: center;

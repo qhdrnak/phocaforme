@@ -86,7 +86,7 @@ const CustomCard = (props) => {
   return (
     <Card
       // className={`card-style${isBartered || isSold ? " done-post" : ""}`}
-      className={`card-style${isBartered == 1 ? " done-post" : ""}`}
+      className={`card-style${isBartered ? " done-post" : ""}`}
       onClick={() => goToDetail(id)}
     >
       {isBartered && (

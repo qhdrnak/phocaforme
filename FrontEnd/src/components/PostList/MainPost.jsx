@@ -86,8 +86,6 @@ const BasicTabs = ({ isPreview }) => {
 
   return (
     <Container>
-      <h2 className="post-page-title">전체 게시글</h2>
-
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab
@@ -162,6 +160,7 @@ const BasicTabs = ({ isPreview }) => {
         <div>{loading && "Loading..."}</div>
         <div>{error && "Error"}</div>
       </CustomTabPanel>
+      <div id="post-blank" />
     </Container>
   );
 };
