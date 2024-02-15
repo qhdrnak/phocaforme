@@ -120,6 +120,12 @@ public class BarterService {
                         .build();
                 barterImageRepository.save(barterImage);
             }
+        } else {
+            BarterImage barterImage = BarterImage.builder()
+                    .imgCode("icon.PNG")
+                    .barter(savedBarter)
+                    .build();
+            barterImageRepository.save(barterImage);
         }
 
         return savedBarter;
