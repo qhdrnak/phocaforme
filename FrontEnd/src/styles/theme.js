@@ -24,8 +24,8 @@ const theme = createTheme({
     MuiFab: {
       styleOverrides: {
         root:{
-          width: '15vw',
-          height: '15vw'
+          width: '8vh',
+          height: '8vh'
         }
       }
     },

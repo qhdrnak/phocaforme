@@ -980,8 +980,9 @@ input:focus {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    width: 7rem;
+    width: 20vw;
     padding: 1rem 1rem;
+    z-index: 2000;
 }
 
 .card-style {
