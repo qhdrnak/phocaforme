@@ -18,11 +18,11 @@ public class BarterOwnIdol {
     @Column(name = "barter_own_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idol_member_id")
     private IdolMember idolMember;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "barter_board_id")
     private Barter barter;
 
