@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, Grid, CircularProgress } from "@mui/material";
 
-const ChartGirl = ({ rankGirl }) => {
+const ChartGirl = ({ isNull, rankGirl }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -12,7 +12,9 @@ const ChartGirl = ({ rankGirl }) => {
 
   return (
     <div className="chart-align">
-      {loading ? (
+      {isNull ? (<div id='no-content-title'>데이터 모으는 중...📂</div>) : (
+        <div>
+        {loading ? (
         <CircularProgress />
       ) : (
         <Grid container spacing={2} direction="row" id="chart-container">
@@ -34,7 +36,10 @@ const ChartGirl = ({ rankGirl }) => {
             </div>
           </Grid>
         </Grid>
+        )}
+        </div>
       )}
+      
     </div>
   );
 };

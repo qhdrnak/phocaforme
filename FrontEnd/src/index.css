@@ -309,6 +309,9 @@ html, body, #root {
 }
 
 /* 랭킹 컴포넌트 */
+#no-content-title {
+    font-family: 'PyeongChangPeace';
+}
 
 .chart-align {
     text-align: center;
