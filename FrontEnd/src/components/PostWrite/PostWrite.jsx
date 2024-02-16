@@ -132,7 +132,10 @@ const PostWrite = () => {
     // 새로운 게시물 객체 생성
     const newPost = new FormData();
     newPost.append("title", title);
-    newPost.append("content", content);
+    // newPost.append("content", content);
+
+    const encodedContent = encodeURIComponent(content);
+    newPost.append("content", encodedContent);
     ownIdolMembers.forEach((member) => {
       newPost.append("ownIdolMembers", member.idolMemberId);
     });
