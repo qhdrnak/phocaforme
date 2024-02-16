@@ -4,6 +4,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.phofor.phocaforme.auth.service.redis.RedisService;
+import com.phofor.phocaforme.board.config.ApplicationEventPublisherHolder;
+import com.phofor.phocaforme.board.dto.queueDTO.BarterMessage;
 import com.phofor.phocaforme.board.entity.Barter;
 import com.phofor.phocaforme.board.repository.BarterRepository;
 import com.phofor.phocaforme.chat.dto.request.ChatMessageRequestDto;
@@ -14,9 +16,12 @@ import com.phofor.phocaforme.chat.exception.BarterBoardNotFoundException;
 import com.phofor.phocaforme.chat.exception.ChatRoomNotFoundException;
 import com.phofor.phocaforme.chat.repository.ChatMessageRepository;
 import com.phofor.phocaforme.chat.repository.ChatRoomRepository;
+import com.phofor.phocaforme.common.rabbit.producer.events.PostUpdateEvent;
 import com.phofor.phocaforme.notification.service.FCMNotificationService;
+import jakarta.persistence.PostUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +30,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -165,13 +173,30 @@ public class ChatMessageServiceImpl implements ChatMessageService{
             Long boardId = chatRoom.getBoardId();
             Barter barter = barterRepository.findById(boardId).orElseThrow(BarterBoardNotFoundException::new);
             barter.updateBartered(boardId, true, LocalDateTime.now());
-            return true;
+            barterRepository.save(barter);
+            publishUpdateEvent(barter,1);
         } catch (Exception e) {
             return false;
         }
+        return true;
     }
 
 
+    public void publishUpdateEvent(Barter barter, int type){
+        ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
+        if (publisher != null) {
+            LocalDateTime localDateTime = barter.getRegistrationDate();
+            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
+            Instant instant = zonedDateTime.toInstant();
+            PostUpdateEvent event = new PostUpdateEvent(new BarterMessage(
+                    barter.getId(),
+                    barter.isBartered(),
+                    type,
+                    instant)
+            );
+            publisher.publishEvent(event);
+        }
+    }
 //    @Override
 //    public ChatMessageResponseDto chatMessageResponseDto
 }

@@ -302,7 +302,7 @@ public class BarterService {
         return newBarter.getId();
     }
 
-    public void publishPersistEvent(Barter barter, int type){
+    private void publishPersistEvent(Barter barter, int type){
         ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
         if (publisher != null) {
             System.out.println(barter.getId());
@@ -319,7 +319,7 @@ public class BarterService {
         }
     }
 
-    public void publishUpdateEvent(Barter barter, int type){
+    private void publishUpdateEvent(Barter barter, int type){
         ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
         if (publisher != null) {
             LocalDateTime localDateTime = barter.getRegistrationDate();
@@ -335,7 +335,7 @@ public class BarterService {
         }
     }
 
-    public void publishDeleteEvent(Barter barter, int type){
+    private void publishDeleteEvent(Barter barter, int type){
         ApplicationEventPublisher publisher = ApplicationEventPublisherHolder.getPublisher();
         if (publisher != null) {
             LocalDateTime localDateTime = barter.getRegistrationDate();
