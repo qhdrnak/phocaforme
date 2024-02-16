@@ -20,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class BarterController {
     // 게시글 등록
     @PostMapping
     public ResponseEntity<?> registerBarter(BarterRegisterDto registerDto, @AuthenticationPrincipal CustomOAuth2User oauth2User) throws IOException {
-
+        registerDto.setContent(URLDecoder.decode(registerDto.getContent(), StandardCharsets.UTF_8));
         UserEntity userEntity = oauth2User.getUserEntity();
         Barter barter = barterService.registerBarter(registerDto, userEntity);
         List<IdolMemberDto> idols = barter.getOwnIdols().stream().map(
