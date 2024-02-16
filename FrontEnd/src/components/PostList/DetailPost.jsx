@@ -126,6 +126,7 @@ const DetailPost = () => {
 
       // 성공적으로 업데이트되었을 때의 처리
       console.log("게시글이 성공적으로 끌어올려졌습니다.");
+      navigate('/mainpost')
     } catch (error) {
       // 오류 처리
       console.error("게시글 끌어올리기에 실패했습니다:", error);
