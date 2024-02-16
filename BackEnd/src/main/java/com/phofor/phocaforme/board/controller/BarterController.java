@@ -42,6 +42,7 @@ public class BarterController {
     @GetMapping("/search")
     public ResponseEntity<List<SearchResponse>> search(@Validated @ModelAttribute SearchRequest searchRequest)
     {
+        System.out.println(searchRequest.getCardType());
         List<SearchResponse> results = barterSearchService.search(searchRequest);
         System.out.println(results);
         return ResponseEntity.ok(results);
