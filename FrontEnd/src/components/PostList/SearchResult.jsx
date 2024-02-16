@@ -178,7 +178,7 @@ const BasicTabs = ({ isPreview }) => {
           >
             {posts.map((post, index) => (
               <div key={index}>
-                {post.distance == -1 ? `${post.distance}km ` : ""}
+                {post.distance !== -1 ? `${post.distance}km ` : ""}
                 <Card
                   id={post.id}
                   title={post.title}
