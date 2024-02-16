@@ -113,7 +113,7 @@ const BasicTabs = ({ isPreview }) => {
             }
           }
 
-          if (searchs.cardType) {
+          if (searchs.cardType.value !== "") {
             params.cardType = searchs.cardType.value;
           }
 
