@@ -120,7 +120,7 @@ const BasicTabs = ({ isPreview }) => {
           >
             {boards.map((post, index) => (
               <div key={index}>
-                {post.distance == -1 ? `${post.distance}km ` : ""}
+                {post.distance !== -1 ? `${post.distance}km ` : ""}
                 <Card
                   className={post.bartered ? "done-post" : ""}
                   id={post.id}
