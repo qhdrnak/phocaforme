@@ -121,7 +121,6 @@ const PostWrite = () => {
 
   // 게시물 생성 버튼 클릭 핸들러
   const handlePostClick = () => {
-
     // 새로운 게시물 객체 생성
     const newPost = new FormData();
     newPost.append("title", title);
@@ -247,11 +246,12 @@ const PostWrite = () => {
 
         <div id="content-input-container">
           <h3>상세 내용</h3>
-          <input
+          <textarea
             className="content-input"
             value={content}
             onChange={handleContentChange}
             placeholder="포토카드 상태에 대한 세부 내용을 적어주세요."
+            style={{ whiteSpace: "pre-line" }}
           />
         </div>
         <div id="button-container">
