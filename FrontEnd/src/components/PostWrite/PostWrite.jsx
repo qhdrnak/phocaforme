@@ -5,7 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 import { addPost } from "../../store2/post.js";
 
-import { Container, TextField, Button, TextareaAutosize } from "@mui/material";
+import {
+  Container,
+  TextField,
+  Button,
+  TextareaAutosize,
+  CircularProgress,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
@@ -119,12 +125,17 @@ const PostWrite = () => {
     setContent(event.target.value);
   };
 
+  const [loading, setLoading] = useState(false);
   // 게시물 생성 버튼 클릭 핸들러
   const handlePostClick = () => {
+    setLoading(true);
     // 새로운 게시물 객체 생성
     const newPost = new FormData();
     newPost.append("title", title);
-    newPost.append("content", content);
+    // newPost.append("content", content);
+
+    const encodedContent = encodeURIComponent(content);
+    newPost.append("content", encodedContent);
     ownIdolMembers.forEach((member) => {
       newPost.append("ownIdolMembers", member.idolMemberId);
     });
@@ -161,10 +172,17 @@ const PostWrite = () => {
         },
       })
       .then((response) => {
-        navigate("/post");
+        // navigate("/post");
+        setTimeout(() => {
+          setLoading(false);
+          navigate("/post");
+        }, 3000);
       })
       .catch((error) => {
-        console.error("Error creating post:", error);
+        setTimeout(() => {
+          setLoading(false);
+          console.error("Error creating post:", error);
+        }, 3000);
       });
   };
 
@@ -176,6 +194,7 @@ const PostWrite = () => {
   return (
     <Container>
       <h2 className="write-title">게시글 작성하기</h2>
+
       <div id="write-container">
         <div id="image-input">
           <div id="image-list">
@@ -253,6 +272,9 @@ const PostWrite = () => {
             placeholder="포토카드 상태에 대한 세부 내용을 적어주세요."
             style={{ whiteSpace: "pre-line" }}
           />
+        </div>
+        <div style={{ textAlign: "center" }}>
+          {loading && <CircularProgress />}
         </div>
         <div id="button-container">
           <Button
