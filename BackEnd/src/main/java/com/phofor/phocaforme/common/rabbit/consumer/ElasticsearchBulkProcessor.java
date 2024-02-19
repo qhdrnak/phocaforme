@@ -32,12 +32,16 @@ public class ElasticsearchBulkProcessor {
                                        List<WishCardDto> wishes, List<Integer> wishTypes, List<Integer> wishKeywordNumbers){
         String plainCreds = username+":"+password;
         String base64Creds = Base64.getEncoder().encodeToString(plainCreds.getBytes());
-
+        System.out.println(messages.get(0).getContent());
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Basic " + base64Creds);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         String bulkRequestBody = buildBulkRequestBody(messages,barterTypes,wishes,wishTypes,wishKeywordNumbers);
+//                bulkRequestBody = bulkRequestBody.replace("\\", "\\\\")
+//                        .replace("\n", "\\n")
+//                        .replace("\r", "\\r")
+//                        .replace("\t", "\\t");
         log.info("\n"+bulkRequestBody);
         HttpEntity<String> entity = new HttpEntity<>(bulkRequestBody, headers);
 
@@ -74,8 +78,13 @@ public class ElasticsearchBulkProcessor {
                     .append("\"writer_nickname\": \"").append(barter.getNickName()).append("\", ")
                     .append("\"title\": \"").append(barter.getTitle()).append("\", ")
                     .append("\"card_type\": \"").append(barter.getCardType()).append("\", ")
-                    .append("\"image_url\": \"").append(barter.getPhotos().get(0)).append("\", ")
-                    .append("\"content\": \"").append(barter.getContent()).append("\", ")
+                    .append("\"image_url\": \"").append(barter.getPhotos().get(0)).append("\", ");
+
+            String content = "\"content\": \"" + barter.getContent().replace("\\", "\\\\")
+                    .replace("\n", "\\n")
+                    .replace("\r", "\\r")
+                    .replace("\t", "\\t") + "\", ";
+            bulkBody.append(content)
                     .append("\"group_id\": \"").append(barter.getGroupId()).append("\", ")
                     .append("\"own_member\": ").append(convertIdolSearchMembersToJson(barter.getOwnIdolMembers())).append(", ")
                     .append("\"target_member\": ").append(convertIdolSearchMembersToJson(barter.getFindIdolMembers())).append(", ")
@@ -99,8 +108,12 @@ public class ElasticsearchBulkProcessor {
                 bulkBody.append("{ \"doc\": {")
                         .append("\"title\": \"").append(barter.getTitle()).append("\", ")
                         .append("\"card_type\": \"").append(barter.getCardType()).append("\", ")
-                        .append("\"image_url\": \"").append(barter.getPhotos().get(0)).append("\", ")
-                        .append("\"content\": \"").append(barter.getContent()).append("\", ")
+                        .append("\"image_url\": \"").append(barter.getPhotos().get(0)).append("\", ");
+                String content = "\"content\": \"" + barter.getContent().replace("\\", "\\\\")
+                        .replace("\n", "\\n")
+                        .replace("\r", "\\r")
+                        .replace("\t", "\\t") + "\", ";
+                bulkBody.append(content)
                         .append("\"group_id\": \"").append(barter.getGroupId()).append("\", ")
                         .append("\"own_member\": ").append(convertIdolSearchMembersToJson(barter.getOwnIdolMembers())).append(", ")
                         .append("\"target_member\": ").append(convertIdolSearchMembersToJson(barter.getFindIdolMembers())).append(", ")
